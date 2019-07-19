@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Main</class>
+ <widget class="QWidget" name="Main">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>950</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>950</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>950</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="sizeIncrement">
+   <size>
+    <width>950</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>950</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="reshade_version_label">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>10</y>
+     <width>191</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="main_tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>911</width>
+     <height>611</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="usesScrollButtons">
+    <bool>false</bool>
+   </property>
+   <widget class="QWidget" name="games_tab">
+    <attribute name="title">
+     <string>Games</string>
+    </attribute>
+    <widget class="QGroupBox" name="architecture_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>550</x>
+       <y>470</y>
+       <width>90</width>
+       <height>100</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Architecture</string>
+     </property>
+     <widget class="QRadioButton" name="radioButton_32bits">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>32bits</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButton_64bits">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>64bits</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="api_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>470</y>
+       <width>90</width>
+       <height>100</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>API</string>
+     </property>
+     <widget class="QRadioButton" name="dx9_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>DX9</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="dx11_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>70</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>DX11</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="add_button">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>500</y>
+       <width>120</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to add a game</string>
+     </property>
+     <property name="text">
+      <string>ADD GAME</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="edit_button">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>500</y>
+       <width>120</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>120</horstretch>
+       <verstretch>30</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to edit the game path</string>
+     </property>
+     <property name="text">
+      <string>EDIT PATH</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delete_button">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>500</y>
+       <width>120</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to delete the selected game</string>
+     </property>
+     <property name="text">
+      <string>DELETE GAME</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="apply_button">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>470</y>
+       <width>120</width>
+       <height>100</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>120</horstretch>
+       <verstretch>100</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>APPLY</string>
+     </property>
+     <property name="text">
+      <string>APPLY</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="programs_tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>901</width>
+       <height>461</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="autoScroll">
+      <bool>false</bool>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="dragDropOverwriteMode">
+      <bool>false</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+     <property name="columnCount">
+      <number>2</number>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>150</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>100</number>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>30</number>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>30</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Game</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Path</string>
+      </property>
+     </column>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="configs_tab">
+    <attribute name="title">
+     <string>Configs</string>
+    </attribute>
+    <widget class="QGroupBox" name="update_shaders_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>290</y>
+       <width>175</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Update Shader Files</string>
+     </property>
+     <widget class="QRadioButton" name="yes_update_shaders_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_update_shaders_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="check_program_updates_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>180</y>
+       <width>175</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Check for Program Updates</string>
+     </property>
+     <widget class="QRadioButton" name="yes_check_program_updates_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_check_program_updates_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="use_dark_theme_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>90</y>
+       <width>175</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Use Dark Theme</string>
+     </property>
+     <widget class="QRadioButton" name="yes_dark_theme_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_dark_theme_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="create_screenshots_folder_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>290</y>
+       <width>175</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Create Screenshot Folders</string>
+     </property>
+     <widget class="QRadioButton" name="yes_screenshots_folder_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_screenshots_folder_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="reset_all_reshade_config_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>380</y>
+       <width>210</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Reset All Reshade Config Files</string>
+     </property>
+     <widget class="QRadioButton" name="yes_reset_reshade_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_reset_reshade_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="check_reshade_updates_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>180</y>
+       <width>175</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Check for Reshade Updates</string>
+     </property>
+     <widget class="QRadioButton" name="yes_check_reshade_updates_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_check_reshade_updates_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="about_tab">
+    <attribute name="title">
+     <string>About</string>
+    </attribute>
+    <widget class="QTextBrowser" name="about_textBrowser">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>921</width>
+       <height>581</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="undoRedoEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Reshade Utilities&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Program to copy reshade DLLs, shaders and config fiies to several games.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Developed as an open source project and hosted on GitHub.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Implemented using Python3 and QT5.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Acknowledgements&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://pyinstaller.readthedocs.io&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;PyInstaller&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://reshade.me/&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Reshade&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://www.python.org&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Python3&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://www.qt.io&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;QT5&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Developed by&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Discord: Hadesz#1223&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://github.com/ddc/ReshadeUtils/releases/latest&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Download&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;amp;hosted_button_id=CTYZ8TK5MJV76&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Donations&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;mailto:hadesz456@gmail.com&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Email&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse</set>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="updateAvail_label">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>659</y>
+     <width>271</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="update_button">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>660</y>
+     <width>120</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Click here to update the program</string>
+   </property>
+   <property name="text">
+    <string>UPDATE</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

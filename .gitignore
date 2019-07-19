@@ -1,0 +1,23 @@
+__pycache__/
+.Python
+*.py[cod]
+*$py.class
+.settings/
+.README.md.html
+
+# pyenv
+.python-version
+
+# PyInstaller
+*.spec
+*.manifest
+build/
+dist/
+
+# Pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Django
+*.log
+local_settings.py
