@@ -41,9 +41,9 @@ Password="postgres"
     def create_reshade_plugins_file(self):
         file = open(constants.reshade_plugins_filename, encoding="utf-8", mode="w")
         file.write(
-"""Effects=Clarity.fx,Curves.fx,DPX.fx,LumaSharpen.fx
-Techniques=Clarity,Curves,DPX,LumaSharpen
-TechniqueSorting=Clarity,Curves,DPX,LumaSharpen,MXAO,SMAA,ASCII,AdaptiveFog,AdaptiveSharpen,AdvancedCRT,After,AmbientLight,Before,BloomAndLensFlares,Border,CA,Cartoon,Chromakey,ChromaticAberration,CinematicDOF,ColorMatrix,Colourfulness,Crosshair,Daltonize,Deband,Depth3D,DepthHaze,DisplayDepth,Emphasize,EyeAdaption,FilmGrain,FilmGrain2,FilmicAnamorphSharpen,FilmicPass,FXAA,GP65CJ042DOF,GaussianBlur,GlitchB,HDR,HQ4X,HSLShift,HighPassSharp,KNearestNeighbors,LUT,Layer,LeiFx_Tech,Levels,LevelsPlus,LiftGammaGain,LightDoF_AutoFocus,LightDoF_Far,LightDoF_Near,MagicBloom,MagicDOF,MartyMcFlyDOF,MatsoDOF,Mode1,Mode2,Mode3,Monochrome,MotionBlur,MultiLUT,Nightvision,NonLocalMeans,Nostalgia,PPFXBloom,PPFXSSDO,PPFX_Godrays,PerfectPerspective,ReflectiveBumpmapping,RingDOF,StageDepth,SurfaceBlur,Technicolor,Technicolor2,TiltShift,Tint,Tonemap,TriDither,UIDetect,UIDetect_After,UIDetect_Before,UIMask_Bottom,UIMask_Top,Vibrance,Vignette
+"""Effects=Clarity.fx,Curves.fx,DPX.fx,LumaSharpen.fx,Levels.fx
+Techniques=Clarity,Curves,DPX,LumaSharpen,Levels
+TechniqueSorting=Clarity,Curves,DPX,LumaSharpen,Levels,MXAO,SMAA,ASCII,AdaptiveFog,AdaptiveSharpen,AdvancedCRT,After,AmbientLight,Before,BloomAndLensFlares,Border,CA,Cartoon,Chromakey,ChromaticAberration,CinematicDOF,ColorMatrix,Colourfulness,Crosshair,Daltonize,Deband,Depth3D,DepthHaze,DisplayDepth,Emphasize,EyeAdaption,FilmGrain,FilmGrain2,FilmicAnamorphSharpen,FilmicPass,FXAA,GP65CJ042DOF,GaussianBlur,GlitchB,HDR,HQ4X,HSLShift,HighPassSharp,KNearestNeighbors,LUT,Layer,LeiFx_Tech,LevelsPlus,LiftGammaGain,LightDoF_AutoFocus,LightDoF_Far,LightDoF_Near,MagicBloom,MagicDOF,MartyMcFlyDOF,MatsoDOF,Mode1,Mode2,Mode3,Monochrome,MotionBlur,MultiLUT,Nightvision,NonLocalMeans,Nostalgia,PPFXBloom,PPFXSSDO,PPFX_Godrays,PerfectPerspective,ReflectiveBumpmapping,RingDOF,StageDepth,SurfaceBlur,Technicolor,Technicolor2,TiltShift,Tint,Tonemap,TriDither,UIDetect,UIDetect_After,UIDetect_Before,UIMask_Bottom,UIMask_Top,Vibrance,Vignette
 PreprocessorDefinitions=
 
 [Clarity.fx]
@@ -77,6 +77,11 @@ pattern=3
 sharp_clamp=0.500000
 offset_bias=1.000000
 show_sharpen=0
+
+[Levels.fx]
+BlackPoint=7
+WhitePoint=235
+HighlightClipping=0
 """)
         file.close()
 ################################################################################
