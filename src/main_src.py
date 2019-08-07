@@ -897,8 +897,8 @@ class MainSrc():
                                                                                                                             
                     len_games = len_games-1
                 except OSError as e:
-                    errors.append(rs_all_games[i]['path'])
-                    utils.show_message_window("error", "ERROR", f"{messages.error_copying_dll}\n{rs_all_games[i]['path']}\n\n{e.strerror}")
+                    errors.append(f"{game_name}: {e.strerror.lower()}")
+                    #utils.show_message_window("error", "ERROR", f"{messages.error_copying_dll}\n{game_name}\n\n{e.strerror}")
 
         self._enable_form(True)
         self.qtObj.apply_button.setEnabled(True)

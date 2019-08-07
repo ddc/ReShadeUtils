@@ -53,7 +53,7 @@ missing_api                     = "Missing API"
 
 apply_success                   = "All games have been updated successfully!"
 
-apply_success_with_errors       = "Complete with errors.\nSome DLLs were not updated."
+apply_success_with_errors       = "Complete with errors."
 
 start_update_question           = "Start update now?"
 
@@ -65,7 +65,7 @@ copying_DLLs                    = "Applying..."
 
 error_delete_dll                = "ERROR trying to delete"
 
-error_copying_dll               = "ERROR trying to copy"
+error_copying_dll               = "ERROR trying to copy dll"
 
 downloading_shaders             = "Downloading shaders..."
 
