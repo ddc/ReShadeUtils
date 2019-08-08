@@ -53,6 +53,8 @@ missing_api                     = "Missing API"
 
 apply_success                   = "All games have been updated successfully!"
 
+game_deleted                    = "Game successfully deleted!"
+
 apply_success_with_errors       = "Complete with errors."
 
 start_update_question           = "Start update now?"
@@ -76,4 +78,8 @@ reshade_website_unreacheable    = "Unable to reach Reshade website!!!"
 error_permissionError           = "Permission Error!!!\nPlease run the program with Admin privileges."
 
 new_reshade_version             = "New Reshade Version!\nPlease APPLY the new version now."
+
+no_such_file                    = "Error trying to open the file.\nNo such file or directory."
+
+check_game_uninstalled          = "Check if the game has been Uninstalled, or hit the button apply to create the file!"
 

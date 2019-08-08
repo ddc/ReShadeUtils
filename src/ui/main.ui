@@ -158,8 +158,8 @@
     <widget class="QPushButton" name="add_button">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>500</y>
+       <x>20</x>
+       <y>510</y>
        <width>120</width>
        <height>30</height>
       </rect>
@@ -183,19 +183,19 @@
       <string>ADD GAME</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="edit_button">
+    <widget class="QPushButton" name="edit_path_button">
      <property name="geometry">
       <rect>
-       <x>400</x>
-       <y>500</y>
+       <x>280</x>
+       <y>510</y>
        <width>120</width>
        <height>30</height>
       </rect>
      </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>120</horstretch>
-       <verstretch>30</verstretch>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
@@ -214,14 +214,14 @@
       <string>Click to edit the game path</string>
      </property>
      <property name="text">
-      <string>EDIT PATH</string>
+      <string>EDIT GAME PATH</string>
      </property>
     </widget>
     <widget class="QPushButton" name="delete_button">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>500</y>
+       <x>150</x>
+       <y>510</y>
        <width>120</width>
        <height>30</height>
       </rect>
@@ -358,6 +358,40 @@
        <string>Path</string>
       </property>
      </column>
+    </widget>
+    <widget class="QPushButton" name="open_config_button">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>510</y>
+       <width>120</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to edit the game path</string>
+     </property>
+     <property name="text">
+      <string>OPEN CONFIG</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="configs_tab">
