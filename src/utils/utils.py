@@ -212,7 +212,8 @@ def check_new_program_version(self, show_dialog=True):
     client_version = constants.VERSION
     program_checking_version_msg = messages.checking_new_version
     obj_return = Object()
-    obj_return.new_version = False
+    obj_return.new_version_available = False
+    obj_return.new_version = None
     
     try:
         show_progress_bar(self, program_checking_version_msg, 0)
@@ -227,9 +228,10 @@ def check_new_program_version(self, show_dialog=True):
             
             show_progress_bar(self, program_checking_version_msg, 75)
             if float(remote_version) > float(client_version):
-                obj_return.new_version = True
+                obj_return.new_version_available = True
                 show_progress_bar(self, program_checking_version_msg, 100)
                 obj_return.new_version_msg = f"Version {remote_version} available for download"
+                obj_return.new_version = float(remote_version)
                 
                 if show_dialog:
                     msg = f"""{messages.new_version_available}
@@ -240,7 +242,7 @@ def check_new_program_version(self, show_dialog=True):
                 
                     if reply == QtWidgets.QMessageBox.Yes:
                         pb_dl_new_version_msg = messages.dl_new_version
-                        program_url = constants.github_exe_program_url
+                        program_url = f"{constants.github_exe_program_url}{remote_version}/{constants.exe_program_name}"
                         user_download_path = get_download_path()
                         downloaded_program_path = f"{user_download_path}\{constants.exe_program_name}"
                         
@@ -254,7 +256,7 @@ def check_new_program_version(self, show_dialog=True):
                             show_progress_bar(self, pb_dl_new_version_msg, 100)
                             self.log.error(f"{messages.error_check_new_version} {e}")
                             if e.code == 404:
-                                show_message_window("error", "ERROR", messages.remote_version_file_not_found) 
+                                show_message_window("error", "ERROR", messages.remote_file_not_found) 
                             else:
                                 show_message_window("error", "ERROR", messages.error_check_new_version)
                     else:

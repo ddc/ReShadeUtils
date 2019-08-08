@@ -31,6 +31,8 @@ error_check_new_reshade_version = "There was an ERROR trying to check for a new 
 
 remote_version_file_not_found   = "ERROR: Remote File: VERSION was not found."
 
+remote_file_not_found           = "ERROR: Remote File was not found."
+
 dl_new_version_timeout          = "Unable to reach Website to check for new version!!!"
 
 dl_new_shaders_timeout          = "Unable to reach Website to download new shader files!!!\nOld version is going to be use instead!"

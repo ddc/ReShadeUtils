@@ -39,6 +39,7 @@ class MainSrc():
         self.create_screenshots_folder = None
         self.reset_reshade_files = None
         self.need_apply = False
+        self.new_version = None
 ################################################################################
 ################################################################################
 ################################################################################
@@ -98,7 +99,8 @@ class MainSrc():
         self.qtObj.update_button.setVisible(False)
         if self.check_program_updates:
             new_version_obj = utils.check_new_program_version(self, False)
-            if new_version_obj.new_version:
+            if new_version_obj.new_version_available == True:
+                self.new_version = new_version_obj.new_version
                 self.qtObj.update_button.setFocus()
                 self.qtObj.updateAvail_label.clear()
                 self.qtObj.updateAvail_label.setText(new_version_obj.new_version_msg)

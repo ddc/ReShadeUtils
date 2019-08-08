@@ -15,7 +15,7 @@ from src.utils import utils
 ################################################################################
 ################################################################################
 PROGRAM_NAME            = "Reshade Utils"
-VERSION                 = "1.8"
+VERSION                 = "1.6"
 ################################################################################
 ################################################################################
 ################################################################################
@@ -63,7 +63,7 @@ style_qss_filename      = f"{program_path}\style.qss"
 error_logs_filename     = f"{program_path}\errors.log"
 reshade_plugins_filename= f"{program_path}\{reshade_plugins_ini}"
 ################################################################################
-github_exe_program_url  = f"https://github.com/ddc/{short_program_name}/releases/download/v{VERSION}/{exe_program_name}"
+github_exe_program_url  = f"https://github.com/ddc/{short_program_name}/releases/download/v"
 remote_version_filename = f"https://raw.github.com/ddc/{short_program_name}/master/VERSION"
 css_remote_filename     = f"https://raw.github.com/ddc/{short_program_name}/master/src/utils/style.qss"
 shaders_zip_url         = "https://github.com/crosire/reshade-shaders/archive/master.zip"

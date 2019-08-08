@@ -157,7 +157,7 @@ class FormEvents():
         if user_answer == QtWidgets.QMessageBox.Yes:
             pb_dl_new_version_msg = messages.dl_new_version
             user_download_path = utils.get_download_path()
-            program_url = constants.github_exe_program_url
+            program_url = f"{constants.github_exe_program_url}{self.new_version}/{constants.exe_program_name}"
             downloaded_program_path = f"{user_download_path}\{constants.exe_program_name}"
             
             try:
@@ -170,7 +170,7 @@ class FormEvents():
                 utils.show_progress_bar(self, pb_dl_new_version_msg, 100)
                 self.log.error(f"{messages.error_check_new_version} {e}")
                 if e.code == 404:
-                    utils.show_message_window("error", "ERROR", messages.remote_version_file_not_found) 
+                    utils.show_message_window("error", "ERROR", messages.remote_file_not_found) 
                 else:
                     utils.show_message_window("error", "ERROR", messages.error_check_new_version)
 ################################################################################
