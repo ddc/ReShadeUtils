@@ -382,14 +382,14 @@ class MainSrc():
                 
             if rsConfig[0]["use_dark_theme"].upper() == "N":
                 self.use_dark_theme = False
+                self.set_style_sheet(False)
                 self.qtObj.yes_dark_theme_radioButton.setChecked(False)
                 self.qtObj.no_dark_theme_radioButton.setChecked(True)
-                self.set_style_sheet(False)
             else:
                 self.use_dark_theme = True
+                self.set_style_sheet(True)
                 self.qtObj.yes_dark_theme_radioButton.setChecked(True)
                 self.qtObj.no_dark_theme_radioButton.setChecked(False)
-                self.set_style_sheet(True)
 
             if rsConfig[0]["update_shaders"].upper() == "N":
                 self.update_shaders = False

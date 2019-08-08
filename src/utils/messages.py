@@ -59,7 +59,7 @@ apply_success_with_errors       = "Complete with errors."
 
 start_update_question           = "Start update now?"
 
-not_valid_game                  = "Not a valid game."
+not_valid_game                  = "Not a valid game!"
 
 info_reshade_version            = "Reshade v"
 
@@ -83,3 +83,8 @@ no_such_file                    = "Error trying to open the file.\nNo such file 
 
 check_game_uninstalled          = "Check if the game has been Uninstalled, or hit the button apply to create the file!"
 
+no_change_path                  = "No changes to path were made!"
+
+not_same_game                   = "Please, choose the same game as before!"
+
+path_changed_success            = "Path was changed successfully!"
