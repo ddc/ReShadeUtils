@@ -79,9 +79,7 @@ error_permissionError           = "Permission Error!!!\nPlease run the program w
 
 new_reshade_version             = "New Reshade Version!\nPlease APPLY the new version now."
 
-no_such_file                    = "Error trying to open the file.\nNo such file or directory."
-
-check_game_uninstalled          = "Check if the game has been Uninstalled, or hit the button apply to create the file!"
+check_game_uninstalled          = "Check if the game has been Uninstalled, or hit the apply button to create the file!"
 
 no_change_path                  = "No changes to path were made!"
 

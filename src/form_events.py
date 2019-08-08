@@ -91,7 +91,7 @@ class FormEvents():
                     gamesSql.delete_game(self.rs_game[0]["id"])
                     #populate list
                     self.populate_programs_listWidget()
-                    utils.show_message_window("info", "SUCCESS", f"{messages.game_deleted}\n{game_name}")
+                    utils.show_message_window("info", "SUCCESS", f"{messages.game_deleted}\n\n{game_name}")
                 except OSError as e:
                     utils.show_message_window("error", "ERROR", f"{game_name} files\n\n{e.strerror}")
                     
@@ -143,10 +143,11 @@ class FormEvents():
             game_path = '\\'.join(path_list)
             res_plug_ini_path = f"{game_path}\{constants.reshade_plugins_ini}"
 
-            cmd = os.system(f"\"{res_plug_ini_path}\"")
-            if cmd != 0:
+            try:
+                os.startfile(f"\"{res_plug_ini_path}\"")
+            except Exception as e:
                 self.enable_widgets(False)
-                err_msg = f"{messages.no_such_file}\n\n{messages.check_game_uninstalled}"
+                err_msg = f"{e.strerror}\n\n{messages.check_game_uninstalled}"
                 utils.show_message_window("error", "ERROR", err_msg)
 ################################################################################
 ################################################################################
