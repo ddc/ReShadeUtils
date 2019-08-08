@@ -146,9 +146,10 @@ class FormEvents():
             try:
                 os.startfile(f"\"{res_plug_ini_path}\"")
             except Exception as e:
-                self.enable_widgets(False)
                 err_msg = f"{e.strerror}\n\n{messages.check_game_uninstalled}"
                 utils.show_message_window("error", "ERROR", err_msg)
+    
+        self.enable_widgets(False)
 ################################################################################
 ################################################################################
 ################################################################################
