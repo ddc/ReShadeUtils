@@ -47,14 +47,14 @@ TechniqueSorting=Clarity,Curves,DPX,LumaSharpen,Levels,MXAO,SMAA,ASCII,AdaptiveF
 PreprocessorDefinitions=
 
 [Clarity.fx]
-ClarityRadius=4
 ClarityBlendMode=2
+ClarityRadius=4
 ClarityOffset=5.000000
 ClarityDarkIntensity=0.400000
 ClarityBlendIfDark=50
 ClarityBlendIfLight=205
-ClarityViewBlendIfMask=0
 ClarityStrength=0.400000
+ClarityViewBlendIfMask=0
 ClarityLightIntensity=0.000000
 ClarityViewMask=0
 
@@ -63,23 +63,23 @@ Mode=0
 Formula=4
 Contrast=0.300000
 
-[DPX.fx]
-RGB_Curve=8.000000,8.000000,8.000000
-Strength=0.200000
-RGB_C=0.360000,0.360000,0.340000
-Contrast=0.100000
-Saturation=2.500000
-Colorfulness=2.500000
-
 [LumaSharpen.fx]
-sharp_strength=1.100000
 pattern=3
+sharp_strength=1.100000
 sharp_clamp=0.500000
 offset_bias=1.000000
 show_sharpen=0
 
+[DPX.fx]
+Strength=0.200000
+RGB_Curve=8.000000,8.000000,8.000000
+RGB_C=0.360000,0.360000,0.340000
+Contrast=0.100000
+Saturation=2.000000
+Colorfulness=2.500000
+
 [Levels.fx]
-BlackPoint=7
+BlackPoint=5
 WhitePoint=235
 HighlightClipping=0
 """)
