@@ -90,7 +90,14 @@ HighlightClipping=0
     def create_reshade_ini_file(self, game_path:str, reshade_ini_path:str, screenshot_path:str):
         file = open(reshade_ini_path, encoding="utf-8", mode="w")
         file.write(
-f"""[GENERAL]
+f"""[INPUT]
+KeyMenu=119,0,1,0
+KeyScreenshot=44,0,0,0
+InputProcessing=2
+KeyEffects=145,0,0,0
+KeyReload=0,0,0,0
+
+[GENERAL]
 TextureSearchPaths={constants.program_path}\Reshade-shaders\Textures
 EffectSearchPaths={constants.program_path}\Reshade-shaders\Shaders
 ScreenshotPath={screenshot_path}
@@ -113,13 +120,6 @@ SaveWindowState=0
 PresetSearchPaths=.NewVariableUI=1
 ShowScreenshotMessage=1
 NewVariableUI=1
-
-[INPUT]
-KeyMenu=119,0,1,0
-KeyScreenshot=44,0,0,0
-InputProcessing=2
-KeyEffects=145,0,0,0
-KeyReload=0,0,0,0
 
 [STYLE]
 GrabRounding=12.000000
