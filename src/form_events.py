@@ -413,7 +413,7 @@ class FormEvents():
                     ##copying Reshade.ini
                     try:
                         if self.reset_reshade_files or not os.path.exists(dst_res_ini_path):
-                            createFiles.create_reshade_file(dst_res_ini_path, game_screenshots_path)
+                            createFiles.create_reshade_ini_file(game_path, dst_res_ini_path, game_screenshots_path)
                     except OSError as e:
                         self.log.error(f"{e}") 
 

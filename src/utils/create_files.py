@@ -38,7 +38,7 @@ Password="postgres"
 ################################################################################
 ################################################################################
 ################################################################################
-    def create_reshade_plugins_file(self):
+    def create_reshade_plugins_ini_file(self):
         file = open(constants.reshade_plugins_filename, encoding="utf-8", mode="w")
         file.write(
 """Effects=Clarity.fx,Curves.fx,DPX.fx,LumaSharpen.fx,Levels.fx
@@ -87,18 +87,18 @@ HighlightClipping=0
 ################################################################################
 ################################################################################
 ################################################################################
-    def create_reshade_file(self, game_path:str, screenshot_path:str):
-        file = open(game_path, encoding="utf-8", mode="w")
+    def create_reshade_ini_file(self, game_path:str, reshade_ini_path:str, screenshot_path:str):
+        file = open(reshade_ini_path, encoding="utf-8", mode="w")
         file.write(
 f"""[GENERAL]
 TextureSearchPaths={constants.program_path}\Reshade-shaders\Textures
-NoFontScaling=0
 EffectSearchPaths={constants.program_path}\Reshade-shaders\Shaders
-ScreenshotIncludePreset=0
-CurrentPresetPath=.\Reshade_plugins.ini
 ScreenshotPath={screenshot_path}
+CurrentPresetPath={game_path}\{constants.reshade_plugins_ini}
+PresetFiles=.\{constants.reshade_plugins_ini}
+ScreenshotIncludePreset=0
+NoFontScaling=0
 ClockFormat=1
-PresetFiles=.\Reshade_plugins.ini
 CurrentPreset=0
 PerformanceMode=1
 PreprocessorDefinitions=RESHADE_DEPTH_LINEARIZATION_FAR_PLANE=1000.0,RESHADE_DEPTH_INPUT_IS_UPSIDE_DOWN=0,RESHADE_DEPTH_INPUT_IS_REVERSED=0,RESHADE_DEPTH_INPUT_IS_LOGARITHMIC=0
@@ -107,8 +107,8 @@ ScreenshotFormat=0
 ShowClock=0
 ShowFPS=0
 FontGlobalScale=1.000000
-NoReloadOnInit=0
 ShowFrameTime=0
+NoReloadOnInit=0
 SaveWindowState=0
 PresetSearchPaths=.NewVariableUI=1
 ShowScreenshotMessage=1
@@ -116,31 +116,31 @@ NewVariableUI=1
 
 [INPUT]
 KeyMenu=119,0,1,0
-InputProcessing=2
 KeyScreenshot=44,0,0,0
+InputProcessing=2
 KeyEffects=145,0,0,0
 KeyReload=0,0,0,0
 
 [STYLE]
+GrabRounding=12.000000
+Alpha=1.000000
+ColActive=0.200000,0.500000,0.600000
 EditorStyleIndex=0
 ColFPSText=1.000000,1.000000,0.000000,1.000000
-ColActive=0.200000,0.500000,0.600000
-Alpha=1.000000
-GrabRounding=12.000000
 ColBackground=0.275000,0.275000,0.275000
+FrameRounding=12.000000
 FPSScale=1.000000
 ColItemBackground=0.447000,0.447000,0.447000
-FrameRounding=12.000000
 ColText=0.800000,0.900000,0.900000
-ChildRounding=12.000000
 PopupRounding=12.000000
+ChildRounding=12.000000
 WindowRounding=12.000000
 ScrollbarRounding=12.000000
 TabRounding=12.000000
 Font=
-FontSize=12
+FontSize=13
 EditorFont=
-EditorFontSize=12
+EditorFontSize=13
 StyleIndex=0
 
 [DX9_BUFFER_DETECTION]
