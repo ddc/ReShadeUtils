@@ -36,7 +36,7 @@ class FormEvents():
                 rsPath = gamesSql.get_game_by_path(game_path)
                 if rsPath is not None and len(rsPath) == 0:
                     self.selected_game = None
-                    self.game_path = game_path                
+                    self.added_game_path = game_path                
                     self._show_game_config_form(file_name.replace(".exe",""))
                 else:
                     rsName = gamesSql.get_game_by_path(game_path)
@@ -323,7 +323,6 @@ class FormEvents():
         gamesSql = GamesSql(self.log)
         rs_all_games = gamesSql.get_all_games()
         len_games = len(rs_all_games)
-        downloaded_new_shaders = False
         
         if self.reset_reshade_files:
             msg = f"{messages.reset_config_files_question}"
@@ -336,10 +335,13 @@ class FormEvents():
             self.enable_widgets(False)
             self.qtObj.apply_button.setEnabled(False)
             
-            #update new shaders files
-            if self.update_shaders is not None\
-            and self.update_shaders == True:
+            if not os.path.exists(constants.shaders_src_path)\
+            or (self.update_shaders is not None and self.update_shaders == True):
+                downloaded_new_shaders = True
+            elif self.update_shaders is not None and self.update_shaders == False:
+                downloaded_new_shaders = False
 
+            if downloaded_new_shaders is not None and downloaded_new_shaders == True:
                 try:
                     utils.show_progress_bar(self, messages.downloading_shaders, (50))
                     urllib.request.urlretrieve(constants.shaders_zip_url, constants.shaders_zip_path)
@@ -348,41 +350,40 @@ class FormEvents():
                     self.log.error(f"{messages.dl_new_shaders_timeout} {e}")
                     utils.show_message_window("error", "ERROR", messages.dl_new_shaders_timeout)
                     
-                if downloaded_new_shaders:
+                try:
+                    if os.path.exists(constants.shaders_src_path):
+                        shutil.rmtree(constants.shaders_src_path)
+                except OSError as e:
+                    self.log.error(f"{e}")
+                    
+                try:
+                    if os.path.exists(constants.res_shad_mpath):
+                        shutil.rmtree(constants.res_shad_mpath)
+                except OSError as e:
+                    self.log.error(f"{e}")
+        
+                utils.show_progress_bar(self, messages.downloading_shaders, (75))
+                if os.path.exists(constants.shaders_zip_path):
                     try:
-                        if os.path.exists(constants.shaders_src_path):
-                            shutil.rmtree(constants.shaders_src_path)
-                    except OSError as e:
+                        utils.unzip_file(constants.shaders_zip_path, constants.program_path)
+                    except FileNotFoundError as e:
                         self.log.error(f"{e}")
-                        
-                    try:
-                        if os.path.exists(constants.res_shad_mpath):
-                            shutil.rmtree(constants.res_shad_mpath)
-                    except OSError as e:
+                    except zipfile.BadZipFile as e:
                         self.log.error(f"{e}")
-            
-                    utils.show_progress_bar(self, messages.downloading_shaders, (75))
-                    if os.path.exists(constants.shaders_zip_path):
-                        try:
-                            utils.unzip_file(constants.shaders_zip_path, constants.program_path)
-                        except FileNotFoundError as e:
-                            self.log.error(f"{e}")
-                        except zipfile.BadZipFile as e:
-                            self.log.error(f"{e}")
-    
-                        try:
-                            os.remove(constants.shaders_zip_path)
-                        except OSError as e:
-                            self.log.error(f"{e}")
-    
+
                     try:
-                        if os.path.exists(constants.res_shad_mpath):
-                            out_dir = f"{constants.program_path}\{constants.reshade_shaders}"
-                            os.rename(constants.res_shad_mpath, out_dir)
+                        os.remove(constants.shaders_zip_path)
                     except OSError as e:
                         self.log.error(f"{e}")
 
-                utils.show_progress_bar(self, messages.downloading_shaders, (100))
+                try:
+                    if os.path.exists(constants.res_shad_mpath):
+                        out_dir = f"{constants.program_path}\{constants.reshade_shaders}"
+                        os.rename(constants.res_shad_mpath, out_dir)
+                except OSError as e:
+                    self.log.error(f"{e}")
+
+            utils.show_progress_bar(self, messages.downloading_shaders, (100))
             
             #begin games update section
             for i in range(len(rs_all_games)):
@@ -439,7 +440,74 @@ class FormEvents():
             utils.show_message_window("info", "SUCCESS", f"{messages.apply_success}")
         else:
             err = '\n'.join(errors)
-            utils.show_message_window("error", "ERROR", f"{messages.apply_success_with_errors}\n\n{err}")                
+            utils.show_message_window("error", "ERROR", f"{messages.apply_success_with_errors}\n\n{err}")
+################################################################################
+################################################################################
+################################################################################
+    def game_config_form(self, status:str):
+        if status == "OK":
+            if self.game_config_form.qtObj.game_name_lineEdit.text() == "":
+                utils.show_message_window("error", "ERROR", messages.missing_game_name)
+                return
+            
+            if not self.game_config_form.qtObj.radioButton_32bits.isChecked()\
+            and not self.game_config_form.qtObj.radioButton_64bits.isChecked():
+                utils.show_message_window("error", "ERROR", messages.missing_architecture)
+                return        
+            
+            if not self.game_config_form.qtObj.dx9_radioButton.isChecked()\
+            and not self.game_config_form.qtObj.dx11_radioButton.isChecked():
+                utils.show_message_window("error", "ERROR", messages.missing_api)
+                return          
+            
+            gamesObj = utils.Object()
+            gamesObj.game_name = self.game_config_form.qtObj.game_name_lineEdit.text()
+            
+            if self.game_config_form.qtObj.radioButton_32bits.isChecked():
+                gamesObj.architecture = "32bits"
+                src_path = constants.reshade32_path
+            else:
+                gamesObj.architecture = "64bits"
+                src_path = constants.reshade64_path
+            
+            if self.game_config_form.qtObj.dx9_radioButton.isChecked():
+                gamesObj.api = "DX9"
+                dst_path = f"{self.selected_game.game_dir}\{constants.d3d9}"
+            else:
+                gamesObj.api = "DX11"
+                dst_path = f"{self.selected_game.game_dir}\{constants.dxgi}"  
+
+            gamesSql = GamesSql(self.log)
+            if self.selected_game is not None:
+                if (self.selected_game.rs[0]["architecture"] != gamesObj.architecture)\
+                or (self.selected_game.rs[0]["api"] != gamesObj.api):
+
+                    ## deleting any Reshade.dll
+                    reshade32_game_path = f"{self.selected_game.game_dir}/{constants.d3d9}"
+                    reshade64_game_path = f"{self.selected_game.game_dir}/{constants.dxgi}"
+                    if os.path.isfile(reshade32_game_path):
+                        os.remove(reshade32_game_path)                    
+                    if os.path.isfile(reshade64_game_path):
+                        os.remove(reshade64_game_path) 
+
+                ## creating Reshade.dll
+                try:
+                    shutil.copyfile(src_path, dst_path)
+                except shutil.Error as e:
+                    self.log.error(f"{e}")
+
+                gamesObj.id = self.selected_game.rs[0]["id"]
+                gamesSql.update_game(gamesObj)
+            else:
+                gamesObj.path = self.added_game_path
+                gamesSql.insert_game(gamesObj)
+                del self.added_game_path
+                
+            self.populate_programs_listWidget()
+            self.game_config_form.close()
+            self.enable_widgets(False)
+        else:
+            self.game_config_form.close()             
 ################################################################################
 ################################################################################
 ################################################################################

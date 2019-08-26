@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 from src.utils.create_files import CreateFiles 
 from src.utils import constants, messages, utils
 import logging.handlers
-import sys, os
+import sys, os, shutil
 from src.sql.initial_tables_sql import InitialTablesSql
 from src.sql.triggers_sql import TriggersSql
 from src.sql.configs_sql import ConfigsSql
@@ -450,8 +450,10 @@ class MainSrc():
         self.game_config_form.qtObj.game_name_lineEdit.setFocus()
         self.game_config_form.show()
         QtWidgets.QApplication.processEvents()
-        self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: self._game_config_form("ok"))
-        self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: self._game_config_form("cancel"))
+        
+        self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: FormEvents.game_config_form(self, "OK"))
+        self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: FormEvents.game_config_form(self, "CANCEL"))
+        
         if self.selected_game is not None:
             self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.rs[0]["name"])
             if self.selected_game.rs[0]["architecture"] == "32bits":
@@ -469,52 +471,6 @@ class MainSrc():
                 self.game_config_form.qtObj.dx11_radioButton.setChecked(True) 
         else:
             self.game_config_form.qtObj.game_name_lineEdit.setText(game_name)
-################################################################################
-################################################################################
-################################################################################    
-    def _game_config_form(self, status:str):
-        if status == "ok":
-            if self.game_config_form.qtObj.game_name_lineEdit.text() == "":
-                utils.show_message_window("error", "ERROR", messages.missing_game_name)
-                return
-            
-            if not self.game_config_form.qtObj.radioButton_32bits.isChecked()\
-            and not self.game_config_form.qtObj.radioButton_64bits.isChecked():
-                utils.show_message_window("error", "ERROR", messages.missing_architecture)
-                return        
-            
-            if not self.game_config_form.qtObj.dx9_radioButton.isChecked()\
-            and not self.game_config_form.qtObj.dx11_radioButton.isChecked():
-                utils.show_message_window("error", "ERROR", messages.missing_api)
-                return          
-            
-            gamesObj = utils.Object()
-            gamesObj.game_name = self.game_config_form.qtObj.game_name_lineEdit.text()
-            
-            if self.game_config_form.qtObj.radioButton_32bits.isChecked():
-                gamesObj.architecture = "32bits"
-            else:
-                gamesObj.architecture = "64bits"
-            
-            if self.game_config_form.qtObj.dx9_radioButton.isChecked():
-                gamesObj.api = "DX9" 
-            else:
-                gamesObj.api = "DX11"      
-            
-            gamesSql = GamesSql(self.log)
-            if self.selected_game is not None:
-                gamesObj.id = self.selected_game.rs[0]["id"]
-                gamesSql.update_game(gamesObj)
-            else:
-                gamesObj.path = self.game_path
-                gamesSql.insert_game(gamesObj)
-                del self.game_path
-                
-            self.populate_programs_listWidget()
-            self.game_config_form.close()
-            self.enable_widgets(False)
-        else:
-            self.game_config_form.close()
 ################################################################################
 ################################################################################
 ################################################################################   
