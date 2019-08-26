@@ -53,9 +53,9 @@ missing_architecture            = "Missing architecture"
 
 missing_api                     = "Missing API"
 
-apply_success                   = "All games have been updated successfully!"
+apply_success                   = "All DLLs have been updated successfully!"
 
-game_deleted                    = "Game successfully deleted!"
+game_deleted                    = "DLLs successfully deleted!"
 
 apply_success_with_errors       = "Complete with errors."
 

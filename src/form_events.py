@@ -131,7 +131,7 @@ class FormEvents():
                 gamesSql.update_game_path(gamesObj)
 
                 #create Reshade.ini to replace edit CurrentPresetPath
-                game_screenshots_path = _get_screenshot_path(self, self.selected_game.name)
+                game_screenshots_path = _get_screenshot_path(self, new_game_path, self.selected_game.name)
                 self.selected_game.game_dir = '\\'.join(new_game_path.split("\\")[:-1])
                 
                 try:
@@ -405,7 +405,7 @@ class FormEvents():
                 
                 try:
                     utils.show_progress_bar(self, messages.copying_DLLs, (100/len_games))
-                    game_screenshots_path = _get_screenshot_path(self, game_name)
+                    game_screenshots_path = _get_screenshot_path(self, game_path, game_name)
                     
                     ##copying Reshade.dll
                     try:
@@ -482,9 +482,13 @@ class FormEvents():
                 ## checking name changes
                 if self.selected_game.rs[0]["name"] != gamesObj.game_name:
                     ## create Reshade.ini to replace edit CurrentPresetPath
-                    old_screenshots_path = _get_screenshot_path(self, self.selected_game.name)
-                    t_path = '\\'.join(old_screenshots_path.split('\\')[:-1])
-                    new_screenshots_path = f"{t_path}\{gamesObj.game_name}"
+                    old_screenshots_path = _get_screenshot_path(self, self.selected_game.game_dir, self.selected_game.name)
+                    if len(old_screenshots_path) > 0:
+                        t_path = '\\'.join(old_screenshots_path.split('\\')[:-1])
+                        new_screenshots_path = f"{t_path}\{gamesObj.game_name}"
+                    else:
+                        new_screenshots_path = ""
+                        
                     try:
                         createFiles = CreateFiles(self.log)
                         createFiles.create_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
@@ -534,11 +538,19 @@ class FormEvents():
 ################################################################################
 ################################################################################
 ################################################################################
-def _get_screenshot_path(self, game_name):
-    #creating screenshot dir
-    game_screenshots_path = ""
-    if self.qtObj.yes_screenshots_folder_radioButton.isChecked():
+def _get_screenshot_path(self, game_path, game_name):
+    file = f"{game_path}\{constants.reshade_ini}"
+    reshade_config_screenshot_path = utils.get_file_settings(file, "GENERAL", "ScreenshotPath")
+
+    if reshade_config_screenshot_path is not None:
+        game_screenshots_path = reshade_config_screenshot_path
+    elif os.path.isdir(f"{constants.reshade_screenshot_path}{game_name}"): 
         game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
+    else:
+        game_screenshots_path = ""
+                
+    #creating screenshot dir
+    if self.qtObj.yes_screenshots_folder_radioButton.isChecked():
         try:
             if not os.path.exists(constants.reshade_screenshot_path):
                 os.makedirs(constants.reshade_screenshot_path)

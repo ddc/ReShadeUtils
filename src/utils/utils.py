@@ -17,7 +17,6 @@ import ctypes.wintypes
 import requests, urllib.request
 import datetime
 import configparser
-import ast
 import zipfile
 ################################################################################
 ################################################################################
@@ -37,14 +36,11 @@ class Object():
 ################################################################################
 def get_file_settings(filename, section, config_name):
     settings_filename = filename
-    parser = configparser.ConfigParser(allow_no_value=True)
+    parser = configparser.ConfigParser(delimiters=('='), allow_no_value=True)
+    parser._interpolation = configparser.ExtendedInterpolation()
     parser.read(settings_filename)
-    try:
-        value = ast.literal_eval(parser.get(section, config_name))
-    except ValueError:
-        value = parser.get(section, config_name)
-    #except SyntaxError:
-    #    value = None
+    try: 
+        value = parser.get(section, config_name).replace("\"","")
     except Exception:
         value = None
     return value
@@ -53,7 +49,7 @@ def get_file_settings(filename, section, config_name):
 ################################################################################
 #def set_file_settings(filename, section, config_name, value):
 #    settings_filename = filename
-#    parser = configparser.ConfigParser(allow_no_value=True)
+#    parser = configparser.ConfigParser(delimiters=('='), allow_no_value=True)
 #    try:
 #        parser.read(settings_filename)
 #        parser.set(section, config_name, value)
