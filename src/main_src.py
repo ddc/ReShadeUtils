@@ -180,15 +180,16 @@ class MainSrc():
             else:
                 self.log.error(f"{messages.error_check_new_reshade_version} {e}")
             return
-
-        #remove old version
-        old_local_reshade_exe = f"{download_path}{old_reshade_version}.exe"
-        if os.path.isfile(old_local_reshade_exe):
-            os.remove(old_local_reshade_exe)
-        if os.path.isfile(constants.reshade32_path):
-            os.remove(constants.reshade32_path)
-        if os.path.isfile(constants.reshade64_path):
-            os.remove(constants.reshade64_path)
+        
+        if(old_reshade_version != self.reshade_version):
+            #remove old version
+            old_local_reshade_exe = f"{download_path}{old_reshade_version}.exe"
+            if os.path.isfile(old_local_reshade_exe):
+                os.remove(old_local_reshade_exe)
+            if os.path.isfile(constants.reshade32_path):
+                os.remove(constants.reshade32_path)
+            if os.path.isfile(constants.reshade64_path):
+                os.remove(constants.reshade64_path)
             
         #unzip reshade
         utils.show_progress_bar(self, messages.downloading_new_reshade_version, 60)
