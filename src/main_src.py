@@ -255,19 +255,19 @@ class MainSrc():
         try:                            
             if not os.path.exists(constants.db_settings_filename):
                 createFiles.create_settings_file()
-        except OSError as e:
+        except Exception as e:
             self.log.error(f"{e}")  
         
         try:         
             if not os.path.exists(constants.style_qss_filename):
                 createFiles.create_style_file()
-        except OSError as e:
+        except Exception as e:
             self.log.error(f"{e}")
             
         try:         
             if not os.path.exists(constants.reshade_plugins_filename):
                 createFiles.create_reshade_plugins_ini_file()
-        except OSError as e:
+        except Exception as e:
             self.log.error(f"{e}")            
 ################################################################################
 ################################################################################

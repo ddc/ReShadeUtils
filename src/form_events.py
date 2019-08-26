@@ -130,15 +130,15 @@ class FormEvents():
                 gamesObj.path = new_game_path
                 gamesSql.update_game_path(gamesObj)
 
+                #create Reshade.ini to replace edit CurrentPresetPath
+                game_screenshots_path = _get_screenshot_path(self, self.selected_game.name)
+                self.selected_game.game_dir = '\\'.join(new_game_path.split("\\")[:-1])
+                
                 try:
-                    #create Reshade.ini to replace edit CurrentPresetPath
-                    game_screenshots_path = _get_screenshot_path(self, self.selected_game.name)
-                    self.selected_game.game_dir = '\\'.join(new_game_path.split("\\")[:-1])
                     createFiles = CreateFiles(self.log)
                     createFiles.create_reshade_ini_file(self.selected_game.game_dir, game_screenshots_path)
-                        
-                except OSError as e:
-                    self.log.error(f"{e}") 
+                except Exception as e:
+                        self.log.error(f"{e}") 
 
                 #populate list
                 self.populate_programs_listWidget()
@@ -418,9 +418,9 @@ class FormEvents():
                         if self.reset_reshade_files or not os.path.exists(dst_res_ini_path):
                             createFiles = CreateFiles(self.log)
                             createFiles.create_reshade_ini_file(game_path, game_screenshots_path)
-                    except OSError as e:
-                        self.log.error(f"{e}") 
-
+                    except Exception as e:
+                        self.log.error(f"{e}")
+                            
                     ##copying Reshade_plugins.ini
                     try:
                         if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
@@ -479,22 +479,45 @@ class FormEvents():
 
             gamesSql = GamesSql(self.log)
             if self.selected_game is not None:
+                ## checking name changes
+                if self.selected_game.rs[0]["name"] != gamesObj.game_name:
+                    ## create Reshade.ini to replace edit CurrentPresetPath
+                    old_screenshots_path = _get_screenshot_path(self, self.selected_game.name)
+                    t_path = '\\'.join(old_screenshots_path.split('\\')[:-1])
+                    new_screenshots_path = f"{t_path}\{gamesObj.game_name}"
+                    try:
+                        createFiles = CreateFiles(self.log)
+                        createFiles.create_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
+                    except Exception as e:
+                        self.log.error(f"{e}")  
+                        
+                    ## rename screenshot folder
+                    try:
+                        if os.path.isdir(old_screenshots_path):
+                            os.rename(old_screenshots_path, f"{new_screenshots_path}")               
+                    except OSError as e:
+                        self.log.error(f"{e}")                    
+                
+                ## checking api and architecture changes
                 if (self.selected_game.rs[0]["architecture"] != gamesObj.architecture)\
                 or (self.selected_game.rs[0]["api"] != gamesObj.api):
 
                     ## deleting any Reshade.dll
                     reshade32_game_path = f"{self.selected_game.game_dir}/{constants.d3d9}"
                     reshade64_game_path = f"{self.selected_game.game_dir}/{constants.dxgi}"
-                    if os.path.isfile(reshade32_game_path):
-                        os.remove(reshade32_game_path)                    
-                    if os.path.isfile(reshade64_game_path):
-                        os.remove(reshade64_game_path) 
+                    try:
+                        if os.path.isfile(reshade32_game_path):
+                                os.remove(reshade32_game_path)
+                        if os.path.isfile(reshade64_game_path):
+                                os.remove(reshade64_game_path) 
+                    except OSError as e:
+                        self.log.error(f"{e}")
 
-                ## creating Reshade.dll
-                try:
-                    shutil.copyfile(src_path, dst_path)
-                except shutil.Error as e:
-                    self.log.error(f"{e}")
+                    ## creating Reshade.dll
+                    try:
+                        shutil.copyfile(src_path, dst_path)
+                    except shutil.Error as e:
+                        self.log.error(f"{e}")
 
                 gamesObj.id = self.selected_game.rs[0]["id"]
                 gamesSql.update_game(gamesObj)
