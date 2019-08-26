@@ -35,7 +35,6 @@ class FormEvents():
                 gamesSql = GamesSql(self.log)
                 rsPath = gamesSql.get_game_by_path(game_path)
                 if rsPath is not None and len(rsPath) == 0:
-                    self.rs_game = None
                     self.selected_game = None
                     self.game_path = game_path                
                     self._show_game_config_form(file_name.replace(".exe",""))
@@ -51,14 +50,14 @@ class FormEvents():
 ################################################################################
     def delete_game(self):
         self.enable_widgets(True)
-        if self.rs_game is not None and len(self.rs_game) > 0:
-            path_list = self.rs_game[0]["path"].split("\\")[:-1]
+        if self.selected_game is not None and len(self.selected_game.rs) > 0:
+            path_list = self.selected_game.rs[0]["path"].split("\\")[:-1]
             game_path = '\\'.join(path_list)
-            game_name = self.rs_game[0]['name']
+            game_name = self.selected_game.rs[0]['name']
             err = False
             
             #remove dll from game path
-            if self.rs_game[0]["api"] == "DX9":
+            if self.selected_game.rs[0]["api"] == "DX9":
                 reshade_dll = f"{game_path}/{constants.d3d9}"
             else:
                 reshade_dll = f"{game_path}/{constants.dxgi}"
@@ -88,7 +87,7 @@ class FormEvents():
                         shutil.rmtree(reshade_x32log_file)                    
                     #remove from database
                     gamesSql = GamesSql(self.log)
-                    gamesSql.delete_game(self.rs_game[0]["id"])
+                    gamesSql.delete_game(self.selected_game.rs[0]["id"])
                     #populate list
                     self.populate_programs_listWidget()
                     utils.show_message_window("info", "SUCCESS", f"{messages.game_deleted}\n\n{game_name}")
@@ -100,9 +99,10 @@ class FormEvents():
 ################################################################################
 ################################################################################
     def edit_game_path(self):
-        if self.rs_game is not None and len(self.rs_game) > 0:
-            old_game_path = (self.rs_game[0]["path"])
+        if self.selected_game is not None and len(self.selected_game.rs) > 0:
+            old_game_path = (self.selected_game.rs[0]["path"])
             new_game_path = utils.open_get_filename(self)
+            
             if new_game_path is not None:
                 new_game_path = new_game_path.replace("/","\\")
                 if old_game_path == new_game_path:
@@ -122,27 +122,20 @@ class FormEvents():
                     self.enable_widgets(False)
                     utils.show_message_window("error", "ERROR", f"{messages.not_valid_game}\n\n{new_file_name}")
                     return
-    
+
                 #save into database
                 gamesObj = utils.Object()
                 gamesSql = GamesSql(self.log)
-                gamesObj.id = self.rs_game[0]["id"]
+                gamesObj.id = self.selected_game.rs[0]["id"]
                 gamesObj.path = new_game_path
                 gamesSql.update_game_path(gamesObj)
 
                 try:
-                    #create Reshade.ini
-                    t_list = new_game_path.split("\\")[:-1]
-                    path = '\\'.join(t_list)
-                    dst_res_ini_path = f"{path}\{constants.reshade_ini}"
-                    if not os.path.exists(dst_res_ini_path):
-                        game_screenshots_path = f"{constants.reshade_screenshot_path}{self.selected_game.name}"
-                        createFiles = CreateFiles(self.log)
-                        createFiles.create_reshade_ini_file(path, game_screenshots_path)
-                    else:
-                        #edit CurrentPresetPath inside Reshade.ini
-                        value = f"{path}\{constants.reshade_plugins_ini}"
-                        utils.set_file_settings(dst_res_ini_path, "GENERAL", "CurrentPresetPath", value)
+                    #create Reshade.ini to replace edit CurrentPresetPath
+                    game_screenshots_path = _get_screenshot_path(self, self.selected_game.name)
+                    self.selected_game.game_dir = '\\'.join(new_game_path.split("\\")[:-1])
+                    createFiles = CreateFiles(self.log)
+                    createFiles.create_reshade_ini_file(self.selected_game.game_dir, game_screenshots_path)
                         
                 except OSError as e:
                     self.log.error(f"{e}") 
@@ -157,8 +150,8 @@ class FormEvents():
 ################################################################################
     def open_reshade_config_file(self):
         self.enable_widgets(True)
-        if self.rs_game is not None and len(self.rs_game) > 0:
-            path_list = self.rs_game[0]["path"].split("\\")[:-1]
+        if self.selected_game is not None and len(self.selected_game.rs) > 0:
+            path_list = self.selected_game.rs[0]["path"].split("\\")[:-1]
             game_path = '\\'.join(path_list)
             res_plug_ini_path = f"{game_path}\{constants.reshade_plugins_ini}"
 
@@ -306,7 +299,9 @@ class FormEvents():
                 rs = gamesSql.get_game_by_path(search_pattern)            
             
             if rs is not None and len(rs) > 0:
-                self.rs_game = rs
+                self.selected_game.rs = rs
+                self.selected_game.game_dir = '\\'.join(self.selected_game.rs[0]["path"].split("\\")[:-1])
+
                 if rs[0]["architecture"] == "32bits":
                     self.qtObj.radioButton_32bits.setChecked(True)
                     self.qtObj.radioButton_64bits.setChecked(False)
@@ -409,19 +404,8 @@ class FormEvents():
                 
                 try:
                     utils.show_progress_bar(self, messages.copying_DLLs, (100/len_games))
-                    game_screenshots_path = ""
+                    game_screenshots_path = _get_screenshot_path(self, game_name)
                     
-                    ##creating screenshot dir
-                    if self.qtObj.yes_screenshots_folder_radioButton.isChecked():
-                        game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
-                        try:
-                            if not os.path.exists(constants.reshade_screenshot_path):
-                                os.makedirs(constants.reshade_screenshot_path)
-                            if not os.path.exists(game_screenshots_path):
-                                os.makedirs(game_screenshots_path)
-                        except OSError as e:
-                            self.log.error(f"{e}")
-
                     ##copying Reshade.dll
                     try:
                         shutil.copyfile(src_path, dst_path)
@@ -456,6 +440,23 @@ class FormEvents():
         else:
             err = '\n'.join(errors)
             utils.show_message_window("error", "ERROR", f"{messages.apply_success_with_errors}\n\n{err}")                
+################################################################################
+################################################################################
+################################################################################
+def _get_screenshot_path(self, game_name):
+    #creating screenshot dir
+    game_screenshots_path = ""
+    if self.qtObj.yes_screenshots_folder_radioButton.isChecked():
+        game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
+        try:
+            if not os.path.exists(constants.reshade_screenshot_path):
+                os.makedirs(constants.reshade_screenshot_path)
+            if not os.path.exists(game_screenshots_path):
+                os.makedirs(game_screenshots_path)
+        except OSError as e:
+            self.log.error(f"{e}")
+
+    return game_screenshots_path
 ################################################################################
 ################################################################################
 ################################################################################

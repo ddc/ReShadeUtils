@@ -28,7 +28,6 @@ class MainSrc():
     def __init__(self, qtObj, form):
         self.qtObj = qtObj
         self.form = form
-        self.rs_game = None
         self.selected_game = None
         self.game_config_form = None
         self.reshade_version = None
@@ -302,7 +301,7 @@ class MainSrc():
 ################################################################################
 ################################################################################        
     def _programs_tableWidget_double_clicked(self):
-        self._show_game_config_form(self.rs_game [0]["name"])
+        self._show_game_config_form(self.selected_game.rs[0]["name"])
 ################################################################################
 ################################################################################
 ################################################################################
@@ -453,16 +452,16 @@ class MainSrc():
         QtWidgets.QApplication.processEvents()
         self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: self._game_config_form("ok"))
         self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: self._game_config_form("cancel"))
-        if self.rs_game is not None and len(self.rs_game) > 0:
-            self.game_config_form.qtObj.game_name_lineEdit.setText(self.rs_game[0]["name"])
-            if self.rs_game[0]["architecture"] == "32bits":
+        if self.selected_game is not None:
+            self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.rs[0]["name"])
+            if self.selected_game.rs[0]["architecture"] == "32bits":
                 self.game_config_form.qtObj.radioButton_32bits.setChecked(True)
                 self.game_config_form.qtObj.radioButton_64bits.setChecked(False)
             else:
                 self.game_config_form.qtObj.radioButton_32bits.setChecked(False)
                 self.game_config_form.qtObj.radioButton_64bits.setChecked(True)
                 
-            if self.rs_game[0]["api"] == "DX9":
+            if self.selected_game.rs[0]["api"] == "DX9":
                 self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
                 self.game_config_form.qtObj.dx11_radioButton.setChecked(False)
             else:
@@ -503,8 +502,8 @@ class MainSrc():
                 gamesObj.api = "DX11"      
             
             gamesSql = GamesSql(self.log)
-            if self.rs_game is not None and len(self.rs_game) > 0:
-                gamesObj.id = self.rs_game[0]["id"]
+            if self.selected_game is not None:
+                gamesObj.id = self.selected_game.rs[0]["id"]
                 gamesSql.update_game(gamesObj)
             else:
                 gamesObj.path = self.game_path
@@ -547,7 +546,6 @@ class MainSrc():
         if status:
             self.qtObj.main_tabWidget.setCurrentIndex(0)#set to first tab
         else:
-            self.rs_game = None
             self.selected_game = None
             self.qtObj.main_tabWidget.setCurrentIndex(numPages-1)#set to last tab (about)
 
@@ -558,7 +556,6 @@ class MainSrc():
 ################################################################################         
     def enable_widgets(self, status:bool):
         if not status:
-            self.rs_game = None
             self.selected_game = None
             
             self.qtObj.radioButton_32bits.setAutoExclusive(False)

@@ -16,7 +16,7 @@ from src.databases.databases import Databases
 import ctypes.wintypes
 import requests, urllib.request
 import datetime
-from configparser import ConfigParser
+import configparser
 import ast
 import zipfile
 ################################################################################
@@ -37,7 +37,7 @@ class Object():
 ################################################################################
 def get_file_settings(filename, section, config_name):
     settings_filename = filename
-    parser = ConfigParser(allow_no_value=True)
+    parser = configparser.ConfigParser(allow_no_value=True)
     parser.read(settings_filename)
     try:
         value = ast.literal_eval(parser.get(section, config_name))
@@ -51,13 +51,16 @@ def get_file_settings(filename, section, config_name):
 ################################################################################
 ################################################################################
 ################################################################################
-def set_file_settings(filename, section, config_name, value):
-    settings_filename = filename
-    parser = ConfigParser(allow_no_value=True)
-    parser.read(settings_filename)
-    parser.set(section, config_name, value)
-    with open(settings_filename, 'w') as configfile:
-        parser.write(configfile)
+#def set_file_settings(filename, section, config_name, value):
+#    settings_filename = filename
+#    parser = configparser.ConfigParser(allow_no_value=True)
+#    try:
+#        parser.read(settings_filename)
+#        parser.set(section, config_name, value)
+#        with open(settings_filename, 'w') as configfile:
+#            parser.write(configfile, space_around_delimiters=False)
+#    except configparser.DuplicateOptionError:
+#        return
 ################################################################################
 ################################################################################
 ################################################################################      
