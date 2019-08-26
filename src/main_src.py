@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 from src.utils.create_files import CreateFiles 
 from src.utils import constants, messages, utils
 import logging.handlers
-import sys, os, shutil
+import sys, os
 from src.sql.initial_tables_sql import InitialTablesSql
 from src.sql.triggers_sql import TriggersSql
 from src.sql.configs_sql import ConfigsSql
