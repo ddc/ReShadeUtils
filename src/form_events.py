@@ -470,15 +470,16 @@ class FormEvents():
                 gamesObj.architecture = "64bits"
                 src_path = constants.reshade64_path
             
-            if self.game_config_form.qtObj.dx9_radioButton.isChecked():
-                gamesObj.api = "DX9"
-                dst_path = f"{self.selected_game.game_dir}\{constants.d3d9}"
-            else:
-                gamesObj.api = "DX11"
-                dst_path = f"{self.selected_game.game_dir}\{constants.dxgi}"  
-
             gamesSql = GamesSql(self.log)
             if self.selected_game is not None:
+                
+                if self.game_config_form.qtObj.dx9_radioButton.isChecked():
+                    gamesObj.api = "DX9"
+                    dst_path = f"{self.selected_game.game_dir}\{constants.d3d9}"
+                else:
+                    gamesObj.api = "DX11"
+                    dst_path = f"{self.selected_game.game_dir}\{constants.dxgi}"                
+                
                 ## checking name changes
                 if self.selected_game.rs[0]["name"] != gamesObj.game_name:
                     ## create Reshade.ini to replace edit CurrentPresetPath
@@ -526,6 +527,12 @@ class FormEvents():
                 gamesObj.id = self.selected_game.rs[0]["id"]
                 gamesSql.update_game(gamesObj)
             else:
+
+                if self.game_config_form.qtObj.dx9_radioButton.isChecked():
+                    gamesObj.api = "DX9"
+                else:
+                    gamesObj.api = "DX11"
+                    
                 gamesObj.path = self.added_game_path
                 gamesSql.insert_game(gamesObj)
                 del self.added_game_path
@@ -539,18 +546,10 @@ class FormEvents():
 ################################################################################
 ################################################################################
 def _get_screenshot_path(self, game_path, game_name):
-    file = f"{game_path}\{constants.reshade_ini}"
-    reshade_config_screenshot_path = utils.get_file_settings(file, "GENERAL", "ScreenshotPath")
-
-    if reshade_config_screenshot_path is not None:
-        game_screenshots_path = reshade_config_screenshot_path
-    elif os.path.isdir(f"{constants.reshade_screenshot_path}{game_name}"): 
-        game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
-    else:
-        game_screenshots_path = ""
-                
+    game_screenshots_path = ""
     #creating screenshot dir
     if self.qtObj.yes_screenshots_folder_radioButton.isChecked():
+        game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
         try:
             if not os.path.exists(constants.reshade_screenshot_path):
                 os.makedirs(constants.reshade_screenshot_path)
@@ -558,7 +557,14 @@ def _get_screenshot_path(self, game_path, game_name):
                 os.makedirs(game_screenshots_path)
         except OSError as e:
             self.log.error(f"{e}")
-
+    else:
+        file = f"{game_path}\{constants.reshade_ini}"
+        reshade_config_screenshot_path = utils.get_file_settings(file, "GENERAL", "ScreenshotPath")
+        if reshade_config_screenshot_path is not None:
+            game_screenshots_path = reshade_config_screenshot_path
+        elif os.path.isdir(f"{constants.reshade_screenshot_path}{game_name}"): 
+            game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
+        
     return game_screenshots_path
 ################################################################################
 ################################################################################
