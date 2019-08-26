@@ -35,8 +35,8 @@ class Object():
 ################################################################################
 ################################################################################
 ################################################################################
-def get_file_settings(section, config_name):
-    settings_filename = constants.db_settings_filename
+def get_file_settings(filename, section, config_name):
+    settings_filename = filename
     parser = ConfigParser(allow_no_value=True)
     parser.read(settings_filename)
     try:
@@ -51,8 +51,8 @@ def get_file_settings(section, config_name):
 ################################################################################
 ################################################################################
 ################################################################################
-def set_file_settings(section, config_name, value):
-    settings_filename = constants.db_settings_filename
+def set_file_settings(filename, section, config_name, value):
+    settings_filename = filename
     parser = ConfigParser(allow_no_value=True)
     parser.read(settings_filename)
     parser.set(section, config_name, value)
@@ -61,16 +61,17 @@ def set_file_settings(section, config_name, value):
 ################################################################################
 ################################################################################
 ################################################################################      
-def get_database():    
-    databaseInUse = get_file_settings("Bot", "DatabaseInUse")
+def get_database():
+    filename = constants.db_settings_filename
+    databaseInUse = get_file_settings(filename, "Bot", "DatabaseInUse")
     database = Object()
     if databaseInUse != "sqlite":
         database.name        = "PostgreSQL"
-        database.host        = get_file_settings("Database", "host")
-        database.port        = get_file_settings("Database", "port")
-        database.database    = get_file_settings("Database", "database")
-        database.username    = get_file_settings("Database", "username")
-        database.password    = get_file_settings("Database", "password")
+        database.host        = get_file_settings(filename, "Database", "host")
+        database.port        = get_file_settings(filename, "Database", "port")
+        database.database    = get_file_settings(filename, "Database", "database")
+        database.username    = get_file_settings(filename, "Database", "username")
+        database.password    = get_file_settings(filename, "Database", "password")
     else:
         database.name = "SQLite"
         database.host = ""

@@ -123,11 +123,30 @@ class FormEvents():
                     utils.show_message_window("error", "ERROR", f"{messages.not_valid_game}\n\n{new_file_name}")
                     return
     
+                #save into database
                 gamesObj = utils.Object()
                 gamesSql = GamesSql(self.log)
                 gamesObj.id = self.rs_game[0]["id"]
                 gamesObj.path = new_game_path
                 gamesSql.update_game_path(gamesObj)
+
+                try:
+                    #create Reshade.ini
+                    t_list = new_game_path.split("\\")[:-1]
+                    path = '\\'.join(t_list)
+                    dst_res_ini_path = f"{path}\{constants.reshade_ini}"
+                    if not os.path.exists(dst_res_ini_path):
+                        game_screenshots_path = f"{constants.reshade_screenshot_path}{self.selected_game.name}"
+                        createFiles = CreateFiles(self.log)
+                        createFiles.create_reshade_ini_file(path, game_screenshots_path)
+                    else:
+                        #edit CurrentPresetPath inside Reshade.ini
+                        value = f"{path}\{constants.reshade_plugins_ini}"
+                        utils.set_file_settings(dst_res_ini_path, "GENERAL", "CurrentPresetPath", value)
+                        
+                except OSError as e:
+                    self.log.error(f"{e}") 
+
                 #populate list
                 self.populate_programs_listWidget()
                 utils.show_message_window("info", "INFO", f"{messages.path_changed_success}\n\n{new_game_path}")
@@ -321,7 +340,6 @@ class FormEvents():
             self.enable_form(False)
             self.enable_widgets(False)
             self.qtObj.apply_button.setEnabled(False)
-            createFiles = CreateFiles(self.log)
             
             #update new shaders files
             if self.update_shaders is not None\
@@ -410,10 +428,11 @@ class FormEvents():
                     except shutil.Error as e:
                         self.log.error(f"{e}")                
                     
-                    ##copying Reshade.ini
+                    ##create Reshade.ini
                     try:
                         if self.reset_reshade_files or not os.path.exists(dst_res_ini_path):
-                            createFiles.create_reshade_ini_file(game_path, dst_res_ini_path, game_screenshots_path)
+                            createFiles = CreateFiles(self.log)
+                            createFiles.create_reshade_ini_file(game_path, game_screenshots_path)
                     except OSError as e:
                         self.log.error(f"{e}") 
 

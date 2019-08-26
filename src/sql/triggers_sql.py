@@ -8,14 +8,14 @@
 # # -*- coding: utf-8 -*-
 
 from src.databases.databases import Databases
-from src.utils import utils
+from src.utils import utils, constants
 ################################################################################
 ################################################################################
 ################################################################################
 class TriggersSql():
     def __init__(self, log):
         self.log = log
-        self.database_in_use = utils.get_file_settings("Configs", "DatabaseInUse")
+        self.database_in_use = utils.get_file_settings(constants.db_settings_filename, "Configs", "DatabaseInUse")
 ################################################################################
 ################################################################################
 ################################################################################        

@@ -7,7 +7,7 @@
 #|*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.utils import utils
+from src.utils import utils, constants
 from src.databases.sqlite3.connection import Sqlite3
 from src.databases.postgres.connection import PostgreSQL
 ################################################################################
@@ -16,7 +16,7 @@ from src.databases.postgres.connection import PostgreSQL
 class Databases():
     def __init__(self, log):
         self.log = log
-        self.database_in_use = utils.get_file_settings("Configs", "DatabaseInUse")
+        self.database_in_use = utils.get_file_settings(constants.db_settings_filename, "Configs", "DatabaseInUse")
 ################################################################################
 ################################################################################
 ################################################################################

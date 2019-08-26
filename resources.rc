@@ -7,8 +7,8 @@ VSVersionInfo(
   ffi=FixedFileInfo(
 # filevers and prodvers should be always a tuple with four items: (1, 2, 3, 4)
 # Set not needed items to zero 0.
-filevers=(1, 0, 0, 9),
-prodvers=(1, 0, 0, 9),
+filevers=(1, 0, 0, 10),
+prodvers=(1, 0, 0, 10),
 
 
 # Contains a bitmask that specifies the valid bits 'flags'r
@@ -49,8 +49,8 @@ StringFileInfo(
     StringStruct(u'ProductName', 			u'Reshade Utilities'),
     StringStruct(u'InternalName',			u'ReshadeUtils'),
     StringStruct(u'OriginalFilename', 		u'ReshadeUtils.exe'),
-    StringStruct(u'FileVersion',			u'1.9'),
-    StringStruct(u'ProductVersion', 		u'1.9')
+    StringStruct(u'FileVersion',			u'1.10'),
+    StringStruct(u'ProductVersion', 		u'1.10')
     ])
   ]), 
 VarFileInfo([VarStruct(u'Translation', [1033, 1200])])

@@ -87,8 +87,8 @@ HighlightClipping=0
 ################################################################################
 ################################################################################
 ################################################################################
-    def create_reshade_ini_file(self, game_path:str, reshade_ini_path:str, screenshot_path:str):
-        file = open(reshade_ini_path, encoding="utf-8", mode="w")
+    def create_reshade_ini_file(self, game_path:str, screenshot_path:str):
+        file = open(f"{game_path}\{constants.reshade_ini}", encoding="utf-8", mode="w")
         file.write(
 f"""[INPUT]
 KeyMenu=119,0,1,0
