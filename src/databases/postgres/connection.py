@@ -8,19 +8,19 @@
 # # -*- coding: utf-8 -*-
 
 import psycopg2
-from src.utils import utils, constants
+from src.utils import utils
 ################################################################################
 ################################################################################
 ################################################################################ 
 class PostgreSQL():
     def __init__(self, log):
-        filename = constants.db_settings_filename
+        database = utils.get_database()
         self.log = log
-        self.pg_host             = utils.get_file_settings(filename, "Database", "Host")
-        self.pg_port             = utils.get_file_settings(filename, "Database", "Port")
-        self.pg_dbname           = utils.get_file_settings(filename, "Database", "DBname")
-        self.pg_username         = utils.get_file_settings(filename, "Database", "Username")
-        self.pg_password         = utils.get_file_settings(filename, "Database", "Password")
+        self.pg_host             = database.host
+        self.pg_port             = database.port
+        self.pg_dbname           = database.db_name
+        self.pg_username         = database.username
+        self.pg_password         = database.password
 ################################################################################
 ################################################################################
 ################################################################################ 

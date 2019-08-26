@@ -68,13 +68,13 @@ def get_database():
     filename = constants.db_settings_filename
     databaseInUse = get_file_settings(filename, "Bot", "DatabaseInUse")
     database = Object()
-    if databaseInUse != "sqlite":
+    if databaseInUse.lower() != "sqlite":
         database.name        = "PostgreSQL"
-        database.host        = get_file_settings(filename, "Database", "host")
-        database.port        = get_file_settings(filename, "Database", "port")
-        database.database    = get_file_settings(filename, "Database", "database")
-        database.username    = get_file_settings(filename, "Database", "username")
-        database.password    = get_file_settings(filename, "Database", "password")
+        database.host        = get_file_settings(filename, "Database", "Host")
+        database.port        = get_file_settings(filename, "Database", "Port")
+        database.db_name     = get_file_settings(filename, "Database", "DBname")
+        database.username    = get_file_settings(filename, "Database", "Username")
+        database.password    = get_file_settings(filename, "Database", "Password")
     else:
         database.name = "SQLite"
         database.host = ""

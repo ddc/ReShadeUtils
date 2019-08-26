@@ -15,7 +15,7 @@ from src.utils import utils
 ################################################################################
 ################################################################################
 PROGRAM_NAME            = "Reshade Utils"
-VERSION                 = "1.10"
+VERSION                 = "2.0"
 ################################################################################
 ################################################################################
 ################################################################################
@@ -58,7 +58,7 @@ res_shad_mpath          = f"{program_path}\{reshade_shaders}-master"
 reshade_screenshot_path = f"{my_docs_path}\Screenshots\\".replace("Documents", "Pictures")  
 ################################################################################
 db_settings_filename    = f"{program_path}\db_settings.ini"
-database_filename       = f"{program_path}\database.db"
+sqlite3_filename        = f"{program_path}\database.db"
 style_qss_filename      = f"{program_path}\style.qss"
 error_logs_filename     = f"{program_path}\errors.log"
 reshade_plugins_filename= f"{program_path}\{reshade_plugins_ini}"
