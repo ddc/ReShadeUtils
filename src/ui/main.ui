@@ -327,14 +327,14 @@
      <attribute name="horizontalHeaderVisible">
       <bool>true</bool>
      </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>100</number>
+     </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>150</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>100</number>
      </attribute>
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
@@ -342,10 +342,10 @@
      <attribute name="verticalHeaderVisible">
       <bool>true</bool>
      </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
+     <attribute name="verticalHeaderMinimumSectionSize">
       <number>30</number>
      </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
+     <attribute name="verticalHeaderDefaultSectionSize">
       <number>30</number>
      </attribute>
      <column>
@@ -631,6 +631,40 @@
        <string>NO</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QPushButton" name="edit_default_config_button">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>450</y>
+       <width>150</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to edit the game path</string>
+     </property>
+     <property name="text">
+      <string>EDIT DEFAULT CONFIGS</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="about_tab">

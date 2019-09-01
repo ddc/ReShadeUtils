@@ -165,6 +165,15 @@ class FormEvents():
 ################################################################################
 ################################################################################
 ################################################################################
+    def edit_default_config_file(self):
+        try:
+            os.startfile(f"\"{constants.reshade_plugins_filename}\"")
+        except Exception as e:
+            err_msg = f"{e.strerror}\n\n{constants.reshade_plugins_ini}{messages.not_found}"
+            utils.show_message_window("error", "ERROR", err_msg)
+################################################################################
+################################################################################
+################################################################################
     def update_program(self):
         user_answer = utils.show_message_window("question", "Update Available", f"{messages.new_version_available}\n\n{messages.start_update_question}")
         if user_answer == QtWidgets.QMessageBox.Yes:
@@ -422,11 +431,12 @@ class FormEvents():
                         self.log.error(f"{e}")
                             
                     ##copying Reshade_plugins.ini
-                    try:
-                        if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
-                            shutil.copyfile(constants.reshade_plugins_filename, dst_res_plug_ini_path)
-                    except shutil.Error as e:
-                            self.log.error(f"{e}") 
+                    if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
+                        try:
+                                shutil.copyfile(constants.reshade_plugins_filename, dst_res_plug_ini_path)
+                        except shutil.Error as e:
+                                self.log.error(f"{e}")
+
                                                                                                                             
                     len_games = len_games-1
                 except OSError as e:

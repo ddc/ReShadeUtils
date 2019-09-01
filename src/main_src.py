@@ -69,6 +69,7 @@ class MainSrc():
         self.qtObj.open_config_button.clicked.connect(lambda: FormEvents.open_reshade_config_file(self))
         self.qtObj.update_button.clicked.connect(lambda: FormEvents.update_program(self))
         self.qtObj.apply_button.clicked.connect(lambda: FormEvents.apply(self))
+        self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
         #########
         self.qtObj.programs_tableWidget.clicked.connect(self._programs_tableWidget_clicked)
         self.qtObj.programs_tableWidget.itemDoubleClicked.connect(self._programs_tableWidget_double_clicked)
@@ -253,23 +254,23 @@ class MainSrc():
     def _check_files(self):
         createFiles = CreateFiles(self.log)
                             
-        try:                            
+        try:
             if not os.path.exists(constants.db_settings_filename):
                 createFiles.create_settings_file()
         except Exception as e:
             self.log.error(f"{e}")  
         
-        try:         
+        try:
             if not os.path.exists(constants.style_qss_filename):
                 createFiles.create_style_file()
         except Exception as e:
             self.log.error(f"{e}")
             
-        try:         
+        try:
             if not os.path.exists(constants.reshade_plugins_filename):
                 createFiles.create_reshade_plugins_ini_file()
         except Exception as e:
-            self.log.error(f"{e}")            
+            self.log.error(f"{e}")
 ################################################################################
 ################################################################################
 ################################################################################

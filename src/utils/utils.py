@@ -13,7 +13,6 @@ from src.utils import constants, messages
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5 import QtCore, QtWidgets
 from src.databases.databases import Databases
-import ctypes.wintypes
 import requests, urllib.request
 import datetime
 import configparser
@@ -143,7 +142,8 @@ def get_my_documents_path():
     if constants.IS_WINDOWS:
         CSIDL_PERSONAL = 5 #My Documents
         SHGFP_TYPE_CURRENT = 0
-         
+        
+        import ctypes.wintypes
         buf= ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
         ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
          

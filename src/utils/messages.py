@@ -88,3 +88,5 @@ no_change_path                  = "No changes to path were made!"
 not_same_game                   = "Please, choose the same game as before!"
 
 path_changed_success            = "Path was changed successfully!"
+
+not_found                       = " not found!"

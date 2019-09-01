@@ -176,6 +176,16 @@ class Ui_Main(object):
         self.no_check_reshade_updates_radioButton = QtWidgets.QRadioButton(self.check_reshade_updates_groupBox)
         self.no_check_reshade_updates_radioButton.setGeometry(QtCore.QRect(110, 30, 50, 20))
         self.no_check_reshade_updates_radioButton.setObjectName("no_check_reshade_updates_radioButton")
+        self.edit_default_config_button = QtWidgets.QPushButton(self.configs_tab)
+        self.edit_default_config_button.setGeometry(QtCore.QRect(380, 450, 150, 30))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edit_default_config_button.sizePolicy().hasHeightForWidth())
+        self.edit_default_config_button.setSizePolicy(sizePolicy)
+        self.edit_default_config_button.setMinimumSize(QtCore.QSize(150, 30))
+        self.edit_default_config_button.setMaximumSize(QtCore.QSize(150, 30))
+        self.edit_default_config_button.setObjectName("edit_default_config_button")
         self.main_tabWidget.addTab(self.configs_tab, "")
         self.about_tab = QtWidgets.QWidget()
         self.about_tab.setObjectName("about_tab")
@@ -251,6 +261,8 @@ class Ui_Main(object):
         self.check_reshade_updates_groupBox.setTitle(_translate("Main", "Check for Reshade Updates"))
         self.yes_check_reshade_updates_radioButton.setText(_translate("Main", "YES"))
         self.no_check_reshade_updates_radioButton.setText(_translate("Main", "NO"))
+        self.edit_default_config_button.setToolTip(_translate("Main", "Click to edit the game path"))
+        self.edit_default_config_button.setText(_translate("Main", "EDIT DEFAULT CONFIGS"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.configs_tab), _translate("Main", "Configs"))
         self.about_textBrowser.setHtml(_translate("Main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -292,4 +304,3 @@ if __name__ == "__main__":
     ui.setupUi(Main)
     Main.show()
     sys.exit(app.exec_())
-
