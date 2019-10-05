@@ -1,24 +1,22 @@
 #! /usr/bin/env python3
-#|*****************************************************
+# |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
 # * Python            : 3.6
-#|*****************************************************
+# |*****************************************************
 # # -*- coding: utf-8 -*-
 
 import sqlite3
 from src.utils import constants
-################################################################################
-################################################################################
-################################################################################ 
-class Sqlite3():
-    def __init__(self, log):
-        self.log = log
+
+
+class Sqlite3:
+    def __init__(self, main):
+        self.log = main.log
         self.db_file = constants.sqlite3_filename
-################################################################################
-################################################################################
-################################################################################ 
+
+    ################################################################################
     def create_connection(self):
         try:
             conn = sqlite3.connect(self.db_file)
@@ -26,17 +24,16 @@ class Sqlite3():
             conn = None
             msg = "sqlite3: Cannot Create Database Connection."
             self.log.error(f"{msg}\n({e})")
-            self.log.exception("sqlite",exc_info=e)
+            self.log.exception("sqlite", exc_info=e)
             print(f"{msg}\n({e})")
-            #utils.wait_return()
+            # utils.wait_return()
             raise sqlite3.OperationalError(e)
         finally:
             return conn
-################################################################################
-################################################################################
-################################################################################      
+
+    ################################################################################
     def executescript(self, sql):
-        #result = None
+        # result = None
         conn = self.create_connection()
         if conn is not None:
             try:
@@ -49,19 +46,18 @@ class Sqlite3():
                 c.close()
                 conn.commit()
             except Exception as e:
-                #result = e
-                self.log.exception("sqlite",exc_info=e)
+                # result = e
+                self.log.exception("sqlite", exc_info=e)
                 self.log.error(f"sql:({sql})")
                 print(str(e))
-                #utils.wait_return()
+                # utils.wait_return()
                 raise sqlite3.OperationalError(e)
             finally:
                 if conn is not None:
                     conn.close()
-                #return result
-################################################################################
-################################################################################
-################################################################################
+                # return result
+
+    ################################################################################
     def select(self, sql):
         conn = self.create_connection()
         if conn is not None:
@@ -71,22 +67,19 @@ class Sqlite3():
                     c = conn.cursor()
                     c.execute(sql)
                     rows = c.fetchall()
-                    columnNames = list(map(lambda x:x[0], c.description))
+                    columnNames = list(map(lambda x: x[0], c.description))
                     c.close()
                     for lineNumber, data in enumerate(rows):
                         finalData[lineNumber] = {}
                         for columnNumber, value in enumerate(data):
                             finalData[lineNumber][columnNames[columnNumber]] = value
             except Exception as e:
-                self.log.exception("sqlite",exc_info=e)
+                self.log.exception("sqlite", exc_info=e)
                 self.log.error(f"sql:({sql})")
                 print(str(e))
-                #utils.wait_return()
-                #raise sqlite3.OperationalError(e)
+                # utils.wait_return()
+                # raise sqlite3.OperationalError(e)
             finally:
                 if conn is not None:
                     conn.close()
                 return finalData
-################################################################################
-################################################################################
-################################################################################

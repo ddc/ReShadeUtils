@@ -1,27 +1,27 @@
 #! /usr/bin/env python3
-#|*****************************************************
+# |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
 # * Python            : 3.6
-#|*****************************************************
+# |*****************************************************
 # # -*- coding: utf-8 -*-
 
 from src.databases.databases import Databases
-from src.utils import utils, constants
-################################################################################
-################################################################################
-################################################################################
-class TriggersSql():
-    def __init__(self, log):
-        self.log = log
-        self.database_in_use = utils.get_file_settings(constants.db_settings_filename, "Configs", "DatabaseInUse")
-################################################################################
-################################################################################
-################################################################################        
+from src.utils import utilities, constants
+
+
+class TriggersSql:
+    def __init__(self, main):
+        self.main = main
+        self.log = main.log
+        self.database_in_use = main.settings["DatabaseInUse"]
+
+    ################################################################################
     def create_triggers(self):
+        sql = ""
         if self.database_in_use == "sqlite":
-            sql="""CREATE TRIGGER IF NOT EXISTS before_insert_configs
+            sql = """CREATE TRIGGER IF NOT EXISTS before_insert_configs
                     BEFORE INSERT ON configs
                     BEGIN
                         SELECT CASE
@@ -31,7 +31,7 @@ class TriggersSql():
                     END;
             """
         elif self.database_in_use == "postgres":
-            sql= """DROP TRIGGER IF EXISTS before_insert_configs ON configs;
+            sql = """DROP TRIGGER IF EXISTS before_insert_configs ON configs;
                 ------
                 CREATE or REPLACE FUNCTION before_insert_configs_func()
                     returns trigger language plpgsql as $$
@@ -45,9 +45,6 @@ class TriggersSql():
                     for each row execute procedure before_insert_configs_func();
                 ------
             ;"""
-            
-        databases = Databases(self.log)
+
+        databases = Databases(self.main)
         databases.execute(sql)
-################################################################################
-################################################################################
-################################################################################

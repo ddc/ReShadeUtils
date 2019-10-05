@@ -1,15 +1,16 @@
 #! /usr/bin/env python3
-#|*****************************************************
+# |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
 # * Python            : 3.6
-#|*****************************************************
+# |*****************************************************
 # # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtWidgets
 
-class Ui_game_config_Form(object):
+
+class UiGameConfigForm(object):
     def setupUi(self, game_config_Form):
         game_config_Form.setObjectName("game_config_Form")
         game_config_Form.resize(270, 185)
@@ -68,10 +69,10 @@ class Ui_game_config_Form(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     game_config_Form = QtWidgets.QWidget()
-    ui = Ui_game_config_Form()
+    ui = UiGameConfigForm()
     ui.setupUi(game_config_Form)
     game_config_Form.show()
     sys.exit(app.exec_())
-

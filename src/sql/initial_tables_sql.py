@@ -1,28 +1,27 @@
 #! /usr/bin/env python3
-#|*****************************************************
+# |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
 # * Python            : 3.6
-#|*****************************************************
+# |*****************************************************
 # # -*- coding: utf-8 -*-
+
 from src.databases.databases import Databases
-from src.utils import utils, constants
-################################################################################
-################################################################################
-################################################################################
-class InitialTablesSql():
-    def __init__(self, log):
-        self.log = log
-        self.database_in_use = utils.get_file_settings(constants.db_settings_filename, "Configs", "DatabaseInUse")
-################################################################################
-################################################################################
-################################################################################     
+from src.utils import utilities, constants
+
+
+class InitialTablesSql:
+    def __init__(self, main):
+        self.main = main
+        self.log = main.log
+
+    ################################################################################
     def create_initial_tables(self):
-        databases = Databases(self.log)
+        databases = Databases(self.main)
         primary_key_type = databases.set_primary_key_type()
-        
-        sql =f"""
+
+        sql = f"""
         CREATE TABLE IF NOT EXISTS configs (
             id                          {primary_key_type},
             use_dark_theme              CHAR(1)  NOT NULL DEFAULT 'Y',
@@ -50,6 +49,3 @@ class InitialTablesSql():
 
         """
         databases.execute(sql)
-################################################################################
-################################################################################
-################################################################################
