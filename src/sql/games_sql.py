@@ -23,13 +23,13 @@ class GamesSql:
 
     ################################################################################
     def get_game_by_path(self, path: str):
-        sql = f"""SELECT * from games where path = "{path}" ORDER BY LOWER(name) ASC;"""
+        sql = f"""SELECT * from games where path = '{path}' ORDER BY LOWER(name) ASC;"""
         databases = Databases(self.main)
         return databases.select(sql)
 
     ################################################################################
     def get_game_by_name(self, game_name: str):
-        sql = f"""SELECT * from games where name = "{game_name}" ORDER BY LOWER(name) ASC;"""
+        sql = f"""SELECT * from games where name = '{game_name}' ORDER BY LOWER(name) ASC;"""
         databases = Databases(self.main)
         return databases.select(sql)
 
@@ -41,10 +41,10 @@ class GamesSql:
             api,
             path
             )VALUES(
-            "{gamesObj.game_name}",
+            '{gamesObj.game_name}',
             '{gamesObj.architecture}',
             '{gamesObj.api}',
-            "{gamesObj.path}"
+            '{gamesObj.path}'
             );"""
         databases = Databases(self.main)
         databases.execute(sql)
@@ -52,7 +52,7 @@ class GamesSql:
     #################################################################################
     def update_game(self, gamesObj: object):
         sql = f"""UPDATE games SET
-                name = "{gamesObj.game_name}",
+                name = '{gamesObj.game_name}',
                 architecture = '{gamesObj.architecture}',
                 api = '{gamesObj.api}'
                 WHERE id = {gamesObj.id};"""
@@ -62,7 +62,7 @@ class GamesSql:
     #################################################################################
     def update_game_path(self, gamesObj: object):
         sql = f"""UPDATE games SET
-                path = "{gamesObj.path}"
+                path = '{gamesObj.path}'
                 WHERE id = {gamesObj.id};"""
         databases = Databases(self.main)
         databases.execute(sql)
