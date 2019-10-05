@@ -41,6 +41,8 @@ class MainSrc:
         self.reset_reshade_files = None
         self.need_apply = False
         self.new_version = None
+        self.db_conn = None
+        self.remote_reshade_version = None
 
     ################################################################################
     def init(self):
@@ -51,7 +53,6 @@ class MainSrc:
         self._check_files()
         self.settings = utilities.get_all_ini_file_settings(constants.db_settings_filename)
         self._check_db_connection()
-        self._check_sql_tables()
         self._set_default_database_configs()
         self._set_all_configs()
         self._register_form_events()
@@ -118,7 +119,7 @@ class MainSrc:
 
     ################################################################################
     def _check_new_reshade_version(self):
-        remote_version = None
+        self.remote_reshade_version = None
         if self.check_reshade_updates:
             try:
                 utilities.show_progress_bar(self, messages.checking_new_reshade_version, 0)
@@ -134,7 +135,7 @@ class MainSrc:
 
                     for content in blist:
                         if content.startswith('<strong>Version '):
-                            remote_version = content.split()[1].strip("</strong>")
+                            self.remote_reshade_version = content.split()[1].strip("</strong>")
                             break
                 utilities.show_progress_bar(self, messages.checking_new_reshade_version, 100)
             except requests.exceptions.ConnectionError as e:
@@ -142,8 +143,8 @@ class MainSrc:
                 utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
                 return
 
-            if remote_version is not None:
-                if self.reshade_version != remote_version:
+            if self.remote_reshade_version is not None:
+                if self.reshade_version != self.remote_reshade_version:
                     self.need_apply = True
                     self._download_new_reshade_version()
 
@@ -303,22 +304,15 @@ class MainSrc:
         self._show_game_config_form(self.selected_game.rs[0]["name"])
 
     ################################################################################
-    def _check_sql_tables(self):
+    def _set_default_database_configs(self):
         initialTablesSql = InitialTablesSql(self)
-        triggersSql = TriggersSql(self)
-
         it = initialTablesSql.create_initial_tables()
-        tr = triggersSql.create_triggers()
-
-        if it is not None \
-                or tr is not None:
+        if it is not None:
             err_msg = messages.error_create_sql_config_msg
             self.log.error(err_msg)
-            # print(err_msg)
+            print(err_msg)
             # sys.exit()
 
-    ################################################################################
-    def _set_default_database_configs(self):
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
 
@@ -331,6 +325,13 @@ class MainSrc:
             configsObj.create_screenshots_folder = "Y"
             configSql.set_default_configs(configsObj)
 
+        triggersSql = TriggersSql(self)
+        tr = triggersSql.create_triggers()
+        if tr is not None:
+            err_msg = messages.error_create_sql_config_msg
+            self.log.error(err_msg)
+            print(err_msg)
+            # sys.exit()
     ################################################################################
     def _check_reshade_files(self, rsConfig):
         if rsConfig[0]["reshade_version"] is not None and len(rsConfig[0]["reshade_version"]) > 0:

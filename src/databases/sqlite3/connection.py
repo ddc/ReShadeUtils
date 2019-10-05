@@ -33,7 +33,7 @@ class Sqlite3:
 
     ################################################################################
     def executescript(self, sql):
-        # result = None
+        result = None
         conn = self.create_connection()
         if conn is not None:
             try:
@@ -46,7 +46,7 @@ class Sqlite3:
                 c.close()
                 conn.commit()
             except Exception as e:
-                # result = e
+                result = e
                 self.log.exception("sqlite", exc_info=e)
                 self.log.error(f"sql:({sql})")
                 print(str(e))
@@ -55,7 +55,7 @@ class Sqlite3:
             finally:
                 if conn is not None:
                     conn.close()
-                # return result
+                return result
 
     ################################################################################
     def select(self, sql):

@@ -138,8 +138,8 @@ class FormEvents:
                 self.selected_game.game_dir = '\\'.join(new_game_path.split("\\")[:-1])
 
                 try:
-                    createFiles = CreateFiles(self)
-                    createFiles.create_reshade_ini_file(self.selected_game.game_dir, game_screenshots_path)
+                    create_files = CreateFiles(self)
+                    create_files.create_reshade_ini_file(self.selected_game.game_dir, game_screenshots_path)
                 except Exception as e:
                     self.log.error(f"{e}")
 
@@ -345,7 +345,7 @@ class FormEvents:
 
             if downloaded_new_shaders is not None and downloaded_new_shaders == True:
                 try:
-                    utilities.show_progress_bar(self, messages.downloading_shaders, (50))
+                    utilities.show_progress_bar(self, messages.downloading_shaders, 50)
                     urllib.request.urlretrieve(constants.shaders_zip_url, constants.shaders_zip_path)
                     downloaded_new_shaders = True
                 except Exception as e:
@@ -364,7 +364,7 @@ class FormEvents:
                 except OSError as e:
                     self.log.error(f"{e}")
 
-                utilities.show_progress_bar(self, messages.downloading_shaders, (75))
+                utilities.show_progress_bar(self, messages.downloading_shaders, 75)
                 if os.path.exists(constants.shaders_zip_path):
                     try:
                         utilities.unzip_file(constants.shaders_zip_path, constants.program_path)
@@ -415,11 +415,11 @@ class FormEvents:
                     except shutil.Error as e:
                         self.log.error(f"{e}")
 
-                        # create Reshade.ini
+                    # create Reshade.ini
                     try:
                         if self.reset_reshade_files or not os.path.exists(dst_res_ini_path):
-                            createFiles = CreateFiles(self)
-                            createFiles.create_reshade_ini_file(game_path, game_screenshots_path)
+                            create_files = CreateFiles(self)
+                            create_files.create_reshade_ini_file(game_path, game_screenshots_path)
                     except Exception as e:
                         self.log.error(f"{e}")
 
@@ -495,8 +495,8 @@ class FormEvents:
                         new_screenshots_path = ""
 
                     try:
-                        createFiles = CreateFiles(self)
-                        createFiles.create_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
+                        create_files = CreateFiles(self)
+                        create_files.create_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
                     except Exception as e:
                         self.log.error(f"{e}")
 

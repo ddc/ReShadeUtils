@@ -29,7 +29,7 @@ DatabaseInUse="sqlite"
 [Database]
 Host="127.0.0.1"
 Port="5432"
-DBname="postgres"
+DBname="reshadeUtils"
 Username="postgres"
 Password="postgres"
 """)

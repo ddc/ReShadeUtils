@@ -8,7 +8,6 @@
 # # -*- coding: utf-8 -*-
 
 import psycopg2
-from src.utils import utilities
 
 
 class PostgreSQL:
@@ -22,12 +21,12 @@ class PostgreSQL:
 
     ################################################################################
     def create_connection(self):
+        conn = None
         try:
-            conn = psycopg2.connect(dbname=self.pg_dbname,
-                                    user=self.pg_username,
-                                    password=self.pg_password,
-                                    host=self.pg_host,
-                                    port=self.pg_port)
+            conn = self._get_connection()
+        except psycopg2.DatabaseError as e:
+            self.create_database(self.pg_dbname)
+            conn = self._get_connection()
         except psycopg2.Error as e:
             conn = None
             msg = f"PostgreSQL:Cannot Create Database Connection ({self.pg_host}:{self.pg_port})"
@@ -41,17 +40,27 @@ class PostgreSQL:
 
     ################################################################################
     def execute(self, sql: str):
-        # result = None
+        result = None
         conn = self.create_connection()
         if conn is not None:
+            conn.set_session(autocommit=False)
             try:
                 if sql is not None and len(sql) > 0:
                     cur = conn.cursor()
                     cur.execute(sql)
                     cur.close()
                     conn.commit()
+            except (Exception, psycopg2.OperationalError) as e:
+                condition_display_logs = ["INSERT INTO configs" not in sql]
+                if all(condition_display_logs):
+                    result = e
+                    self.log.exception("PostgreSQL", exc_info=e)
+                    self.log.error(f"Sql:({sql})")
+                    print(str(e))
+                    # utils.wait_return()
+                    raise psycopg2.DatabaseError(e)
             except (Exception, psycopg2.DatabaseError) as e:
-                # result = e
+                result = e
                 self.log.exception("PostgreSQL", exc_info=e)
                 self.log.error(f"Sql:({sql})")
                 print(str(e))
@@ -60,12 +69,13 @@ class PostgreSQL:
             finally:
                 if conn is not None:
                     conn.close()
-                # return result
+                return result
 
     ################################################################################
     def select(self, sql: str):
         conn = self.create_connection()
         if conn is not None:
+            conn.set_session(autocommit=False)
             try:
                 if sql is not None and len(sql) > 0:
                     finalData = {}
@@ -88,3 +98,37 @@ class PostgreSQL:
                 if conn is not None:
                     conn.close()
                 return finalData
+
+    ################################################################################
+    def create_database(self, db_name: str):
+        conn = self._get_connection(db_name=False)
+        conn.set_session(autocommit=True)
+        sql = f"CREATE DATABASE \"{db_name}\""
+        try:
+            cur = conn.cursor()
+            cur.execute(sql)
+            cur.close()
+            self.log.info(f"Database: {db_name} created.")
+        except Exception as e:
+            self.log.exception("PostgreSQL", exc_info=e)
+            self.log.error(f"Sql:({sql})")
+            print(str(e))
+            # utils.wait_return()
+        finally:
+            if conn is not None:
+                conn.close()
+
+    ################################################################################
+    def _get_connection(self, db_name=True):
+        if db_name:
+            conn = psycopg2.connect(dbname=self.pg_dbname,
+                                    user=self.pg_username,
+                                    password=self.pg_password,
+                                    host=self.pg_host,
+                                    port=self.pg_port)
+        else:
+            conn = psycopg2.connect(user=self.pg_username,
+                                    password=self.pg_password,
+                                    host=self.pg_host,
+                                    port=self.pg_port)
+        return conn
