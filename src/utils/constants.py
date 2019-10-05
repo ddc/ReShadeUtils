@@ -14,7 +14,7 @@ import logging
 from src.utils import utilities
 
 PROGRAM_NAME = "Reshade Utils"
-VERSION = "2.2"
+VERSION = "2.3"
 short_program_name = "ReshadeUtils"
 full_program_name = f"{PROGRAM_NAME} v{VERSION}"
 exe_program_name = f"{short_program_name}.exe"
@@ -31,8 +31,8 @@ IS_LINUX = sys.platform == "linux"
 IS_64BIT = platform.machine().endswith("64")
 PYTHON_OK = sys.version_info >= (3, 6)
 ################################################################################
-my_docs_path = f"{utilities.get_documents_path()}"
-program_path = f"{my_docs_path}\{short_program_name}"
+APPDATA_PATH = os.getenv('APPDATA') # returns AppData\Roaming. 'LOCALAPPDATA' == AppData\Local.
+program_path = f"{APPDATA_PATH}\{short_program_name}"
 ################################################################################
 dxgi = "dxgi.dll"
 d3d9 = "d3d9.dll"
@@ -49,7 +49,7 @@ reshade64_path = f"{program_path}\{reshade64}"
 shaders_zip_path = f"{program_path}\{reshade_shaders}.zip"
 shaders_src_path = f"{program_path}\{reshade_shaders}"
 res_shad_mpath = f"{program_path}\{reshade_shaders}-master"
-reshade_screenshot_path = f"{my_docs_path}\Screenshots\\".replace("Documents", "Pictures")
+reshade_screenshot_path = f"{APPDATA_PATH}\Screenshots\\".replace("Documents", "Pictures")
 ################################################################################
 db_settings_filename = f"{program_path}\db_settings.ini"
 sqlite3_filename = f"{program_path}\database.db"

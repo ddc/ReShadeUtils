@@ -14,7 +14,7 @@ Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to severa
 + [Latest Release](https://github.com/ddc/ReshadeUtils/releases/latest)
 
 ## Program Notes
-+ Configuration, logs and database files will be saved inside "Documents/ReshadeUtils"
++ Configuration, logs and database files will be saved inside "%APPDATA%/ReshadeUtils"
 + This program was compiled with PyInstaller
 
 ## Acknowledgements

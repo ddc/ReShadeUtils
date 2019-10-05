@@ -148,28 +148,6 @@ def get_download_path():
 
 
 ################################################################################
-def get_documents_path():
-    if constants.IS_WINDOWS:
-        import winreg
-        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
-        try:
-            documents_guid = 'Personal'
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
-                documents_path = winreg.QueryValueEx(key, documents_guid)[0]
-        except FileNotFoundError:
-            documents_guid = '{FDD39AD0-238F-46AF-ADB4-6C85480369C7}'
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
-                documents_path = winreg.QueryValueEx(key, documents_guid)[0]
-        finally:
-            return documents_path
-    else:
-        t1_path = str(os.path.expanduser("~/Documents"))
-        t2_path = f"{t1_path}".split("\\")
-        documents_path = '/'.join(t2_path)
-        return documents_path
-
-
-################################################################################
 def show_progress_bar(self, message, value):
     self.progressBar = QtWidgets.QProgressBar()
     _translate = QtCore.QCoreApplication.translate
