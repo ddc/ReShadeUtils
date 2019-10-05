@@ -56,9 +56,9 @@ class FormEvents:
 
             # remove dll from game path
             if self.selected_game.rs[0]["api"] == "DX9":
-                reshade_dll = f"{game_path}/{constants.d3d9}"
+                reshade_dll = f"{game_path}/{constants.D3D9}"
             else:
-                reshade_dll = f"{game_path}/{constants.dxgi}"
+                reshade_dll = f"{game_path}/{constants.DXGI}"
             if os.path.isfile(reshade_dll):
                 try:
                     os.remove(reshade_dll)
@@ -71,20 +71,20 @@ class FormEvents:
             if not err:
                 try:
                     # remove reshade.ini from game path
-                    reshade_ini = f"{game_path}/{constants.reshade_ini}"
+                    reshade_ini = f"{game_path}/{constants.RESHADE_INI}"
                     if os.path.isfile(reshade_ini):
                         os.remove(reshade_ini)
 
                     # remove reshade_plugins.ini from game path
-                    reshade_plug_ini = f"{game_path}/{constants.reshade_plugins_ini}"
+                    reshade_plug_ini = f"{game_path}/{constants.RESHADE_PLUGINS_INI}"
                     if os.path.isfile(reshade_plug_ini):
                         os.remove(reshade_plug_ini)
 
                     # remove Reshade log files from game path
-                    reshade_x64log_file = f"{game_path}/{constants.reshade_x64log}"
+                    reshade_x64log_file = f"{game_path}/{constants.RESHADE_X64LOG}"
                     if os.path.isfile(reshade_x64log_file):
                         shutil.rmtree(reshade_x64log_file)
-                    reshade_x32log_file = f"{game_path}/{constants.reshade_x32log}"
+                    reshade_x32log_file = f"{game_path}/{constants.RESHADE_X32LOG}"
                     if os.path.isfile(reshade_x32log_file):
                         shutil.rmtree(reshade_x32log_file)
 
@@ -155,7 +155,7 @@ class FormEvents:
         if self.selected_game is not None and len(self.selected_game.rs) > 0:
             path_list = self.selected_game.rs[0]["path"].split("\\")[:-1]
             game_path = '\\'.join(path_list)
-            res_plug_ini_path = f"{game_path}\{constants.reshade_plugins_ini}"
+            res_plug_ini_path = f"{game_path}\{constants.RESHADE_PLUGINS_INI}"
 
             try:
                 os.startfile(f"\"{res_plug_ini_path}\"")
@@ -168,9 +168,9 @@ class FormEvents:
     ################################################################################
     def edit_default_config_file(self):
         try:
-            os.startfile(f"\"{constants.reshade_plugins_filename}\"")
+            os.startfile(f"\"{constants.RESHADE_PLUGINS_FILENAME}\"")
         except Exception as e:
-            err_msg = f"{e.strerror}\n\n{constants.reshade_plugins_ini}{messages.not_found}"
+            err_msg = f"{e.strerror}\n\n{constants.RESHADE_PLUGINS_INI}{messages.not_found}"
             utilities.show_message_window("error", "ERROR", err_msg)
 
     ################################################################################
@@ -180,8 +180,8 @@ class FormEvents:
         if user_answer == QtWidgets.QMessageBox.Yes:
             pb_dl_new_version_msg = messages.dl_new_version
             user_download_path = utilities.get_download_path()
-            program_url = f"{constants.github_exe_program_url}{self.new_version}/{constants.exe_program_name}"
-            downloaded_program_path = f"{user_download_path}\{constants.exe_program_name}"
+            program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
+            downloaded_program_path = f"{user_download_path}\{constants.EXE_PROGRAM_NAME}"
 
             try:
                 utilities.show_progress_bar(self, pb_dl_new_version_msg, 50)
@@ -337,7 +337,7 @@ class FormEvents:
             self.enable_widgets(False)
             self.qtObj.apply_button.setEnabled(False)
 
-            if not os.path.exists(constants.shaders_src_path) \
+            if not os.path.exists(constants.SHADERS_SRC_PATH) \
                     or (self.update_shaders is not None and self.update_shaders == True):
                 downloaded_new_shaders = True
             elif self.update_shaders is not None and self.update_shaders == False:
@@ -346,42 +346,42 @@ class FormEvents:
             if downloaded_new_shaders is not None and downloaded_new_shaders == True:
                 try:
                     utilities.show_progress_bar(self, messages.downloading_shaders, 50)
-                    urllib.request.urlretrieve(constants.shaders_zip_url, constants.shaders_zip_path)
+                    urllib.request.urlretrieve(constants.SHADERS_ZIP_URL, constants.SHADERS_ZIP_PATH)
                     downloaded_new_shaders = True
                 except Exception as e:
                     self.log.error(f"{messages.dl_new_shaders_timeout} {e}")
                     utilities.show_message_window("error", "ERROR", messages.dl_new_shaders_timeout)
 
                 try:
-                    if os.path.exists(constants.shaders_src_path):
-                        shutil.rmtree(constants.shaders_src_path)
+                    if os.path.exists(constants.SHADERS_SRC_PATH):
+                        shutil.rmtree(constants.SHADERS_SRC_PATH)
                 except OSError as e:
                     self.log.error(f"{e}")
 
                 try:
-                    if os.path.exists(constants.res_shad_mpath):
-                        shutil.rmtree(constants.res_shad_mpath)
+                    if os.path.exists(constants.RES_SHAD_MPATH):
+                        shutil.rmtree(constants.RES_SHAD_MPATH)
                 except OSError as e:
                     self.log.error(f"{e}")
 
                 utilities.show_progress_bar(self, messages.downloading_shaders, 75)
-                if os.path.exists(constants.shaders_zip_path):
+                if os.path.exists(constants.SHADERS_ZIP_PATH):
                     try:
-                        utilities.unzip_file(constants.shaders_zip_path, constants.program_path)
+                        utilities.unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
                     except FileNotFoundError as e:
                         self.log.error(f"{e}")
                     except zipfile.BadZipFile as e:
                         self.log.error(f"{e}")
 
                     try:
-                        os.remove(constants.shaders_zip_path)
+                        os.remove(constants.SHADERS_ZIP_PATH)
                     except OSError as e:
                         self.log.error(f"{e}")
 
                 try:
-                    if os.path.exists(constants.res_shad_mpath):
-                        out_dir = f"{constants.program_path}\{constants.reshade_shaders}"
-                        os.rename(constants.res_shad_mpath, out_dir)
+                    if os.path.exists(constants.RES_SHAD_MPATH):
+                        out_dir = f"{constants.PROGRAM_PATH}\{constants.RESHADE_SHADERS}"
+                        os.rename(constants.RES_SHAD_MPATH, out_dir)
                 except OSError as e:
                     self.log.error(f"{e}")
 
@@ -392,18 +392,18 @@ class FormEvents:
                 path_list = rs_all_games[i]["path"].split("\\")[:-1]
                 game_path = '\\'.join(path_list)
                 game_name = rs_all_games[i]["name"]
-                dst_res_ini_path = f"{game_path}\{constants.reshade_ini}"
-                dst_res_plug_ini_path = f"{game_path}\{constants.reshade_plugins_ini}"
+                dst_res_ini_path = f"{game_path}\{constants.RESHADE_INI}"
+                dst_res_plug_ini_path = f"{game_path}\{constants.RESHADE_PLUGINS_INI}"
 
                 if rs_all_games[i]["architecture"] == "32bits":
-                    src_path = constants.reshade32_path
+                    src_path = constants.RESHADE32_PATH
                 else:
-                    src_path = constants.reshade64_path
+                    src_path = constants.RESHADE64_PATH
 
                 if rs_all_games[i]["api"] == "DX9":
-                    dst_path = f"{game_path}\{constants.d3d9}"
+                    dst_path = f"{game_path}\{constants.D3D9}"
                 else:
-                    dst_path = f"{game_path}\{constants.dxgi}"
+                    dst_path = f"{game_path}\{constants.DXGI}"
 
                 try:
                     utilities.show_progress_bar(self, messages.copying_DLLs, (100 / len_games))
@@ -426,7 +426,7 @@ class FormEvents:
                     # copying Reshade_plugins.ini
                     if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
                         try:
-                            shutil.copyfile(constants.reshade_plugins_filename, dst_res_plug_ini_path)
+                            shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, dst_res_plug_ini_path)
                         except shutil.Error as e:
                             self.log.error(f"{e}")
 
@@ -468,20 +468,20 @@ class FormEvents:
 
             if self.game_config_form.qtObj.radioButton_32bits.isChecked():
                 games_obj.architecture = "32bits"
-                src_path = constants.reshade32_path
+                src_path = constants.RESHADE32_PATH
             else:
                 games_obj.architecture = "64bits"
-                src_path = constants.reshade64_path
+                src_path = constants.RESHADE64_PATH
 
             games_sql = GamesSql(self)
             if self.selected_game is not None:
 
                 if self.game_config_form.qtObj.dx9_radioButton.isChecked():
                     games_obj.api = "DX9"
-                    dst_path = f"{self.selected_game.game_dir}\{constants.d3d9}"
+                    dst_path = f"{self.selected_game.game_dir}\{constants.D3D9}"
                 else:
                     games_obj.api = "DX11"
-                    dst_path = f"{self.selected_game.game_dir}\{constants.dxgi}"
+                    dst_path = f"{self.selected_game.game_dir}\{constants.DXGI}"
 
                     # checking name changes
                 if self.selected_game.rs[0]["name"] != games_obj.game_name:
@@ -512,8 +512,8 @@ class FormEvents:
                         or (self.selected_game.rs[0]["api"] != games_obj.api):
 
                     # deleting any Reshade.dll
-                    reshade32_game_path = f"{self.selected_game.game_dir}/{constants.d3d9}"
-                    reshade64_game_path = f"{self.selected_game.game_dir}/{constants.dxgi}"
+                    reshade32_game_path = f"{self.selected_game.game_dir}/{constants.D3D9}"
+                    reshade64_game_path = f"{self.selected_game.game_dir}/{constants.DXGI}"
                     try:
                         if os.path.isfile(reshade32_game_path):
                             os.remove(reshade32_game_path)
@@ -553,20 +553,20 @@ def _get_screenshot_path(self, game_path, game_name):
     game_screenshots_path = ""
     # creating screenshot dir
     if self.qtObj.yes_screenshots_folder_radioButton.isChecked():
-        game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
+        game_screenshots_path = f"{constants.RESHADE_SCREENSHOT_PATH}{game_name}"
         try:
-            if not os.path.exists(constants.reshade_screenshot_path):
-                os.makedirs(constants.reshade_screenshot_path)
+            if not os.path.exists(constants.RESHADE_SCREENSHOT_PATH):
+                os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
             if not os.path.exists(game_screenshots_path):
                 os.makedirs(game_screenshots_path)
         except OSError as e:
             self.log.error(f"{e}")
     else:
-        file = f"{game_path}\{constants.reshade_ini}"
+        file = f"{game_path}\{constants.RESHADE_INI}"
         reshade_config_screenshot_path = utilities.get_ini_settings(file, "GENERAL", "ScreenshotPath")
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
-        elif os.path.isdir(f"{constants.reshade_screenshot_path}{game_name}"):
-            game_screenshots_path = f"{constants.reshade_screenshot_path}{game_name}"
+        elif os.path.isdir(f"{constants.RESHADE_SCREENSHOT_PATH}{game_name}"):
+            game_screenshots_path = f"{constants.RESHADE_SCREENSHOT_PATH}{game_name}"
 
     return game_screenshots_path

@@ -21,11 +21,13 @@ import datetime
 import configparser
 import zipfile
 
+_date_formatter = "%b/%d/%Y"
+_time_formatter = "%H:%M:%S"
+
 
 class Object:
-    date_formatter = "%b/%d/%Y"
-    time_formatter = "%H:%M:%S"
-    created = str(datetime.datetime.now().strftime(f"{date_formatter} {time_formatter}"))
+    def __init__(self):
+        self.created = str(datetime.datetime.now().strftime(f"{_date_formatter} {_time_formatter}"))
 
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
@@ -200,7 +202,7 @@ def show_message_window(windowType: str, window_title: str, msg: str):
 
 ################################################################################
 def check_new_program_version(self, show_dialog=True):
-    remote_version_filename = constants.remote_version_filename
+    remote_version_filename = constants.REMOTE_VERSION_FILENAME
     client_version = constants.VERSION
     program_checking_version_msg = messages.checking_new_version
     obj_return = Object()
@@ -234,9 +236,9 @@ def check_new_program_version(self, show_dialog=True):
 
                     if reply == QtWidgets.QMessageBox.Yes:
                         pb_dl_new_version_msg = messages.dl_new_version
-                        program_url = f"{constants.github_exe_program_url}{remote_version}/{constants.exe_program_name}"
+                        program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{remote_version}/{constants.EXE_PROGRAM_NAME}"
                         user_download_path = get_download_path()
-                        downloaded_program_path = f"{user_download_path}\{constants.exe_program_name}"
+                        downloaded_program_path = f"{user_download_path}\{constants.EXE_PROGRAM_NAME}"
 
                         try:
                             show_progress_bar(self, pb_dl_new_version_msg, 50)
@@ -253,7 +255,7 @@ def check_new_program_version(self, show_dialog=True):
                             else:
                                 show_message_window("error", "ERROR", messages.error_check_new_version)
                     else:
-                        new_title = f"{constants.full_program_name} ({obj_return.new_version_msg})"
+                        new_title = f"{constants.FULL_PROGRAM_NAME} ({obj_return.new_version_msg})"
                         _translate = QtCore.QCoreApplication.translate
                         self.form.setWindowTitle(_translate("Main", new_title))
             show_progress_bar(self, program_checking_version_msg, 100)

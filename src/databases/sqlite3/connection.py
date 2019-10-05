@@ -14,7 +14,7 @@ from src.utils import constants
 class Sqlite3:
     def __init__(self, main):
         self.log = main.log
-        self.db_file = constants.sqlite3_filename
+        self.db_file = constants.SQLITE3_FILENAME
 
     ################################################################################
     def create_connection(self):

@@ -17,7 +17,7 @@ class CreateFiles:
 
     ################################################################################
     def create_settings_file(self):
-        file = open(constants.db_settings_filename, encoding="utf-8", mode="w")
+        file = open(constants.DB_SETTINGS_FILENAME, encoding="utf-8", mode="w")
         file.write(
 """; DO NOT OPEN THIS FILE WITH NOTEPAD.
 ; Use Notepad++ or any other modern text editor.
@@ -37,7 +37,7 @@ Password="postgres"
 
     ################################################################################
     def create_reshade_plugins_ini_file(self):
-        file = open(constants.reshade_plugins_filename, encoding="utf-8", mode="w")
+        file = open(constants.RESHADE_PLUGINS_FILENAME, encoding="utf-8", mode="w")
         file.write(
 """Effects=Clarity.fx,Curves.fx,DPX.fx,LumaSharpen.fx,Levels.fx
 Techniques=Clarity,Curves,DPX,LumaSharpen,Levels
@@ -85,7 +85,7 @@ HighlightClipping=0
 
     ################################################################################
     def create_reshade_ini_file(self, game_path:str, screenshot_path:str):
-        file = open(f"{game_path}\{constants.reshade_ini}", encoding="utf-8", mode="w")
+        file = open(f"{game_path}\{constants.RESHADE_INI}", encoding="utf-8", mode="w")
         file.write(
 f"""[INPUT]
 KeyMenu=119,0,1,0
@@ -95,11 +95,11 @@ KeyEffects=145,0,0,0
 KeyReload=0,0,0,0
 
 [GENERAL]
-TextureSearchPaths={constants.program_path}\Reshade-shaders\Textures
-EffectSearchPaths={constants.program_path}\Reshade-shaders\Shaders
+TextureSearchPaths={constants.PROGRAM_PATH}\Reshade-shaders\Textures
+EffectSearchPaths={constants.PROGRAM_PATH}\Reshade-shaders\Shaders
 ScreenshotPath={screenshot_path}
-CurrentPresetPath={game_path}\{constants.reshade_plugins_ini}
-PresetFiles=.\{constants.reshade_plugins_ini}
+CurrentPresetPath={game_path}\{constants.RESHADE_PLUGINS_INI}
+PresetFiles=.\{constants.RESHADE_PLUGINS_INI}
 ScreenshotIncludePreset=0
 NoFontScaling=0
 ClockFormat=1
@@ -153,7 +153,7 @@ DepthBufferClearingNumber=0
 
     ################################################################################
     def create_style_file(self):
-        file = open(constants.style_qss_filename, encoding="utf-8", mode="w")
+        file = open(constants.STYLE_QSS_FILENAME, encoding="utf-8", mode="w")
         file.write(
 """QWidget {
    background-color: #222222;

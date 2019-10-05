@@ -51,7 +51,7 @@ class MainSrc:
         self._check_dirs()
         self._setup_logging()
         self._check_files()
-        self.settings = utilities.get_all_ini_file_settings(constants.db_settings_filename)
+        self.settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
         self._check_db_connection()
         self._set_default_database_configs()
         self._set_all_configs()
@@ -123,7 +123,7 @@ class MainSrc:
         if self.check_reshade_updates:
             try:
                 utilities.show_progress_bar(self, messages.checking_new_reshade_version, 0)
-                response = requests.get(constants.reshade_website_url)
+                response = requests.get(constants.RESHADE_WEBSITE_URL)
                 utilities.show_progress_bar(self, messages.checking_new_reshade_version, 50)
                 if response.status_code != 200:
                     self.log.error(messages.reshade_page_error)
@@ -153,12 +153,12 @@ class MainSrc:
         old_reshade_version = self.reshade_version
         self.reshade_version = None
         exe_download_url = None
-        download_path = f"{constants.program_path}\ReShade_Setup_"
+        download_path = f"{constants.PROGRAM_PATH}\ReShade_Setup_"
 
         # get new version number
         try:
             utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 0)
-            response = requests.get(constants.reshade_website_url)
+            response = requests.get(constants.RESHADE_WEBSITE_URL)
             if response.status_code != 200:
                 self.log.error(messages.reshade_page_error)
             else:
@@ -171,7 +171,7 @@ class MainSrc:
                 for content in blist:
                     if content.startswith('<strong>Version '):
                         self.reshade_version = content.split()[1].strip("</strong>")
-                        exe_download_url = f"{constants.reshade_exe_url}{self.reshade_version}.exe"
+                        exe_download_url = f"{constants.RESHADE_EXE_URL}{self.reshade_version}.exe"
                         break
                 utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 20)
         except requests.exceptions.ConnectionError as e:
@@ -196,10 +196,10 @@ class MainSrc:
             old_local_reshade_exe = f"{download_path}{old_reshade_version}.exe"
             if os.path.isfile(old_local_reshade_exe):
                 os.remove(old_local_reshade_exe)
-            if os.path.isfile(constants.reshade32_path):
-                os.remove(constants.reshade32_path)
-            if os.path.isfile(constants.reshade64_path):
-                os.remove(constants.reshade64_path)
+            if os.path.isfile(constants.RESHADE32_PATH):
+                os.remove(constants.RESHADE32_PATH)
+            if os.path.isfile(constants.RESHADE64_PATH):
+                os.remove(constants.RESHADE64_PATH)
 
         # unzip reshade
         utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 60)
@@ -225,7 +225,7 @@ class MainSrc:
     ################################################################################
     def _unzip_reshade(self, local_reshade_exe):
         try:
-            out_path = constants.program_path
+            out_path = constants.PROGRAM_PATH
             utilities.unzip_file(local_reshade_exe, out_path)
         # except FileNotFoundError as e:
         #    self.log.error(f"{e}")
@@ -237,8 +237,8 @@ class MainSrc:
     ################################################################################
     def _check_dirs(self):
         try:
-            if not os.path.exists(constants.program_path):
-                os.makedirs(constants.program_path)
+            if not os.path.exists(constants.PROGRAM_PATH):
+                os.makedirs(constants.PROGRAM_PATH)
         except OSError as e:
             self.log.error(f"{e}")
 
@@ -247,7 +247,7 @@ class MainSrc:
         logger = logging.getLogger()
         logger.setLevel(constants.LOG_LEVEL)
         file_hdlr = logging.handlers.RotatingFileHandler(
-            filename=constants.error_logs_filename,
+            filename=constants.ERROR_LOGS_FILENAME,
             maxBytes=10 * 1024 * 1024,
             encoding="utf-8",
             backupCount=5,
@@ -261,19 +261,19 @@ class MainSrc:
         create_files = CreateFiles(self)
 
         try:
-            if not os.path.exists(constants.db_settings_filename):
+            if not os.path.exists(constants.DB_SETTINGS_FILENAME):
                 create_files.create_settings_file()
         except Exception as e:
             self.log.error(f"{e}")
 
         try:
-            if not os.path.exists(constants.style_qss_filename):
+            if not os.path.exists(constants.STYLE_QSS_FILENAME):
                 create_files.create_style_file()
         except Exception as e:
             self.log.error(f"{e}")
 
         try:
-            if not os.path.exists(constants.reshade_plugins_filename):
+            if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
                 create_files.create_reshade_plugins_ini_file()
         except Exception as e:
             self.log.error(f"{e}")
@@ -338,7 +338,7 @@ class MainSrc:
             self.reshade_version = rsConfig[0]["reshade_version"]
             self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
             self.enable_form(True)
-            local_reshade_exe = f"{constants.program_path}\ReShade_Setup_{self.reshade_version}.exe"
+            local_reshade_exe = f"{constants.PROGRAM_PATH}\ReShade_Setup_{self.reshade_version}.exe"
         else:
             self._download_new_reshade_version()
             return
@@ -350,7 +350,7 @@ class MainSrc:
             self.log.error(f"{e}")
 
         try:
-            if not os.path.exists(constants.reshade32_path):
+            if not os.path.exists(constants.RESHADE32_PATH):
                 if not os.path.exists(local_reshade_exe):
                     self._download_new_reshade_version()
                 else:
@@ -359,7 +359,7 @@ class MainSrc:
             self.log.error(f"{e}")
 
         try:
-            if not os.path.exists(constants.reshade64_path):
+            if not os.path.exists(constants.RESHADE64_PATH):
                 if not os.path.exists(local_reshade_exe):
                     self._download_new_reshade_version()
                 else:
@@ -441,7 +441,7 @@ class MainSrc:
         qtObj.setupUi(self.game_config_form)
         self.game_config_form.qtObj = qtObj
         if self.use_dark_theme:
-            self.game_config_form.setStyleSheet(open(constants.style_qss_filename, "r").read())
+            self.game_config_form.setStyleSheet(open(constants.STYLE_QSS_FILENAME, "r").read())
         self.game_config_form.qtObj.game_name_lineEdit.setFocus()
         self.game_config_form.show()
         QtWidgets.QApplication.processEvents()
@@ -471,7 +471,7 @@ class MainSrc:
     ################################################################################
     def set_style_sheet(self, status: bool):
         if status:
-            self.form.setStyleSheet(open(constants.style_qss_filename, "r").read())
+            self.form.setStyleSheet(open(constants.STYLE_QSS_FILENAME, "r").read())
         else:
             self.form.setStyleSheet("")
 

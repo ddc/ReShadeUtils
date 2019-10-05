@@ -220,7 +220,7 @@ class Ui_Main(object):
 
     def retranslateUi(self, Main):
         _translate = QtCore.QCoreApplication.translate
-        Main.setWindowTitle(_translate("Main", constants.full_program_name))
+        Main.setWindowTitle(_translate("Main", constants.FULL_PROGRAM_NAME))
         self.architecture_groupBox.setTitle(_translate("Main", "Architecture"))
         self.radioButton_32bits.setText(_translate("Main", "32bits"))
         self.radioButton_64bits.setText(_translate("Main", "64bits"))

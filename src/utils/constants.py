@@ -15,15 +15,15 @@ from src.utils import utilities
 
 PROGRAM_NAME = "Reshade Utils"
 VERSION = "2.3"
-short_program_name = "ReshadeUtils"
-full_program_name = f"{PROGRAM_NAME} v{VERSION}"
-exe_program_name = f"{short_program_name}.exe"
+SHORT_PROGRAM_NAME = "ReshadeUtils"
+FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
+EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 ################################################################################
-date_formatter = "%b/%d/%Y"
-time_formatter = "%H:%M:%S"
-LOG_LEVEL = logging.INFO
+DATE_FORMATTER = "%b/%d/%Y"
+TIME_FORMATTER = "%H:%M:%S"
+LOG_LEVEL = logging.INFO  # INFO or DEBUG
 LOG_FORMATTER = logging.Formatter('%(asctime)s:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s',
-                                  datefmt=f"[{date_formatter} {time_formatter}]")
+                                  datefmt=f"[{DATE_FORMATTER} {TIME_FORMATTER}]")
 ################################################################################
 IS_WINDOWS = os.name == "nt"
 IS_MAC = sys.platform == "darwin"
@@ -32,34 +32,34 @@ IS_64BIT = platform.machine().endswith("64")
 PYTHON_OK = sys.version_info >= (3, 6)
 ################################################################################
 APPDATA_PATH = os.getenv('APPDATA') # returns AppData\Roaming. 'LOCALAPPDATA' == AppData\Local.
-program_path = f"{APPDATA_PATH}\{short_program_name}"
+PROGRAM_PATH = f"{APPDATA_PATH}\{SHORT_PROGRAM_NAME}"
 ################################################################################
-dxgi = "dxgi.dll"
-d3d9 = "d3d9.dll"
-reshade_shaders = "Reshade-shaders"
-reshade_ini = "Reshade.ini"
-reshade_plugins_ini = "Reshade_plugins.ini"
-reshade_x64log = "dxgi.log"
-reshade_x32log = "d3d9.log"
-reshade32 = "Reshade32.dll"
-reshade64 = "ReShade64.dll"
+DXGI = "dxgi.dll"
+D3D9 = "d3d9.dll"
+RESHADE_SHADERS = "Reshade-shaders"
+RESHADE_INI = "Reshade.ini"
+RESHADE_PLUGINS_INI = "Reshade_plugins.ini"
+RESHADE_X64LOG = "dxgi.log"
+RESHADE_X32LOG = "d3d9.log"
+RESHADE32 = "Reshade32.dll"
+RESHADE64 = "ReShade64.dll"
 ################################################################################
-reshade32_path = f"{program_path}\{reshade32}"
-reshade64_path = f"{program_path}\{reshade64}"
-shaders_zip_path = f"{program_path}\{reshade_shaders}.zip"
-shaders_src_path = f"{program_path}\{reshade_shaders}"
-res_shad_mpath = f"{program_path}\{reshade_shaders}-master"
-reshade_screenshot_path = f"{APPDATA_PATH}\Screenshots\\".replace("Documents", "Pictures")
+RESHADE32_PATH = f"{PROGRAM_PATH}\{RESHADE32}"
+RESHADE64_PATH = f"{PROGRAM_PATH}\{RESHADE64}"
+SHADERS_ZIP_PATH = f"{PROGRAM_PATH}\{RESHADE_SHADERS}.zip"
+SHADERS_SRC_PATH = f"{PROGRAM_PATH}\{RESHADE_SHADERS}"
+RES_SHAD_MPATH = f"{PROGRAM_PATH}\{RESHADE_SHADERS}-master"
+RESHADE_SCREENSHOT_PATH = f"{APPDATA_PATH}\Screenshots\\".replace("Documents", "Pictures")
 ################################################################################
-db_settings_filename = f"{program_path}\db_settings.ini"
-sqlite3_filename = f"{program_path}\database.db"
-style_qss_filename = f"{program_path}\style.qss"
-error_logs_filename = f"{program_path}\errors.log"
-reshade_plugins_filename = f"{program_path}\{reshade_plugins_ini}"
+DB_SETTINGS_FILENAME = f"{PROGRAM_PATH}\db_settings.ini"
+SQLITE3_FILENAME = f"{PROGRAM_PATH}\database.db"
+STYLE_QSS_FILENAME = f"{PROGRAM_PATH}\style.qss"
+ERROR_LOGS_FILENAME = f"{PROGRAM_PATH}\errors.log"
+RESHADE_PLUGINS_FILENAME = f"{PROGRAM_PATH}\{RESHADE_PLUGINS_INI}"
 ################################################################################
-github_exe_program_url = f"https://github.com/ddc/{short_program_name}/releases/download/v"
-remote_version_filename = f"https://raw.github.com/ddc/{short_program_name}/master/VERSION"
-css_remote_filename = f"https://raw.github.com/ddc/{short_program_name}/master/src/utils/style.qss"
-shaders_zip_url = "https://github.com/crosire/reshade-shaders/archive/master.zip"
-reshade_website_url = "https://reshade.me"
-reshade_exe_url = "https://reshade.me/downloads/ReShade_Setup_"
+GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
+REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/VERSION"
+CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/utils/style.qss"
+SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
+RESHADE_WEBSITE_URL = "https://reshade.me"
+RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"
