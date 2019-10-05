@@ -109,7 +109,7 @@ class MainSrc:
         self.qtObj.update_button.setVisible(False)
         if self.check_program_updates:
             new_version_obj = utilities.check_new_program_version(self, False)
-            if new_version_obj.new_version_available == True:
+            if new_version_obj.new_version_available:
                 self.new_version = new_version_obj.new_version
                 self.qtObj.update_button.setFocus()
                 self.qtObj.updateAvail_label.clear()
@@ -190,7 +190,7 @@ class MainSrc:
                 self.log.error(f"{messages.error_check_new_reshade_version} {e}")
             return
 
-        if (old_reshade_version != self.reshade_version):
+        if old_reshade_version != self.reshade_version:
             # remove old version
             old_local_reshade_exe = f"{download_path}{old_reshade_version}.exe"
             if os.path.isfile(old_local_reshade_exe):
@@ -257,23 +257,23 @@ class MainSrc:
 
     ################################################################################
     def _check_files(self):
-        createFiles = CreateFiles(self)
+        create_files = CreateFiles(self)
 
         try:
             if not os.path.exists(constants.db_settings_filename):
-                createFiles.create_settings_file()
+                create_files.create_settings_file()
         except Exception as e:
             self.log.error(f"{e}")
 
         try:
             if not os.path.exists(constants.style_qss_filename):
-                createFiles.create_style_file()
+                create_files.create_style_file()
         except Exception as e:
             self.log.error(f"{e}")
 
         try:
             if not os.path.exists(constants.reshade_plugins_filename):
-                createFiles.create_reshade_plugins_ini_file()
+                create_files.create_reshade_plugins_ini_file()
         except Exception as e:
             self.log.error(f"{e}")
 
