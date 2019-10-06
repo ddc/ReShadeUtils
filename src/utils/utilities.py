@@ -33,9 +33,9 @@ class Object:
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def toDict(self):
-        jsonString = json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-        jsonDict = json.loads(jsonString)
-        return jsonDict
+        json_string = json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        json_dict = json.loads(json_string)
+        return json_dict
 
 
 ################################################################################
@@ -105,8 +105,8 @@ def check_database_connection(self):
 #
 ################################################################################
 def unzip_file(file_name: str, out_path: str):
-    zipfilePath = (file_name)
-    zipf = zipfile.ZipFile(zipfilePath)
+    zipfile_path = file_name
+    zipf = zipfile.ZipFile(zipfile_path)
     zipf.extractall(out_path)
     zipf.close()
 
@@ -174,12 +174,12 @@ def show_progress_bar(self, message, value):
 
 
 ################################################################################
-def show_message_window(windowType: str, window_title: str, msg: str):
-    if windowType.lower() == "error":
+def show_message_window(window_type: str, window_title: str, msg: str):
+    if window_type.lower() == "error":
         icon = QtWidgets.QMessageBox.Critical
-    elif windowType.lower() == "warning":
+    elif window_type.lower() == "warning":
         icon = QtWidgets.QMessageBox.Warning
-    elif windowType.lower() == "question":
+    elif window_type.lower() == "question":
         icon = QtWidgets.QMessageBox.Question
     else:
         icon = QtWidgets.QMessageBox.Information
@@ -189,7 +189,7 @@ def show_message_window(windowType: str, window_title: str, msg: str):
     msgBox.setWindowTitle(window_title)
     msgBox.setInformativeText(msg)
 
-    if windowType.lower() == "question":
+    if window_type.lower() == "question":
         msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         msgBox.setDefaultButton(QtWidgets.QMessageBox.Yes)
     else:
@@ -238,7 +238,7 @@ def check_new_program_version(self, show_dialog=True):
                         pb_dl_new_version_msg = messages.dl_new_version
                         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{remote_version}/{constants.EXE_PROGRAM_NAME}"
                         user_download_path = get_download_path()
-                        downloaded_program_path = f"{user_download_path}\{constants.EXE_PROGRAM_NAME}"
+                        downloaded_program_path = f"{user_download_path}/{constants.EXE_PROGRAM_NAME}"
 
                         try:
                             show_progress_bar(self, pb_dl_new_version_msg, 50)
