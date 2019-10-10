@@ -148,7 +148,23 @@ def get_download_path():
         t1_path = str(os.path.expanduser("~/Downloads"))
         t2_path = f"{t1_path}".split("\\")
         downloads_path = '/'.join(t2_path)
-        return downloads_path
+        return downloads_path.replace('\\','/')
+
+
+################################################################################
+def get_pictures_path():
+    if constants.IS_WINDOWS:
+        import winreg
+        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+        pictures_guid = 'My Pictures'
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+            pictures_path = winreg.QueryValueEx(key, pictures_guid)[0]
+        return pictures_path
+    else:
+        t1_path = str(os.path.expanduser("~/Pictures"))
+        t2_path = f"{t1_path}".split("\\")
+        pictures_path = '/'.join(t2_path)
+        return pictures_path.replace('\\','/')
 
 
 ################################################################################

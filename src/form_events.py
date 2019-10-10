@@ -392,8 +392,8 @@ class FormEvents:
                 path_list = rs_all_games[i]["path"].split("\\")[:-1]
                 game_path = '\\'.join(path_list)
                 game_name = rs_all_games[i]["name"]
-                dst_res_ini_path = f"{game_path}\{constants.RESHADE_INI}"
-                dst_res_plug_ini_path = f"{game_path}\{constants.RESHADE_PLUGINS_INI}"
+                dst_res_ini_path = f"{game_path}\\{constants.RESHADE_INI}"
+                dst_res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
 
                 if rs_all_games[i]["architecture"] == "32bits":
                     src_path = constants.RESHADE32_PATH
@@ -401,9 +401,9 @@ class FormEvents:
                     src_path = constants.RESHADE64_PATH
 
                 if rs_all_games[i]["api"] == "DX9":
-                    dst_path = f"{game_path}\{constants.D3D9}"
+                    dst_path = f"{game_path}\\{constants.D3D9}"
                 else:
-                    dst_path = f"{game_path}\{constants.DXGI}"
+                    dst_path = f"{game_path}\\{constants.DXGI}"
 
                 try:
                     utilities.show_progress_bar(self, messages.copying_DLLs, (100 / len_games))
@@ -478,10 +478,10 @@ class FormEvents:
 
                 if self.game_config_form.qtObj.dx9_radioButton.isChecked():
                     games_obj.api = "DX9"
-                    dst_path = f"{self.selected_game.game_dir}\{constants.D3D9}"
+                    dst_path = f"{self.selected_game.game_dir}\\{constants.D3D9}"
                 else:
                     games_obj.api = "DX11"
-                    dst_path = f"{self.selected_game.game_dir}\{constants.DXGI}"
+                    dst_path = f"{self.selected_game.game_dir}\\{constants.DXGI}"
 
                     # checking name changes
                 if self.selected_game.rs[0]["name"] != games_obj.game_name:
@@ -490,7 +490,7 @@ class FormEvents:
                                                                 self.selected_game.name)
                     if len(old_screenshots_path) > 0:
                         t_path = '\\'.join(old_screenshots_path.split('\\')[:-1])
-                        new_screenshots_path = f"{t_path}\{games_obj.game_name}"
+                        new_screenshots_path = f"{t_path}\\{games_obj.game_name}"
                     else:
                         new_screenshots_path = ""
 
@@ -512,8 +512,8 @@ class FormEvents:
                         or (self.selected_game.rs[0]["api"] != games_obj.api):
 
                     # deleting any Reshade.dll
-                    reshade32_game_path = f"{self.selected_game.game_dir}/{constants.D3D9}"
-                    reshade64_game_path = f"{self.selected_game.game_dir}/{constants.DXGI}"
+                    reshade32_game_path = f"{self.selected_game.game_dir}\\{constants.D3D9}"
+                    reshade64_game_path = f"{self.selected_game.game_dir}\\{constants.DXGI}"
                     try:
                         if os.path.isfile(reshade32_game_path):
                             os.remove(reshade32_game_path)
@@ -553,7 +553,7 @@ def _get_screenshot_path(self, game_path, game_name):
     game_screenshots_path = ""
     # creating screenshot dir
     if self.qtObj.yes_screenshots_folder_radioButton.isChecked():
-        game_screenshots_path = f"{constants.RESHADE_SCREENSHOT_PATH}{game_name}"
+        game_screenshots_path = f"{constants.RESHADE_SCREENSHOT_PATH}\\{game_name}"
         try:
             if not os.path.exists(constants.RESHADE_SCREENSHOT_PATH):
                 os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
