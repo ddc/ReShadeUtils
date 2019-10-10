@@ -57,7 +57,7 @@ STYLE_QSS_FILENAME = f"{PROGRAM_PATH}\\style.qss"
 ERROR_LOGS_FILENAME = f"{PROGRAM_PATH}\\errors.log"
 RESHADE_PLUGINS_FILENAME = f"{PROGRAM_PATH}\\{RESHADE_PLUGINS_INI}"
 ################################################################################
-GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
+GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/V"
 REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/VERSION"
 CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/utils/style.qss"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"

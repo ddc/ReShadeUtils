@@ -23,7 +23,7 @@ dl_new_version = "Downloading new version... "
 
 downloading_new_reshade_version = "Downloading new Reshade Version... "
 
-info_dl_completed = "Download completed successfully.\nNew version downloaded to \"Downloads\" directory."
+info_dl_completed = "Download completed successfully.\nNew version downloaded to:"
 
 error_check_new_version = "There was an ERROR trying to check for a new program version!"
 

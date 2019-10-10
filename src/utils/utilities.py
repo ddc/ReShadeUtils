@@ -148,7 +148,7 @@ def get_download_path():
         t1_path = str(os.path.expanduser("~/Downloads"))
         t2_path = f"{t1_path}".split("\\")
         downloads_path = '/'.join(t2_path)
-        return downloads_path.replace('\\','/')
+        return downloads_path.replace('\\', '/')
 
 
 ################################################################################
@@ -164,7 +164,7 @@ def get_pictures_path():
         t1_path = str(os.path.expanduser("~/Pictures"))
         t2_path = f"{t1_path}".split("\\")
         pictures_path = '/'.join(t2_path)
-        return pictures_path.replace('\\','/')
+        return pictures_path.replace('\\', '/')
 
 
 ################################################################################

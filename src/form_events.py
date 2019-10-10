@@ -65,8 +65,8 @@ class FormEvents:
                 except OSError as e:
                     err = True
                     utilities.show_message_window("error",
-                                              "ERROR",
-                                              f"{messages.error_delete_dll} {game_name} dll\n\n{e.strerror}")
+                                                  "ERROR",
+                                                  f"{messages.error_delete_dll} {game_name} dll\n\n{e.strerror}")
 
             if not err:
                 try:
@@ -176,18 +176,20 @@ class FormEvents:
     ################################################################################
     def update_program(self):
         user_answer = utilities.show_message_window("question", "Update Available",
-                                                f"{messages.new_version_available}\n\n{messages.start_update_question}")
+                                                    f"{messages.new_version_available}\n\n"
+                                                    f"{messages.start_update_question}")
         if user_answer == QtWidgets.QMessageBox.Yes:
             pb_dl_new_version_msg = messages.dl_new_version
             user_download_path = utilities.get_download_path()
             program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
-            downloaded_program_path = f"{user_download_path}\{constants.EXE_PROGRAM_NAME}"
+            downloaded_program_path = f"{user_download_path}\\{constants.EXE_PROGRAM_NAME}"
 
             try:
                 utilities.show_progress_bar(self, pb_dl_new_version_msg, 50)
                 urllib.request.urlretrieve(program_url, downloaded_program_path)
                 utilities.show_progress_bar(self, pb_dl_new_version_msg, 100)
-                utilities.show_message_window("Info", "INFO", f"{messages.info_dl_completed}\n{downloaded_program_path}")
+                utilities.show_message_window("Info", "INFO",
+                                              f"{messages.info_dl_completed}\n{downloaded_program_path}")
                 sys.exit()
             except Exception as e:
                 utilities.show_progress_bar(self, pb_dl_new_version_msg, 100)
