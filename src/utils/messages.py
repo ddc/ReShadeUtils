@@ -21,7 +21,7 @@ confirm_download = "Do you want to download the new version now?"
 
 dl_new_version = "Downloading new version... "
 
-downloading_new_reshade_version = "Downloading new Reshade Version... "
+downloading_new_reshade_version = "Downloading new Reshade version... "
 
 info_dl_completed = "Download completed successfully.\nNew version downloaded to:"
 
@@ -79,7 +79,7 @@ reshade_website_unreacheable = "Unable to reach Reshade website!!!"
 
 error_permissionError = "Permission Error!!!\nPlease run the program with Admin privileges."
 
-new_reshade_version = "New Reshade Version!\nPlease APPLY the new version now."
+new_reshade_version = "New Reshade version installed!"
 
 check_game_uninstalled = "Check if the game has been Uninstalled, or hit the apply button to create the file!"
 

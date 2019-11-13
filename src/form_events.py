@@ -340,12 +340,12 @@ class FormEvents:
             self.qtObj.apply_button.setEnabled(False)
 
             if not os.path.exists(constants.SHADERS_SRC_PATH) \
-                    or (self.update_shaders is not None and self.update_shaders == True):
+                    or (self.update_shaders is not None and self.update_shaders is True):
                 downloaded_new_shaders = True
-            elif self.update_shaders is not None and self.update_shaders == False:
+            elif self.update_shaders is not None and self.update_shaders is False:
                 downloaded_new_shaders = False
 
-            if downloaded_new_shaders is not None and downloaded_new_shaders == True:
+            if downloaded_new_shaders is not None and downloaded_new_shaders is True:
                 try:
                     utilities.show_progress_bar(self, messages.downloading_shaders, 50)
                     urllib.request.urlretrieve(constants.SHADERS_ZIP_URL, constants.SHADERS_ZIP_PATH)
@@ -442,9 +442,10 @@ class FormEvents:
         self.enable_form(True)
         self.qtObj.apply_button.setEnabled(True)
         utilities.show_progress_bar(self, messages.copying_DLLs, 100)
-        if len(errors) == 0:
+
+        if len(errors) == 0 and self.need_apply is False:
             utilities.show_message_window("info", "SUCCESS", f"{messages.apply_success}")
-        else:
+        elif len(errors) == 1:
             err = '\n'.join(errors)
             utilities.show_message_window("error", "ERROR", f"{messages.apply_success_with_errors}\n\n{err}")
 

@@ -218,8 +218,11 @@ class MainSrc:
         utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 100)
 
         if self.need_apply:
+            FormEvents.apply(self)
             utilities.show_message_window("info", "INFO",
-                                      f"{messages.new_reshade_version}\nVersion: {self.reshade_version}")
+                                          f"{messages.new_reshade_version}\n"
+                                          f"Version: {self.reshade_version}\n\n"
+                                          f"{messages.apply_success}")
             self.need_apply = False
 
     ################################################################################
@@ -332,6 +335,7 @@ class MainSrc:
             self.log.error(err_msg)
             print(err_msg)
             # sys.exit()
+
     ################################################################################
     def _check_reshade_files(self, rsConfig):
         if rsConfig[0]["reshade_version"] is not None and len(rsConfig[0]["reshade_version"]) > 0:
