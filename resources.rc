@@ -41,16 +41,24 @@ date=(0, 0)
 StringFileInfo(
   [
   StringTable(
-    u'040904B0',
+    u'040904E4',
     [
-    StringStruct(u'CompanyName',			u'ddc'),
     StringStruct(u'LegalCopyright', 		u'Copyright (c) 2019 ddc'),
+    StringStruct(u'LegalTrademarks', 		u'All rights reserved'),
+    StringStruct(u'Comments', 		        u'Licensed under GPL3'),
+    StringStruct(u'CompanyName',			u'ddc'),
+    StringStruct(u'Developer',			    u'ddc'),
     StringStruct(u'FileDescription',		u'Reshade Utilities'),
     StringStruct(u'ProductName', 			u'Reshade Utilities'),
     StringStruct(u'InternalName',			u'ReshadeUtils'),
     StringStruct(u'OriginalFilename', 		u'ReshadeUtils.exe'),
+    StringStruct(u'Support', 		        u'github.com/ddc/ReshadeUtils'),
+    StringStruct(u'Users', 		            u'Unlimited'),
+    StringStruct(u'PrivateBuild', 		    u''),
+    StringStruct(u'SpecialBuild', 		    u''),
     StringStruct(u'FileVersion',			u'2.5'),
-    StringStruct(u'ProductVersion', 		u'2.5')
+    StringStruct(u'ProductVersion', 		u'2.5'),
+    StringStruct(u'Build', 		            u'November 2019'),
     ])
   ]), 
 VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
