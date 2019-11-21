@@ -7,7 +7,6 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.utils import utilities, constants
 from src.databases.sqlite3.connection import Sqlite3
 from src.databases.postgres.connection import PostgreSQL
 

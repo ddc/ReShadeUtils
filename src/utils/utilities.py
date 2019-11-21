@@ -129,7 +129,7 @@ def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
 ################################################################################
 def open_get_filename():
     filename = QFileDialog.getOpenFileName(None, 'Open file')[0]
-    if filename is '':
+    if filename == '':
         return None
     else:
         return str(filename)
