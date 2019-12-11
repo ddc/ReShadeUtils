@@ -16,6 +16,8 @@ Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to severa
 ## Program Notes
 + Configuration, logs and database files will be saved inside "%APPDATA%/ReshadeUtils"
 + This program was compiled with PyInstaller
++ To install requirements:
+    + pip install -r requirements.txt
 
 ## Acknowledgements
 + [QT5](https://www.qt.io)

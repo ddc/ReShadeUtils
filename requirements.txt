@@ -1,4 +1,5 @@
 PyQt5
 PyInstaller
 psycopg2
+BeautifulSoup4
 requests
