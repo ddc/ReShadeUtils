@@ -43,25 +43,32 @@ class MainSrc:
         self.new_version = None
         self.db_conn = None
         self.remote_reshade_version = None
+        self.client_version = None
 
     ################################################################################
     def init(self):
+        utilities.show_progress_bar(self, messages.initializing, 17)
         sys.excepthook = utilities.log_uncaught_exceptions
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
+        utilities.show_progress_bar(self, messages.checking_files, 17)
         self._check_dirs()
         self._setup_logging()
         self._check_files()
         self.settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
+        utilities.show_progress_bar(self, messages.checking_db_connection, 17)
         self._check_db_connection()
         self._set_default_database_configs()
         self._set_all_configs()
         self._register_form_events()
+        utilities.show_progress_bar(self, messages.checking_new_version, 17)
         self._check_new_program_version()
+        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 17)
         self._check_new_reshade_version()
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
         self.qtObj.api_groupBox.setEnabled(False)
         self.enable_widgets(False)
+        utilities.show_progress_bar(self, messages.ready, 100)
 
     ################################################################################
     def _register_form_events(self):
@@ -79,39 +86,31 @@ class MainSrc:
         self.qtObj.yes_dark_theme_radioButton.clicked.connect(lambda: FormEvents.dark_theme_clicked(self, "YES"))
         self.qtObj.no_dark_theme_radioButton.clicked.connect(lambda: FormEvents.dark_theme_clicked(self, "NO"))
         #########
-        self.qtObj.yes_check_program_updates_radioButton.clicked.connect(
-            lambda: FormEvents.check_program_updates_clicked(self, "YES"))
-        self.qtObj.no_check_program_updates_radioButton.clicked.connect(
-            lambda: FormEvents.check_program_updates_clicked(self, "NO"))
+        self.qtObj.yes_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "YES"))
+        self.qtObj.no_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "NO"))
         #########
-        self.qtObj.yes_check_reshade_updates_radioButton.clicked.connect(
-            lambda: FormEvents.check_reshade_updates_clicked(self, "YES"))
-        self.qtObj.no_check_reshade_updates_radioButton.clicked.connect(
-            lambda: FormEvents.check_reshade_updates_clicked(self, "NO"))
+        self.qtObj.yes_check_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.check_reshade_updates_clicked(self, "YES"))
+        self.qtObj.no_check_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.check_reshade_updates_clicked(self, "NO"))
         #########
-        self.qtObj.yes_update_shaders_radioButton.clicked.connect(
-            lambda: FormEvents.update_shaders_clicked(self, "YES"))
-        self.qtObj.no_update_shaders_radioButton.clicked.connect(
-            lambda: FormEvents.update_shaders_clicked(self, "NO"))
+        self.qtObj.yes_update_shaders_radioButton.clicked.connect(lambda: FormEvents.update_shaders_clicked(self, "YES"))
+        self.qtObj.no_update_shaders_radioButton.clicked.connect(lambda: FormEvents.update_shaders_clicked(self, "NO"))
         #########
-        self.qtObj.yes_screenshots_folder_radioButton.clicked.connect(
-            lambda: FormEvents.create_screenshots_folder_clicked(self, "YES"))
-        self.qtObj.no_screenshots_folder_radioButton.clicked.connect(
-            lambda: FormEvents.create_screenshots_folder_clicked(self, "NO"))
+        self.qtObj.yes_screenshots_folder_radioButton.clicked.connect(lambda: FormEvents.create_screenshots_folder_clicked(self, "YES"))
+        self.qtObj.no_screenshots_folder_radioButton.clicked.connect(lambda: FormEvents.create_screenshots_folder_clicked(self, "NO"))
         #########
-        self.qtObj.yes_reset_reshade_radioButton.clicked.connect(
-            lambda: FormEvents.reset_reshade_files_clicked(self, "YES"))
-        self.qtObj.no_reset_reshade_radioButton.clicked.connect(
-            lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
+        self.qtObj.yes_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "YES"))
+        self.qtObj.no_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
 
     ################################################################################
     def _check_new_program_version(self):
         self.qtObj.updateAvail_label.clear()
         self.qtObj.update_button.setVisible(False)
         if self.check_program_updates:
-            new_version_obj = utilities.check_new_program_version(self, False)
+            self.client_version = constants.VERSION
+            new_version_obj = utilities.check_new_program_version(self)
             if new_version_obj.new_version_available:
                 self.new_version = new_version_obj.new_version
+                self.new_version_msg = new_version_obj.new_version_msg
                 self.qtObj.update_button.setFocus()
                 self.qtObj.updateAvail_label.clear()
                 self.qtObj.updateAvail_label.setText(new_version_obj.new_version_msg)
@@ -122,9 +121,7 @@ class MainSrc:
         self.remote_reshade_version = None
         if self.check_reshade_updates:
             try:
-                utilities.show_progress_bar(self, messages.checking_new_reshade_version, 0)
                 response = requests.get(constants.RESHADE_WEBSITE_URL)
-                utilities.show_progress_bar(self, messages.checking_new_reshade_version, 50)
                 if response.status_code != 200:
                     self.log.error(messages.reshade_page_error)
                 else:
@@ -137,7 +134,6 @@ class MainSrc:
                         if content.startswith('<strong>Version '):
                             self.remote_reshade_version = content.split()[1].strip("</strong>")
                             break
-                utilities.show_progress_bar(self, messages.checking_new_reshade_version, 100)
             except requests.exceptions.ConnectionError as e:
                 self.log.error(f"{messages.reshade_website_unreacheable} {e}")
                 utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
@@ -157,7 +153,6 @@ class MainSrc:
 
         # get new version number
         try:
-            utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 0)
             response = requests.get(constants.RESHADE_WEBSITE_URL)
             if response.status_code != 200:
                 self.log.error(messages.reshade_page_error)
@@ -167,13 +162,11 @@ class MainSrc:
                 body = soup.body
                 blist = str(body).split("<p>")
 
-                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 0)
                 for content in blist:
                     if content.startswith('<strong>Version '):
                         self.reshade_version = content.split()[1].strip("</strong>")
                         exe_download_url = f"{constants.RESHADE_EXE_URL}{self.reshade_version}.exe"
                         break
-                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 20)
         except requests.exceptions.ConnectionError as e:
             self.log.error(f"{messages.reshade_website_unreacheable} {e}")
             utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
@@ -181,7 +174,6 @@ class MainSrc:
 
         # download new version exe
         try:
-            utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 40)
             local_reshade_exe = f"{download_path}{self.reshade_version}.exe"
             urllib.request.urlretrieve(exe_download_url, local_reshade_exe)
         except Exception as e:
@@ -202,11 +194,9 @@ class MainSrc:
                 os.remove(constants.RESHADE64_PATH)
 
         # unzip reshade
-        utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 60)
         self._unzip_reshade(local_reshade_exe)
 
         # save version to sql table
-        utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 80)
         configSql = ConfigsSql(self)
         configsObj = utilities.Object()
         configsObj.reshade_version = self.reshade_version
@@ -215,7 +205,6 @@ class MainSrc:
         # set version label
         self.qtObj.reshade_version_label.clear()
         self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
-        utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 100)
 
         if self.need_apply:
             FormEvents.apply(self)
@@ -514,19 +503,19 @@ class MainSrc:
 
             self.qtObj.radioButton_32bits.setAutoExclusive(False)
             self.qtObj.radioButton_32bits.setChecked(False)
-            self.qtObj.radioButton_32bits.setAutoExclusive(True)
+            #self.qtObj.radioButton_32bits.setAutoExclusive(True)
 
             self.qtObj.radioButton_64bits.setAutoExclusive(False)
             self.qtObj.radioButton_64bits.setChecked(False)
-            self.qtObj.radioButton_64bits.setAutoExclusive(True)
+            #self.qtObj.radioButton_64bits.setAutoExclusive(True)
 
             self.qtObj.dx9_radioButton.setAutoExclusive(False)
             self.qtObj.dx9_radioButton.setChecked(False)
-            self.qtObj.dx9_radioButton.setAutoExclusive(True)
+            #self.qtObj.dx9_radioButton.setAutoExclusive(True)
 
             self.qtObj.dx11_radioButton.setAutoExclusive(False)
             self.qtObj.dx11_radioButton.setChecked(False)
-            self.qtObj.dx11_radioButton.setAutoExclusive(True)
+            #self.qtObj.dx11_radioButton.setAutoExclusive(True)
 
         self._en_dis_apply_button()
         self.qtObj.delete_button.setEnabled(status)

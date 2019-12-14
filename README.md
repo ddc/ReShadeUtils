@@ -6,7 +6,7 @@
 [![GitHub release](https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic)](https://github.com/ddc/ReshadeUtils/releases/latest)
 [![QT5](https://img.shields.io/badge/QT-5-brightgreen.svg?style=plastic)](https://www.qt.io/)
 
-Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to several games.
+Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to several games at once.
 
 ![screenshot](src/images/screenshot.png)
 
