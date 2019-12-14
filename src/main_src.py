@@ -47,23 +47,34 @@ class MainSrc:
 
     ################################################################################
     def init(self):
-        utilities.show_progress_bar(self, messages.initializing, 17)
+        utilities.show_progress_bar(self, messages.initializing, 15)
         sys.excepthook = utilities.log_uncaught_exceptions
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
-        utilities.show_progress_bar(self, messages.checking_files, 17)
+
+        utilities.show_progress_bar(self, messages.checking_files, 30)
         self._check_dirs()
         self._setup_logging()
         self._check_files()
         self.settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
-        utilities.show_progress_bar(self, messages.checking_db_connection, 17)
+
+        utilities.show_progress_bar(self, messages.checking_db_connection, 45)
         self._check_db_connection()
         self._set_default_database_configs()
         self._set_all_configs()
         self._register_form_events()
-        utilities.show_progress_bar(self, messages.checking_new_version, 17)
+
+        utilities.show_progress_bar(self, messages.checking_new_version, 60)
         self._check_new_program_version()
-        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 17)
+
+        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 75)
         self._check_new_reshade_version()
+
+        if self.remote_reshade_version is not None:
+            if self.reshade_version != self.remote_reshade_version:
+                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 90)
+                self.need_apply = True
+                self._download_new_reshade_version()
+
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
         self.qtObj.api_groupBox.setEnabled(False)
@@ -138,11 +149,6 @@ class MainSrc:
                 self.log.error(f"{messages.reshade_website_unreacheable} {e}")
                 utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
                 return
-
-            if self.remote_reshade_version is not None:
-                if self.reshade_version != self.remote_reshade_version:
-                    self.need_apply = True
-                    self._download_new_reshade_version()
 
     ################################################################################
     def _download_new_reshade_version(self):
@@ -338,9 +344,11 @@ class MainSrc:
 
         try:
             if not os.path.exists(local_reshade_exe):
+                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 50)
                 self._download_new_reshade_version()
         except OSError as e:
             self.log.error(f"{e}")
+        utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 100)
 
         try:
             if not os.path.exists(constants.RESHADE32_PATH):
@@ -440,8 +448,7 @@ class MainSrc:
         QtWidgets.QApplication.processEvents()
 
         self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: FormEvents.game_config_form(self, "OK"))
-        self.game_config_form.qtObj.cancel_pushButton.clicked.connect(
-            lambda: FormEvents.game_config_form(self, "CANCEL"))
+        self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: FormEvents.game_config_form(self, "CANCEL"))
 
         if self.selected_game is not None:
             self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.rs[0]["name"])
@@ -503,19 +510,15 @@ class MainSrc:
 
             self.qtObj.radioButton_32bits.setAutoExclusive(False)
             self.qtObj.radioButton_32bits.setChecked(False)
-            #self.qtObj.radioButton_32bits.setAutoExclusive(True)
 
             self.qtObj.radioButton_64bits.setAutoExclusive(False)
             self.qtObj.radioButton_64bits.setChecked(False)
-            #self.qtObj.radioButton_64bits.setAutoExclusive(True)
 
             self.qtObj.dx9_radioButton.setAutoExclusive(False)
             self.qtObj.dx9_radioButton.setChecked(False)
-            #self.qtObj.dx9_radioButton.setAutoExclusive(True)
 
             self.qtObj.dx11_radioButton.setAutoExclusive(False)
             self.qtObj.dx11_radioButton.setChecked(False)
-            #self.qtObj.dx11_radioButton.setAutoExclusive(True)
 
         self._en_dis_apply_button()
         self.qtObj.delete_button.setEnabled(status)
