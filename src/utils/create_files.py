@@ -40,52 +40,52 @@ Password="postgres"
         file = open(constants.RESHADE_PLUGINS_FILENAME, encoding="utf-8", mode="w")
         file.write(
 """Effects=Clarity.fx,Curves.fx,DPX.fx,LumaSharpen.fx,Levels.fx
-Techniques=Clarity,Curves,DPX,LumaSharpen,Levels
-TechniqueSorting=Clarity,Curves,DPX,LumaSharpen,Levels,MXAO,SMAA,ASCII,AdaptiveFog,AdaptiveSharpen,AdvancedCRT,After,AmbientLight,Before,BloomAndLensFlares,Border,CA,Cartoon,Chromakey,ChromaticAberration,CinematicDOF,ColorMatrix,Colourfulness,Crosshair,Daltonize,Deband,Depth3D,DepthHaze,DisplayDepth,Emphasize,EyeAdaption,FilmGrain,FilmGrain2,FilmicAnamorphSharpen,FilmicPass,FXAA,GP65CJ042DOF,GaussianBlur,GlitchB,HDR,HQ4X,HSLShift,HighPassSharp,KNearestNeighbors,LUT,Layer,LeiFx_Tech,LevelsPlus,LiftGammaGain,LightDoF_AutoFocus,LightDoF_Far,LightDoF_Near,MagicBloom,MagicDOF,MartyMcFlyDOF,MatsoDOF,Mode1,Mode2,Mode3,Monochrome,MotionBlur,MultiLUT,Nightvision,NonLocalMeans,Nostalgia,PPFXBloom,PPFXSSDO,PPFX_Godrays,PerfectPerspective,ReflectiveBumpmapping,RingDOF,StageDepth,SurfaceBlur,Technicolor,Technicolor2,TiltShift,Tint,Tonemap,TriDither,UIDetect,UIDetect_After,UIDetect_Before,UIMask_Bottom,UIMask_Top,Vibrance,Vignette
 PreprocessorDefinitions=
+Techniques=Clarity,Curves,DPX,LumaSharpen,Levels
+TechniqueSorting=Clarity,Curves,DPX,LumaSharpen,Levels,MXAO,SMAA,ASCII,AdaptiveFog,AdaptiveSharpen,AdvancedCRT,After,AmbientLight,Before,BloomAndLensFlares,Border,CA,Cartoon,Chromakey,ChromaticAberration,CinematicDOF,ColorMatrix,Colourfulness,Daltonize,Deband,Depth3D,DepthHaze,DisplayDepth,Emphasize,EyeAdaption,FilmGrain,FilmGrain2,FilmicAnamorphSharpen,FilmicPass,FXAA,GP65CJ042DOF,GaussianBlur,GlitchB,HDR,HQ4X,HSLShift,HighPassSharp,KNearestNeighbors,LUT,Layer,LeiFx_Tech,LevelsPlus,LiftGammaGain,LightDoF_AutoFocus,LightDoF_Far,LightDoF_Near,MagicBloom,MagicDOF,MartyMcFlyDOF,MatsoDOF,Mode1,Mode2,Mode3,Monochrome,MotionBlur,MultiLUT,Nightvision,NonLocalMeans,Nostalgia,PPFXBloom,PPFXSSDO,PPFX_Godrays,PerfectPerspective,ReflectiveBumpmapping,RingDOF,StageDepth,SurfaceBlur,Technicolor,Technicolor2,TiltShift,Tint,Tonemap,TriDither,UIDetect,UIDetect_After,UIDetect_Before,UIMask_Bottom,UIMask_Top,Vibrance,Vignette,AspectRatioPS
 
 [Clarity.fx]
-ClarityBlendMode=2
-ClarityRadius=4
-ClarityOffset=5.000000
-ClarityDarkIntensity=0.400000
 ClarityBlendIfDark=50
-ClarityBlendIfLight=205
+ClarityBlendIfLight=200
+ClarityBlendMode=4
+ClarityDarkIntensity=0.400000
+ClarityLightIntensity=0.000000
+ClarityOffset=5.000000
+ClarityRadius=4
 ClarityStrength=0.400000
 ClarityViewBlendIfMask=0
-ClarityLightIntensity=0.000000
 ClarityViewMask=0
 
 [Curves.fx]
-Mode=0
-Formula=4
 Contrast=0.300000
-
-[LumaSharpen.fx]
-pattern=3
-sharp_strength=1.100000
-sharp_clamp=0.500000
-offset_bias=1.000000
-show_sharpen=0
+Formula=4
+Mode=0
 
 [DPX.fx]
-Strength=0.200000
-RGB_Curve=8.000000,8.000000,8.000000
-RGB_C=0.360000,0.360000,0.340000
-Contrast=0.100000
-Saturation=2.000000
 Colorfulness=2.500000
+Contrast=0.100000
+RGB_C=0.360000,0.360000,0.340000
+RGB_Curve=8.000000,8.000000,8.000000
+Saturation=3.000003
+Strength=0.200000
 
 [Levels.fx]
 BlackPoint=5
-WhitePoint=235
 HighlightClipping=0
+WhitePoint=235
+
+[LumaSharpen.fx]
+offset_bias=1.000000
+pattern=1
+sharp_clamp=0.500000
+sharp_strength=1.100000
+show_sharpen=0
 """)
         file.close()
 
     ################################################################################
     def create_reshade_ini_file(self, game_path:str, screenshot_path:str):
-        file = open(f"{game_path}\{constants.RESHADE_INI}", encoding="utf-8", mode="w")
+        file = open(f"{game_path}\\{constants.RESHADE_INI}", encoding="utf-8", mode="w")
         file.write(
 f"""[INPUT]
 KeyMenu=119,0,1,0
@@ -95,11 +95,11 @@ KeyEffects=145,0,0,0
 KeyReload=0,0,0,0
 
 [GENERAL]
-TextureSearchPaths={constants.PROGRAM_PATH}\Reshade-shaders\Textures
-EffectSearchPaths={constants.PROGRAM_PATH}\Reshade-shaders\Shaders
+TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\Textures
+EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\Shaders
 ScreenshotPath={screenshot_path}
-CurrentPresetPath={game_path}\{constants.RESHADE_PLUGINS_INI}
-PresetFiles=.\{constants.RESHADE_PLUGINS_INI}
+CurrentPresetPath={game_path}\\{constants.RESHADE_PLUGINS_INI}
+PresetFiles=.\\{constants.RESHADE_PLUGINS_INI}
 ScreenshotIncludePreset=0
 NoFontScaling=0
 ClockFormat=1
