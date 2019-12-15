@@ -226,7 +226,7 @@ def check_new_program_version(self):
     obj_return.new_version = None
 
     try:
-        req = requests.get(remote_version_filename)
+        req = requests.get(remote_version_filename, stream=True, timeout=3)
         if req.status_code == 200:
             remote_version = req.text
 
