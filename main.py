@@ -241,7 +241,7 @@ class Ui_Main(object):
         item = self.programs_tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("Main", "Path"))
         self.edit_config_button.setToolTip(_translate("Main", "Click to edit the game path"))
-        self.edit_config_button.setText(_translate("Main", "OPEN CONFIG"))
+        self.edit_config_button.setText(_translate("Main", "EDIT CONFIG"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.games_tab), _translate("Main", "Games"))
         self.update_shaders_groupBox.setTitle(_translate("Main", "Update Shader Files"))
         self.yes_update_shaders_radioButton.setText(_translate("Main", "YES"))
