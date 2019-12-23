@@ -66,7 +66,7 @@ Colorfulness=2.500000
 Contrast=0.100000
 RGB_C=0.360000,0.360000,0.340000
 RGB_Curve=8.000000,8.000000,8.000000
-Saturation=3.000003
+Saturation=2.500000
 Strength=0.200000
 
 [Levels.fx]
@@ -78,7 +78,7 @@ WhitePoint=235
 offset_bias=1.000000
 pattern=1
 sharp_clamp=0.500000
-sharp_strength=1.100000
+sharp_strength=1.500000
 show_sharpen=0
 """)
         file.close()
