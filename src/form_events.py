@@ -154,7 +154,20 @@ class FormEvents:
         if self.selected_game is not None and len(self.selected_game.rs) > 0:
             path_list = self.selected_game.rs[0]["path"].split("\\")[:-1]
             game_path = '\\'.join(path_list)
-            res_plug_ini_path = f"{game_path}\{constants.RESHADE_PLUGINS_INI}"
+            res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
+
+            try:
+                if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
+                    create_files = CreateFiles(self)
+                    create_files.create_reshade_plugins_ini_file()
+            except Exception as e:
+                self.log.error(f"{e}")
+
+            try:
+                if not os.path.exists(res_plug_ini_path) and os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
+                    shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, res_plug_ini_path)
+            except Exception as e:
+                self.log.error(f"{e}")
 
             try:
                 os.startfile(f"\"{res_plug_ini_path}\"")
@@ -166,6 +179,13 @@ class FormEvents:
 
     ################################################################################
     def edit_default_config_file(self):
+        try:
+            if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
+                create_files = CreateFiles(self)
+                create_files.create_reshade_plugins_ini_file()
+        except Exception as e:
+            self.log.error(f"{e}")
+
         try:
             os.startfile(f"\"{constants.RESHADE_PLUGINS_FILENAME}\"")
         except Exception as e:
@@ -463,7 +483,7 @@ class FormEvents:
                     games_obj.api = "DX11"
                     dst_path = f"{self.selected_game.game_dir}\\{constants.DXGI}"
 
-                    # checking name changes
+                # checking name changes
                 if self.selected_game.rs[0]["name"] != games_obj.game_name:
                     # create Reshade.ini to replace edit CurrentPresetPath
                     old_screenshots_path = _get_screenshot_path(self, self.selected_game.game_dir,
@@ -542,7 +562,7 @@ def _get_screenshot_path(self, game_path, game_name):
         except OSError as e:
             self.log.error(f"{e}")
     else:
-        file = f"{game_path}\{constants.RESHADE_INI}"
+        file = f"{game_path}\\{constants.RESHADE_INI}"
         reshade_config_screenshot_path = utilities.get_ini_settings(file, "GENERAL", "ScreenshotPath")
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path

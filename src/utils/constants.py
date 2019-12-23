@@ -13,8 +13,8 @@ import platform
 import logging
 from src.utils import utilities
 
+VERSION = "2.8"
 PROGRAM_NAME = "Reshade Utils"
-VERSION = "2.7"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
