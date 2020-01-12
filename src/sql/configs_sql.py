@@ -22,20 +22,9 @@ class ConfigsSql:
         return databases.select(sql)
 
     ################################################################################
-    def set_default_configs(self, configsObj: object):
-        sql = f"""INSERT INTO configs(
-            use_dark_theme,
-            update_shaders,
-            check_program_updates,
-            check_reshade_updates,
-            create_screenshots_folder
-            )VALUES(
-            '{configsObj.use_dark_theme}',
-            '{configsObj.update_shaders}',
-            '{configsObj.check_program_updates}',
-            '{configsObj.check_reshade_updates}',
-            '{configsObj.create_screenshots_folder}'
-            );"""
+    def set_default_configs(self):
+        sql = """DELETE from configs;
+                INSERT INTO configs(id) VALUES (1);"""
         databases = Databases(self.main)
         databases.execute(sql)
 

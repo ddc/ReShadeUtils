@@ -7,19 +7,20 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
+import sys
+import os
+import requests
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
 from src.utils.create_files import CreateFiles
 from src.utils import constants, messages, utilities
 import logging.handlers
-import sys
-import os
 from src.sql.initial_tables_sql import InitialTablesSql
 from src.sql.triggers_sql import TriggersSql
 from src.sql.configs_sql import ConfigsSql
 from src.sql.games_sql import GamesSql
+from src.sql.update_tables_sql import UpdateTablesSql
 from src.game_configs import UiGameConfigForm
-import requests
 import urllib.request
 from bs4 import BeautifulSoup
 from src.form_events import FormEvents
@@ -316,6 +317,21 @@ class MainSrc:
 
     ################################################################################
     def _set_default_database_configs(self):
+
+        configSql = ConfigsSql(self)
+        rsConfig = configSql.get_configs()
+
+        # check for version
+        if len(rsConfig) > 0:
+            if rsConfig[0]["program_version"] is not None and rsConfig[0]["program_version"] != constants.VERSION:
+                # if different check for columns ...
+                # if columns different, update tables
+                updateTablesSql = UpdateTablesSql(self)
+                ut = updateTablesSql.update_tables()
+
+
+            return
+
         initialTablesSql = InitialTablesSql(self)
         it = initialTablesSql.create_initial_tables()
         if it is not None:
@@ -324,17 +340,8 @@ class MainSrc:
             print(err_msg)
             # sys.exit()
 
-        configSql = ConfigsSql(self)
-        rsConfig = configSql.get_configs()
-
         if rsConfig is not None and len(rsConfig) == 0:
-            configsObj = utilities.Object()
-            configsObj.use_dark_theme = "Y"
-            configsObj.update_shaders = "Y"
-            configsObj.check_program_updates = "Y"
-            configsObj.check_reshade_updates = "Y"
-            configsObj.create_screenshots_folder = "Y"
-            configSql.set_default_configs(configsObj)
+            configSql.set_default_configs()
 
         triggersSql = TriggersSql(self)
         tr = triggersSql.create_triggers()

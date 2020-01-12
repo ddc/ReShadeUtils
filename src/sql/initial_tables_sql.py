@@ -21,6 +21,7 @@ class InitialTablesSql:
         databases = Databases(self.main)
         primary_key_type = databases.set_primary_key_type()
 
+        # if changed order of columns, need to change on update_tables_sql.py as well
         sql = f"""
         CREATE TABLE IF NOT EXISTS configs (
             id                              {primary_key_type},
@@ -28,9 +29,10 @@ class InitialTablesSql:
             update_shaders                  CHAR(1)  NOT NULL DEFAULT 'Y',
             check_program_updates           CHAR(1)  NOT NULL DEFAULT 'Y',
             check_reshade_updates           CHAR(1)  NOT NULL DEFAULT 'Y',
-            create_screenshots_folder       CHAR(1)  NOT NULL DEFAULT 'Y',
             silent_reshade_updates          CHAR(1)  NOT NULL DEFAULT 'Y',
             reset_reshade_files             CHAR(1)  NOT NULL DEFAULT 'N',
+            create_screenshots_folder       CHAR(1)  NOT NULL DEFAULT 'Y',
+            program_version                 TEXT,
             reshade_version                 TEXT,
             CONSTRAINT  check_use_dark_theme CHECK (use_dark_theme IN ('Y','N')),
             CONSTRAINT  check_update_shaders CHECK (update_shaders IN ('Y','N')),
@@ -46,7 +48,7 @@ class InitialTablesSql:
             name           TEXT     NOT NULL,
             architecture   TEXT     NOT NULL,
             api            TEXT     NOT NULL,
-            path           TEXT     NOT NULL
+            path           TEXT     NOT NULL,
         );
 
         """

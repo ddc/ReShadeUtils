@@ -46,6 +46,7 @@ check_game_uninstalled = "Check if the game has been Uninstalled, or hit the app
 no_change_path = "No changes to path were made!"
 not_same_game = "Please, choose the same game as before!"
 path_changed_success = "Path was changed successfully!"
+update_reshade_question = "Download new Reshade version now?"
 
 # update messages
 latest_version = "You have the latest version."
@@ -60,4 +61,3 @@ check_downloaded_dir = "If you already downloaded the new version,\nplease check
 confirm_download = "Do you want to download the new version now?"
 remote_version_file_not_found = "ERROR: Remote File: VERSION was not found."
 start_update_question = "Start update now?"
-update_reshade_question = "Download new Reshade version now?"
