@@ -21,7 +21,7 @@ class UpdateTablesSql:
     ################################################################################
     def update_tables(self):
         databases = Databases(self.main)
-        configs_table_vars = ["id",
+        configs_table_columns = ["id",
                             "use_dark_theme",
                             "update_shaders",
                             "check_program_updates",
@@ -32,11 +32,14 @@ class UpdateTablesSql:
                             "program_version",
                             "reshade_version"]
 
-        games_table_vars = ["id",
+        games_table_columns = ["id",
                             "name",
                             "architecture",
                             "api",
                             "path"]
+
+        configs_table_vars = str(configs_table_columns)[1:-1]
+        games_table_vars = str(games_table_columns)[1:-1]
 
         sql = """DROP TRIGGER if exists "before_insert_configs";
                 DROP TABLE if exists "configs_old";
@@ -45,7 +48,7 @@ class UpdateTablesSql:
                 ALTER TABLE "games" RENAME TO "games_old";"""
         databases.execute(sql)
 
-        initialTablesSql = InitialTablesSql(self)
+        initialTablesSql = InitialTablesSql(self.main)
         it = initialTablesSql.create_initial_tables()
         if it is not None:
             err_msg = messages.error_create_sql_config_msg
@@ -55,15 +58,15 @@ class UpdateTablesSql:
         sql = f"""INSERT INTO "configs" ({configs_table_vars}) 
                 SELECT {configs_table_vars} FROM "configs_old";
             
-                INSERT INTO "games" ({games_table_vars}
-                    SELECT {games_table_vars} FROM "_games_old";
+                INSERT INTO "games" ({games_table_vars})
+                    SELECT {games_table_vars} FROM "games_old";
                 
                 DROP TABLE if exists "configs_old";
                 DROP TABLE if exists "games_old";
             """
         databases.execute(sql)
 
-        triggersSql = TriggersSql(self)
+        triggersSql = TriggersSql(self.main)
         tr = triggersSql.create_triggers()
         if tr is not None:
             err_msg = messages.error_create_sql_config_msg

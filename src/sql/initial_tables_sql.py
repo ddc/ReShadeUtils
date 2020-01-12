@@ -48,7 +48,7 @@ class InitialTablesSql:
             name           TEXT     NOT NULL,
             architecture   TEXT     NOT NULL,
             api            TEXT     NOT NULL,
-            path           TEXT     NOT NULL,
+            path           TEXT     NOT NULL
         );
 
         """

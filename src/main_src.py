@@ -317,13 +317,14 @@ class MainSrc:
 
     ################################################################################
     def _set_default_database_configs(self):
-
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
 
         # check for version
         if len(rsConfig) > 0:
-            if rsConfig[0]["program_version"] is not None and rsConfig[0]["program_version"] != constants.VERSION:
+            if not hasattr(rsConfig, "program_version") \
+                or rsConfig[0]["program_version"] is not None \
+                    and rsConfig[0]["program_version"] != constants.VERSION:
                 # if different check for columns ...
                 # if columns different, update tables
                 updateTablesSql = UpdateTablesSql(self)
