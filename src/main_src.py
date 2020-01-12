@@ -37,6 +37,7 @@ class MainSrc:
         self.update_shaders = None
         self.check_program_updates = None
         self.check_reshade_updates = None
+        self.silent_reshade_updates = None
         self.create_screenshots_folder = None
         self.reset_reshade_files = None
         self.need_apply = False
@@ -73,7 +74,13 @@ class MainSrc:
             if self.reshade_version != self.remote_reshade_version:
                 utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 90)
                 self.need_apply = True
-                self._download_new_reshade_version()
+                if self.silent_reshade_updates:
+                    self._download_new_reshade_version()
+                else:
+                    msg = f"{messages.update_reshade_question}"
+                    reply = utilities.show_message_window("question", "Download new Reshade version", msg)
+                    if reply == QtWidgets.QMessageBox.Yes:
+                        self._download_new_reshade_version()
 
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
@@ -83,25 +90,29 @@ class MainSrc:
 
     ################################################################################
     def _register_form_events(self):
+        # TAB 1 - games
         self.qtObj.add_button.clicked.connect(lambda: FormEvents.add_game(self))
         self.qtObj.delete_button.clicked.connect(lambda: FormEvents.delete_game(self))
         self.qtObj.edit_path_button.clicked.connect(lambda: FormEvents.edit_game_path(self))
         self.qtObj.edit_config_button.clicked.connect(lambda: FormEvents.open_reshade_config_file(self))
         self.qtObj.update_button.clicked.connect(lambda: FormEvents.update_program(self))
         self.qtObj.apply_button.clicked.connect(lambda: FormEvents.apply(self))
-        self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
         #########
         self.qtObj.programs_tableWidget.clicked.connect(self._programs_tableWidget_clicked)
         self.qtObj.programs_tableWidget.itemDoubleClicked.connect(self._programs_tableWidget_double_clicked)
+        # TAB 2 - configs
         #########
         self.qtObj.yes_dark_theme_radioButton.clicked.connect(lambda: FormEvents.dark_theme_clicked(self, "YES"))
         self.qtObj.no_dark_theme_radioButton.clicked.connect(lambda: FormEvents.dark_theme_clicked(self, "NO"))
         #########
-        self.qtObj.yes_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "YES"))
-        self.qtObj.no_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "NO"))
-        #########
         self.qtObj.yes_check_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.check_reshade_updates_clicked(self, "YES"))
         self.qtObj.no_check_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.check_reshade_updates_clicked(self, "NO"))
+        #########
+        self.qtObj.yes_silent_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.silent_reshade_updates_clicked(self, "YES"))
+        self.qtObj.no_silent_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.silent_reshade_updates_clicked(self, "NO"))
+        #########
+        self.qtObj.yes_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "YES"))
+        self.qtObj.no_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "NO"))
         #########
         self.qtObj.yes_update_shaders_radioButton.clicked.connect(lambda: FormEvents.update_shaders_clicked(self, "YES"))
         self.qtObj.no_update_shaders_radioButton.clicked.connect(lambda: FormEvents.update_shaders_clicked(self, "NO"))
@@ -111,6 +122,8 @@ class MainSrc:
         #########
         self.qtObj.yes_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "YES"))
         self.qtObj.no_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
+        #########
+        self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
 
     ################################################################################
     def _check_new_program_version(self):
@@ -433,6 +446,17 @@ class MainSrc:
                 self.reset_reshade_files = True
                 self.qtObj.yes_reset_reshade_radioButton.setChecked(True)
                 self.qtObj.no_reset_reshade_radioButton.setChecked(False)
+
+            if rsConfig[0]["silent_reshade_updates"].upper() == "N":
+                self.silent_reshade_updates = False
+                self.qtObj.yes_silent_reshade_updates_radioButton.setChecked(False)
+                self.qtObj.no_silent_reshade_updates_radioButton.setChecked(True)
+            else:
+                self.silent_reshade_updates = True
+                self.qtObj.yes_silent_reshade_updates_radioButton.setChecked(True)
+                self.qtObj.no_silent_reshade_updates_radioButton.setChecked(False)
+            self.qtObj.silent_reshade_updates_groupBox.setEnabled(self.check_reshade_updates)
+            self.qtObj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
 
     ################################################################################
     def _show_game_config_form(self, game_name: str):

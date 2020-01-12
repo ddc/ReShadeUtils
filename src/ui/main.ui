@@ -402,7 +402,7 @@
      <property name="geometry">
       <rect>
        <x>210</x>
-       <y>290</y>
+       <y>300</y>
        <width>175</width>
        <height>60</height>
       </rect>
@@ -413,7 +413,7 @@
      <widget class="QRadioButton" name="yes_update_shaders_radioButton">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -452,7 +452,7 @@
      <widget class="QRadioButton" name="yes_check_program_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -491,7 +491,7 @@
      <widget class="QRadioButton" name="yes_dark_theme_radioButton">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -519,7 +519,7 @@
      <property name="geometry">
       <rect>
        <x>520</x>
-       <y>290</y>
+       <y>300</y>
        <width>175</width>
        <height>60</height>
       </rect>
@@ -530,7 +530,7 @@
      <widget class="QRadioButton" name="yes_screenshots_folder_radioButton">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -569,7 +569,7 @@
      <widget class="QRadioButton" name="yes_reset_reshade_radioButton">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -621,7 +621,7 @@
      <widget class="QRadioButton" name="no_check_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>120</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -665,6 +665,45 @@
      <property name="text">
       <string>EDIT DEFAULT CONFIGS</string>
      </property>
+    </widget>
+    <widget class="QGroupBox" name="silent_reshade_updates_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>240</y>
+       <width>175</width>
+       <height>45</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Silent update on startup</string>
+     </property>
+     <widget class="QRadioButton" name="yes_silent_reshade_updates_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>50</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_silent_reshade_updates_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>20</y>
+        <width>45</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="about_tab">

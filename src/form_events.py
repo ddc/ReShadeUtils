@@ -235,10 +235,27 @@ class FormEvents:
             self.check_reshade_updates = False
             status = "N"
 
+        self.qtObj.silent_reshade_updates_groupBox.setEnabled(self.check_reshade_updates)
+        self.qtObj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
+
         config_sql = ConfigsSql(self)
         configs_obj = utilities.Object()
         configs_obj.status = status
         config_sql.update_check_resahde_updates(configs_obj)
+
+    ################################################################################
+    def silent_reshade_updates_clicked(self, status: str):
+        if status == "YES":
+            self.silent_reshade_updates = True
+            status = "Y"
+        else:
+            self.silent_reshade_updates = False
+            status = "N"
+
+        config_sql = ConfigsSql(self)
+        configs_obj = utilities.Object()
+        configs_obj.status = status
+        config_sql.update_silent_reshade_updates(configs_obj)
 
     ################################################################################
     def update_shaders_clicked(self, status: str):
@@ -336,6 +353,7 @@ class FormEvents:
             self.enable_widgets(False)
             self.qtObj.apply_button.setEnabled(False)
 
+            downloaded_new_shaders = None
             if not os.path.exists(constants.SHADERS_SRC_PATH) \
                     or (self.update_shaders is not None and self.update_shaders is True):
                 downloaded_new_shaders = True

@@ -72,6 +72,14 @@ class ConfigsSql:
         databases.execute(sql)
 
     #################################################################################
+    def update_silent_reshade_updates(self, configsObj: object):
+        sql = f"""UPDATE configs SET
+                silent_reshade_updates = '{configsObj.status}'
+                WHERE id = 1;"""
+        databases = Databases(self.main)
+        databases.execute(sql)
+
+    #################################################################################
     def update_create_screenshots_folder(self, configsObj: object):
         sql = f"""UPDATE configs SET
                 create_screenshots_folder = '{configsObj.status}'

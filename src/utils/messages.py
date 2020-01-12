@@ -60,4 +60,4 @@ check_downloaded_dir = "If you already downloaded the new version,\nplease check
 confirm_download = "Do you want to download the new version now?"
 remote_version_file_not_found = "ERROR: Remote File: VERSION was not found."
 start_update_question = "Start update now?"
-
+update_reshade_question = "Download new Reshade version now?"

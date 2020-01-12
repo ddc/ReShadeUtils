@@ -23,20 +23,22 @@ class InitialTablesSql:
 
         sql = f"""
         CREATE TABLE IF NOT EXISTS configs (
-            id                          {primary_key_type},
-            use_dark_theme              CHAR(1)  NOT NULL DEFAULT 'Y',
-            update_shaders              CHAR(1)  NOT NULL DEFAULT 'Y',
-            check_program_updates       CHAR(1)  NOT NULL DEFAULT 'Y',
-            check_reshade_updates       CHAR(1)  NOT NULL DEFAULT 'Y',
-            create_screenshots_folder   CHAR(1)  NOT NULL DEFAULT 'Y',
-            reset_reshade_files         CHAR(1)  NOT NULL DEFAULT 'N',
-            reshade_version             TEXT,
-            CONSTRAINT  check_use_dark_theme_y_n CHECK (use_dark_theme IN ('Y','N')),
-            CONSTRAINT  check_update_shaders_y_n CHECK (update_shaders IN ('Y','N')),
-            CONSTRAINT  check_program_updates_y_n CHECK (check_program_updates IN ('Y','N')),
-            CONSTRAINT  check_reshade_updates_y_n CHECK (check_reshade_updates IN ('Y','N')),
-            CONSTRAINT  check_create_screenshots_folder_y_n CHECK (create_screenshots_folder IN ('Y','N')),
-            CONSTRAINT  check_reset_reshade_files_y_n CHECK (reset_reshade_files IN ('Y','N'))
+            id                              {primary_key_type},
+            use_dark_theme                  CHAR(1)  NOT NULL DEFAULT 'Y',
+            update_shaders                  CHAR(1)  NOT NULL DEFAULT 'Y',
+            check_program_updates           CHAR(1)  NOT NULL DEFAULT 'Y',
+            check_reshade_updates           CHAR(1)  NOT NULL DEFAULT 'Y',
+            create_screenshots_folder       CHAR(1)  NOT NULL DEFAULT 'Y',
+            silent_reshade_updates          CHAR(1)  NOT NULL DEFAULT 'Y',
+            reset_reshade_files             CHAR(1)  NOT NULL DEFAULT 'N',
+            reshade_version                 TEXT,
+            CONSTRAINT  check_use_dark_theme CHECK (use_dark_theme IN ('Y','N')),
+            CONSTRAINT  check_update_shaders CHECK (update_shaders IN ('Y','N')),
+            CONSTRAINT  check_program_updates CHECK (check_program_updates IN ('Y','N')),
+            CONSTRAINT  check_reshade_updates CHECK (check_reshade_updates IN ('Y','N')),
+            CONSTRAINT  check_create_screenshots_folder CHECK (create_screenshots_folder IN ('Y','N')),
+            CONSTRAINT  check_silent_reshade_updates CHECK (silent_reshade_updates IN ('Y','N')),
+            CONSTRAINT  check_reset_reshade_files CHECK (reset_reshade_files IN ('Y','N'))
         );
         
         CREATE TABLE IF NOT EXISTS games (

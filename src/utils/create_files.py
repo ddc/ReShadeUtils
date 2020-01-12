@@ -78,7 +78,7 @@ WhitePoint=235
 offset_bias=1.000000
 pattern=1
 sharp_clamp=0.500000
-sharp_strength=1.500000
+sharp_strength=1.000000
 show_sharpen=0
 """)
         file.close()
@@ -95,8 +95,8 @@ KeyEffects=145,0,0,0
 KeyReload=0,0,0,0
 
 [GENERAL]
-TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\Textures
-EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\Shaders
+TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Textures
+EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Shaders
 ScreenshotPath={screenshot_path}
 CurrentPresetPath={game_path}\\{constants.RESHADE_PLUGINS_INI}
 PresetFiles=.\\{constants.RESHADE_PLUGINS_INI}
