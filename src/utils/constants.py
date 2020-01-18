@@ -7,10 +7,11 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-import os
-import sys
-import platform
 import logging
+import os
+import platform
+import sys
+
 from src.utils import utilities
 
 VERSION = "2.9"
@@ -64,4 +65,5 @@ SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"
 ################################################################################
+# table columns after fisrt release
 NEW_CONFIG_TABLE_COLUMNS = ["silent_reshade_updates", "program_version"]
