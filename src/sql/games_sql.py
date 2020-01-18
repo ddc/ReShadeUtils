@@ -16,7 +16,7 @@ class GamesSql:
         self.log = main.log
 
     ################################################################################
-    def get_all_games(self):
+    def get_games(self):
         sql = "SELECT * from games ORDER BY LOWER(name) ASC;"
         databases = Databases(self.main)
         return databases.select(sql)

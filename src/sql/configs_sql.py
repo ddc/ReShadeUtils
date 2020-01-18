@@ -91,3 +91,11 @@ class ConfigsSql:
                 WHERE id = 1;"""
         databases = Databases(self.main)
         databases.execute(sql)
+
+    ################################################################################
+    def update_program_version(self, configsObj: object):
+        sql = f"""UPDATE configs SET
+                program_version = '{configsObj.program_version}'
+                WHERE id = 1;"""
+        databases = Databases(self.main)
+        databases.execute(sql)

@@ -63,3 +63,5 @@ CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/s
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"
+################################################################################
+NEW_CONFIG_TABLE_COLUMNS = ["silent_reshade_updates", "program_version"]

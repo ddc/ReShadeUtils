@@ -38,9 +38,9 @@ class InitialTablesSql:
             CONSTRAINT  check_update_shaders CHECK (update_shaders IN ('Y','N')),
             CONSTRAINT  check_program_updates CHECK (check_program_updates IN ('Y','N')),
             CONSTRAINT  check_reshade_updates CHECK (check_reshade_updates IN ('Y','N')),
-            CONSTRAINT  check_create_screenshots_folder CHECK (create_screenshots_folder IN ('Y','N')),
             CONSTRAINT  check_silent_reshade_updates CHECK (silent_reshade_updates IN ('Y','N')),
-            CONSTRAINT  check_reset_reshade_files CHECK (reset_reshade_files IN ('Y','N'))
+            CONSTRAINT  check_reset_reshade_files CHECK (reset_reshade_files IN ('Y','N')),
+            CONSTRAINT  check_create_screenshots_folder CHECK (create_screenshots_folder IN ('Y','N'))
         );
         
         CREATE TABLE IF NOT EXISTS games (

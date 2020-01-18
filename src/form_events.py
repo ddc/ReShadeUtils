@@ -339,7 +339,7 @@ class FormEvents:
     def apply(self):
         errors = []
         games_sql = GamesSql(self)
-        rs_all_games = games_sql.get_all_games()
+        rs_all_games = games_sql.get_games()
         len_games = len(rs_all_games)
 
         if self.reset_reshade_files:

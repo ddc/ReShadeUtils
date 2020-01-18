@@ -62,6 +62,7 @@ class MainSrc:
         utilities.show_progress_bar(self, messages.checking_db_connection, 45)
         self._check_db_connection()
         self._set_default_database_configs()
+        self._check_database_updated_columns()
         self._set_all_configs()
         self._register_form_events()
 
@@ -317,22 +318,6 @@ class MainSrc:
 
     ################################################################################
     def _set_default_database_configs(self):
-        configSql = ConfigsSql(self)
-        rsConfig = configSql.get_configs()
-
-        # check for version
-        if len(rsConfig) > 0:
-            if not hasattr(rsConfig, "program_version") \
-                or rsConfig[0]["program_version"] is not None \
-                    and rsConfig[0]["program_version"] != constants.VERSION:
-                # if different check for columns ...
-                # if columns different, update tables
-                updateTablesSql = UpdateTablesSql(self)
-                ut = updateTablesSql.update_tables()
-
-
-            return
-
         initialTablesSql = InitialTablesSql(self)
         it = initialTablesSql.create_initial_tables()
         if it is not None:
@@ -341,6 +326,8 @@ class MainSrc:
             print(err_msg)
             # sys.exit()
 
+        configSql = ConfigsSql(self)
+        rsConfig = configSql.get_configs()
         if rsConfig is not None and len(rsConfig) == 0:
             configSql.set_default_configs()
 
@@ -351,6 +338,16 @@ class MainSrc:
             self.log.error(err_msg)
             print(err_msg)
             # sys.exit()
+
+    ################################################################################
+    def _check_database_updated_columns(self):
+        updateTablesSql = UpdateTablesSql(self)
+        configSql = ConfigsSql(self)
+        rsConfig = configSql.get_configs()
+        if len(rsConfig) > 0:
+            for eac in constants.NEW_CONFIG_TABLE_COLUMNS:
+                if eac != "id".lower() and not eac in rsConfig[0].keys():
+                        ut = updateTablesSql.update_config_table()
 
     ################################################################################
     def _check_reshade_files(self, rsConfig):
@@ -466,6 +463,14 @@ class MainSrc:
             self.qtObj.silent_reshade_updates_groupBox.setEnabled(self.check_reshade_updates)
             self.qtObj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
 
+            if rsConfig[0]["program_version"] is None \
+                    or len(rsConfig[0]["program_version"]) == 0 \
+                    or rsConfig[0]["program_version"] == "None" \
+                    or rsConfig[0]["program_version"] != constants.VERSION:
+                config_obj = utilities.Object()
+                config_obj.program_version = constants.VERSION
+                configSql.update_program_version(config_obj)
+
     ################################################################################
     def _show_game_config_form(self, game_name: str):
         self.game_config_form = QtWidgets.QWidget()
@@ -511,7 +516,7 @@ class MainSrc:
     def populate_programs_listWidget(self):
         self.qtObj.programs_tableWidget.setRowCount(0)
         games_sql = GamesSql(self)
-        rs_all_games = games_sql.get_all_games()
+        rs_all_games = games_sql.get_games()
         if rs_all_games is not None and len(rs_all_games) > 0:
             for i in range(len(rs_all_games)):
                 num_rows = self.qtObj.programs_tableWidget.rowCount()

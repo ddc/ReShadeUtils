@@ -19,33 +19,11 @@ class UpdateTablesSql:
         self.log = main.log
 
     ################################################################################
-    def update_tables(self):
+    def update_config_table(self):
         databases = Databases(self.main)
-        configs_table_columns = ["id",
-                            "use_dark_theme",
-                            "update_shaders",
-                            "check_program_updates",
-                            "check_reshade_updates",
-                            "silent_reshade_updates",
-                            "reset_reshade_files",
-                            "create_screenshots_folder",
-                            "program_version",
-                            "reshade_version"]
-
-        games_table_columns = ["id",
-                            "name",
-                            "architecture",
-                            "api",
-                            "path"]
-
-        configs_table_vars = str(configs_table_columns)[1:-1]
-        games_table_vars = str(games_table_columns)[1:-1]
-
-        sql = """DROP TRIGGER if exists "before_insert_configs";
-                DROP TABLE if exists "configs_old";
-                DROP TABLE if exists "games_old";
-                ALTER TABLE "configs" RENAME TO "configs_old";
-                ALTER TABLE "games" RENAME TO "games_old";"""
+        sql = """DROP TRIGGER if exists before_insert_configs;
+                DROP TABLE if exists configs_old;
+                ALTER TABLE configs RENAME TO configs_old;"""
         databases.execute(sql)
 
         initialTablesSql = InitialTablesSql(self.main)
@@ -54,16 +32,23 @@ class UpdateTablesSql:
             err_msg = messages.error_create_sql_config_msg
             self.log.error(err_msg)
             print(err_msg)
+            return
 
-        sql = f"""INSERT INTO "configs" ({configs_table_vars}) 
-                SELECT {configs_table_vars} FROM "configs_old";
-            
-                INSERT INTO "games" ({games_table_vars})
-                    SELECT {games_table_vars} FROM "games_old";
-                
-                DROP TABLE if exists "configs_old";
-                DROP TABLE if exists "games_old";
-            """
+        sql = "SELECT * from configs_old"
+        rs_configs_old = databases.select(sql)
+
+        sql = "INSERT INTO configs (id) VALUES (1);"
+        databases.execute(sql)
+
+        sql = "SELECT * from configs"
+        rs_configs = databases.select(sql)
+
+        sql = ""
+        for col in rs_configs_old[0].keys():
+            if col != "id".lower():
+                if col in rs_configs[0].keys():
+                    sql += f"UPDATE configs SET {col} = '{rs_configs_old[0].get(col)}' WHERE id = 1;"
+        sql += "DROP TABLE if exists configs_old;"
         databases.execute(sql)
 
         triggersSql = TriggersSql(self.main)
