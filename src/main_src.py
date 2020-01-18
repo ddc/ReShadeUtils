@@ -131,6 +131,8 @@ class MainSrc:
                 self.qtObj.updateAvail_label.clear()
                 self.qtObj.updateAvail_label.setText(new_version_obj.new_version_msg)
                 self.qtObj.update_button.setVisible(True)
+                self.enable_widgets(False)
+                self.enable_form(False)
 
     ################################################################################
     def _check_new_reshade_version(self):
