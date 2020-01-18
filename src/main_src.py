@@ -7,23 +7,25 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-import sys
+import logging.handlers
 import os
+import sys
+import urllib.request
+
 import requests
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
-from src.utils.create_files import CreateFiles
-from src.utils import constants, messages, utilities
-import logging.handlers
-from src.sql.initial_tables_sql import InitialTablesSql
-from src.sql.triggers_sql import TriggersSql
+from bs4 import BeautifulSoup
+
+from src.form_events import FormEvents
+from src.game_configs import UiGameConfigForm
 from src.sql.configs_sql import ConfigsSql
 from src.sql.games_sql import GamesSql
+from src.sql.initial_tables_sql import InitialTablesSql
+from src.sql.triggers_sql import TriggersSql
 from src.sql.update_tables_sql import UpdateTablesSql
-from src.game_configs import UiGameConfigForm
-import urllib.request
-from bs4 import BeautifulSoup
-from src.form_events import FormEvents
+from src.utils import constants, messages, utilities
+from src.utils.create_files import CreateFiles
 
 
 class MainSrc:
@@ -53,36 +55,24 @@ class MainSrc:
         sys.excepthook = utilities.log_uncaught_exceptions
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
 
-        utilities.show_progress_bar(self, messages.checking_files, 30)
+        utilities.show_progress_bar(self, messages.checking_files, 35)
         self._check_dirs()
         self._setup_logging()
         self._check_files()
         self.settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
 
-        utilities.show_progress_bar(self, messages.checking_db_connection, 45)
+        utilities.show_progress_bar(self, messages.checking_db_connection, 50)
         self._check_db_connection()
         self._set_default_database_configs()
         self._check_database_updated_columns()
         self._set_all_configs()
         self._register_form_events()
 
-        utilities.show_progress_bar(self, messages.checking_new_version, 60)
+        utilities.show_progress_bar(self, messages.checking_new_version, 65)
         self._check_new_program_version()
 
-        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 75)
+        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 85)
         self._check_new_reshade_version()
-
-        if self.remote_reshade_version is not None:
-            if self.reshade_version != self.remote_reshade_version:
-                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 90)
-                self.need_apply = True
-                if self.silent_reshade_updates:
-                    self._download_new_reshade_version()
-                else:
-                    msg = f"{messages.update_reshade_question}"
-                    reply = utilities.show_message_window("question", "Download new Reshade version", msg)
-                    if reply == QtWidgets.QMessageBox.Yes:
-                        self._download_new_reshade_version()
 
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
@@ -167,6 +157,12 @@ class MainSrc:
 
     ################################################################################
     def _download_new_reshade_version(self):
+        if not self.silent_reshade_updates:
+            msg = f"{messages.update_reshade_question}"
+            reply = utilities.show_message_window("question", "Download new Reshade version", msg)
+            if reply == QtWidgets.QMessageBox.No:
+                return
+
         old_reshade_version = self.reshade_version
         self.reshade_version = None
         exe_download_url = None
@@ -394,8 +390,6 @@ class MainSrc:
         self.populate_programs_listWidget()
 
         if rsConfig is not None and len(rsConfig) > 0:
-            self._check_reshade_files(rsConfig)
-
             if rsConfig[0]["use_dark_theme"].upper() == "N":
                 self.use_dark_theme = False
                 self.set_style_sheet(False)
@@ -470,6 +464,8 @@ class MainSrc:
                 config_obj = utilities.Object()
                 config_obj.program_version = constants.VERSION
                 configSql.update_program_version(config_obj)
+
+            self._check_reshade_files(rsConfig)
 
     ################################################################################
     def _show_game_config_form(self, game_name: str):
