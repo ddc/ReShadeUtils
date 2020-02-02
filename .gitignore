@@ -1,10 +1,14 @@
 __pycache__/
 .git/
-.idea/
+Pipfile.lock
 
 # PyInstaller
+*.manifest
 build/
 dist/
 
 # Eclipse
 .settings/
+
+# Pycharm
+.idea/
