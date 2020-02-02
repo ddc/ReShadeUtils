@@ -19,7 +19,7 @@ requests = "==2.22.0"
 soupsieve = "==1.9.5"
 urllib3 = "==1.25.8"
 PyQt5 = "==5.14.1"
-PyQt5-sip = "==12.7.0"
+PyQt5-sip = "==12.7.1"
 PyInstaller = {editable = true,git = "https://github.com/pyinstaller/pyinstaller.git",ref = "develop"}
 
 [requires]
