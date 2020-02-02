@@ -1,8 +1,6 @@
 __pycache__/
 .git/
 .idea/
-Pipfile
-Pipfile.lock
 
 # PyInstaller
 build/
