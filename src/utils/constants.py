@@ -14,7 +14,7 @@ import sys
 
 from src.utils import utilities
 
-VERSION = "2.9"
+VERSION = "3.0"
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"

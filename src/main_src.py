@@ -55,24 +55,36 @@ class MainSrc:
         sys.excepthook = utilities.log_uncaught_exceptions
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
 
-        utilities.show_progress_bar(self, messages.checking_files, 35)
+        utilities.show_progress_bar(self, messages.checking_files, 30)
         self._check_dirs()
         self._setup_logging()
         self._check_files()
         self.settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
 
-        utilities.show_progress_bar(self, messages.checking_db_connection, 50)
+        utilities.show_progress_bar(self, messages.checking_db_connection, 45)
         self._check_db_connection()
         self._set_default_database_configs()
         self._check_database_updated_columns()
         self._set_all_configs()
         self._register_form_events()
 
-        utilities.show_progress_bar(self, messages.checking_new_version, 65)
+        utilities.show_progress_bar(self, messages.checking_new_version, 60)
         self._check_new_program_version()
 
-        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 85)
+        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 75)
         self._check_new_reshade_version()
+
+        if self.remote_reshade_version is not None:
+            if self.reshade_version != self.remote_reshade_version:
+                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 90)
+                self.need_apply = True
+                if self.silent_reshade_updates:
+                    self._download_new_reshade_version()
+                else:
+                    msg = f"{messages.update_reshade_question}"
+                    reply = utilities.show_message_window("question", "Download new Reshade version", msg)
+                    if reply == QtWidgets.QMessageBox.Yes:
+                        self._download_new_reshade_version()
 
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
