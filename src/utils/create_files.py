@@ -41,7 +41,7 @@ Password="postgres"
         file.write(
 """Effects=Clarity.fx,Curves.fx,DPX.fx,LumaSharpen.fx,Levels.fx
 PreprocessorDefinitions=
-Techniques=Clarity,Curves,DPX,LumaSharpen,Levels
+Techniques=Curves,LumaSharpen,Levels
 TechniqueSorting=Clarity,Curves,DPX,LumaSharpen,Levels,MXAO,SMAA,ASCII,AdaptiveFog,AdaptiveSharpen,AdvancedCRT,After,AmbientLight,Before,BloomAndLensFlares,Border,CA,Cartoon,Chromakey,ChromaticAberration,CinematicDOF,ColorMatrix,Colourfulness,Daltonize,Deband,Depth3D,DepthHaze,DisplayDepth,Emphasize,EyeAdaption,FilmGrain,FilmGrain2,FilmicAnamorphSharpen,FilmicPass,FXAA,GP65CJ042DOF,GaussianBlur,GlitchB,HDR,HQ4X,HSLShift,HighPassSharp,KNearestNeighbors,LUT,Layer,LeiFx_Tech,LevelsPlus,LiftGammaGain,LightDoF_AutoFocus,LightDoF_Far,LightDoF_Near,MagicBloom,MagicDOF,MartyMcFlyDOF,MatsoDOF,Mode1,Mode2,Mode3,Monochrome,MotionBlur,MultiLUT,Nightvision,NonLocalMeans,Nostalgia,PPFXBloom,PPFXSSDO,PPFX_Godrays,PerfectPerspective,ReflectiveBumpmapping,RingDOF,StageDepth,SurfaceBlur,Technicolor,Technicolor2,TiltShift,Tint,Tonemap,TriDither,UIDetect,UIDetect_After,UIDetect_Before,UIMask_Bottom,UIMask_Top,Vibrance,Vignette,AspectRatioPS
 
 [Clarity.fx]
@@ -66,7 +66,7 @@ Colorfulness=2.500000
 Contrast=0.100000
 RGB_C=0.360000,0.360000,0.340000
 RGB_Curve=8.000000,8.000000,8.000000
-Saturation=2.500000
+Saturation=2.000000
 Strength=0.200000
 
 [Levels.fx]
@@ -78,7 +78,7 @@ WhitePoint=235
 offset_bias=1.000000
 pattern=1
 sharp_clamp=0.500000
-sharp_strength=1.000000
+sharp_strength=1.500000
 show_sharpen=0
 """)
         file.close()
