@@ -55,37 +55,34 @@ class FormEvents:
 
             # remove dll from game path
             if self.selected_game.rs[0]["api"] == "DX9":
-                reshade_dll = f"{game_path}/{constants.D3D9}"
+                reshade_dll = f"{game_path}\\{constants.D3D9}"
+                reshade_log_file = f"{game_path}\\{constants.RESHADE_X32LOG}"
             else:
-                reshade_dll = f"{game_path}/{constants.DXGI}"
+                reshade_dll = f"{game_path}\\{constants.DXGI}"
+                reshade_log_file = f"{game_path}\\{constants.RESHADE_X64LOG}"
+
             if os.path.isfile(reshade_dll):
                 try:
                     os.remove(reshade_dll)
                 except OSError as e:
                     err = True
-                    utilities.show_message_window("error",
-                                                  "ERROR",
-                                                  f"{messages.error_delete_dll} {game_name} dll\n\n{e.strerror}")
+                    utilities.show_message_window("error", "ERROR", f"{messages.error_delete_dll} {game_name} dll\n\n{e.strerror}")
 
             if not err:
                 try:
                     # remove reshade.ini from game path
-                    reshade_ini = f"{game_path}/{constants.RESHADE_INI}"
+                    reshade_ini = f"{game_path}\\{constants.RESHADE_INI}"
                     if os.path.isfile(reshade_ini):
                         os.remove(reshade_ini)
 
                     # remove reshade_plugins.ini from game path
-                    reshade_plug_ini = f"{game_path}/{constants.RESHADE_PLUGINS_INI}"
+                    reshade_plug_ini = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
                     if os.path.isfile(reshade_plug_ini):
                         os.remove(reshade_plug_ini)
 
                     # remove Reshade log files from game path
-                    reshade_x64log_file = f"{game_path}/{constants.RESHADE_X64LOG}"
-                    if os.path.isfile(reshade_x64log_file):
-                        shutil.rmtree(reshade_x64log_file)
-                    reshade_x32log_file = f"{game_path}/{constants.RESHADE_X32LOG}"
-                    if os.path.isfile(reshade_x32log_file):
-                        shutil.rmtree(reshade_x32log_file)
+                    if os.path.isfile(reshade_log_file):
+                        os.remove(reshade_log_file)
 
                     # remove from database
                     games_sql = GamesSql(self)
