@@ -56,10 +56,13 @@ class FormEvents:
             # remove dll from game path
             if self.selected_game.rs[0]["api"] == "DX9":
                 reshade_dll = f"{game_path}\\{constants.D3D9}"
-                reshade_log_file = f"{game_path}\\{constants.RESHADE_X32LOG}"
             else:
                 reshade_dll = f"{game_path}\\{constants.DXGI}"
+
+            if self.selected_game.rs[0]["architecture"] == "64bits":
                 reshade_log_file = f"{game_path}\\{constants.RESHADE_X64LOG}"
+            else:
+                reshade_log_file = f"{game_path}\\{constants.RESHADE_X32LOG}"
 
             if os.path.isfile(reshade_dll):
                 try:
