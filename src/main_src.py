@@ -10,8 +10,6 @@
 import logging.handlers
 import os
 import sys
-import urllib.request
-
 import requests
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
@@ -206,7 +204,9 @@ class MainSrc:
         # download new version exe
         try:
             local_reshade_exe = f"{download_path}{self.reshade_version}.exe"
-            urllib.request.urlretrieve(exe_download_url, local_reshade_exe)
+            r = requests.get(exe_download_url)
+            with open(local_reshade_exe, 'wb') as outfile:
+                outfile.write(r.content)
         except Exception as e:
             if e.errno == 13:
                 utilities.show_message_window("error", "ERROR", messages.error_permissionError)

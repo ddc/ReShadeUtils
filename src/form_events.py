@@ -15,7 +15,7 @@ import shutil
 from src.sql.configs_sql import ConfigsSql
 from src.sql.games_sql import GamesSql
 import zipfile
-import urllib.request
+import requests
 
 
 class FormEvents:
@@ -363,7 +363,9 @@ class FormEvents:
             if downloaded_new_shaders is not None and downloaded_new_shaders is True:
                 try:
                     utilities.show_progress_bar(self, messages.downloading_shaders, 50)
-                    urllib.request.urlretrieve(constants.SHADERS_ZIP_URL, constants.SHADERS_ZIP_PATH)
+                    r = requests.get(constants.SHADERS_ZIP_URL)
+                    with open(constants.SHADERS_ZIP_PATH, 'wb') as outfile:
+                        outfile.write(r.content)
                     downloaded_new_shaders = True
                 except Exception as e:
                     self.log.error(f"{messages.dl_new_shaders_timeout} {e}")
