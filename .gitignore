@@ -1,6 +1,5 @@
 __pycache__/
 .git/
-Pipfile.lock
 
 # PyInstaller
 *.manifest
