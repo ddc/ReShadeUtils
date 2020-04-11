@@ -68,6 +68,7 @@ class FormEvents:
                 try:
                     os.remove(reshade_dll)
                 except OSError as e:
+                    self.log.error(f"remove_file: {e}")
                     err = True
                     utilities.show_message_window("error", "ERROR", f"{messages.error_delete_dll} {game_name} dll\n\n{e.strerror}")
 
@@ -95,6 +96,7 @@ class FormEvents:
                     self.populate_programs_listWidget()
                     utilities.show_message_window("info", "SUCCESS", f"{messages.game_deleted}\n\n{game_name}")
                 except OSError as e:
+                    self.log.error(f"delete_game: {e}")
                     utilities.show_message_window("error", "ERROR", f"{game_name} files\n\n{e.strerror}")
 
             self.enable_widgets(False)
@@ -140,7 +142,7 @@ class FormEvents:
                     create_files = CreateFiles(self)
                     create_files.create_reshade_ini_file(self.selected_game.game_dir, game_screenshots_path)
                 except Exception as e:
-                    self.log.error(f"{e}")
+                    self.log.error(f"create_files: {e}")
 
                 # populate list
                 self.populate_programs_listWidget()
@@ -161,7 +163,7 @@ class FormEvents:
                     create_files = CreateFiles(self)
                     create_files.create_reshade_plugins_ini_file()
             except Exception as e:
-                self.log.error(f"{e}")
+                self.log.error(f"create_files: {e}")
 
             try:
                 if not os.path.exists(res_plug_ini_path) and os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
@@ -375,13 +377,13 @@ class FormEvents:
                     if os.path.exists(constants.SHADERS_SRC_PATH):
                         shutil.rmtree(constants.SHADERS_SRC_PATH)
                 except OSError as e:
-                    self.log.error(f"{e}")
+                    self.log.error(f"rmtree: {e}")
 
                 try:
                     if os.path.exists(constants.RES_SHAD_MPATH):
                         shutil.rmtree(constants.RES_SHAD_MPATH)
                 except OSError as e:
-                    self.log.error(f"{e}")
+                    self.log.error(f"rmtree: {e}")
 
                 utilities.show_progress_bar(self, messages.downloading_shaders, 75)
                 if os.path.exists(constants.SHADERS_ZIP_PATH):
@@ -395,14 +397,14 @@ class FormEvents:
                     try:
                         os.remove(constants.SHADERS_ZIP_PATH)
                     except OSError as e:
-                        self.log.error(f"{e}")
+                        self.log.error(f"remove_file: {e}")
 
                 try:
                     if os.path.exists(constants.RES_SHAD_MPATH):
                         out_dir = f"{constants.PROGRAM_PATH}\{constants.RESHADE_SHADERS}"
                         os.rename(constants.RES_SHAD_MPATH, out_dir)
                 except OSError as e:
-                    self.log.error(f"{e}")
+                    self.log.error(f"rename_path: {e}")
 
             utilities.show_progress_bar(self, messages.downloading_shaders, 100)
 
@@ -432,7 +434,7 @@ class FormEvents:
                     try:
                         shutil.copyfile(src_path, dst_path)
                     except shutil.Error as e:
-                        self.log.error(f"{e}")
+                        self.log.error(f"copyfile: {e}")
 
                     # create Reshade.ini
                     try:
@@ -440,14 +442,14 @@ class FormEvents:
                             create_files = CreateFiles(self)
                             create_files.create_reshade_ini_file(game_path, game_screenshots_path)
                     except Exception as e:
-                        self.log.error(f"{e}")
+                        self.log.error(f"create_reshade_ini_file: {e}")
 
                     # copying Reshade_plugins.ini
                     if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
                         try:
                             shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, dst_res_plug_ini_path)
                         except shutil.Error as e:
-                            self.log.error(f"{e}")
+                            self.log.error(f"copyfile: {e}")
 
                     len_games = len_games - 1
                 except OSError as e:
@@ -518,14 +520,14 @@ class FormEvents:
                         create_files = CreateFiles(self)
                         create_files.create_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
                     except Exception as e:
-                        self.log.error(f"{e}")
+                        self.log.error(f"create_reshade_ini_file: {e}")
 
                     # rename screenshot folder
                     try:
                         if os.path.isdir(old_screenshots_path):
                             os.rename(old_screenshots_path, f"{new_screenshots_path}")
                     except OSError as e:
-                        self.log.error(f"{e}")
+                        self.log.error(f"rename_screenshot_dir: {e}")
 
                 # checking api and architecture changes
                 if (self.selected_game.rs[0]["architecture"] != games_obj.architecture) \
@@ -540,13 +542,13 @@ class FormEvents:
                         if os.path.isfile(reshade64_game_path):
                             os.remove(reshade64_game_path)
                     except OSError as e:
-                        self.log.error(f"{e}")
+                        self.log.error(f"remove_reshade_file: {e}")
 
                     # creating Reshade.dll
                     try:
                         shutil.copyfile(src_path, dst_path)
                     except shutil.Error as e:
-                        self.log.error(f"{e}")
+                        self.log.error(f"copyfile: {src_path} to {dst_path} - {e}")
 
                 games_obj.id = self.selected_game.rs[0]["id"]
                 games_sql.update_game(games_obj)
@@ -577,10 +579,14 @@ def _get_screenshot_path(self, game_path, game_name):
         try:
             if not os.path.exists(constants.RESHADE_SCREENSHOT_PATH):
                 os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
+        except OSError as e:
+            self.log.error(f"mkdir: {constants.RESHADE_SCREENSHOT_PATH} {e}")
+
+        try:
             if not os.path.exists(game_screenshots_path):
                 os.makedirs(game_screenshots_path)
         except OSError as e:
-            self.log.error(f"{e}")
+            self.log.error(f"mkdir: {game_screenshots_path} {e}")
     else:
         file = f"{game_path}\\{constants.RESHADE_INI}"
         reshade_config_screenshot_path = utilities.get_ini_settings(file, "GENERAL", "ScreenshotPath")
