@@ -45,7 +45,7 @@ new_reshade_version = "New Reshade version installed!"
 check_game_uninstalled = "Check if the game has been Uninstalled, or hit the apply button to create the file!"
 no_change_path = "No changes to path were made!"
 not_same_game = "Please, choose the same game as before!"
-path_changed_success = "Path was changed successfully!"
+path_changed_success = "Path changed successfully!"
 update_reshade_question = "Download new Reshade version now?"
 
 # update messages
