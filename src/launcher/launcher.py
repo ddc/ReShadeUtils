@@ -14,6 +14,7 @@ import sys
 import requests
 from PyQt5 import QtCore, QtWidgets
 
+from src.databases.databases import Databases
 from src.sql.configs_sql import ConfigsSql
 from src.sql.initial_tables_sql import InitialTablesSql
 from src.sql.triggers_sql import TriggersSql
@@ -76,7 +77,9 @@ class Launcher:
 
     ################################################################################
     def _check_db_connection(self):
-        db_conn = utilities.check_database_connection(self)
+        databases = Databases(self)
+        db_conn = databases.check_database_connection()
+
         if db_conn is None:
             error_db_conn = messages.error_db_connection
             msg_exit = messages.exit_program
@@ -186,4 +189,4 @@ class Launcher:
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     launcher = Launcher()
-    sys.exit(app.exec_())
+    sys.exit()

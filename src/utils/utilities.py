@@ -19,7 +19,6 @@ import zipfile
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
-from src.databases.databases import Databases
 from src.utils import constants, messages
 
 _date_formatter = "%b/%d/%Y"
@@ -90,13 +89,6 @@ def get_ini_settings(file_name: str, section: str, config_name: str):
 #         return
 #
 #
-################################################################################
-def check_database_connection(self):
-    databases = Databases(self)
-    conn = databases.check_database_connection()
-    return conn
-
-
 ################################################################################
 # def zip_file(file_name:str, out_path:str):
 #     zipOutputName = "archive"
