@@ -78,11 +78,11 @@ class MainSrc:
                     if reply == QtWidgets.QMessageBox.Yes:
                         self._download_new_reshade_version()
 
+        utilities.show_progress_bar(self, messages.ready, 100)
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
         self.qtObj.api_groupBox.setEnabled(False)
         self.enable_widgets(False)
-        utilities.show_progress_bar(self, messages.ready, 100)
 
     ################################################################################
     def _register_form_events(self):
