@@ -7,15 +7,15 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.databases.sqlite3.connection import Sqlite3
 from src.databases.postgres.connection import PostgreSQL
+from src.databases.sqlite3.connection import Sqlite3
 
 
 class Databases:
     def __init__(self, main):
         self.main = main
         self.log = main.log
-        self.database_in_use = main.settings["DatabaseInUse"]
+        self.database_in_use = main.database_settings["DatabaseInUse"]
 
     ################################################################################
     def check_database_connection(self):

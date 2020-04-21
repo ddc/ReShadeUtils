@@ -7,9 +7,9 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-import logging.handlers
 import os
 import sys
+
 import requests
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
@@ -19,18 +19,16 @@ from src.form_events import FormEvents
 from src.game_configs import UiGameConfigForm
 from src.sql.configs_sql import ConfigsSql
 from src.sql.games_sql import GamesSql
-from src.sql.initial_tables_sql import InitialTablesSql
-from src.sql.triggers_sql import TriggersSql
-from src.sql.update_tables_sql import UpdateTablesSql
 from src.utils import constants, messages, utilities
-from src.utils.create_files import CreateFiles
 
 
 class MainSrc:
     def __init__(self, qtObj, form):
+        sys.excepthook = utilities.log_uncaught_exceptions
+        self.log = utilities.setup_logging(self)
         self.qtObj = qtObj
         self.form = form
-        self.settings = None
+        self.database_settings = None
         self.selected_game = None
         self.game_config_form = None
         self.reshade_version = None
@@ -49,32 +47,28 @@ class MainSrc:
 
     ################################################################################
     def init(self):
-        utilities.show_progress_bar(self, messages.initializing, 15)
-        sys.excepthook = utilities.log_uncaught_exceptions
+        if not os.path.exists(constants.PROGRAM_PATH):
+            utilities.show_message_window("info", "INFO", messages.execute_launcher)
+            sys.exit()
+
+        self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
+        if len(self.database_settings) == 0:
+            utilities.show_message_window("info", "INFO", messages.execute_launcher)
+            sys.exit()
+
+        utilities.show_progress_bar(self, messages.initializing, 25)
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
-
-        utilities.show_progress_bar(self, messages.checking_files, 30)
-        self._check_dirs()
-        self._setup_logging()
-        self._check_files()
-        self.settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
-
-        utilities.show_progress_bar(self, messages.checking_db_connection, 45)
-        self._check_db_connection()
-        self._set_default_database_configs()
-        self._check_database_updated_columns()
         self._set_all_configs()
         self._register_form_events()
 
-        utilities.show_progress_bar(self, messages.checking_new_version, 60)
-        self._check_new_program_version()
-
-        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 75)
+        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 50)
         self._check_new_reshade_version()
+
+        self._set_update_label()
 
         if self.remote_reshade_version is not None:
             if self.reshade_version != self.remote_reshade_version:
-                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 90)
+                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 75)
                 self.need_apply = True
                 if self.silent_reshade_updates:
                     self._download_new_reshade_version()
@@ -97,7 +91,6 @@ class MainSrc:
         self.qtObj.delete_button.clicked.connect(lambda: FormEvents.delete_game(self))
         self.qtObj.edit_path_button.clicked.connect(lambda: FormEvents.edit_game_path(self))
         self.qtObj.edit_config_button.clicked.connect(lambda: FormEvents.open_reshade_config_file(self))
-        self.qtObj.update_button.clicked.connect(lambda: FormEvents.update_program(self))
         self.qtObj.apply_button.clicked.connect(lambda: FormEvents.apply(self))
         #########
         self.qtObj.programs_tableWidget.clicked.connect(self._programs_tableWidget_clicked)
@@ -126,23 +119,6 @@ class MainSrc:
         self.qtObj.no_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
         #########
         self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
-
-    ################################################################################
-    def _check_new_program_version(self):
-        self.qtObj.updateAvail_label.clear()
-        self.qtObj.update_button.setVisible(False)
-        if self.check_program_updates:
-            self.client_version = constants.VERSION
-            new_version_obj = utilities.check_new_program_version(self)
-            if new_version_obj.new_version_available:
-                self.new_version = new_version_obj.new_version
-                self.new_version_msg = new_version_obj.new_version_msg
-                self.qtObj.update_button.setFocus()
-                self.qtObj.updateAvail_label.clear()
-                self.qtObj.updateAvail_label.setText(new_version_obj.new_version_msg)
-                self.qtObj.update_button.setVisible(True)
-                self.enable_widgets(False)
-                self.enable_form(False)
 
     ################################################################################
     def _check_new_reshade_version(self):
@@ -246,6 +222,15 @@ class MainSrc:
             self.need_apply = False
 
     ################################################################################
+    def _set_update_label(self):
+        if self.check_program_updates:
+            self.client_version = constants.VERSION
+            new_version_obj = utilities.check_new_program_version(self)
+            if new_version_obj.new_version_available:
+                self.qtObj.updateAvail_label.clear()
+                self.qtObj.updateAvail_label.setText(new_version_obj.new_version_msg)
+
+    ################################################################################
     def _unzip_reshade(self, local_reshade_exe):
         try:
             out_path = constants.PROGRAM_PATH
@@ -256,59 +241,6 @@ class MainSrc:
         #    self.log.error(f"{e}")
         except Exception as e:
             self.log.error(f"{e}")
-
-    ################################################################################
-    def _check_dirs(self):
-        try:
-            if not os.path.exists(constants.PROGRAM_PATH):
-                os.makedirs(constants.PROGRAM_PATH)
-        except OSError as e:
-            self.log.error(f"{e}")
-
-    ################################################################################
-    def _setup_logging(self):
-        logger = logging.getLogger()
-        logger.setLevel(constants.LOG_LEVEL)
-        file_hdlr = logging.handlers.RotatingFileHandler(
-            filename=constants.ERROR_LOGS_FILENAME,
-            maxBytes=10 * 1024 * 1024,
-            encoding="utf-8",
-            backupCount=5,
-            mode='a')
-        file_hdlr.setFormatter(constants.LOG_FORMATTER)
-        logger.addHandler(file_hdlr)
-        self.log = logging.getLogger(__name__)
-
-    ################################################################################
-    def _check_files(self):
-        create_files = CreateFiles(self)
-
-        try:
-            if not os.path.exists(constants.DB_SETTINGS_FILENAME):
-                create_files.create_settings_file()
-        except Exception as e:
-            self.log.error(f"{e}")
-
-        try:
-            if not os.path.exists(constants.STYLE_QSS_FILENAME):
-                create_files.create_style_file()
-        except Exception as e:
-            self.log.error(f"{e}")
-
-        try:
-            if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
-                create_files.create_reshade_plugins_ini_file()
-        except Exception as e:
-            self.log.error(f"{e}")
-
-    ################################################################################
-    def _check_db_connection(self):
-        db_conn = utilities.check_database_connection(self)
-        if db_conn is None:
-            error_db_conn = messages.error_db_connection
-            msg_exit = messages.exit_program
-            utilities.show_message_window("error", "ERROR", f"{error_db_conn}\n\n{msg_exit}")
-            sys.exit(0)
 
     ################################################################################
     def _en_dis_apply_button(self):
@@ -325,39 +257,6 @@ class MainSrc:
     ################################################################################
     def _programs_tableWidget_double_clicked(self):
         self._show_game_config_form(self.selected_game.rs[0]["name"])
-
-    ################################################################################
-    def _set_default_database_configs(self):
-        initialTablesSql = InitialTablesSql(self)
-        it = initialTablesSql.create_initial_tables()
-        if it is not None:
-            err_msg = messages.error_create_sql_config_msg
-            self.log.error(err_msg)
-            print(err_msg)
-            # sys.exit()
-
-        configSql = ConfigsSql(self)
-        rsConfig = configSql.get_configs()
-        if rsConfig is not None and len(rsConfig) == 0:
-            configSql.set_default_configs()
-
-        triggersSql = TriggersSql(self)
-        tr = triggersSql.create_triggers()
-        if tr is not None:
-            err_msg = messages.error_create_sql_config_msg
-            self.log.error(err_msg)
-            print(err_msg)
-            # sys.exit()
-
-    ################################################################################
-    def _check_database_updated_columns(self):
-        updateTablesSql = UpdateTablesSql(self)
-        configSql = ConfigsSql(self)
-        rsConfig = configSql.get_configs()
-        if len(rsConfig) > 0:
-            for eac in constants.NEW_CONFIG_TABLE_COLUMNS:
-                if eac != "id".lower() and not eac in rsConfig[0].keys():
-                        ut = updateTablesSql.update_config_table()
 
     ################################################################################
     def _check_reshade_files(self, rsConfig):

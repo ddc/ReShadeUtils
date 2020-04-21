@@ -8,14 +8,13 @@
 # # -*- coding: utf-8 -*-
 
 from src.databases.databases import Databases
-from src.utils import utilities, constants
 
 
 class TriggersSql:
     def __init__(self, main):
         self.main = main
         self.log = main.log
-        self.database_in_use = main.settings["DatabaseInUse"]
+        self.database_in_use = main.database_settings["DatabaseInUse"]
 
     ################################################################################
     def create_triggers(self):

@@ -7,15 +7,17 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-from PyQt5 import QtWidgets
-from src.utils.create_files import CreateFiles
-from src.utils import constants, messages, utilities
 import os
 import shutil
+import zipfile
+
+import requests
+from PyQt5 import QtWidgets
+
 from src.sql.configs_sql import ConfigsSql
 from src.sql.games_sql import GamesSql
-import zipfile
-import requests
+from src.utils import constants, messages, utilities
+from src.utils.create_files import CreateFiles
 
 
 class FormEvents:
@@ -193,10 +195,6 @@ class FormEvents:
         except Exception as e:
             err_msg = f"{e.strerror}\n\n{constants.RESHADE_PLUGINS_INI}{messages.not_found}"
             utilities.show_message_window("error", "ERROR", err_msg)
-
-    ################################################################################
-    def update_program(self):
-        utilities.download_new_program_version(self, True)
 
     ################################################################################
     def dark_theme_clicked(self, status: str):

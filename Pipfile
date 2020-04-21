@@ -17,7 +17,7 @@ psycopg2 = "==2.8.5"
 pywin32-ctypes = "==0.2.0"
 requests = "==2.23.0"
 soupsieve = "==2.0"
-urllib3 = "==1.25.8"
+urllib3 = "==1.25.9"
 PyQt5 = "==5.14.2"
 PyQt5-sip = "==12.7.2"
 PyInstaller = {editable = true,git = "https://github.com/pyinstaller/pyinstaller.git",ref = "develop"}

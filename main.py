@@ -7,9 +7,10 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.utils import constants
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 from src.main_src import MainSrc
-from PyQt5 import QtCore, QtWidgets, QtGui
+from src.utils import constants
 
 
 class Ui_Main(object):
@@ -209,16 +210,13 @@ class Ui_Main(object):
         self.about_textBrowser.setObjectName("about_textBrowser")
         self.main_tabWidget.addTab(self.about_tab, "")
         self.updateAvail_label = QtWidgets.QLabel(Main)
-        self.updateAvail_label.setGeometry(QtCore.QRect(500, 659, 271, 31))
+        self.updateAvail_label.setGeometry(QtCore.QRect(30, 655, 890, 40))
         font = QtGui.QFont()
         font.setPointSize(9)
         self.updateAvail_label.setFont(font)
         self.updateAvail_label.setText("")
-        self.updateAvail_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.updateAvail_label.setAlignment(QtCore.Qt.AlignCenter)
         self.updateAvail_label.setObjectName("updateAvail_label")
-        self.update_button = QtWidgets.QPushButton(Main)
-        self.update_button.setGeometry(QtCore.QRect(790, 660, 120, 30))
-        self.update_button.setObjectName("update_button")
 
         self.retranslateUi(Main)
         self.main_tabWidget.setCurrentIndex(0)
@@ -305,8 +303,6 @@ class Ui_Main(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=CTYZ8TK5MJV76\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Donations</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:hadesz456@gmail.com\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p></body></html>"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.about_tab), _translate("Main", "About"))
-        self.update_button.setToolTip(_translate("Main", "Click here to update the program"))
-        self.update_button.setText(_translate("Main", "UPDATE"))
 
 
 if __name__ == "__main__":

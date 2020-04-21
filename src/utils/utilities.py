@@ -7,18 +7,20 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-import sys
-import os
+import configparser
+import datetime
 import json
 import logging
-from src.utils import constants, messages
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5 import QtCore, QtWidgets
-from src.databases.databases import Databases
-import requests
-import datetime
-import configparser
+import logging.handlers
+import os
+import sys
 import zipfile
+
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+
+from src.databases.databases import Databases
+from src.utils import constants, messages
 
 _date_formatter = "%b/%d/%Y"
 _time_formatter = "%H:%M:%S"
@@ -126,6 +128,22 @@ def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
 
 
 ################################################################################
+def setup_logging(self):
+    logger = logging.getLogger()
+    logger.setLevel(constants.LOG_LEVEL)
+    file_hdlr = logging.handlers.RotatingFileHandler(
+        filename=constants.ERROR_LOGS_FILENAME,
+        maxBytes=10 * 1024 * 1024,
+        encoding="utf-8",
+        backupCount=5,
+        mode='a')
+    file_hdlr.setFormatter(constants.LOG_FORMATTER)
+    logger.addHandler(file_hdlr)
+    self.log = logging.getLogger(__name__)
+    return self.log
+
+
+################################################################################
 def open_get_filename():
     filename = QFileDialog.getOpenFileName(None, 'Open file')[0]
     if filename == '':
@@ -135,19 +153,19 @@ def open_get_filename():
 
 
 ################################################################################
-def get_download_path():
-    if constants.IS_WINDOWS:
-        import winreg
-        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
-        downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
-        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
-            downloads_path = winreg.QueryValueEx(key, downloads_guid)[0]
-        return downloads_path
-    else:
-        t1_path = str(os.path.expanduser("~/Downloads"))
-        t2_path = f"{t1_path}".split("\\")
-        downloads_path = '/'.join(t2_path)
-        return downloads_path.replace('\\', '/')
+# def get_download_path():
+#     if constants.IS_WINDOWS:
+#         import winreg
+#         sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+#         downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
+#         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+#             downloads_path = winreg.QueryValueEx(key, downloads_guid)[0]
+#         return downloads_path
+#     else:
+#         t1_path = str(os.path.expanduser("~/Downloads"))
+#         t2_path = f"{t1_path}".split("\\")
+#         downloads_path = '/'.join(t2_path)
+#         return downloads_path.replace('\\', '/')
 
 
 ################################################################################
@@ -219,6 +237,7 @@ def show_message_window(window_type: str, window_title: str, msg: str):
 
 ################################################################################
 def check_new_program_version(self):
+    import requests
     remote_version_filename = constants.REMOTE_VERSION_FILENAME
     obj_return = Object()
     obj_return.new_version_available = False
@@ -228,17 +247,18 @@ def check_new_program_version(self):
         req = requests.get(remote_version_filename, stream=True, timeout=3)
         if req.status_code == 200:
             remote_version = req.text
-
-            if remote_version[-2:] == "\\n" or remote_version[-2:] == "\n":
-                remote_version = remote_version[:-2]  # getting rid of \n at the end of line
+            # getting rid of \n at the end of line
+            remote_version = remote_version.replace("\\n", "").replace("\n", "")
 
             if float(remote_version) > float(self.client_version):
                 obj_return.new_version_available = True
-                obj_return.new_version_msg = f"Version {remote_version} available for download"
+                obj_return.new_version_msg = f"Version {remote_version} available for download. " \
+                                             "Restart the program to apply the update."
                 obj_return.new_version = float(remote_version)
         else:
             self.log.error(
-                f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found} code:{req.status_code}")
+                f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found} code:"
+                f"{req.status_code}")
             show_message_window("critical", "ERROR", f"{messages.error_check_new_version}")
     except requests.exceptions.ConnectionError as e:
         self.log.error(f"{messages.dl_new_version_timeout} {e}")
@@ -246,39 +266,3 @@ def check_new_program_version(self):
     finally:
         return obj_return
 
-
-################################################################################
-def download_new_program_version(self, show_dialog=True):
-    if show_dialog:
-        msg = f"""{messages.new_version_available}
-                            \nYour version: v{self.client_version}\nNew version: v{self.new_version}
-                            \n{messages.check_downloaded_dir}
-                            \n{messages.confirm_download}"""
-        reply = show_message_window("question", self.new_version_msg, msg)
-
-        if reply == QtWidgets.QMessageBox.No:
-            new_title = f"{constants.FULL_PROGRAM_NAME} ({self.new_version_msg})"
-            _translate = QtCore.QCoreApplication.translate
-            self.form.setWindowTitle(_translate("Main", new_title))
-            return
-
-    user_download_path = get_download_path()
-    program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
-    downloaded_program_path = f"{user_download_path}\\{constants.EXE_PROGRAM_NAME}"
-    dl_new_version_msg = messages.dl_new_version
-
-    try:
-        show_progress_bar(self, dl_new_version_msg, 50)
-        r = requests.get(program_url)
-        with open(downloaded_program_path, 'wb') as outfile:
-            outfile.write(r.content)
-        show_progress_bar(self, dl_new_version_msg, 100)
-        show_message_window("Info", "INFO", f"{messages.info_dl_completed}\n{downloaded_program_path}")
-        sys.exit()
-    except Exception as e:
-        show_progress_bar(self, dl_new_version_msg, 100)
-        self.log.error(f"{messages.error_check_new_version} {e}")
-        if e.code == 404:
-            show_message_window("error", "ERROR", messages.remote_file_not_found)
-        else:
-            show_message_window("error", "ERROR", messages.error_check_new_version)
