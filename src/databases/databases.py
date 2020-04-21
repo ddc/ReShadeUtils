@@ -25,6 +25,8 @@ class Databases:
         elif self.database_in_use == "postgres":
             postgreSQL = PostgreSQL(self.main)
             return postgreSQL.create_connection()
+        else:
+            return None
 
     ################################################################################
     def execute(self, sql):

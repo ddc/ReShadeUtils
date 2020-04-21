@@ -18,7 +18,6 @@ remote_file_not_found = "ERROR: Remote File was not found."
 error_create_sql_config_msg = "Could not create initial SQL Configs."
 error_db_connection = "Cannot create database connection."
 exit_program = "Program will now exit."
-execute_launcher = "Please use launcher to execute the program."
 error_executing_program = "Could not initialize "
 error_check_installation = "Please check your installation and try again."
 

@@ -8,7 +8,6 @@
 # # -*- coding: utf-8 -*-
 
 from src.databases.databases import Databases
-from src.utils import utilities, constants
 
 
 class InitialTablesSql:

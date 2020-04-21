@@ -24,8 +24,6 @@ from src.utils import constants, messages, utilities
 
 class MainSrc:
     def __init__(self, qtObj, form):
-        sys.excepthook = utilities.log_uncaught_exceptions
-        self.log = utilities.setup_logging(self)
         self.qtObj = qtObj
         self.form = form
         self.database_settings = None
@@ -47,23 +45,26 @@ class MainSrc:
 
     ################################################################################
     def init(self):
-        if not os.path.exists(constants.PROGRAM_PATH):
-            utilities.show_message_window("info", "INFO", messages.execute_launcher)
-            sys.exit()
-
+        utilities.show_progress_bar(self, messages.checking_files, 15)
+        utilities.check_dirs(self)
+        self.log = utilities.setup_logging(self)
+        sys.excepthook = utilities.log_uncaught_exceptions
+        utilities.check_files(self)
         self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
-        if len(self.database_settings) == 0:
-            utilities.show_message_window("info", "INFO", messages.execute_launcher)
-            sys.exit()
+        self.client_version = constants.VERSION
 
-        utilities.show_progress_bar(self, messages.initializing, 25)
+        utilities.show_progress_bar(self, messages.checking_db_connection, 30)
+        utilities.check_db_connection(self)
+        utilities.set_default_database_configs(self)
+        utilities.check_database_updated_columns(self)
+
+        utilities.show_progress_bar(self, messages.initializing, 45)
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
         self._set_all_configs()
         self._register_form_events()
 
-        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 50)
+        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 60)
         self._check_new_reshade_version()
-
         self._set_update_label()
 
         if self.remote_reshade_version is not None:
@@ -224,7 +225,6 @@ class MainSrc:
     ################################################################################
     def _set_update_label(self):
         if self.check_program_updates:
-            self.client_version = constants.VERSION
             new_version_obj = utilities.check_new_program_version(self)
             if new_version_obj.new_version_available:
                 self.qtObj.updateAvail_label.clear()

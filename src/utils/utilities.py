@@ -20,6 +20,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
 from src.utils import constants, messages
+from src.utils.create_files import CreateFiles
 
 _date_formatter = "%b/%d/%Y"
 _time_formatter = "%H:%M:%S"
@@ -226,7 +227,6 @@ def show_message_window(window_type: str, window_title: str, msg: str):
     user_answer = msgBox.exec_()
     return user_answer
 
-
 ################################################################################
 def check_new_program_version(self):
     import requests
@@ -258,3 +258,90 @@ def check_new_program_version(self):
     finally:
         return obj_return
 
+
+################################################################################
+def check_dirs(self):
+    try:
+        if not os.path.exists(constants.PROGRAM_PATH):
+            os.makedirs(constants.PROGRAM_PATH)
+    except OSError as e:
+        show_message_window("error", "ERROR", f"Error creating program directories.\n{e}")
+        #self.log.error(f"{e}")
+
+################################################################################
+def check_files(self):
+    create_files = CreateFiles(self)
+
+    try:
+        if not os.path.exists(constants.DB_SETTINGS_FILENAME):
+            create_files.create_settings_file()
+    except Exception as e:
+        self.log.error(f"{e}")
+
+    try:
+        if not os.path.exists(constants.STYLE_QSS_FILENAME):
+            create_files.create_style_file()
+    except Exception as e:
+        self.log.error(f"{e}")
+
+    try:
+        if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
+            create_files.create_reshade_plugins_ini_file()
+    except Exception as e:
+        self.log.error(f"{e}")
+
+
+################################################################################
+def set_default_database_configs(self):
+    from src.sql.initial_tables_sql import InitialTablesSql
+    from src.sql.triggers_sql import TriggersSql
+    from src.sql.configs_sql import ConfigsSql
+
+    initialTablesSql = InitialTablesSql(self)
+    it = initialTablesSql.create_initial_tables()
+    if it is not None:
+        err_msg = messages.error_create_sql_config_msg
+        self.log.error(err_msg)
+        print(err_msg)
+        # sys.exit()
+
+    configSql = ConfigsSql(self)
+    rsConfig = configSql.get_configs()
+    if rsConfig is not None and len(rsConfig) == 0:
+        configSql.set_default_configs()
+
+    triggersSql = TriggersSql(self)
+    tr = triggersSql.create_triggers()
+    if tr is not None:
+        err_msg = messages.error_create_sql_config_msg
+        self.log.error(err_msg)
+        print(err_msg)
+        # sys.exit()
+
+
+################################################################################
+def check_db_connection(self):
+    from src.databases.databases import Databases
+
+    databases = Databases(self)
+    db_conn = databases.check_database_connection()
+
+    if db_conn is None:
+        error_db_conn = messages.error_db_connection
+        msg_exit = messages.exit_program
+        show_message_window("error", "ERROR", f"{error_db_conn}\n\n{msg_exit}")
+        sys.exit(0)
+
+
+################################################################################
+def check_database_updated_columns(self):
+    from src.sql.configs_sql import ConfigsSql
+    from src.sql.update_tables_sql import UpdateTablesSql
+
+    updateTablesSql = UpdateTablesSql(self)
+    configSql = ConfigsSql(self)
+    rsConfig = configSql.get_configs()
+    if len(rsConfig) > 0:
+        for eac in constants.NEW_CONFIG_TABLE_COLUMNS:
+            if eac != "id".lower() and not eac in rsConfig[0].keys():
+                    ut = updateTablesSql.update_config_table()
