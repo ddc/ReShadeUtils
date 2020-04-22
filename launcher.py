@@ -7,6 +7,7 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
+import os
 import subprocess
 import sys
 
@@ -66,7 +67,7 @@ class Launcher:
                 return
 
         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
-        downloaded_program_path = f"{constants.PROGRAM_PATH}\\{constants.EXE_PROGRAM_NAME}"
+        downloaded_program_path = f"{os.path.abspath(os.getcwd())}\\{constants.EXE_PROGRAM_NAME}"
         dl_new_version_msg = messages.dl_new_version
 
         utilities.show_progress_bar(self, dl_new_version_msg, 50)
@@ -83,9 +84,8 @@ class Launcher:
 
     ################################################################################
     def _call_program(self):
-        import os
         code = None
-        cmd = [f"{os.path.abspath(os.getcwd()) }\\{constants.EXE_PROGRAM_NAME}"]
+        cmd = [f"{os.path.abspath(os.getcwd())}\\{constants.EXE_PROGRAM_NAME}"]
         try:
             process = subprocess.run(cmd, shell=True, check=True, universal_newlines=True)
             #output = process.stdout
