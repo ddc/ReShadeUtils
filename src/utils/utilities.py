@@ -244,8 +244,7 @@ def check_new_program_version(self):
 
             if float(remote_version) > float(self.client_version):
                 obj_return.new_version_available = True
-                obj_return.new_version_msg = f"Version {remote_version} available for download. " \
-                                             "Restart the program to apply the update."
+                obj_return.new_version_msg = f"Version {remote_version} available for download"
                 obj_return.new_version = float(remote_version)
         else:
             self.log.error(

@@ -69,21 +69,17 @@ class Launcher:
         downloaded_program_path = f"{constants.PROGRAM_PATH}\\{constants.EXE_PROGRAM_NAME}"
         dl_new_version_msg = messages.dl_new_version
 
-        try:
-            utilities.show_progress_bar(self, dl_new_version_msg, 50)
-            r = requests.get(program_url)
+        utilities.show_progress_bar(self, dl_new_version_msg, 50)
+        r = requests.get(program_url)
+        if r.status_code == 200:
             with open(downloaded_program_path, 'wb') as outfile:
                 outfile.write(r.content)
-            utilities.show_progress_bar(self, dl_new_version_msg, 100)
             utilities.show_message_window("Info", "INFO", f"{messages.program_updated}v{self.new_version}")
-            #sys.exit(0)
-        except Exception as e:
-            utilities.show_progress_bar(self, dl_new_version_msg, 100)
-            self.log.error(f"{messages.error_check_new_version} {e}")
-            if e.code == 404:
-                utilities.show_message_window("error", "ERROR", messages.remote_file_not_found)
-            else:
-                utilities.show_message_window("error", "ERROR", messages.error_check_new_version)
+        else:
+            utilities.show_message_window("error", "ERROR", f"{messages.error_dl_new_version}")
+            self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
+
+        utilities.show_progress_bar(self, dl_new_version_msg, 100)
 
     ################################################################################
     def _call_program(self):
