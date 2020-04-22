@@ -36,7 +36,7 @@ class Launcher:
         self._check_update_required()
 
         utilities.show_progress_bar(self, messages.checking_new_version, 100)
-        self._init_program()
+        self._call_program()
 
     ################################################################################
     def _check_update_required(self):
@@ -76,7 +76,7 @@ class Launcher:
                 outfile.write(r.content)
             utilities.show_progress_bar(self, dl_new_version_msg, 100)
             utilities.show_message_window("Info", "INFO", f"{messages.program_updated}v{self.new_version}")
-            ##sys.exit()
+            #sys.exit(0)
         except Exception as e:
             utilities.show_progress_bar(self, dl_new_version_msg, 100)
             self.log.error(f"{messages.error_check_new_version} {e}")
@@ -86,9 +86,10 @@ class Launcher:
                 utilities.show_message_window("error", "ERROR", messages.error_check_new_version)
 
     ################################################################################
-    def _init_program(self):
+    def _call_program(self):
+        import os
         code = None
-        cmd = [f"{constants.PROGRAM_PATH}\\{constants.EXE_PROGRAM_NAME}"]
+        cmd = [f"{os.path.abspath(os.getcwd()) }\\{constants.EXE_PROGRAM_NAME}"]
         try:
             process = subprocess.run(cmd, shell=True, check=True, universal_newlines=True)
             #output = process.stdout
@@ -108,4 +109,4 @@ class Launcher:
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     launcher = Launcher()
-    sys.exit()
+    sys.exit(0)

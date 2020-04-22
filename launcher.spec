@@ -29,11 +29,11 @@ exe = EXE(pyz,
           upx=False,
           runtime_tmpdir=None,
           console=False,
-          version='../../resources.rc',
+          version='resources.rc',
           uac_admin=True,
           icon='')
           
 #coll = COLLECT(exe,
 #               strip=False,
 #               upx=False,
-#               name='ReshadeUtils')
+#               name='Launcher')

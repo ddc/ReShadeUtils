@@ -1,6 +1,5 @@
 __pycache__/
 .git/
-Setup/
 
 # PyInstaller
 *.manifest
