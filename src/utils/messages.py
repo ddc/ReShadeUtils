@@ -8,7 +8,7 @@
 # # -*- coding: utf-8 -*-
 
 #general
-initializing = "Initializing..."
+initializing = "Initializing first time run..."
 ready = "Ready!"
 done = "Done"
 not_found = " not found!"
