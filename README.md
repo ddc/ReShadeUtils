@@ -28,7 +28,7 @@ Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to severa
 + [QT5](https://www.qt.io)
 + [Python3.6+](https://www.python.org/downloads/)
 + [Reshade](https://reshade.me/)
-+ [innosetup](http://www.innosetup.com/)
++ [Inno Setup](http://www.innosetup.com/)
 
 ## License
 Released under the [GNU GPL v3](LICENSE).
