@@ -9,7 +9,6 @@
 
 #general
 initializing = "Initializing first time run..."
-ready = "Ready!"
 not_found = " not found!"
 checking_files = "Checking files..."
 checking_db_connection = "Checking DB connection..."
@@ -20,7 +19,8 @@ error_executing_program = "Could not initialize "
 error_check_installation = "Please check your installation and try again."
 
 #reshade
-checking_new_reshade_version = "Checking for new reshade version: "
+checking_new_reshade_files = "Checking for local reshade files..."
+checking_new_reshade_version = "Checking for new reshade version..."
 downloading_new_reshade_version = "Downloading new Reshade version... "
 error_check_new_reshade_version = "There was an ERROR trying to check for a new reshade version!"
 dl_new_shaders_timeout = "Unable to reach Website to download new shader files!!!\nOld version is going to be use instead!"

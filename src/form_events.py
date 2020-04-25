@@ -337,134 +337,138 @@ class FormEvents:
 
     ################################################################################
     def apply(self):
-        errors = []
-        games_sql = GamesSql(self)
-        rs_all_games = games_sql.get_games()
-        len_games = len(rs_all_games)
+        # games_sql = GamesSql(self)
+        # rs_all_games = games_sql.get_games()
+        # len_games = len(rs_all_games)
+        len_games = self.qtObj.programs_tableWidget.rowCount()
 
-        if self.reset_reshade_files:
-            msg = f"{messages.reset_config_files_question}"
-            reply = utilities.show_message_window("question", "Reset All Configs", msg)
-            if reply == QtWidgets.QMessageBox.No:
-                self.reset_reshade_files = False
+        if len_games > 0:
+            if self.reset_reshade_files:
+                msg = f"{messages.reset_config_files_question}"
+                reply = utilities.show_message_window("question", "Reset All Configs", msg)
+                if reply == QtWidgets.QMessageBox.No:
+                    self.reset_reshade_files = False
 
-        if rs_all_games is not None and len_games > 0:
-            self.enable_form(False)
-            self.enable_widgets(False)
-            self.qtObj.apply_button.setEnabled(False)
+            if rs_all_games is not None:
+                self.enable_form(False)
+                self.enable_widgets(False)
+                self.qtObj.apply_button.setEnabled(False)
 
-            downloaded_new_shaders = None
-            if not os.path.exists(constants.SHADERS_SRC_PATH) \
-                    or (self.update_shaders is not None and self.update_shaders is True):
-                downloaded_new_shaders = True
-            elif self.update_shaders is not None and self.update_shaders is False:
-                downloaded_new_shaders = False
-
-            if downloaded_new_shaders is not None and downloaded_new_shaders is True:
-                try:
-                    utilities.show_progress_bar(self, messages.downloading_shaders, 50)
-                    r = requests.get(constants.SHADERS_ZIP_URL)
-                    with open(constants.SHADERS_ZIP_PATH, 'wb') as outfile:
-                        outfile.write(r.content)
+                downloaded_new_shaders = None
+                if not os.path.exists(constants.SHADERS_SRC_PATH) \
+                        or (self.update_shaders is not None and self.update_shaders is True):
                     downloaded_new_shaders = True
-                except Exception as e:
-                    self.log.error(f"{messages.dl_new_shaders_timeout} {e}")
-                    utilities.show_message_window("error", "ERROR", messages.dl_new_shaders_timeout)
+                elif self.update_shaders is not None and self.update_shaders is False:
+                    downloaded_new_shaders = False
 
-                try:
-                    if os.path.exists(constants.SHADERS_SRC_PATH):
-                        shutil.rmtree(constants.SHADERS_SRC_PATH)
-                except OSError as e:
-                    self.log.error(f"rmtree: {e}")
-
-                try:
-                    if os.path.exists(constants.RES_SHAD_MPATH):
-                        shutil.rmtree(constants.RES_SHAD_MPATH)
-                except OSError as e:
-                    self.log.error(f"rmtree: {e}")
-
-                utilities.show_progress_bar(self, messages.downloading_shaders, 75)
-                if os.path.exists(constants.SHADERS_ZIP_PATH):
+                if downloaded_new_shaders is not None and downloaded_new_shaders is True:
                     try:
-                        utilities.unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
-                    except FileNotFoundError as e:
-                        self.log.error(f"{e}")
-                    except zipfile.BadZipFile as e:
-                        self.log.error(f"{e}")
-
-                    try:
-                        os.remove(constants.SHADERS_ZIP_PATH)
-                    except OSError as e:
-                        self.log.error(f"remove_file: {e}")
-
-                try:
-                    if os.path.exists(constants.RES_SHAD_MPATH):
-                        out_dir = f"{constants.PROGRAM_PATH}\{constants.RESHADE_SHADERS}"
-                        os.rename(constants.RES_SHAD_MPATH, out_dir)
-                except OSError as e:
-                    self.log.error(f"rename_path: {e}")
-
-            utilities.show_progress_bar(self, messages.downloading_shaders, 100)
-
-            # begin games update section
-            for i in range(len(rs_all_games)):
-                path_list = rs_all_games[i]["path"].split("\\")[:-1]
-                game_path = '\\'.join(path_list)
-                game_name = rs_all_games[i]["name"]
-                dst_res_ini_path = f"{game_path}\\{constants.RESHADE_INI}"
-                dst_res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
-
-                if rs_all_games[i]["architecture"] == "32bits":
-                    src_path = constants.RESHADE32_PATH
-                else:
-                    src_path = constants.RESHADE64_PATH
-
-                if rs_all_games[i]["api"] == "DX9":
-                    dst_path = f"{game_path}\\{constants.D3D9}"
-                else:
-                    dst_path = f"{game_path}\\{constants.DXGI}"
-
-                try:
-                    utilities.show_progress_bar(self, messages.copying_DLLs, (100 / len_games))
-                    game_screenshots_path = _get_screenshot_path(self, game_path, game_name)
-
-                    # copying Reshade.dll
-                    try:
-                        shutil.copyfile(src_path, dst_path)
-                    except shutil.Error as e:
-                        self.log.error(f"copyfile: {e}")
-
-                    # create Reshade.ini
-                    try:
-                        if self.reset_reshade_files or not os.path.exists(dst_res_ini_path):
-                            create_files = CreateFiles(self)
-                            create_files.create_reshade_ini_file(game_path, game_screenshots_path)
+                        pb = utilities.ProgressBar(messages.downloading_shaders, 50)
+                        r = requests.get(constants.SHADERS_ZIP_URL)
+                        with open(constants.SHADERS_ZIP_PATH, 'wb') as outfile:
+                            outfile.write(r.content)
+                        downloaded_new_shaders = True
                     except Exception as e:
-                        self.log.error(f"create_reshade_ini_file: {e}")
+                        self.log.error(f"{messages.dl_new_shaders_timeout} {e}")
+                        utilities.show_message_window("error", "ERROR", messages.dl_new_shaders_timeout)
 
-                    # copying Reshade_plugins.ini
-                    if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
+                    try:
+                        if os.path.exists(constants.SHADERS_SRC_PATH):
+                            shutil.rmtree(constants.SHADERS_SRC_PATH)
+                    except OSError as e:
+                        self.log.error(f"rmtree: {e}")
+
+                    try:
+                        if os.path.exists(constants.RES_SHAD_MPATH):
+                            shutil.rmtree(constants.RES_SHAD_MPATH)
+                    except OSError as e:
+                        self.log.error(f"rmtree: {e}")
+
+                    pb.setValue(75)
+                    if os.path.exists(constants.SHADERS_ZIP_PATH):
                         try:
-                            shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, dst_res_plug_ini_path)
+                            utilities.unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
+                        except FileNotFoundError as e:
+                            self.log.error(f"{e}")
+                        except zipfile.BadZipFile as e:
+                            self.log.error(f"{e}")
+
+                        try:
+                            os.remove(constants.SHADERS_ZIP_PATH)
+                        except OSError as e:
+                            self.log.error(f"remove_file: {e}")
+
+                    try:
+                        if os.path.exists(constants.RES_SHAD_MPATH):
+                            out_dir = f"{constants.PROGRAM_PATH}\{constants.RESHADE_SHADERS}"
+                            os.rename(constants.RES_SHAD_MPATH, out_dir)
+                    except OSError as e:
+                        self.log.error(f"rename_path: {e}")
+
+                    pb.setValue(100)
+
+                # begin games update section
+                errors = []
+                pb = utilities.ProgressBar(messages.copying_DLLs, 0)
+                for i in range(len(rs_all_games)):
+                    path_list = rs_all_games[i]["path"].split("\\")[:-1]
+                    game_path = '\\'.join(path_list)
+                    game_name = rs_all_games[i]["name"]
+                    dst_res_ini_path = f"{game_path}\\{constants.RESHADE_INI}"
+                    dst_res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
+
+                    if rs_all_games[i]["architecture"] == "32bits":
+                        src_path = constants.RESHADE32_PATH
+                    else:
+                        src_path = constants.RESHADE64_PATH
+
+                    if rs_all_games[i]["api"] == "DX9":
+                        dst_path = f"{game_path}\\{constants.D3D9}"
+                    else:
+                        dst_path = f"{game_path}\\{constants.DXGI}"
+
+                    try:
+                        pb.setValue(100 / len_games)
+                        game_screenshots_path = _get_screenshot_path(self, game_path, game_name)
+
+                        # copying Reshade.dll
+                        try:
+                            shutil.copyfile(src_path, dst_path)
                         except shutil.Error as e:
                             self.log.error(f"copyfile: {e}")
 
-                    len_games = len_games - 1
-                except OSError as e:
-                    errors.append(f"{game_name}: {e.strerror.lower()}")
-                    # utils.show_message_window("error",
-                    #                           "ERROR",
-                    #                           f"{messages.error_copying_dll}\n{game_name}\n\n{e.strerror}")
+                        # create Reshade.ini
+                        try:
+                            if self.reset_reshade_files or not os.path.exists(dst_res_ini_path):
+                                create_files = CreateFiles(self)
+                                create_files.create_reshade_ini_file(game_path, game_screenshots_path)
+                        except Exception as e:
+                            self.log.error(f"create_reshade_ini_file: {e}")
 
-        self.enable_form(True)
-        self.qtObj.apply_button.setEnabled(True)
-        utilities.show_progress_bar(self, messages.copying_DLLs, 100)
+                        # copying Reshade_plugins.ini
+                        if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
+                            try:
+                                shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, dst_res_plug_ini_path)
+                            except shutil.Error as e:
+                                self.log.error(f"copyfile: {e}")
 
-        if len(errors) == 0 and self.need_apply is False:
-            utilities.show_message_window("info", "SUCCESS", f"{messages.apply_success}")
-        elif len(errors) == 1:
-            err = '\n'.join(errors)
-            utilities.show_message_window("error", "ERROR", f"{messages.apply_success_with_errors}\n\n{err}")
+                        len_games = len_games - 1
+                    except OSError as e:
+                        errors.append(f"{game_name}: {e.strerror.lower()}")
+                        # utils.show_message_window("error",
+                        #                           "ERROR",
+                        #                           f"{messages.error_copying_dll}\n{game_name}\n\n{e.strerror}")
+
+                pb.setValue(100)
+
+                self.enable_form(True)
+                self.qtObj.apply_button.setEnabled(True)
+
+                if len(errors) == 0 and self.need_apply is False:
+                    utilities.show_message_window("info", "SUCCESS", f"{messages.apply_success}")
+                elif len(errors) == 1:
+                    err = '\n'.join(errors)
+                    utilities.show_message_window("error", "ERROR", f"{messages.apply_success_with_errors}\n\n{err}")
 
     ################################################################################
     def game_config_form(self, status: str):

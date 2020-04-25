@@ -30,6 +30,7 @@ class MainSrc:
         self.selected_game = None
         self.game_config_form = None
         self.reshade_version = None
+        self.local_reshade_exe = None
         self.use_dark_theme = None
         self.update_shaders = None
         self.check_program_updates = None
@@ -45,31 +46,36 @@ class MainSrc:
 
     ################################################################################
     def init(self):
-        utilities.show_progress_bar(self, messages.checking_files, 15)
+        pb = utilities.ProgressBar(messages.checking_files, 50)
         utilities.check_dirs(self)
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
         utilities.check_files(self)
         self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
         self.client_version = constants.VERSION
+        pb.setValue(100)
 
-        utilities.show_progress_bar(self, messages.checking_db_connection, 30)
+        pb = utilities.ProgressBar(messages.checking_db_connection, 50)
         utilities.check_db_connection(self)
         utilities.set_default_database_configs(self)
         utilities.check_database_updated_columns(self)
+        pb.setValue(100)
 
-        utilities.show_progress_bar(self, messages.initializing, 45)
+        pb = utilities.ProgressBar(messages.initializing, 50)
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
         self._set_all_configs()
+        pb.setValue(75)
         self._register_form_events()
+        pb.setValue(100)
 
-        utilities.show_progress_bar(self, messages.checking_new_reshade_version, 60)
-        self._check_new_reshade_version()
-        self._set_update_label()
+        self._check_reshade_files()
+        if self.local_reshade_exe is None:
+            self._download_new_reshade_version()
+        else:
+            self._check_new_reshade_version()
 
         if self.remote_reshade_version is not None:
             if self.reshade_version != self.remote_reshade_version:
-                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 75)
                 self.need_apply = True
                 if self.silent_reshade_updates:
                     self._download_new_reshade_version()
@@ -79,7 +85,7 @@ class MainSrc:
                     if reply == QtWidgets.QMessageBox.Yes:
                         self._download_new_reshade_version()
 
-        utilities.show_progress_bar(self, messages.ready, 100)
+        self._check_new_program_version()
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
         self.qtObj.api_groupBox.setEnabled(False)
@@ -122,7 +128,22 @@ class MainSrc:
         self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
 
     ################################################################################
+    def _check_reshade_files(self):
+        pb = utilities.ProgressBar(messages.checking_new_reshade_files, 50)
+        configSql = ConfigsSql(self)
+        rsConfig = configSql.get_configs()
+
+        if rsConfig[0]["reshade_version"] is not None and len(rsConfig[0]["reshade_version"]) > 0:
+            self.reshade_version = rsConfig[0]["reshade_version"]
+            self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
+            self.enable_form(True)
+            self.local_reshade_exe = f"{constants.PROGRAM_PATH}\\ReShade_Setup_{self.reshade_version}.exe"
+
+        pb.setValue(100)
+
+    ################################################################################
     def _check_new_reshade_version(self):
+        pb = utilities.ProgressBar(messages.checking_new_reshade_version, 0)
         self.remote_reshade_version = None
         if self.check_reshade_updates:
             try:
@@ -135,30 +156,45 @@ class MainSrc:
                     body = soup.body
                     blist = str(body).split("<p>")
 
-                    for content in blist:
+                    for i, content in enumerate(blist, start=1):
+                        pb.setValue(100 / i)
                         if content.startswith('<strong>Version '):
                             self.remote_reshade_version = content.split()[1].strip("</strong>")
+                            pb.setValue(100)
                             break
             except requests.exceptions.ConnectionError as e:
                 self.log.error(f"{messages.reshade_website_unreacheable} {e}")
                 utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
+                pb.setValue(100)
                 return
 
     ################################################################################
     def _download_new_reshade_version(self):
+        pb = utilities.ProgressBar(messages.downloading_new_reshade_version, 0)
         if not self.silent_reshade_updates:
             msg = f"{messages.update_reshade_question}"
             reply = utilities.show_message_window("question", "Download new Reshade version", msg)
             if reply == QtWidgets.QMessageBox.No:
                 return
 
-        old_reshade_version = self.reshade_version
-        self.reshade_version = None
+        self.remote_reshade_version = None
         exe_download_url = None
-        download_path = f"{constants.PROGRAM_PATH}\ReShade_Setup_"
+        download_path = f"{constants.PROGRAM_PATH}\\ReShade_Setup_"
+
+        # remove old version
+        pb.setValue(25)
+        if self.reshade_version is not None:
+            old_local_reshade_exe = f"{download_path}{self.reshade_version}.exe"
+            if os.path.isfile(old_local_reshade_exe):
+                os.remove(old_local_reshade_exe)
+            if os.path.isfile(constants.RESHADE32_PATH):
+                os.remove(constants.RESHADE32_PATH)
+            if os.path.isfile(constants.RESHADE64_PATH):
+                os.remove(constants.RESHADE64_PATH)
 
         # get new version number
         try:
+            pb.setValue(50)
             response = requests.get(constants.RESHADE_WEBSITE_URL)
             if response.status_code != 200:
                 self.log.error(messages.reshade_page_error)
@@ -170,8 +206,8 @@ class MainSrc:
 
                 for content in blist:
                     if content.startswith('<strong>Version '):
-                        self.reshade_version = content.split()[1].strip("</strong>")
-                        exe_download_url = f"{constants.RESHADE_EXE_URL}{self.reshade_version}.exe"
+                        self.remote_reshade_version = content.split()[1].strip("</strong>")
+                        exe_download_url = f"{constants.RESHADE_EXE_URL}{self.remote_reshade_version}.exe"
                         break
         except requests.exceptions.ConnectionError as e:
             self.log.error(f"{messages.reshade_website_unreacheable} {e}")
@@ -180,9 +216,10 @@ class MainSrc:
 
         # download new version exe
         try:
-            local_reshade_exe = f"{download_path}{self.reshade_version}.exe"
+            pb.setValue(75)
+            self.local_reshade_exe = f"{download_path}{self.remote_reshade_version}.exe"
             r = requests.get(exe_download_url)
-            with open(local_reshade_exe, 'wb') as outfile:
+            with open(self.local_reshade_exe, 'wb') as outfile:
                 outfile.write(r.content)
         except Exception as e:
             if e.errno == 13:
@@ -191,39 +228,33 @@ class MainSrc:
                 self.log.error(f"{messages.error_check_new_reshade_version} {e}")
             return
 
-        if old_reshade_version != self.reshade_version:
-            # remove old version
-            old_local_reshade_exe = f"{download_path}{old_reshade_version}.exe"
-            if os.path.isfile(old_local_reshade_exe):
-                os.remove(old_local_reshade_exe)
-            if os.path.isfile(constants.RESHADE32_PATH):
-                os.remove(constants.RESHADE32_PATH)
-            if os.path.isfile(constants.RESHADE64_PATH):
-                os.remove(constants.RESHADE64_PATH)
-
         # unzip reshade
-        self._unzip_reshade(local_reshade_exe)
+        pb.setValue(90)
+        self._unzip_reshade(self.local_reshade_exe)
 
         # save version to sql table
         configSql = ConfigsSql(self)
         configsObj = utilities.Object()
-        configsObj.reshade_version = self.reshade_version
+        configsObj.reshade_version = self.remote_reshade_version
         configSql.update_reshade_version(configsObj)
 
         # set version label
         self.qtObj.reshade_version_label.clear()
-        self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
+        self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.remote_reshade_version}")
 
+        pb.setValue(100)
         if self.need_apply:
             FormEvents.apply(self)
             utilities.show_message_window("info", "INFO",
                                           f"{messages.new_reshade_version}\n"
-                                          f"Version: {self.reshade_version}\n\n"
+                                          f"Version: {self.remote_reshade_version}\n\n"
                                           f"{messages.apply_success}")
             self.need_apply = False
 
+        self.reshade_version = self.remote_reshade_version
+
     ################################################################################
-    def _set_update_label(self):
+    def _check_new_program_version(self):
         if self.check_program_updates:
             new_version_obj = utilities.check_new_program_version(self)
             if new_version_obj.new_version_available:
@@ -244,8 +275,8 @@ class MainSrc:
 
     ################################################################################
     def _en_dis_apply_button(self):
-        len_programs = self.qtObj.programs_tableWidget.rowCount()
-        if len_programs == 0:
+        len_games = self.qtObj.programs_tableWidget.rowCount()
+        if len_games == 0:
             self.qtObj.apply_button.setEnabled(False)
         else:
             self.qtObj.apply_button.setEnabled(True)
@@ -257,43 +288,6 @@ class MainSrc:
     ################################################################################
     def _programs_tableWidget_double_clicked(self):
         self._show_game_config_form(self.selected_game.rs[0]["name"])
-
-    ################################################################################
-    def _check_reshade_files(self, rsConfig):
-        if rsConfig[0]["reshade_version"] is not None and len(rsConfig[0]["reshade_version"]) > 0:
-            self.reshade_version = rsConfig[0]["reshade_version"]
-            self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
-            self.enable_form(True)
-            local_reshade_exe = f"{constants.PROGRAM_PATH}\ReShade_Setup_{self.reshade_version}.exe"
-        else:
-            self._download_new_reshade_version()
-            return
-
-        try:
-            if not os.path.exists(local_reshade_exe):
-                utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 50)
-                self._download_new_reshade_version()
-        except OSError as e:
-            self.log.error(f"{e}")
-        utilities.show_progress_bar(self, messages.downloading_new_reshade_version, 100)
-
-        try:
-            if not os.path.exists(constants.RESHADE32_PATH):
-                if not os.path.exists(local_reshade_exe):
-                    self._download_new_reshade_version()
-                else:
-                    self._unzip_reshade(local_reshade_exe)
-        except OSError as e:
-            self.log.error(f"{e}")
-
-        try:
-            if not os.path.exists(constants.RESHADE64_PATH):
-                if not os.path.exists(local_reshade_exe):
-                    self._download_new_reshade_version()
-                else:
-                    self._unzip_reshade(local_reshade_exe)
-        except OSError as e:
-            self.log.error(f"{e}")
 
     ################################################################################
     def _set_all_configs(self):
@@ -378,8 +372,6 @@ class MainSrc:
                 config_obj.program_version = constants.VERSION
                 configSql.update_program_version(config_obj)
 
-            self._check_reshade_files(rsConfig)
-
     ################################################################################
     def _show_game_config_form(self, game_name: str):
         self.game_config_form = QtWidgets.QWidget()
@@ -428,11 +420,11 @@ class MainSrc:
         rs_all_games = games_sql.get_games()
         if rs_all_games is not None and len(rs_all_games) > 0:
             for i in range(len(rs_all_games)):
-                num_rows = self.qtObj.programs_tableWidget.rowCount()
-                self.qtObj.programs_tableWidget.insertRow(num_rows)
-                self.qtObj.programs_tableWidget.setItem(num_rows, 0,
+                len_games = self.qtObj.programs_tableWidget.rowCount()
+                self.qtObj.programs_tableWidget.insertRow(len_games)
+                self.qtObj.programs_tableWidget.setItem(len_games, 0,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i]["name"]))
-                self.qtObj.programs_tableWidget.setItem(num_rows, 1,
+                self.qtObj.programs_tableWidget.setItem(len_games, 1,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i]["path"]))
 
     ################################################################################

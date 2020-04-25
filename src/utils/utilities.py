@@ -40,6 +40,40 @@ class Object:
 
 
 ################################################################################
+class ProgressBar:
+    def __init__(self, message, value=0):
+        width = 350
+        height = 25
+        self.progressBar = QtWidgets.QProgressBar()
+        self.progressBar.setObjectName("progressBar")
+        self.progressBar.setMinimumSize(QtCore.QSize(width, height))
+        self.progressBar.setMaximumSize(QtCore.QSize(width, height))
+        self.progressBar.setSizeIncrement(QtCore.QSize(width, height))
+        self.progressBar.setBaseSize(QtCore.QSize(width, height))
+        # self.progressBar.setGeometry(QtCore.QRect(960, 540, width, height))
+        self.progressBar.setMinimum(0)
+        self.progressBar.setMaximum(100)
+        self.progressBar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
+        self.progressBar.show()
+        _translate = QtCore.QCoreApplication.translate
+        self.progressBar.setFormat(_translate("Main", f"{message}  %p%"))
+        self.progressBar.setValue(value)
+        QtWidgets.QApplication.processEvents()
+
+    def setValue(self, value):
+        QtWidgets.QApplication.processEvents()
+        self.progressBar.setValue(value)
+        if value == 100:
+            self.progressBar.close()
+
+
+################################################################################
+def get_current_path():
+    return os.path.abspath(os.getcwd())
+
+
+################################################################################
 def get_all_ini_file_settings(file_name: str):
     dictionary = {}
     parser = configparser.ConfigParser(delimiters='=', allow_no_value=True)
@@ -178,30 +212,6 @@ def get_pictures_path():
 
 
 ################################################################################
-def show_progress_bar(self, message, value):
-    self.progressBar = QtWidgets.QProgressBar()
-    _translate = QtCore.QCoreApplication.translate
-    self.progressBar.setObjectName("progressBar")
-    self.progressBar.setGeometry(QtCore.QRect(180, 150, 350, 25))
-    self.progressBar.setMinimumSize(QtCore.QSize(350, 25))
-    self.progressBar.setMaximumSize(QtCore.QSize(350, 25))
-    self.progressBar.setSizeIncrement(QtCore.QSize(350, 25))
-    self.progressBar.setBaseSize(QtCore.QSize(350, 25))
-    self.progressBar.setMinimum(0)
-    self.progressBar.setMaximum(100)
-    self.progressBar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-    self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
-    self.progressBar.setFormat(_translate("Main", message + "%p%"))
-    self.progressBar.show()
-
-    QtWidgets.QApplication.processEvents()
-    self.progressBar.setValue(value)
-
-    if value == 100:
-        self.progressBar.hide()
-
-
-################################################################################
 def show_message_window(window_type: str, window_title: str, msg: str):
     if window_type.lower() == "error":
         icon = QtWidgets.QMessageBox.Critical
@@ -226,6 +236,7 @@ def show_message_window(window_type: str, window_title: str, msg: str):
 
     user_answer = msgBox.exec_()
     return user_answer
+
 
 ################################################################################
 def check_new_program_version(self):
@@ -265,7 +276,7 @@ def check_dirs(self):
             os.makedirs(constants.PROGRAM_PATH)
     except OSError as e:
         show_message_window("error", "ERROR", f"Error creating program directories.\n{e}")
-        #self.log.error(f"{e}")
+
 
 ################################################################################
 def check_files(self):

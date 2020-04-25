@@ -20,23 +20,25 @@ from src.utils import constants, messages, utilities
 
 class Launcher:
     def __init__(self):
-        utilities.show_progress_bar(self, messages.checking_files, 25)
+        pb = utilities.ProgressBar(messages.checking_files, 50)
         utilities.check_dirs(self)
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
         utilities.check_files(self)
         self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
         self.client_version = constants.VERSION
+        pb.setValue(100)
 
-        utilities.show_progress_bar(self, messages.checking_db_connection, 50)
+        pb = utilities.ProgressBar(messages.checking_db_connection, 50)
         utilities.check_db_connection(self)
         utilities.set_default_database_configs(self)
         utilities.check_database_updated_columns(self)
+        pb.setValue(100)
 
-        utilities.show_progress_bar(self, messages.checking_new_version, 75)
+        pb = utilities.ProgressBar(messages.checking_new_version, 50)
         self._check_update_required()
+        pb.setValue(100)
 
-        utilities.show_progress_bar(self, messages.checking_new_version, 100)
         self._call_program()
 
     ################################################################################
@@ -55,9 +57,9 @@ class Launcher:
     def _download_new_program_version(self, show_dialog=True):
         if show_dialog:
             msg = f"""{messages.new_version_available}
-                                \nYour version: v{self.client_version}\nNew version: v{self.new_version}
-                                \n{messages.check_downloaded_dir}
-                                \n{messages.confirm_download}"""
+                \nYour version: v{self.client_version}\nNew version: v{self.new_version}
+                \n{messages.check_downloaded_dir}
+                \n{messages.confirm_download}"""
             reply = utilities.show_message_window("question", self.new_version_msg, msg)
 
             if reply == QtWidgets.QMessageBox.No:
@@ -67,11 +69,10 @@ class Launcher:
                 return
 
         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
-        downloaded_program_path = f"{os.path.abspath(os.getcwd())}\\{constants.EXE_PROGRAM_NAME}"
-        dl_new_version_msg = messages.dl_new_version
-
-        utilities.show_progress_bar(self, dl_new_version_msg, 50)
+        downloaded_program_path = f"{utilities.get_current_path()}\\{constants.EXE_PROGRAM_NAME}"
+        pb = utilities.ProgressBar(messages.dl_new_version_msg, 50)
         r = requests.get(program_url)
+
         if r.status_code == 200:
             with open(downloaded_program_path, 'wb') as outfile:
                 outfile.write(r.content)
@@ -79,8 +80,7 @@ class Launcher:
         else:
             utilities.show_message_window("error", "ERROR", f"{messages.error_dl_new_version}")
             self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
-
-        utilities.show_progress_bar(self, dl_new_version_msg, 100)
+        pb.setValue(100)
 
     ################################################################################
     def _call_program(self):
