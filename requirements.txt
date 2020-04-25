@@ -6,10 +6,10 @@ future==0.18.2
 idna==2.9
 pefile==2019.4.18
 psycopg2==2.8.5
--e git+https://github.com/pyinstaller/pyinstaller.git@b3dd91c8a808f42394cb7a732f8a37b5ffe7ed5a#egg=PyInstaller
+-e git+https://github.com/pyinstaller/pyinstaller.git@03d42a2a25269f453a81f066d4b34a5dd330a66c#egg=PyInstaller
 PyQt5==5.14.2
 PyQt5-sip==12.7.2
 pywin32-ctypes==0.2.0
 requests==2.23.0
 soupsieve==2.0
-urllib3==1.25.8
+urllib3==1.25.9
