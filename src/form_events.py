@@ -337,10 +337,10 @@ class FormEvents:
 
     ################################################################################
     def apply(self):
-        # games_sql = GamesSql(self)
-        # rs_all_games = games_sql.get_games()
-        # len_games = len(rs_all_games)
-        len_games = self.qtObj.programs_tableWidget.rowCount()
+        games_sql = GamesSql(self)
+        rs_all_games = games_sql.get_games()
+        len_games = len(rs_all_games)
+        # len_games = self.qtObj.programs_tableWidget.rowCount()
 
         if len_games > 0:
             if self.reset_reshade_files:
