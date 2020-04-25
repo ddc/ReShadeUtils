@@ -60,11 +60,6 @@ class Ui_Main(object):
         self.add_button.setObjectName("add_button")
         self.edit_path_button = QtWidgets.QPushButton(self.games_tab)
         self.edit_path_button.setGeometry(QtCore.QRect(280, 510, 120, 30))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.edit_path_button.sizePolicy().hasHeightForWidth())
-        self.edit_path_button.setSizePolicy(sizePolicy)
         self.edit_path_button.setMinimumSize(QtCore.QSize(120, 30))
         self.edit_path_button.setMaximumSize(QtCore.QSize(120, 30))
         self.edit_path_button.setObjectName("edit_path_button")
@@ -75,11 +70,6 @@ class Ui_Main(object):
         self.delete_button.setObjectName("delete_button")
         self.apply_button = QtWidgets.QPushButton(self.games_tab)
         self.apply_button.setGeometry(QtCore.QRect(770, 470, 120, 100))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(120)
-        sizePolicy.setVerticalStretch(100)
-        sizePolicy.setHeightForWidth(self.apply_button.sizePolicy().hasHeightForWidth())
-        self.apply_button.setSizePolicy(sizePolicy)
         self.apply_button.setMinimumSize(QtCore.QSize(120, 100))
         self.apply_button.setMaximumSize(QtCore.QSize(120, 100))
         self.apply_button.setObjectName("apply_button")
@@ -112,11 +102,6 @@ class Ui_Main(object):
         self.programs_tableWidget.verticalHeader().setMinimumSectionSize(30)
         self.edit_config_button = QtWidgets.QPushButton(self.games_tab)
         self.edit_config_button.setGeometry(QtCore.QRect(410, 510, 120, 30))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.edit_config_button.sizePolicy().hasHeightForWidth())
-        self.edit_config_button.setSizePolicy(sizePolicy)
         self.edit_config_button.setMinimumSize(QtCore.QSize(120, 30))
         self.edit_config_button.setMaximumSize(QtCore.QSize(120, 30))
         self.edit_config_button.setObjectName("edit_config_button")
@@ -208,15 +193,25 @@ class Ui_Main(object):
         self.about_textBrowser.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
         self.about_textBrowser.setOpenExternalLinks(True)
         self.about_textBrowser.setObjectName("about_textBrowser")
+        self.donate_button = QtWidgets.QPushButton(self.about_tab)
+        self.donate_button.setGeometry(QtCore.QRect(405, 450, 120, 30))
+        self.donate_button.setMinimumSize(QtCore.QSize(120, 30))
+        self.donate_button.setMaximumSize(QtCore.QSize(120, 30))
+        self.donate_button.setObjectName("donate_button")
         self.main_tabWidget.addTab(self.about_tab, "")
         self.updateAvail_label = QtWidgets.QLabel(Main)
-        self.updateAvail_label.setGeometry(QtCore.QRect(30, 655, 890, 40))
+        self.updateAvail_label.setGeometry(QtCore.QRect(30, 655, 741, 40))
         font = QtGui.QFont()
         font.setPointSize(9)
         self.updateAvail_label.setFont(font)
         self.updateAvail_label.setText("")
-        self.updateAvail_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.updateAvail_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.updateAvail_label.setObjectName("updateAvail_label")
+        self.update_button = QtWidgets.QPushButton(Main)
+        self.update_button.setGeometry(QtCore.QRect(790, 660, 120, 30))
+        self.update_button.setMinimumSize(QtCore.QSize(120, 30))
+        self.update_button.setMaximumSize(QtCore.QSize(120, 30))
+        self.update_button.setObjectName("update_button")
 
         self.retranslateUi(Main)
         self.main_tabWidget.setCurrentIndex(0)
@@ -290,19 +285,22 @@ class Ui_Main(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Acknowledgements</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://pyinstaller.readthedocs.io\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">PyInstaller</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://reshade.me/\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Reshade</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.python.org\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Python3</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.qt.io\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">QT5</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.python.org\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Python3</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://reshade.me/\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Reshade</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://pyinstaller.readthedocs.io\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">PyInstaller</span></a></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Developed by</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Discord: Hadesz#1223</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:hadesz456@gmail.com\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/ddc/ReshadeUtils/releases/latest\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Download</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=CTYZ8TK5MJV76\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Donations</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:hadesz456@gmail.com\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p></body></html>"))
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.donate_button.setToolTip(_translate("Main", "Click to edit the game path"))
+        self.donate_button.setText(_translate("Main", "PayPal"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.about_tab), _translate("Main", "About"))
+        self.update_button.setText(_translate("Main", "UPDATE"))
 
 
 if __name__ == "__main__":

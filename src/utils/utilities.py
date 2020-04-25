@@ -28,7 +28,7 @@ _time_formatter = "%H:%M:%S"
 
 class Object:
     def __init__(self):
-        self.created = str(datetime.datetime.now().strftime(f"{_date_formatter} {_time_formatter}"))
+        self._created = str(datetime.datetime.now().strftime(f"{_date_formatter} {_time_formatter}"))
 
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)

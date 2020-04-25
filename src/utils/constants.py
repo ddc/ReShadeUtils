@@ -58,12 +58,14 @@ STYLE_QSS_FILENAME = f"{PROGRAM_PATH}\\style.qss"
 ERROR_LOGS_FILENAME = f"{PROGRAM_PATH}\\errors.log"
 RESHADE_PLUGINS_FILENAME = f"{PROGRAM_PATH}\\{RESHADE_PLUGINS_INI}"
 ################################################################################
+GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
 REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/VERSION"
 CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/utils/style.qss"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"
+PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"
 ################################################################################
 # table columns after fisrt release
 NEW_CONFIG_TABLE_COLUMNS = ["silent_reshade_updates", "program_version"]

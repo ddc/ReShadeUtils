@@ -98,7 +98,8 @@ class MainSrc:
         self.qtObj.delete_button.clicked.connect(lambda: FormEvents.delete_game(self))
         self.qtObj.edit_path_button.clicked.connect(lambda: FormEvents.edit_game_path(self))
         self.qtObj.edit_config_button.clicked.connect(lambda: FormEvents.open_reshade_config_file(self))
-        self.qtObj.apply_button.clicked.connect(lambda: FormEvents.apply(self))
+        self.qtObj.apply_button.clicked.connect(lambda: FormEvents.apply_all(self))
+        self.qtObj.update_button.clicked.connect(lambda: FormEvents.update_clicked())
         #########
         self.qtObj.programs_tableWidget.clicked.connect(self._programs_tableWidget_clicked)
         self.qtObj.programs_tableWidget.itemDoubleClicked.connect(self._programs_tableWidget_double_clicked)
@@ -126,6 +127,9 @@ class MainSrc:
         self.qtObj.no_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
         #########
         self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
+        # TAB 3 - about
+        #########
+        self.qtObj.donate_button.clicked.connect(lambda: FormEvents.donate_clicked())
 
     ################################################################################
     def _check_reshade_files(self):
@@ -244,7 +248,7 @@ class MainSrc:
 
         pb.setValue(100)
         if self.need_apply:
-            FormEvents.apply(self)
+            FormEvents.apply_all(self)
             utilities.show_message_window("info", "INFO",
                                           f"{messages.new_reshade_version}\n"
                                           f"Version: {self.remote_reshade_version}\n\n"
@@ -255,11 +259,13 @@ class MainSrc:
 
     ################################################################################
     def _check_new_program_version(self):
+        self.qtObj.update_button.setVisible(False)
         if self.check_program_updates:
             new_version_obj = utilities.check_new_program_version(self)
             if new_version_obj.new_version_available:
                 self.qtObj.updateAvail_label.clear()
                 self.qtObj.updateAvail_label.setText(new_version_obj.new_version_msg)
+                self.qtObj.update_button.setVisible(True)
 
     ################################################################################
     def _unzip_reshade(self, local_reshade_exe):
@@ -287,7 +293,7 @@ class MainSrc:
 
     ################################################################################
     def _programs_tableWidget_double_clicked(self):
-        self._show_game_config_form(self.selected_game.rs[0]["name"])
+        self.show_game_config_form(self.selected_game.rs[0]["name"])
 
     ################################################################################
     def _set_all_configs(self):
@@ -373,7 +379,7 @@ class MainSrc:
                 configSql.update_program_version(config_obj)
 
     ################################################################################
-    def _show_game_config_form(self, game_name: str):
+    def show_game_config_form(self, game_name: str):
         self.game_config_form = QtWidgets.QWidget()
         _translate = QtCore.QCoreApplication.translate
         qtObj = UiGameConfigForm()
