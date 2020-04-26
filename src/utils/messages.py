@@ -50,7 +50,7 @@ path_changed_success = "Path changed successfully!"
 update_reshade_question = "Download new Reshade version now?"
 
 # update messages
-dl_new_version = "Downloading new version..."
+dl_new_version_msg = "Downloading new version..."
 dl_new_version_timeout = "Unable to reach Website to check for new version!!!"
 error_dl_new_version = "There was an ERROR trying to download new version.\nPlease try again later."
 error_check_new_version = "There was an ERROR trying to check for a new program version!"
