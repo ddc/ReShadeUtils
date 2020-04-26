@@ -371,10 +371,7 @@ class MainSrc:
             self.qtObj.silent_reshade_updates_groupBox.setEnabled(self.check_reshade_updates)
             self.qtObj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
 
-            if rsConfig[0]["program_version"] is None \
-                    or len(rsConfig[0]["program_version"]) == 0 \
-                    or rsConfig[0]["program_version"] == "None" \
-                    or rsConfig[0]["program_version"] != constants.VERSION:
+            if rsConfig[0]["program_version"] is None or rsConfig[0]["program_version"] != constants.VERSION:
                 config_obj = utilities.Object()
                 config_obj.program_version = constants.VERSION
                 configSql.update_program_version(config_obj)

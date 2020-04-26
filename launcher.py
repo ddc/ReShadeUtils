@@ -22,9 +22,10 @@ class Launcher:
     def __init__(self):
         self.log = None
         self.database_settings = None
-        self.client_version = constants.VERSION
         self.new_version = None
         self.new_version_msg = None
+        self.launcher_version = None
+        self.client_version = None
 
     ################################################################################
     def init(self):
@@ -52,6 +53,11 @@ class Launcher:
     def _check_update_required(self):
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
+
+        if rsConfig[0]["program_version"] is None:
+            self.client_version = constants.VERSION
+        else:
+            self.client_version = rsConfig[0]["program_version"]
 
         if rsConfig[0]["check_program_updates"].upper() == "Y":
             new_version_obj = utilities.check_new_program_version(self)

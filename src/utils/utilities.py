@@ -218,6 +218,7 @@ def show_message_window(window_type: str, window_title: str, msg: str):
 ################################################################################
 def check_new_program_version(self):
     import requests
+    client_version = self.client_version
     remote_version_filename = constants.REMOTE_VERSION_FILENAME
     obj_return = Object()
     obj_return.new_version_available = False
@@ -230,7 +231,7 @@ def check_new_program_version(self):
             # getting rid of \n at the end of line
             remote_version = remote_version.replace("\\n", "").replace("\n", "")
 
-            if float(remote_version) > float(self.client_version):
+            if float(remote_version) > float(client_version):
                 obj_return.new_version_available = True
                 obj_return.new_version_msg = f"Version {remote_version} available for download"
                 obj_return.new_version = float(remote_version)
