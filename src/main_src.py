@@ -24,6 +24,7 @@ from src.utils import constants, messages, utilities
 
 class MainSrc:
     def __init__(self, qtObj, form):
+        self.progressBar = utilities.ProgressBar()
         self.qtObj = qtObj
         self.form = form
         self.database_settings = None
@@ -47,28 +48,27 @@ class MainSrc:
 
     ################################################################################
     def init(self):
-        pb = utilities.ProgressBar(messages.checking_files, 50)
+        self.progressBar.setValues(messages.initializing, 0)
         utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
+
+        self.progressBar.setValues(messages.checking_files, 15)
         utilities.check_files(self)
         self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
         self.client_version = constants.VERSION
-        pb.setValue(100)
 
-        pb = utilities.ProgressBar(messages.checking_db_connection, 50)
+        self.progressBar.setValues(messages.checking_db_connection, 30)
         utilities.check_db_connection(self)
         utilities.set_default_database_configs(self)
         utilities.check_database_updated_columns(self)
-        pb.setValue(100)
 
-        pb = utilities.ProgressBar(messages.initializing, 50)
+        self.progressBar.setValues(messages.checking_configs, 45)
         self.qtObj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
         self._set_all_configs()
-        pb.setValue(75)
         self._register_form_events()
-        pb.setValue(100)
 
+        self.progressBar.setValues(messages.checking_new_reshade_version, 60)
         self._check_reshade_files()
         if self.local_reshade_exe is None:
             self._download_new_reshade_version()
@@ -86,11 +86,13 @@ class MainSrc:
                     if reply == QtWidgets.QMessageBox.Yes:
                         self._download_new_reshade_version()
 
+        self.progressBar.setValues(messages.checking_new_version, 90)
         self._check_new_program_version()
         self.qtObj.main_tabWidget.setCurrentIndex(0)
         self.qtObj.architecture_groupBox.setEnabled(False)
         self.qtObj.api_groupBox.setEnabled(False)
         self.enable_widgets(False)
+        self.progressBar.close()
 
     ################################################################################
     def _register_form_events(self):
@@ -134,7 +136,6 @@ class MainSrc:
 
     ################################################################################
     def _check_reshade_files(self):
-        pb = utilities.ProgressBar(messages.checking_new_reshade_files, 50)
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
 
@@ -144,11 +145,8 @@ class MainSrc:
             self.enable_form(True)
             self.local_reshade_exe = f"{constants.PROGRAM_PATH}\\ReShade_Setup_{self.reshade_version}.exe"
 
-        pb.setValue(100)
-
     ################################################################################
     def _check_new_reshade_version(self):
-        pb = utilities.ProgressBar(messages.checking_new_reshade_version, 0)
         self.remote_reshade_version = None
         if self.check_reshade_updates:
             try:
@@ -162,20 +160,17 @@ class MainSrc:
                     blist = str(body).split("<p>")
 
                     for i, content in enumerate(blist, start=1):
-                        pb.setValue(100 / i)
                         if content.startswith('<strong>Version '):
                             self.remote_reshade_version = content.split()[1].strip("</strong>")
-                            pb.setValue(100)
                             break
             except requests.exceptions.ConnectionError as e:
                 self.log.error(f"{messages.reshade_website_unreacheable} {e}")
                 utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
-                pb.setValue(100)
                 return
 
     ################################################################################
     def _download_new_reshade_version(self):
-        pb = utilities.ProgressBar(messages.downloading_new_reshade_version, 0)
+        self.progressBar.setValues(messages.downloading_new_reshade_version, 75)
         if not self.silent_reshade_updates:
             msg = f"{messages.update_reshade_question}"
             reply = utilities.show_message_window("question", "Download new Reshade version", msg)
@@ -187,7 +182,6 @@ class MainSrc:
         download_path = f"{constants.PROGRAM_PATH}\\ReShade_Setup_"
 
         # remove old version
-        pb.setValue(25)
         if self.reshade_version is not None:
             old_local_reshade_exe = f"{download_path}{self.reshade_version}.exe"
             if os.path.isfile(old_local_reshade_exe):
@@ -199,7 +193,6 @@ class MainSrc:
 
         # get new version number
         try:
-            pb.setValue(50)
             response = requests.get(constants.RESHADE_WEBSITE_URL)
             if response.status_code != 200:
                 self.log.error(messages.reshade_page_error)
@@ -219,9 +212,8 @@ class MainSrc:
             utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
             return
 
-        # download new version exe
+        # download new reshade version exe
         try:
-            pb.setValue(75)
             self.local_reshade_exe = f"{download_path}{self.remote_reshade_version}.exe"
             r = requests.get(exe_download_url)
             with open(self.local_reshade_exe, 'wb') as outfile:
@@ -234,7 +226,6 @@ class MainSrc:
             return
 
         # unzip reshade
-        pb.setValue(90)
         self._unzip_reshade(self.local_reshade_exe)
 
         # save version to sql table
@@ -247,7 +238,6 @@ class MainSrc:
         self.qtObj.reshade_version_label.clear()
         self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.remote_reshade_version}")
 
-        pb.setValue(100)
         if self.need_apply:
             FormEvents.apply_all(self)
             utilities.show_message_window("info", "INFO",

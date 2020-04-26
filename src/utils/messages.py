@@ -8,7 +8,7 @@
 # # -*- coding: utf-8 -*-
 
 # general
-initializing = "Initializing first time run..."
+initializing = "Initializing..."
 not_found = " not found!"
 checking_files = "Checking files..."
 checking_db_connection = "Checking DB connection..."
@@ -17,6 +17,7 @@ error_db_connection = "Cannot create database connection."
 exit_program = "Program will now exit."
 error_executing_program = "Could not initialize "
 error_check_installation = "Please check your installation and try again."
+checking_configs = "Checking config files..."
 
 # reshade
 checking_new_reshade_files = "Checking for local reshade files..."

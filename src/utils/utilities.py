@@ -41,7 +41,7 @@ class Object:
 
 ################################################################################
 class ProgressBar:
-    def __init__(self, message, value=0):
+    def __init__(self):
         width = 350
         height = 25
         self.progressBar = QtWidgets.QProgressBar()
@@ -55,17 +55,20 @@ class ProgressBar:
         self.progressBar.setMaximum(100)
         self.progressBar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
-        self.progressBar.show()
+        #self.progressBar.show()
+        #QtWidgets.QApplication.processEvents()
+
+    def setValues(self, message="", value=0):
         _translate = QtCore.QCoreApplication.translate
         self.progressBar.setFormat(_translate("Main", f"{message}  %p%"))
-        self.progressBar.setValue(value)
-        QtWidgets.QApplication.processEvents()
-
-    def setValue(self, value):
+        self.progressBar.show()
         QtWidgets.QApplication.processEvents()
         self.progressBar.setValue(value)
         if value == 100:
             self.progressBar.close()
+
+    def close(self):
+        self.progressBar.close()
 
 
 ################################################################################
@@ -219,19 +222,21 @@ def show_message_window(window_type: str, window_title: str, msg: str):
 def check_new_program_version(self):
     import requests
     client_version = self.client_version
+    remote_version = None
     remote_version_filename = constants.REMOTE_VERSION_FILENAME
     obj_return = Object()
     obj_return.new_version_available = False
     obj_return.new_version = None
 
     try:
-        req = requests.get(remote_version_filename, stream=True, timeout=3)
+        req = requests.get(remote_version_filename, stream=True)
         if req.status_code == 200:
-            remote_version = req.text
-            # getting rid of \n at the end of line
-            remote_version = remote_version.replace("\\n", "").replace("\n", "")
+            for line in req.iter_lines(decode_unicode=True):
+                if line:
+                    remote_version = line
+                    break
 
-            if float(remote_version) > float(client_version):
+            if remote_version is not None and (float(remote_version) > float(client_version)):
                 obj_return.new_version_available = True
                 obj_return.new_version_msg = f"Version {remote_version} available for download"
                 obj_return.new_version = float(remote_version)

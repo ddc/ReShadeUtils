@@ -20,6 +20,7 @@ from src.utils import constants, messages, utilities
 
 class Launcher:
     def __init__(self):
+        self.progressBar = utilities.ProgressBar()
         self.log = None
         self.database_settings = None
         self.new_version = None
@@ -29,24 +30,21 @@ class Launcher:
 
     ################################################################################
     def init(self):
-        pb = utilities.ProgressBar(messages.checking_files, 25)
+        self.progressBar.setValues(messages.checking_files, 25)
         utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
         utilities.check_files(self)
         self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
-        pb.setValue(100)
 
-        pb = utilities.ProgressBar(messages.checking_db_connection, 50)
+        self.progressBar.setValues(messages.checking_db_connection, 50)
         utilities.check_db_connection(self)
         utilities.set_default_database_configs(self)
         utilities.check_database_updated_columns(self)
-        pb.setValue(100)
 
-        pb = utilities.ProgressBar(messages.checking_new_version, 75)
+        self.progressBar.setValues(messages.checking_new_version, 75)
         self._check_update_required()
-        pb.setValue(100)
-
+        self.progressBar.close()
         self._call_program()
 
     ################################################################################
@@ -82,9 +80,8 @@ class Launcher:
 
         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
         downloaded_program_path = f"{utilities.get_current_path()}\\{constants.EXE_PROGRAM_NAME}"
-        pb = utilities.ProgressBar(messages.dl_new_version_msg, 50)
-        r = requests.get(program_url)
 
+        r = requests.get(program_url)
         if r.status_code == 200:
             with open(downloaded_program_path, 'wb') as outfile:
                 outfile.write(r.content)
@@ -92,7 +89,6 @@ class Launcher:
         else:
             utilities.show_message_window("error", "ERROR", f"{messages.error_dl_new_version}")
             self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
-        pb.setValue(100)
 
     ################################################################################
     def _call_program(self):

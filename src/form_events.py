@@ -373,9 +373,9 @@ class FormEvents:
                 # begin games update section
                 errors = []
                 games_obj = utilities.Object()
-                pb = utilities.ProgressBar(messages.copying_DLLs, 0)
+                self.progressBar.setValues(messages.copying_DLLs, 0)
                 for i in range(len(rs_all_games)):
-                    pb.setValue(100 / len_games)
+                    self.progressBar.setValues(messages.copying_DLLs, 100 / len_games)
                     games_obj.api = rs_all_games[i]["api"]
                     games_obj.architecture = rs_all_games[i]["architecture"]
                     games_obj.game_name = rs_all_games[i]["name"]
@@ -384,7 +384,7 @@ class FormEvents:
                     result = _apply_single(self, games_obj)
                     if len(result) > 0:
                         errors.append(result)
-                pb.setValue(100)
+
                 self.enable_form(True)
                 self.qtObj.apply_button.setEnabled(True)
 
@@ -393,6 +393,8 @@ class FormEvents:
                 elif len(errors) > 0:
                     err = '\n'.join(errors)
                     utilities.show_message_window("error", "ERROR", f"{messages.apply_success_with_errors}\n\n{err}")
+
+                self.progressBar.close()
 
     ################################################################################
     def game_config_form(self, status: str):
@@ -490,6 +492,7 @@ class FormEvents:
                 games_sql.insert_game(games_obj)
                 del self.added_game_path
                 _download_shaders(self)
+                self.progressBar.close()
                 _apply_single(self, games_obj)
 
             self.populate_programs_listWidget()
@@ -585,11 +588,10 @@ def _download_shaders(self):
 
     if downloaded_new_shaders is not None and downloaded_new_shaders is True:
         try:
-            pb = utilities.ProgressBar(messages.downloading_shaders, 50)
+            self.progressBar.setValues(messages.downloading_shaders, 50)
             r = requests.get(constants.SHADERS_ZIP_URL)
             with open(constants.SHADERS_ZIP_PATH, 'wb') as outfile:
                 outfile.write(r.content)
-            downloaded_new_shaders = True
         except Exception as e:
             self.log.error(f"{messages.dl_new_shaders_timeout} {e}")
             utilities.show_message_window("error", "ERROR", messages.dl_new_shaders_timeout)
@@ -606,7 +608,7 @@ def _download_shaders(self):
         except OSError as e:
             self.log.error(f"rmtree: {e}")
 
-        pb.setValue(75)
+        self.progressBar.setValues(messages.downloading_shaders, 75)
         if os.path.exists(constants.SHADERS_ZIP_PATH):
             try:
                 utilities.unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
@@ -627,6 +629,4 @@ def _download_shaders(self):
         except OSError as e:
             self.log.error(f"rename_path: {e}")
 
-        pb.setValue(100)
-
-
+        self.progressBar.setValues(messages.downloading_shaders, 99)
