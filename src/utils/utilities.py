@@ -16,6 +16,7 @@ import os
 import sys
 import zipfile
 
+import requests
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
@@ -42,14 +43,14 @@ class Object:
 ################################################################################
 class ProgressBar:
     def __init__(self):
-        width = 350
-        height = 25
+        _width = 350
+        _height = 25
         self.progressBar = QtWidgets.QProgressBar()
         self.progressBar.setObjectName("progressBar")
-        self.progressBar.setMinimumSize(QtCore.QSize(width, height))
-        self.progressBar.setMaximumSize(QtCore.QSize(width, height))
-        self.progressBar.setSizeIncrement(QtCore.QSize(width, height))
-        self.progressBar.setBaseSize(QtCore.QSize(width, height))
+        self.progressBar.setMinimumSize(QtCore.QSize(_width, _height))
+        self.progressBar.setMaximumSize(QtCore.QSize(_width, _height))
+        self.progressBar.setSizeIncrement(QtCore.QSize(_width, _height))
+        self.progressBar.setBaseSize(QtCore.QSize(_width, _height))
         # self.progressBar.setGeometry(QtCore.QRect(960, 540, width, height))
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
@@ -218,7 +219,6 @@ def show_message_window(window_type: str, window_title: str, msg: str):
 
 ################################################################################
 def check_new_program_version(self):
-    import requests
     client_version = self.client_version
     remote_version = None
     remote_version_filename = constants.REMOTE_VERSION_FILENAME
