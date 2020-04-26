@@ -20,13 +20,20 @@ from src.utils import constants, messages, utilities
 
 class Launcher:
     def __init__(self):
-        pb = utilities.ProgressBar(messages.checking_files, 50)
-        utilities.check_dirs(self)
+        self.log = None
+        self.database_settings = None
+        self.client_version = constants.VERSION
+        self.new_version = None
+        self.new_version_msg = None
+
+    ################################################################################
+    def init(self):
+        pb = utilities.ProgressBar(messages.checking_files, 25)
+        utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
         utilities.check_files(self)
         self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
-        self.client_version = constants.VERSION
         pb.setValue(100)
 
         pb = utilities.ProgressBar(messages.checking_db_connection, 50)
@@ -35,7 +42,7 @@ class Launcher:
         utilities.check_database_updated_columns(self)
         pb.setValue(100)
 
-        pb = utilities.ProgressBar(messages.checking_new_version, 50)
+        pb = utilities.ProgressBar(messages.checking_new_version, 75)
         self._check_update_required()
         pb.setValue(100)
 
@@ -58,7 +65,6 @@ class Launcher:
         if show_dialog:
             msg = f"""{messages.new_version_available}
                 \nYour version: v{self.client_version}\nNew version: v{self.new_version}
-                \n{messages.check_downloaded_dir}
                 \n{messages.confirm_download}"""
             reply = utilities.show_message_window("question", self.new_version_msg, msg)
 
@@ -105,4 +111,5 @@ class Launcher:
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     launcher = Launcher()
+    launcher.init()
     sys.exit(0)

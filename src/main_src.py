@@ -43,11 +43,12 @@ class MainSrc:
         self.db_conn = None
         self.remote_reshade_version = None
         self.client_version = None
+        self.log = None
 
     ################################################################################
     def init(self):
         pb = utilities.ProgressBar(messages.checking_files, 50)
-        utilities.check_dirs(self)
+        utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
         utilities.check_files(self)

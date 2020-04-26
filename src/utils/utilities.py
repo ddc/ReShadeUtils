@@ -111,29 +111,6 @@ def get_ini_settings(file_name: str, section: str, config_name: str):
 
 
 ################################################################################
-# def set_file_settings(filename, section, config_name, value):
-#     parser = configparser.ConfigParser(delimiters='=', allow_no_value=True)
-#     parser.optionxform = str  # this wont change all values to lowercase
-#     parser._interpolation = configparser.ExtendedInterpolation()
-#     try:
-#         parser.read(filename)
-#         parser.set(section, config_name, value)
-#         with open(filename, 'w') as configfile:
-#             parser.write(configfile, space_around_delimiters=False)
-#     except configparser.DuplicateOptionError:
-#         return
-#
-#
-################################################################################
-# def zip_file(file_name:str, out_path:str):
-#     zipOutputName = "archive"
-#     fileType = "zip"
-#     path = out_path
-#     fileName = file_name
-#     shutil.make_archive(zipOutputName,fileType,path,fileName)
-#
-#
-################################################################################
 def unzip_file(file_name: str, out_path: str):
     zipfile_path = file_name
     zipf = zipfile.ZipFile(zipfile_path)
@@ -270,12 +247,13 @@ def check_new_program_version(self):
 
 
 ################################################################################
-def check_dirs(self):
+def check_dirs():
     try:
         if not os.path.exists(constants.PROGRAM_PATH):
             os.makedirs(constants.PROGRAM_PATH)
     except OSError as e:
         show_message_window("error", "ERROR", f"Error creating program directories.\n{e}")
+        exit(1)
 
 
 ################################################################################

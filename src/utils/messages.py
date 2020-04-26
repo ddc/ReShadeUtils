@@ -7,7 +7,7 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-#general
+# general
 initializing = "Initializing first time run..."
 not_found = " not found!"
 checking_files = "Checking files..."
@@ -18,7 +18,7 @@ exit_program = "Program will now exit."
 error_executing_program = "Could not initialize "
 error_check_installation = "Please check your installation and try again."
 
-#reshade
+# reshade
 checking_new_reshade_files = "Checking for local reshade files..."
 checking_new_reshade_version = "Checking for new reshade version..."
 downloading_new_reshade_version = "Downloading new Reshade version... "
@@ -57,6 +57,5 @@ error_check_new_version = "There was an ERROR trying to check for a new program 
 program_updated = "Program updated to "
 checking_new_version = "Checking for new program version: "
 new_version_available = "There's a new version available!!!"
-check_downloaded_dir = "If you already downloaded the new version,\nplease check your download directory!!!"
 confirm_download = "Do you want to download the new version now?"
 remote_version_file_not_found = "ERROR: Remote File: VERSION was not found."
