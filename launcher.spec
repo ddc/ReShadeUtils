@@ -30,7 +30,7 @@ exe = EXE(pyz,
           runtime_tmpdir=None,
           console=False,
           version='resources.rc',
-          uac_admin=False,
+          uac_admin=True,
           icon='')
           
 #coll = COLLECT(exe,
