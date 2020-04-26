@@ -55,8 +55,6 @@ class ProgressBar:
         self.progressBar.setMaximum(100)
         self.progressBar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
-        #self.progressBar.show()
-        #QtWidgets.QApplication.processEvents()
 
     def setValues(self, message="", value=0):
         _translate = QtCore.QCoreApplication.translate

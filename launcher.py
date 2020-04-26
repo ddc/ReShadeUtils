@@ -25,7 +25,6 @@ class Launcher:
         self.database_settings = None
         self.new_version = None
         self.new_version_msg = None
-        self.launcher_version = None
         self.client_version = None
 
     ################################################################################
