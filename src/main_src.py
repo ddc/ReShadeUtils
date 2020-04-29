@@ -11,7 +11,7 @@ import os
 import sys
 
 import requests
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from bs4 import BeautifulSoup
 
@@ -49,6 +49,10 @@ class MainSrc:
     ################################################################################
     def init(self):
         self.progressBar.setValues(messages.initializing, 0)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap('src/images/paypal.png'), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.qtObj.paypal_button.setIcon(icon)
+
         utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
@@ -132,7 +136,7 @@ class MainSrc:
         self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
         # TAB 3 - about
         #########
-        self.qtObj.donate_button.clicked.connect(lambda: FormEvents.donate_clicked())
+        self.qtObj.paypal_button.clicked.connect(lambda: FormEvents.donate_clicked())
 
     ################################################################################
     def _check_reshade_files(self):

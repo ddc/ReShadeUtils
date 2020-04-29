@@ -186,6 +186,7 @@ class Ui_Main(object):
         self.about_tab.setObjectName("about_tab")
         self.about_textBrowser = QtWidgets.QTextBrowser(self.about_tab)
         self.about_textBrowser.setGeometry(QtCore.QRect(0, 0, 921, 581))
+        self.about_textBrowser.setAcceptDrops(False)
         self.about_textBrowser.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.about_textBrowser.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.about_textBrowser.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -193,11 +194,21 @@ class Ui_Main(object):
         self.about_textBrowser.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
         self.about_textBrowser.setOpenExternalLinks(True)
         self.about_textBrowser.setObjectName("about_textBrowser")
-        self.donate_button = QtWidgets.QPushButton(self.about_tab)
-        self.donate_button.setGeometry(QtCore.QRect(405, 450, 120, 30))
-        self.donate_button.setMinimumSize(QtCore.QSize(120, 30))
-        self.donate_button.setMaximumSize(QtCore.QSize(120, 30))
-        self.donate_button.setObjectName("donate_button")
+        self.paypal_button = QtWidgets.QPushButton(self.about_tab)
+        self.paypal_button.setGeometry(QtCore.QRect(420, 435, 80, 30))
+        self.paypal_button.setMinimumSize(QtCore.QSize(80, 30))
+        self.paypal_button.setMaximumSize(QtCore.QSize(80, 30))
+        self.paypal_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.paypal_button.setToolTip("")
+        self.paypal_button.setAutoFillBackground(False)
+        self.paypal_button.setStyleSheet("#paypal_button {\n"
+"    background-color: transparent;\n"
+"    background: none;\n"
+"    border: none;\n"
+"    background-repeat: none;\n"
+"}")
+        self.paypal_button.setIconSize(QtCore.QSize(100, 100))
+        self.paypal_button.setObjectName("paypal_button")
         self.main_tabWidget.addTab(self.about_tab, "")
         self.updateAvail_label = QtWidgets.QLabel(Main)
         self.updateAvail_label.setGeometry(QtCore.QRect(30, 655, 741, 40))
@@ -297,8 +308,6 @@ class Ui_Main(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:hadesz456@gmail.com\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/ddc/ReshadeUtils/releases/latest\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Download</span></a></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.donate_button.setToolTip(_translate("Main", "Click to edit the game path"))
-        self.donate_button.setText(_translate("Main", "PayPal"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.about_tab), _translate("Main", "About"))
         self.update_button.setText(_translate("Main", "UPDATE"))
 

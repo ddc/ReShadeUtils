@@ -701,6 +701,9 @@
        <height>581</height>
       </rect>
      </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
@@ -750,32 +753,49 @@ p, li { white-space: pre-wrap; }
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="donate_button">
+    <widget class="QPushButton" name="paypal_button">
      <property name="geometry">
       <rect>
-       <x>405</x>
-       <y>450</y>
-       <width>120</width>
+       <x>420</x>
+       <y>435</y>
+       <width>80</width>
        <height>30</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>120</width>
+       <width>80</width>
        <height>30</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>120</width>
+       <width>80</width>
        <height>30</height>
       </size>
      </property>
-     <property name="toolTip">
-      <string>Click to edit the game path</string>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="text">
-      <string>PayPal</string>
+     <property name="toolTip">
+      <string notr="true"/>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#donate_button {
+    background-color: transparent;
+    background: none;
+    border: none;
+    background-repeat: none;
+}</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>100</width>
+       <height>100</height>
+      </size>
      </property>
     </widget>
    </widget>
