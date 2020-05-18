@@ -9,6 +9,7 @@
 
 import os
 import sys
+import urllib.request
 
 import requests
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -49,8 +50,11 @@ class MainSrc:
     ################################################################################
     def init(self):
         self.progressBar.setValues(messages.initializing, 0)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap('src/images/paypal.png'), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        url = constants.PAYPAL_REMOTE_FILENAME
+        data = urllib.request.urlopen(url).read()
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(data)
+        icon = QtGui.QIcon(pixmap)
         self.qtObj.paypal_button.setIcon(icon)
 
         utilities.check_dirs()
