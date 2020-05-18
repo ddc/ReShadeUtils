@@ -9,10 +9,9 @@
 
 import os
 import sys
-import urllib.request
 
 import requests
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
 from bs4 import BeautifulSoup
 
@@ -50,13 +49,7 @@ class MainSrc:
     ################################################################################
     def init(self):
         self.progressBar.setValues(messages.initializing, 0)
-        url = constants.PAYPAL_REMOTE_FILENAME
-        data = urllib.request.urlopen(url).read()
-        pixmap = QtGui.QPixmap()
-        pixmap.loadFromData(data)
-        icon = QtGui.QIcon(pixmap)
-        self.qtObj.paypal_button.setIcon(icon)
-
+        utilities.set_paypal_button(self)
         utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions

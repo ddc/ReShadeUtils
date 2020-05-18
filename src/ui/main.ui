@@ -776,7 +776,7 @@ p, li { white-space: pre-wrap; }
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="toolTip">
-      <string notr="true"/>
+      <string notr="true">PayPal</string>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -788,6 +788,9 @@ p, li { white-space: pre-wrap; }
     border: none;
     background-repeat: none;
 }</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
      <property name="iconSize">
       <size>

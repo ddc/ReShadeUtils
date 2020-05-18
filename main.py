@@ -199,7 +199,7 @@ class Ui_Main(object):
         self.paypal_button.setMinimumSize(QtCore.QSize(80, 30))
         self.paypal_button.setMaximumSize(QtCore.QSize(80, 30))
         self.paypal_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.paypal_button.setToolTip("")
+        self.paypal_button.setToolTip("PayPal")
         self.paypal_button.setAutoFillBackground(False)
         self.paypal_button.setStyleSheet("#paypal_button {\n"
 "    background-color: transparent;\n"

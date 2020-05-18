@@ -17,7 +17,7 @@ import sys
 import zipfile
 
 import requests
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
 from src.utils import constants, messages
@@ -341,3 +341,17 @@ def check_database_updated_columns(self):
         for eac in constants.NEW_CONFIG_TABLE_COLUMNS:
             if eac != "id".lower() and not eac in rsConfig[0].keys():
                     ut = updateTablesSql.update_config_table()
+
+
+################################################################################
+def set_paypal_button(self):
+    url = constants.PAYPAL_REMOTE_FILENAME
+    data = requests.get(url, stream=True)
+    if data.status_code == 200:
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(data.content)
+        icon = QtGui.QIcon(pixmap)
+        self.qtObj.paypal_button.setIcon(icon)
+    else:
+        _translate = QtCore.QCoreApplication.translate
+        self.qtObj.paypal_button.setText(_translate("Main", "PayPal"))
