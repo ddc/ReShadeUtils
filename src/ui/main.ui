@@ -696,9 +696,9 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>0</y>
+       <y>50</y>
        <width>921</width>
-       <height>581</height>
+       <height>531</height>
       </rect>
      </property>
      <property name="acceptDrops">
@@ -722,8 +722,6 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Reshade Utilities&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Program to copy reshade DLLs, shaders and config fiies to several games.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Developed as an open source project and hosted on GitHub.&lt;/span&gt;&lt;/p&gt;
@@ -756,8 +754,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="paypal_button">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>435</y>
+       <x>410</x>
+       <y>10</y>
        <width>80</width>
        <height>30</height>
       </rect>
@@ -784,7 +782,7 @@ p, li { white-space: pre-wrap; }
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">#donate_button {
+      <string notr="true">#paypal_button {
     background-color: transparent;
     background: none;
     border: none;
@@ -803,9 +801,9 @@ p, li { white-space: pre-wrap; }
   <widget class="QLabel" name="updateAvail_label">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>290</x>
      <y>655</y>
-     <width>741</width>
+     <width>481</width>
      <height>40</height>
     </rect>
    </property>

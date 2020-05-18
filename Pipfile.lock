@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3a250b0a3d252de038f6772897b7789aae031e2443724ca24dac8bea05243fc3"
+            "sha256": "84a78dbb6bda68068c96c30b4f19fea4f6f704d1138be86364e3d35681f7d571"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -93,7 +93,7 @@
         "pyinstaller": {
             "editable": true,
             "git": "https://github.com/pyinstaller/pyinstaller.git",
-            "ref": "03d42a2a25269f453a81f066d4b34a5dd330a66c"
+            "ref": "fe0911772f297b4b40b84af22f57de374aae13fd"
         },
         "pyqt5": {
             "hashes": [

@@ -185,7 +185,7 @@ class Ui_Main(object):
         self.about_tab = QtWidgets.QWidget()
         self.about_tab.setObjectName("about_tab")
         self.about_textBrowser = QtWidgets.QTextBrowser(self.about_tab)
-        self.about_textBrowser.setGeometry(QtCore.QRect(0, 0, 921, 581))
+        self.about_textBrowser.setGeometry(QtCore.QRect(0, 50, 921, 531))
         self.about_textBrowser.setAcceptDrops(False)
         self.about_textBrowser.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.about_textBrowser.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -195,7 +195,7 @@ class Ui_Main(object):
         self.about_textBrowser.setOpenExternalLinks(True)
         self.about_textBrowser.setObjectName("about_textBrowser")
         self.paypal_button = QtWidgets.QPushButton(self.about_tab)
-        self.paypal_button.setGeometry(QtCore.QRect(420, 435, 80, 30))
+        self.paypal_button.setGeometry(QtCore.QRect(410, 10, 80, 30))
         self.paypal_button.setMinimumSize(QtCore.QSize(80, 30))
         self.paypal_button.setMaximumSize(QtCore.QSize(80, 30))
         self.paypal_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -211,7 +211,7 @@ class Ui_Main(object):
         self.paypal_button.setObjectName("paypal_button")
         self.main_tabWidget.addTab(self.about_tab, "")
         self.updateAvail_label = QtWidgets.QLabel(Main)
-        self.updateAvail_label.setGeometry(QtCore.QRect(30, 655, 741, 40))
+        self.updateAvail_label.setGeometry(QtCore.QRect(290, 655, 481, 40))
         font = QtGui.QFont()
         font.setPointSize(9)
         self.updateAvail_label.setFont(font)
@@ -285,8 +285,6 @@ class Ui_Main(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Reshade Utilities</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Program to copy reshade DLLs, shaders and config fiies to several games.</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Developed as an open source project and hosted on GitHub.</span></p>\n"
