@@ -151,11 +151,15 @@ def setup_logging(self):
 
 ################################################################################
 def open_get_filename():
-    filename = QFileDialog.getOpenFileName(None, 'Open file')[0]
-    if filename == '':
+    _qfd = QFileDialog()
+    _title = 'Open file'
+    _path = "C:"
+    _filter = "exe(*.exe)"
+    _filename = QFileDialog.getOpenFileName(parent=_qfd, caption=_title, directory=_path, filter=_filter)
+    if _filename[0] == '':
         return None
     else:
-        return str(filename)
+        return str(_filename[0])
 
 
 ################################################################################

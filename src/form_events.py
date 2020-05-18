@@ -57,7 +57,7 @@ class FormEvents:
                     if rs_name is not None and len(rs_name) > 0:  # or rs_name is not None and len(rs_name) > 0:
                         utilities.show_message_window("error", "ERROR", f"{messages.game_already_exist}\n\n{file_name}")
             else:
-                utilities.show_message_window("error", "ERROR", f"{messages.not_valid_game}\n\n{file_name}")
+                utilities.show_message_window("error", "ERROR", f"{messages.not_valid_game}")
 
     ################################################################################
     def delete_game(self):
@@ -399,6 +399,7 @@ class FormEvents:
     ################################################################################
     def game_config_form(self, status: str):
         if status == "OK":
+            self.progressBar.setValues(messages.copying_DLLs, 50)
             if self.game_config_form.qtObj.game_name_lineEdit.text() == "":
                 utilities.show_message_window("error", "ERROR", messages.missing_game_name)
                 return
@@ -478,9 +479,12 @@ class FormEvents:
                     except shutil.Error as e:
                         self.log.error(f"copyfile: {src_path} to {dst_path} - {e}")
 
+                    utilities.show_message_window("info", "SUCCESS", f"{messages.game_updated}\n\n"
+                                                                     f"{games_obj.game_name}")
+
                 games_obj.id = self.selected_game.rs[0]["id"]
                 games_sql.update_game(games_obj)
-                utilities.show_message_window("info", "SUCCESS", f"{messages.game_updated}")
+                self.progressBar.close()
             else:
                 # new game added
                 if self.game_config_form.qtObj.dx9_radioButton.isChecked():
@@ -494,6 +498,7 @@ class FormEvents:
                 _download_shaders(self)
                 self.progressBar.close()
                 _apply_single(self, games_obj)
+                utilities.show_message_window("info", "SUCCESS", f"{messages.game_added}\n\n{games_obj.game_name}")
 
             self.populate_programs_listWidget()
             self.game_config_form.close()
