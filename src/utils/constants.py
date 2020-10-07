@@ -14,7 +14,8 @@ import sys
 
 from src.utils import utilities
 
-VERSION = "3.9"
+
+VERSION = "4.0"
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
@@ -22,7 +23,7 @@ EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 ################################################################################
 DATE_FORMATTER = "%b/%d/%Y"
 TIME_FORMATTER = "%H:%M:%S"
-LOG_LEVEL = logging.INFO  # INFO or DEBUG
+LOG_LEVEL = logging.INFO
 LOG_FORMATTER = logging.Formatter('%(asctime)s:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s',
                                   datefmt=f"[{DATE_FORMATTER} {TIME_FORMATTER}]")
 ################################################################################
@@ -33,7 +34,7 @@ IS_64BIT = platform.machine().endswith("64")
 PYTHON_OK = sys.version_info >= (3, 6)
 ################################################################################
 APPDATA_PATH = os.getenv('APPDATA')  # returns AppData\Roaming. 'LOCALAPPDATA' == AppData\Local.
-PROGRAM_PATH = f"{APPDATA_PATH}\\{SHORT_PROGRAM_NAME}"
+PROGRAM_PATH = os.path.join(APPDATA_PATH, SHORT_PROGRAM_NAME)
 ################################################################################
 DXGI = "dxgi.dll"
 D3D9 = "d3d9.dll"
@@ -45,18 +46,18 @@ RESHADE_X32LOG = "d3d9.log"
 RESHADE32 = "Reshade32.dll"
 RESHADE64 = "ReShade64.dll"
 ################################################################################
-RESHADE32_PATH = f"{PROGRAM_PATH}\\{RESHADE32}"
-RESHADE64_PATH = f"{PROGRAM_PATH}\\{RESHADE64}"
-SHADERS_ZIP_PATH = f"{PROGRAM_PATH}\\{RESHADE_SHADERS}.zip"
-SHADERS_SRC_PATH = f"{PROGRAM_PATH}\\{RESHADE_SHADERS}"
-RES_SHAD_MPATH = f"{PROGRAM_PATH}\\{RESHADE_SHADERS}-master"
-RESHADE_SCREENSHOT_PATH = f"{utilities.get_pictures_path()}\\Screenshots"
+RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32)
+RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64)
+SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}.zip")
+SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
+RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-master")
+RESHADE_SCREENSHOT_PATH = os.path.join(utilities.get_pictures_path(), 'Screenshots')
 ################################################################################
-DB_SETTINGS_FILENAME = f"{PROGRAM_PATH}\\db_settings.ini"
-SQLITE3_FILENAME = f"{PROGRAM_PATH}\\database.db"
-STYLE_QSS_FILENAME = f"{PROGRAM_PATH}\\style.qss"
-ERROR_LOGS_FILENAME = f"{PROGRAM_PATH}\\errors.log"
-RESHADE_PLUGINS_FILENAME = f"{PROGRAM_PATH}\\{RESHADE_PLUGINS_INI}"
+DB_SETTINGS_FILENAME = os.path.join(PROGRAM_PATH, 'db_settings.ini')
+SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, 'database.db')
+STYLE_QSS_FILENAME = os.path.join(PROGRAM_PATH, 'style.qss')
+ERROR_LOGS_FILENAME = os.path.join(PROGRAM_PATH, 'errors.log')
+RESHADE_PLUGINS_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PLUGINS_INI)
 ################################################################################
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
