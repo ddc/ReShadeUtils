@@ -401,16 +401,19 @@ class FormEvents:
         if status == "OK":
             self.progressBar.setValues(messages.copying_DLLs, 50)
             if self.game_config_form.qtObj.game_name_lineEdit.text() == "":
+                self.progressBar.close()
                 utilities.show_message_window("error", "ERROR", messages.missing_game_name)
                 return
 
             if not self.game_config_form.qtObj.radioButton_32bits.isChecked() \
                     and not self.game_config_form.qtObj.radioButton_64bits.isChecked():
+                self.progressBar.close()
                 utilities.show_message_window("error", "ERROR", messages.missing_architecture)
                 return
 
             if not self.game_config_form.qtObj.dx9_radioButton.isChecked() \
                     and not self.game_config_form.qtObj.dx11_radioButton.isChecked():
+                self.progressBar.close()
                 utilities.show_message_window("error", "ERROR", messages.missing_api)
                 return
 
@@ -428,10 +431,10 @@ class FormEvents:
             if self.selected_game is not None:
                 if self.game_config_form.qtObj.dx9_radioButton.isChecked():
                     games_obj.api = "DX9"
-                    dst_path = f"{self.selected_game.game_dir}\\{constants.D3D9}"
+                    dst_path = os.path.join(self.selected_game.game_dir, constants.D3D9)
                 else:
                     games_obj.api = "DX11"
-                    dst_path = f"{self.selected_game.game_dir}\\{constants.DXGI}"
+                    dst_path = os.path.join(self.selected_game.game_dir, constants.DXGI)
 
                 # checking name / api / architecture changes
                 if self.selected_game.rs[0]["name"] != games_obj.game_name \
@@ -440,8 +443,7 @@ class FormEvents:
 
                     # checking name changes
                     # create Reshade.ini to replace edit CurrentPresetPath
-                    old_screenshots_path = _get_screenshot_path(self, self.selected_game.game_dir,
-                                                                self.selected_game.name)
+                    old_screenshots_path = _get_screenshot_path(self, self.selected_game.game_dir, self.selected_game.name)
                     if len(old_screenshots_path) > 0:
                         t_path = '\\'.join(old_screenshots_path.split('\\')[:-1])
                         new_screenshots_path = f"{t_path}\\{games_obj.game_name}"
@@ -463,8 +465,8 @@ class FormEvents:
 
                     # checking api / architecture changes
                     # deleting any Reshade.dll
-                    reshade32_game_path = f"{self.selected_game.game_dir}\\{constants.D3D9}"
-                    reshade64_game_path = f"{self.selected_game.game_dir}\\{constants.DXGI}"
+                    reshade32_game_path = os.path.join(self.selected_game.game_dir, constants.D3D9)
+                    reshade64_game_path = os.path.join(self.selected_game.game_dir, constants.DXGI)
                     try:
                         if os.path.isfile(reshade32_game_path):
                             os.remove(reshade32_game_path)

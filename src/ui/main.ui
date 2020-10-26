@@ -121,7 +121,7 @@
       <rect>
        <x>660</x>
        <y>470</y>
-       <width>90</width>
+       <width>120</width>
        <height>100</height>
       </rect>
      </property>
@@ -133,7 +133,7 @@
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>70</width>
+        <width>105</width>
         <height>20</height>
        </rect>
       </property>
@@ -146,12 +146,12 @@
        <rect>
         <x>10</x>
         <y>70</y>
-        <width>70</width>
+        <width>105</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>DX11</string>
+       <string>DX11 / DX12</string>
       </property>
      </widget>
     </widget>
@@ -242,21 +242,21 @@
     <widget class="QPushButton" name="apply_button">
      <property name="geometry">
       <rect>
-       <x>770</x>
+       <x>800</x>
        <y>470</y>
-       <width>120</width>
+       <width>100</width>
        <height>100</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>120</width>
+       <width>100</width>
        <height>100</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>120</width>
+       <width>100</width>
        <height>100</height>
       </size>
      </property>

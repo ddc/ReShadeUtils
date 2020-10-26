@@ -44,10 +44,10 @@ class UiGameConfigForm(object):
         self.api_groupBox.setGeometry(QtCore.QRect(140, 60, 120, 80))
         self.api_groupBox.setObjectName("api_groupBox")
         self.dx9_radioButton = QtWidgets.QRadioButton(self.api_groupBox)
-        self.dx9_radioButton.setGeometry(QtCore.QRect(10, 20, 110, 20))
+        self.dx9_radioButton.setGeometry(QtCore.QRect(10, 20, 100, 20))
         self.dx9_radioButton.setObjectName("dx9_radioButton")
         self.dx11_radioButton = QtWidgets.QRadioButton(self.api_groupBox)
-        self.dx11_radioButton.setGeometry(QtCore.QRect(10, 50, 110, 20))
+        self.dx11_radioButton.setGeometry(QtCore.QRect(10, 50, 100, 20))
         self.dx11_radioButton.setObjectName("dx11_radioButton")
 
         self.retranslateUi(game_config_Form)
