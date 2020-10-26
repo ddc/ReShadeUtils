@@ -94,8 +94,8 @@ class FormEvents:
                     if os.path.isfile(reshade_ini):
                         os.remove(reshade_ini)
 
-                    # remove reshade_plugins.ini from game path
-                    reshade_plug_ini = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
+                    # remove ReShadePreset.ini from game path
+                    reshade_plug_ini = f"{game_path}\\{constants.RESHADE_PRESET_INI}"
                     if os.path.isfile(reshade_plug_ini):
                         os.remove(reshade_plug_ini)
 
@@ -171,12 +171,12 @@ class FormEvents:
         if self.selected_game is not None and len(self.selected_game.rs) > 0:
             path_list = self.selected_game.rs[0]["path"].split("\\")[:-1]
             game_path = '\\'.join(path_list)
-            res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
+            res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PRESET_INI}"
 
             try:
                 if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
                     create_files = CreateFiles(self)
-                    create_files.create_reshade_plugins_ini_file()
+                    create_files.create_reshade_preset_ini_file()
             except Exception as e:
                 self.log.error(f"create_files: {e}")
 
@@ -199,14 +199,14 @@ class FormEvents:
         try:
             if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
                 create_files = CreateFiles(self)
-                create_files.create_reshade_plugins_ini_file()
+                create_files.create_reshade_preset_ini_file()
         except Exception as e:
             self.log.error(f"{e}")
 
         try:
             os.startfile(f"\"{constants.RESHADE_PLUGINS_FILENAME}\"")
         except Exception as e:
-            err_msg = f"{e.strerror}\n\n{constants.RESHADE_PLUGINS_INI}{messages.not_found}"
+            err_msg = f"{e.strerror}\n\n{constants.RESHADE_PRESET_INI}{messages.not_found}"
             utilities.show_message_window("error", "ERROR", err_msg)
 
     ################################################################################
@@ -541,7 +541,7 @@ def _apply_single(self, games_obj):
     game_path = '\\'.join(games_obj.path.split("\\")[:-1])
     game_name = games_obj.game_name
     dst_res_ini_path = f"{game_path}\\{constants.RESHADE_INI}"
-    dst_res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PLUGINS_INI}"
+    dst_res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PRESET_INI}"
     game_screenshots_path = _get_screenshot_path(self, game_path, game_name)
 
     if games_obj.architecture == "32bits":
@@ -569,7 +569,7 @@ def _apply_single(self, games_obj):
         except Exception as e:
             self.log.error(f"create_reshade_ini_file: {e}")
 
-        # copying Reshade_plugins.ini
+        # copying ReShadePreset.ini
         if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
             try:
                 shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, dst_res_plug_ini_path)

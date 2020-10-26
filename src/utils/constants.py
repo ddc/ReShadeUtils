@@ -40,7 +40,7 @@ DXGI = "dxgi.dll"
 D3D9 = "d3d9.dll"
 RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "Reshade.ini"
-RESHADE_PLUGINS_INI = "Reshade_plugins.ini"
+RESHADE_PRESET_INI = "ReShadePreset.ini"
 RESHADE_X64LOG = "dxgi.log"
 RESHADE_X32LOG = "d3d9.log"
 RESHADE32 = "Reshade32.dll"
@@ -53,11 +53,10 @@ SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-master")
 RESHADE_SCREENSHOT_PATH = os.path.join(utilities.get_pictures_path(), 'Screenshots')
 ################################################################################
-DB_SETTINGS_FILENAME = os.path.join(PROGRAM_PATH, 'db_settings.ini')
 SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, 'database.db')
 STYLE_QSS_FILENAME = os.path.join(PROGRAM_PATH, 'style.qss')
 ERROR_LOGS_FILENAME = os.path.join(PROGRAM_PATH, 'errors.log')
-RESHADE_PLUGINS_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PLUGINS_INI)
+RESHADE_PLUGINS_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 ################################################################################
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"

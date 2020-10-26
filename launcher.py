@@ -34,7 +34,7 @@ class Launcher:
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
         utilities.check_files(self)
-        self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
+        self.database_settings = dict(DatabaseInUse='sqlite')
 
         self.progressBar.setValues(messages.checking_db_connection, 50)
         utilities.check_db_connection(self)

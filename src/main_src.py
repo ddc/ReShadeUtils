@@ -56,7 +56,7 @@ class MainSrc:
 
         self.progressBar.setValues(messages.checking_files, 15)
         utilities.check_files(self)
-        self.database_settings = utilities.get_all_ini_file_settings(constants.DB_SETTINGS_FILENAME)
+        self.database_settings = dict(DatabaseInUse='sqlite')
         self.client_version = constants.VERSION
 
         self.progressBar.setValues(messages.checking_db_connection, 30)

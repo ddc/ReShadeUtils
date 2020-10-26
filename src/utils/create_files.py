@@ -17,20 +17,7 @@ class CreateFiles:
         self.log = main.log
 
     ################################################################################
-    def create_settings_file(self):
-        file = open(constants.DB_SETTINGS_FILENAME, encoding="utf-8", mode="w")
-        file.write(
-"""; DO NOT OPEN THIS FILE WITH NOTEPAD.
-; Use Notepad++ or any other modern text editor.
-
-[Configs]
-DatabaseInUse="sqlite"
-
-""")
-        file.close()
-
-    ################################################################################
-    def create_reshade_plugins_ini_file(self):
+    def create_reshade_preset_ini_file(self):
         file = open(constants.RESHADE_PLUGINS_FILENAME, encoding="utf-8", mode="w")
         file.write(
 """PreprocessorDefinitions=
@@ -80,11 +67,17 @@ DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 UseAspectRatioHeuristics=1
 
+[D3D9]
+DepthCopyAtClearIndex=0
+DepthCopyBeforeClears=0
+DisableINTZ=0
+UseAspectRatioHeuristics=1
+
 [GENERAL]
 EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Shaders
 PerformanceMode=1
 PreprocessorDefinitions=
-PresetPath=.\\{constants.RESHADE_PLUGINS_INI}
+PresetPath=.\\{constants.RESHADE_PRESET_INI}
 PresetTransitionDelay=1000
 SkipLoadingDisabledEffects=1
 TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Textures

@@ -76,28 +76,6 @@ def get_current_path():
 
 
 ################################################################################
-def get_all_ini_file_settings(file_name: str):
-    dictionary = {}
-    parser = configparser.ConfigParser(delimiters='=', allow_no_value=True)
-    parser.optionxform = str  # this wont change all values to lowercase
-    parser._interpolation = configparser.ExtendedInterpolation()
-    parser.read(file_name)
-    for section in parser.sections():
-        # dictionary[section] = {}
-        for option in parser.options(section):
-            try:
-                value = parser.get(section, option).replace("\"", "")
-            except Exception:
-                value = None
-            if value is not None and len(value) == 0:
-                value = None
-
-            # dictionary[section][option] = value
-            dictionary[option] = value
-    return dictionary
-
-
-################################################################################
 def get_ini_settings(file_name: str, section: str, config_name: str):
     parser = configparser.ConfigParser(delimiters='=', allow_no_value=True)
     parser.optionxform = str  # this wont change all values to lowercase
@@ -269,12 +247,6 @@ def check_files(self):
     create_files = CreateFiles(self)
 
     try:
-        if not os.path.exists(constants.DB_SETTINGS_FILENAME):
-            create_files.create_settings_file()
-    except Exception as e:
-        self.log.error(f"{e}")
-
-    try:
         if not os.path.exists(constants.STYLE_QSS_FILENAME):
             create_files.create_style_file()
     except Exception as e:
@@ -282,7 +254,7 @@ def check_files(self):
 
     try:
         if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
-            create_files.create_reshade_plugins_ini_file()
+            create_files.create_reshade_preset_ini_file()
     except Exception as e:
         self.log.error(f"{e}")
 
