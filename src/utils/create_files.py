@@ -8,6 +8,7 @@
 # # -*- coding: utf-8 -*-
 
 from src.utils import constants
+import os
 
 
 class CreateFiles:
@@ -23,15 +24,8 @@ class CreateFiles:
 ; Use Notepad++ or any other modern text editor.
 
 [Configs]
-; sqlite or postgres
 DatabaseInUse="sqlite"
 
-[Database]
-Host="127.0.0.1"
-Port="5432"
-DBname="reshadeUtils"
-Username="postgres"
-Password="postgres"
 """)
         file.close()
 
@@ -39,10 +33,9 @@ Password="postgres"
     def create_reshade_plugins_ini_file(self):
         file = open(constants.RESHADE_PLUGINS_FILENAME, encoding="utf-8", mode="w")
         file.write(
-"""Effects=Curves.fx,LumaSharpen.fx,Levels.fx
-PreprocessorDefinitions=
-Techniques=Curves,LumaSharpen,Levels
-TechniqueSorting=Curves,LumaSharpen,Levels,Clarity,DPX,MXAO,SMAA,ASCII,AdaptiveFog,AdaptiveSharpen,AdvancedCRT,After,AmbientLight,Before,BloomAndLensFlares,Border,CA,Cartoon,Chromakey,ChromaticAberration,CinematicDOF,ColorMatrix,Colourfulness,Daltonize,Deband,Depth3D,DepthHaze,DisplayDepth,Emphasize,EyeAdaption,FilmGrain,FilmGrain2,FilmicAnamorphSharpen,FilmicPass,FXAA,GP65CJ042DOF,GaussianBlur,GlitchB,HDR,HQ4X,HSLShift,HighPassSharp,KNearestNeighbors,LUT,Layer,LeiFx_Tech,LevelsPlus,LiftGammaGain,LightDoF_AutoFocus,LightDoF_Far,LightDoF_Near,MagicBloom,MagicDOF,MartyMcFlyDOF,MatsoDOF,Mode1,Mode2,Mode3,Monochrome,MotionBlur,MultiLUT,Nightvision,NonLocalMeans,Nostalgia,PPFXBloom,PPFXSSDO,PPFX_Godrays,PerfectPerspective,ReflectiveBumpmapping,RingDOF,StageDepth,SurfaceBlur,Technicolor,Technicolor2,TiltShift,Tint,Tonemap,TriDither,UIDetect,UIDetect_After,UIDetect_Before,UIMask_Bottom,UIMask_Top,Vibrance,Vignette,AspectRatioPS
+"""PreprocessorDefinitions=
+Techniques=Curves@Curves.fx,LumaSharpen@LumaSharpen.fx,DPX@DPX.fx
+TechniqueSorting=Curves@Curves.fx,LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Clarity@Clarity.fx
 
 [Clarity.fx]
 ClarityBlendIfDark=50
@@ -50,34 +43,29 @@ ClarityBlendIfLight=200
 ClarityBlendMode=4
 ClarityDarkIntensity=0.400000
 ClarityLightIntensity=0.000000
-ClarityOffset=5.000000
+ClarityOffset=1.000000
 ClarityRadius=4
 ClarityStrength=0.400000
 ClarityViewBlendIfMask=0
 ClarityViewMask=0
 
 [Curves.fx]
-Contrast=0.300000
+Contrast=0.200000
 Formula=4
 Mode=0
 
 [DPX.fx]
 Colorfulness=2.500000
-Contrast=0.100000
+Contrast=0.000000
 RGB_C=0.360000,0.360000,0.340000
 RGB_Curve=8.000000,8.000000,8.000000
-Saturation=2.000000
-Strength=0.200000
-
-[Levels.fx]
-BlackPoint=5
-HighlightClipping=0
-WhitePoint=235
+Saturation=3.000003
+Strength=0.100000
 
 [LumaSharpen.fx]
 offset_bias=1.000000
 pattern=1
-sharp_clamp=0.500000
+sharp_clamp=1.000000
 sharp_strength=1.500000
 show_sharpen=0
 """)
@@ -85,69 +73,74 @@ show_sharpen=0
 
     ################################################################################
     def create_reshade_ini_file(self, game_path:str, screenshot_path:str):
-        file = open(f"{game_path}\\{constants.RESHADE_INI}", encoding="utf-8", mode="w")
+        file = open(os.path.join(game_path, constants.RESHADE_INI), encoding="utf-8", mode="w")
         file.write(
-f"""[INPUT]
-KeyMenu=119,0,1,0
-KeyScreenshot=44,0,0,0
-InputProcessing=2
-KeyEffects=145,0,0,0
-KeyReload=0,0,0,0
+f"""[D3D11]
+DepthCopyAtClearIndex=0
+DepthCopyBeforeClears=0
+UseAspectRatioHeuristics=1
 
 [GENERAL]
-TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Textures
 EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Shaders
-ScreenshotPath={screenshot_path}
-CurrentPresetPath={game_path}\\{constants.RESHADE_PLUGINS_INI}
-PresetFiles=.\\{constants.RESHADE_PLUGINS_INI}
-ScreenshotIncludePreset=0
-NoFontScaling=0
-ClockFormat=1
-CurrentPreset=0
 PerformanceMode=1
-PreprocessorDefinitions=RESHADE_DEPTH_LINEARIZATION_FAR_PLANE=1000.0,RESHADE_DEPTH_INPUT_IS_UPSIDE_DOWN=0,RESHADE_DEPTH_INPUT_IS_REVERSED=0,RESHADE_DEPTH_INPUT_IS_LOGARITHMIC=0
-TutorialProgress=5
-ScreenshotFormat=0
+PreprocessorDefinitions=
+PresetPath=.\\{constants.RESHADE_PLUGINS_INI}
+PresetTransitionDelay=1000
+SkipLoadingDisabledEffects=1
+TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Textures
+
+[INPUT]
+ForceShortcutModifiers=1
+InputProcessing=2
+KeyEffects=145,0,0,0
+KeyNextPreset=0,0,0,0
+KeyOverlay=119,0,1,0
+KeyPerformanceMode=0,0,0,0
+KeyPreviousPreset=0,0,0,0
+KeyReload=0,0,0,0
+KeyScreenshot=44,0,0,0
+
+[OVERLAY]
+ClockFormat=1
+FPSPosition=1
+NoFontScaling=1
+SaveWindowState=1
 ShowClock=0
+ShowForceLoadEffectsButton=1
 ShowFPS=0
-FontGlobalScale=1.000000
 ShowFrameTime=0
-NoReloadOnInit=0
-SaveWindowState=0
-PresetSearchPaths=.NewVariableUI=1
 ShowScreenshotMessage=1
-NewVariableUI=1
+TutorialProgress=4
+VariableListHeight=300.000000
+VariableListUseTabs=1
+
+[SCREENSHOTS]
+ClearAlpha=1
+FileFormat=1
+FileNamingFormat=0
+JPEGQuality=90
+SaveBeforeShot=0
+SaveOverlayShot=0
+SavePath={screenshot_path}
+SavePresetFile=0
 
 [STYLE]
-GrabRounding=12.000000
 Alpha=1.000000
-ColActive=0.200000,0.500000,0.600000
-EditorStyleIndex=0
-ColFPSText=1.000000,1.000000,0.000000,1.000000
-ColBackground=0.275000,0.275000,0.275000
-FrameRounding=12.000000
-FPSScale=1.000000
-ColItemBackground=0.447000,0.447000,0.447000
-ColText=0.800000,0.900000,0.900000
-PopupRounding=12.000000
 ChildRounding=12.000000
-WindowRounding=12.000000
-ScrollbarRounding=12.000000
-TabRounding=12.000000
-Font=
-FontSize=13
-EditorFont=
+ColFPSText=1.000000,1.000000,0.784314,1.000000
+EditorFont=ProggyClean.ttf
 EditorFontSize=13
+EditorStyleIndex=0
+Font=ProggyClean.ttf
+FontSize=13
+FPSScale=1.000000
+FrameRounding=12.000000
+GrabRounding=12.000000
+PopupRounding=12.000000
+ScrollbarRounding=12.000000
 StyleIndex=0
-
-[DX9_BUFFER_DETECTION]
-DisableINTZ=0
-
-[DX11_BUFFER_DETECTION]
-DepthBufferRetrievalMode=0
-DepthBufferTextureFormat=0
-ExtendedDepthBufferDetection=0
-DepthBufferClearingNumber=0
+TabRounding=12.000000
+WindowRounding=12.000000
 """)
         file.close()
 
