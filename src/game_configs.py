@@ -44,10 +44,10 @@ class UiGameConfigForm(object):
         self.api_groupBox.setGeometry(QtCore.QRect(140, 60, 120, 80))
         self.api_groupBox.setObjectName("api_groupBox")
         self.dx9_radioButton = QtWidgets.QRadioButton(self.api_groupBox)
-        self.dx9_radioButton.setGeometry(QtCore.QRect(10, 20, 95, 20))
+        self.dx9_radioButton.setGeometry(QtCore.QRect(10, 20, 110, 20))
         self.dx9_radioButton.setObjectName("dx9_radioButton")
         self.dx11_radioButton = QtWidgets.QRadioButton(self.api_groupBox)
-        self.dx11_radioButton.setGeometry(QtCore.QRect(10, 50, 95, 20))
+        self.dx11_radioButton.setGeometry(QtCore.QRect(10, 50, 110, 20))
         self.dx11_radioButton.setObjectName("dx11_radioButton")
 
         self.retranslateUi(game_config_Form)
@@ -64,7 +64,7 @@ class UiGameConfigForm(object):
         self.radioButton_64bits.setText(_translate("game_config_Form", "64bits"))
         self.api_groupBox.setTitle(_translate("game_config_Form", "API"))
         self.dx9_radioButton.setText(_translate("game_config_Form", "DX9"))
-        self.dx11_radioButton.setText(_translate("game_config_Form", "DX11"))
+        self.dx11_radioButton.setText(_translate("game_config_Form", "DX11 / DX12"))
 
 
 if __name__ == "__main__":

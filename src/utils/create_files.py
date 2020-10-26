@@ -67,6 +67,11 @@ DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 UseAspectRatioHeuristics=1
 
+[D3D12]
+DepthCopyAtClearIndex=0
+DepthCopyBeforeClears=0
+UseAspectRatioHeuristics=1
+
 [D3D9]
 DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
@@ -97,7 +102,7 @@ KeyScreenshot=44,0,0,0
 ClockFormat=1
 FPSPosition=1
 NoFontScaling=1
-SaveWindowState=1
+SaveWindowState=0
 ShowClock=0
 ShowForceLoadEffectsButton=1
 ShowFPS=0
@@ -111,7 +116,7 @@ VariableListUseTabs=1
 ClearAlpha=1
 FileFormat=1
 FileNamingFormat=0
-JPEGQuality=90
+JPEGQuality=100
 SaveBeforeShot=0
 SaveOverlayShot=0
 SavePath={screenshot_path}

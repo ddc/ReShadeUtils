@@ -142,7 +142,7 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>95</width>
+      <width>110</width>
       <height>20</height>
      </rect>
     </property>
@@ -155,12 +155,12 @@
      <rect>
       <x>10</x>
       <y>50</y>
-      <width>95</width>
+      <width>110</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>DX11</string>
+     <string>DX11 / DX12</string>
     </property>
    </widget>
   </widget>
