@@ -253,7 +253,7 @@ def check_files(self):
         self.log.error(f"{e}")
 
     try:
-        if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
+        if not os.path.exists(constants.RESHADE_PRESET_FILENAME):
             create_files.create_reshade_preset_ini_file()
     except Exception as e:
         self.log.error(f"{e}")

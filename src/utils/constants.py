@@ -56,7 +56,7 @@ RESHADE_SCREENSHOT_PATH = os.path.join(utilities.get_pictures_path(), 'Screensho
 SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, 'database.db')
 STYLE_QSS_FILENAME = os.path.join(PROGRAM_PATH, 'style.qss')
 ERROR_LOGS_FILENAME = os.path.join(PROGRAM_PATH, 'errors.log')
-RESHADE_PLUGINS_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
+RESHADE_PRESET_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 ################################################################################
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"

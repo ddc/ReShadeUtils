@@ -174,15 +174,15 @@ class FormEvents:
             res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PRESET_INI}"
 
             try:
-                if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
+                if not os.path.exists(constants.RESHADE_PRESET_FILENAME):
                     create_files = CreateFiles(self)
                     create_files.create_reshade_preset_ini_file()
             except Exception as e:
                 self.log.error(f"create_files: {e}")
 
             try:
-                if not os.path.exists(res_plug_ini_path) and os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
-                    shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, res_plug_ini_path)
+                if not os.path.exists(res_plug_ini_path) and os.path.exists(constants.RESHADE_PRESET_FILENAME):
+                    shutil.copyfile(constants.RESHADE_PRESET_FILENAME, res_plug_ini_path)
             except Exception as e:
                 self.log.error(f"{e}")
 
@@ -197,14 +197,14 @@ class FormEvents:
     ################################################################################
     def edit_default_config_file(self):
         try:
-            if not os.path.exists(constants.RESHADE_PLUGINS_FILENAME):
+            if not os.path.exists(constants.RESHADE_PRESET_FILENAME):
                 create_files = CreateFiles(self)
                 create_files.create_reshade_preset_ini_file()
         except Exception as e:
             self.log.error(f"{e}")
 
         try:
-            os.startfile(f"\"{constants.RESHADE_PLUGINS_FILENAME}\"")
+            os.startfile(f"\"{constants.RESHADE_PRESET_FILENAME}\"")
         except Exception as e:
             err_msg = f"{e.strerror}\n\n{constants.RESHADE_PRESET_INI}{messages.not_found}"
             utilities.show_message_window("error", "ERROR", err_msg)
@@ -574,7 +574,7 @@ def _apply_single(self, games_obj):
         # copying ReShadePreset.ini
         if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
             try:
-                shutil.copyfile(constants.RESHADE_PLUGINS_FILENAME, dst_res_plug_ini_path)
+                shutil.copyfile(constants.RESHADE_PRESET_FILENAME, dst_res_plug_ini_path)
             except shutil.Error as e:
                 self.log.error(f"copyfile: {e}")
     except OSError as e:

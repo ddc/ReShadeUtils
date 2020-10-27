@@ -71,10 +71,14 @@ class MainSrc:
 
         self.progressBar.setValues(messages.checking_new_reshade_version, 60)
         self._check_reshade_files()
+
         if self.local_reshade_exe is None:
             self._download_new_reshade_version()
         else:
-            self._check_new_reshade_version()
+            if not os.path.isfile(self.local_reshade_exe):
+                self._download_new_reshade_version()
+            else:
+                self._check_new_reshade_version()
 
         if self.remote_reshade_version is not None:
             if self.reshade_version != self.remote_reshade_version:

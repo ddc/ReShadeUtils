@@ -18,7 +18,7 @@ class CreateFiles:
 
     ################################################################################
     def create_reshade_preset_ini_file(self):
-        file = open(constants.RESHADE_PLUGINS_FILENAME, encoding="utf-8", mode="w")
+        file = open(constants.RESHADE_PRESET_FILENAME, encoding="utf-8", mode="w")
         file.write(
 """PreprocessorDefinitions=
 Techniques=Curves@Curves.fx,LumaSharpen@LumaSharpen.fx,DPX@DPX.fx
