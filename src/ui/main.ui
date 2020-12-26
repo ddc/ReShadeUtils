@@ -277,9 +277,9 @@
     <widget class="QGroupBox" name="update_shaders_groupBox">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>110</y>
-       <width>300</width>
+       <x>500</x>
+       <y>40</y>
+       <width>330</width>
        <height>60</height>
       </rect>
      </property>
@@ -287,7 +287,7 @@
       <string>Update Shader Files Everytime on Apply</string>
      </property>
      <property name="title">
-      <string>Update Shader Files on Apply</string>
+      <string>Update Shader Files on Every Apply</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -308,7 +308,7 @@
      <widget class="QRadioButton" name="no_update_shaders_radioButton">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>200</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -322,9 +322,9 @@
     <widget class="QGroupBox" name="check_program_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>40</y>
-       <width>300</width>
+       <x>100</x>
+       <y>110</y>
+       <width>330</width>
        <height>60</height>
       </rect>
      </property>
@@ -350,7 +350,7 @@
      <widget class="QRadioButton" name="no_check_program_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>190</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -364,9 +364,9 @@
     <widget class="QGroupBox" name="use_dark_theme_groupBox">
      <property name="geometry">
       <rect>
-       <x>530</x>
+       <x>100</x>
        <y>40</y>
-       <width>300</width>
+       <width>330</width>
        <height>60</height>
       </rect>
      </property>
@@ -392,7 +392,7 @@
      <widget class="QRadioButton" name="no_dark_theme_radioButton">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>190</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -406,9 +406,9 @@
     <widget class="QGroupBox" name="create_screenshots_folder_groupBox">
      <property name="geometry">
       <rect>
-       <x>530</x>
+       <x>500</x>
        <y>110</y>
-       <width>300</width>
+       <width>330</width>
        <height>60</height>
       </rect>
      </property>
@@ -434,7 +434,7 @@
      <widget class="QRadioButton" name="no_screenshots_folder_radioButton">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>200</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -448,14 +448,14 @@
     <widget class="QGroupBox" name="reset_all_reshade_config_groupBox">
      <property name="geometry">
       <rect>
-       <x>530</x>
+       <x>500</x>
        <y>180</y>
-       <width>300</width>
+       <width>330</width>
        <height>60</height>
       </rect>
      </property>
      <property name="title">
-      <string>Reset All Games Reshade Files to Deafult on Apply</string>
+      <string>Reset All Games Reshade Files to Deafult on Next Apply</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -476,7 +476,7 @@
      <widget class="QRadioButton" name="no_reset_reshade_radioButton">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>200</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -490,9 +490,9 @@
     <widget class="QGroupBox" name="check_reshade_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>100</x>
        <y>180</y>
-       <width>300</width>
+       <width>330</width>
        <height>60</height>
       </rect>
      </property>
@@ -518,7 +518,7 @@
      <widget class="QRadioButton" name="no_check_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>200</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -532,9 +532,9 @@
     <widget class="QGroupBox" name="silent_reshade_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>100</x>
        <y>250</y>
-       <width>300</width>
+       <width>330</width>
        <height>60</height>
       </rect>
      </property>
@@ -560,7 +560,7 @@
      <widget class="QRadioButton" name="no_silent_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>200</x>
         <y>30</y>
         <width>45</width>
         <height>18</height>
@@ -574,14 +574,14 @@
     <widget class="QGroupBox" name="apply_custom_config_groupBox">
      <property name="geometry">
       <rect>
-       <x>530</x>
+       <x>500</x>
        <y>250</y>
-       <width>300</width>
-       <height>101</height>
+       <width>330</width>
+       <height>150</height>
       </rect>
      </property>
      <property name="title">
-      <string>Apply Custom Config to All Games</string>
+      <string>Always Apply Custom Config to New Added Games</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -589,9 +589,9 @@
      <widget class="QPushButton" name="edit_all_games_custom_config_button">
       <property name="geometry">
        <rect>
-        <x>19</x>
+        <x>10</x>
         <y>60</y>
-        <width>270</width>
+        <width>301</width>
         <height>30</height>
        </rect>
       </property>
@@ -605,7 +605,7 @@
        <string>Edit reshade plugins file settings</string>
       </property>
       <property name="text">
-       <string>SET CUSTOM PLUGINS CONFIG</string>
+       <string>SET DEFAULT CUSTOM PLUGINS CONFIG</string>
       </property>
       <property name="icon">
        <iconset>
@@ -628,7 +628,7 @@
      <widget class="QRadioButton" name="no_all_games_custom_config_radioButton">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>200</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -638,19 +638,23 @@
        <string>NO</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QLabel" name="default_config_label">
-     <property name="geometry">
-      <rect>
-       <x>490</x>
-       <y>360</y>
-       <width>391</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>DEFAULT CONFIGURATION WILL BE USED IF THIS IS SET TO NO</string>
-     </property>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>301</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>APPLY CUSTOM CONFIG TO ALL GAMES NOW</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="about_tab">
