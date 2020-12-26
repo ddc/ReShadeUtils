@@ -93,6 +93,14 @@ class ConfigsSql:
         databases.execute(sql)
 
     ################################################################################
+    def update_custom_config(self, configsObj: object):
+        sql = f"""UPDATE configs SET
+                use_custom_config = '{configsObj.status}'
+                WHERE id = 1;"""
+        databases = Databases(self.main)
+        databases.execute(sql)
+
+    ################################################################################
     def update_program_version(self, configsObj: object):
         sql = f"""UPDATE configs SET
                 program_version = '{configsObj.program_version}'

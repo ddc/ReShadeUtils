@@ -39,6 +39,7 @@ class MainSrc:
         self.silent_reshade_updates = None
         self.create_screenshots_folder = None
         self.reset_reshade_files = None
+        self.use_custom_config = None
         self.need_apply = False
         self.new_version = None
         self.db_conn = None
@@ -140,6 +141,9 @@ class MainSrc:
         self.qtObj.yes_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "YES"))
         self.qtObj.no_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
         #########
+        self.qtObj.yes_custom_config_radioButton.clicked.connect(lambda: FormEvents.custom_config_clicked(self, "YES"))
+        self.qtObj.no_custom_config_radioButton.clicked.connect(lambda: FormEvents.custom_config_clicked(self, "NO"))
+        #########
         self.qtObj.edit_all_games_custom_config_button.clicked.connect(lambda: FormEvents.edit_all_games_custom_config_button(self))
         # TAB 3 - about
         #########
@@ -150,8 +154,8 @@ class MainSrc:
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
 
-        if rsConfig[0]["reshade_version"] is not None and len(rsConfig[0]["reshade_version"]) > 0:
-            self.reshade_version = rsConfig[0]["reshade_version"]
+        if rsConfig[0].get("reshade_version") is not None and len(rsConfig[0].get("reshade_version")) > 0:
+            self.reshade_version = rsConfig[0].get("reshade_version")
             self.qtObj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
             self.enable_form(True)
             self.local_reshade_exe = f"{constants.PROGRAM_PATH}\\ReShade_Setup_{self.reshade_version}.exe"
@@ -306,7 +310,7 @@ class MainSrc:
         self.populate_datagrid()
 
         if rsConfig is not None and len(rsConfig) > 0:
-            if rsConfig[0]["use_dark_theme"].upper() == "N":
+            if not rsConfig[0].get("use_dark_theme"):
                 self.use_dark_theme = False
                 self.set_style_sheet(False)
                 self.qtObj.yes_dark_theme_radioButton.setChecked(False)
@@ -317,7 +321,7 @@ class MainSrc:
                 self.qtObj.yes_dark_theme_radioButton.setChecked(True)
                 self.qtObj.no_dark_theme_radioButton.setChecked(False)
 
-            if rsConfig[0]["update_shaders"].upper() == "N":
+            if not rsConfig[0].get("update_shaders"):
                 self.update_shaders = False
                 self.qtObj.yes_update_shaders_radioButton.setChecked(False)
                 self.qtObj.no_update_shaders_radioButton.setChecked(True)
@@ -326,7 +330,7 @@ class MainSrc:
                 self.qtObj.yes_update_shaders_radioButton.setChecked(True)
                 self.qtObj.no_update_shaders_radioButton.setChecked(False)
 
-            if rsConfig[0]["check_program_updates"].upper() == "N":
+            if not rsConfig[0].get("check_program_updates"):
                 self.check_program_updates = False
                 self.qtObj.yes_check_program_updates_radioButton.setChecked(False)
                 self.qtObj.no_check_program_updates_radioButton.setChecked(True)
@@ -335,7 +339,7 @@ class MainSrc:
                 self.qtObj.yes_check_program_updates_radioButton.setChecked(True)
                 self.qtObj.no_check_program_updates_radioButton.setChecked(False)
 
-            if rsConfig[0]["check_reshade_updates"].upper() == "N":
+            if not rsConfig[0].get("check_reshade_updates"):
                 self.check_reshade_updates = False
                 self.qtObj.yes_check_reshade_updates_radioButton.setChecked(False)
                 self.qtObj.no_check_reshade_updates_radioButton.setChecked(True)
@@ -344,7 +348,7 @@ class MainSrc:
                 self.qtObj.yes_check_reshade_updates_radioButton.setChecked(True)
                 self.qtObj.no_check_reshade_updates_radioButton.setChecked(False)
 
-            if rsConfig[0]["create_screenshots_folder"].upper() == "N":
+            if not rsConfig[0].get("create_screenshots_folder"):
                 self.create_screenshots_folder = False
                 self.qtObj.yes_screenshots_folder_radioButton.setChecked(False)
                 self.qtObj.no_screenshots_folder_radioButton.setChecked(True)
@@ -353,7 +357,7 @@ class MainSrc:
                 self.qtObj.yes_screenshots_folder_radioButton.setChecked(True)
                 self.qtObj.no_screenshots_folder_radioButton.setChecked(False)
 
-            if rsConfig[0]["reset_reshade_files"].upper() == "N":
+            if not rsConfig[0].get("reset_reshade_files"):
                 self.reset_reshade_files = False
                 self.qtObj.yes_reset_reshade_radioButton.setChecked(False)
                 self.qtObj.no_reset_reshade_radioButton.setChecked(True)
@@ -362,7 +366,16 @@ class MainSrc:
                 self.qtObj.yes_reset_reshade_radioButton.setChecked(True)
                 self.qtObj.no_reset_reshade_radioButton.setChecked(False)
 
-            if rsConfig[0]["silent_reshade_updates"].upper() == "N":
+            if not rsConfig[0].get("use_custom_config"):
+                self.use_custom_config = False
+                self.qtObj.yes_custom_config_radioButton.setChecked(False)
+                self.qtObj.no_custom_config_radioButton.setChecked(True)
+            else:
+                self.use_custom_config = True
+                self.qtObj.yes_custom_config_radioButton.setChecked(True)
+                self.qtObj.no_custom_config_radioButton.setChecked(False)
+
+            if not rsConfig[0].get("silent_reshade_updates"):
                 self.silent_reshade_updates = False
                 self.qtObj.yes_silent_reshade_updates_radioButton.setChecked(False)
                 self.qtObj.no_silent_reshade_updates_radioButton.setChecked(True)
@@ -373,7 +386,7 @@ class MainSrc:
             self.qtObj.silent_reshade_updates_groupBox.setEnabled(self.check_reshade_updates)
             self.qtObj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
 
-            if rsConfig[0]["program_version"] is None or rsConfig[0]["program_version"] != constants.VERSION:
+            if rsConfig[0].get("program_version") is None or rsConfig[0].get("program_version") != constants.VERSION:
                 config_obj = utilities.Object()
                 config_obj.program_version = constants.VERSION
                 configSql.update_program_version(config_obj)

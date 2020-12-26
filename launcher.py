@@ -51,12 +51,12 @@ class Launcher:
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
 
-        if rsConfig[0]["program_version"] is None:
+        if rsConfig[0].get("program_version") is None:
             self.client_version = constants.VERSION
         else:
-            self.client_version = rsConfig[0]["program_version"]
+            self.client_version = rsConfig[0].get("program_version")
 
-        if rsConfig[0]["check_program_updates"].upper() == "Y":
+        if rsConfig[0].get("check_program_updates"):
             new_version_obj = utilities.check_new_program_version(self)
             if new_version_obj.new_version_available:
                 self.new_version = new_version_obj.new_version

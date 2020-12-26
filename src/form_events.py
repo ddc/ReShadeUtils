@@ -222,11 +222,11 @@ class FormEvents:
         if status == "YES":
             self.set_style_sheet(True)
             self.use_dark_theme = True
-            status = "Y"
+            status = 1
         else:
             self.set_style_sheet(False)
             self.use_dark_theme = False
-            status = "N"
+            status = 0
 
         config_sql = ConfigsSql(self)
         configs_obj = utilities.Object()
@@ -237,10 +237,10 @@ class FormEvents:
     def check_program_updates_clicked(self, status: str):
         if status == "YES":
             self.check_program_updates = True
-            status = "Y"
+            status = 1
         else:
             self.check_program_updates = False
-            status = "N"
+            status = 0
 
         config_sql = ConfigsSql(self)
         configs_obj = utilities.Object()
@@ -251,10 +251,10 @@ class FormEvents:
     def check_reshade_updates_clicked(self, status: str):
         if status == "YES":
             self.check_reshade_updates = True
-            status = "Y"
+            status = 1
         else:
             self.check_reshade_updates = False
-            status = "N"
+            status = 0
 
         self.qtObj.silent_reshade_updates_groupBox.setEnabled(self.check_reshade_updates)
         self.qtObj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
@@ -268,10 +268,10 @@ class FormEvents:
     def silent_reshade_updates_clicked(self, status: str):
         if status == "YES":
             self.silent_reshade_updates = True
-            status = "Y"
+            status = 1
         else:
             self.silent_reshade_updates = False
-            status = "N"
+            status = 0
 
         config_sql = ConfigsSql(self)
         configs_obj = utilities.Object()
@@ -282,10 +282,10 @@ class FormEvents:
     def update_shaders_clicked(self, status: str):
         if status == "YES":
             self.update_shaders = True
-            status = "Y"
+            status = 1
         else:
             self.update_shaders = False
-            status = "N"
+            status = 0
 
         config_sql = ConfigsSql(self)
         configs_obj = utilities.Object()
@@ -296,10 +296,10 @@ class FormEvents:
     def create_screenshots_folder_clicked(self, status: str):
         if status == "YES":
             self.create_screenshots_folder = True
-            status = "Y"
+            status = 1
         else:
             self.create_screenshots_folder = False
-            status = "N"
+            status = 0
 
         config_sql = ConfigsSql(self)
         configs_obj = utilities.Object()
@@ -310,15 +310,29 @@ class FormEvents:
     def reset_reshade_files_clicked(self, status: str):
         if status == "YES":
             self.reset_reshade_files = True
-            status = "Y"
+            status = 1
         else:
             self.reset_reshade_files = False
-            status = "N"
+            status = 0
 
         config_sql = ConfigsSql(self)
         configs_obj = utilities.Object()
         configs_obj.status = status
         config_sql.update_reset_reshade_files(configs_obj)
+
+    ################################################################################
+    def custom_config_clicked(self, status: str):
+        if status == "YES":
+            self.use_custom_config = True
+            status = 1
+        else:
+            self.use_custom_config = False
+            status = 0
+
+        config_sql = ConfigsSql(self)
+        configs_obj = utilities.Object()
+        configs_obj.status = status
+        config_sql.update_custom_config(configs_obj)
 
     ################################################################################
     def programs_tableWidget_clicked(self, item):

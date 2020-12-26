@@ -612,7 +612,7 @@
         <normaloff>../images/plugin.png</normaloff>../images/plugin.png</iconset>
       </property>
      </widget>
-     <widget class="QRadioButton" name="yes_all_games_custom_config_radioButton">
+     <widget class="QRadioButton" name="yes_custom_config_radioButton">
       <property name="geometry">
        <rect>
         <x>90</x>
@@ -625,7 +625,7 @@
        <string>YES</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="no_all_games_custom_config_radioButton">
+     <widget class="QRadioButton" name="no_custom_config_radioButton">
       <property name="geometry">
        <rect>
         <x>200</x>
