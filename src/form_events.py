@@ -61,20 +61,24 @@ class FormEvents:
 
     ################################################################################
     def delete_game(self):
+        game_not_found = False
+        if not utilities.check_game_dir(self):
+             game_not_found = True
+
         self.enable_widgets(True)
         if self.selected_game is not None and len(self.selected_game.rs) > 0:
-            path_list = self.selected_game.rs[0]["path"].split("\\")[:-1]
+            path_list = self.selected_game.rs[0].get("path").split("\\")[:-1]
             game_path = '\\'.join(path_list)
-            game_name = self.selected_game.rs[0]['name']
+            game_name = self.selected_game.rs[0].get('name')
             err = False
 
             # remove dll from game path
-            if self.selected_game.rs[0]["api"] == "DX9":
+            if self.selected_game.rs[0].get("api") == "DX9":
                 reshade_dll = f"{game_path}\\{constants.D3D9}"
             else:
                 reshade_dll = f"{game_path}\\{constants.DXGI}"
 
-            if self.selected_game.rs[0]["architecture"] == "64bits":
+            if self.selected_game.rs[0].get("architecture") == "64bits":
                 reshade_log_file = f"{game_path}\\{constants.RESHADE_X64LOG}"
             else:
                 reshade_log_file = f"{game_path}\\{constants.RESHADE_X32LOG}"
@@ -105,11 +109,14 @@ class FormEvents:
 
                     # remove from database
                     games_sql = GamesSql(self)
-                    games_sql.delete_game(self.selected_game.rs[0]["id"])
+                    games_sql.delete_game(self.selected_game.rs[0].get("id"))
 
-                    # populate list
-                    self.populate_programs_listWidget()
-                    utilities.show_message_window("info", "SUCCESS", f"{messages.game_deleted}\n\n{game_name}")
+                    # populate datagrid
+                    self.populate_datagrid()
+                    if game_not_found:
+                        utilities.show_message_window("info", "SUCCESS", f"{messages.game_not_in_path_deleted}\n\n{game_name}")
+                    else:
+                        utilities.show_message_window("info", "SUCCESS", f"{messages.game_deleted}\n\n{game_name}")
                 except OSError as e:
                     self.log.error(f"delete_game: {e}")
                     utilities.show_message_window("error", "ERROR", f"{game_name} files\n\n{e.strerror}")
@@ -119,7 +126,7 @@ class FormEvents:
     ################################################################################
     def edit_game_path(self):
         if self.selected_game is not None and len(self.selected_game.rs) > 0:
-            old_game_path = (self.selected_game.rs[0]["path"])
+            old_game_path = (self.selected_game.rs[0].get("path"))
             new_game_path = utilities.open_get_filename()
 
             if new_game_path is not None:
@@ -145,7 +152,7 @@ class FormEvents:
                 # save into database
                 games_obj = utilities.Object()
                 games_sql = GamesSql(self)
-                games_obj.id = self.selected_game.rs[0]["id"]
+                games_obj.id = self.selected_game.rs[0].get("id")
                 games_obj.path = new_game_path
                 games_sql.update_game_path(games_obj)
 
@@ -154,13 +161,14 @@ class FormEvents:
                 self.selected_game.game_dir = '\\'.join(new_game_path.split("\\")[:-1])
 
                 try:
+                    dst_res_ini_path = os.path.join(self.selected_game.game_dir, constants.RESHADE_INI)
                     create_files = CreateFiles(self)
-                    create_files.create_reshade_ini_file(self.selected_game.game_dir, game_screenshots_path)
+                    create_files.create_reshade_ini_file(dst_res_ini_path, game_screenshots_path)
                 except Exception as e:
                     self.log.error(f"create_files: {e}")
 
                 # populate list
-                self.populate_programs_listWidget()
+                self.populate_datagrid()
                 utilities.show_message_window("info", "INFO", f"{messages.path_changed_success}\n\n{new_game_path}")
 
             self.enable_widgets(False)
@@ -169,7 +177,7 @@ class FormEvents:
     def open_reshade_config_file(self):
         self.enable_widgets(True)
         if self.selected_game is not None and len(self.selected_game.rs) > 0:
-            path_list = self.selected_game.rs[0]["path"].split("\\")[:-1]
+            path_list = self.selected_game.rs[0].get("path").split("\\")[:-1]
             game_path = '\\'.join(path_list)
             res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PRESET_INI}"
 
@@ -195,7 +203,7 @@ class FormEvents:
         self.enable_widgets(False)
 
     ################################################################################
-    def edit_default_config_file(self):
+    def edit_all_games_custom_config_button(self):
         try:
             if not os.path.exists(constants.RESHADE_PRESET_FILENAME):
                 create_files = CreateFiles(self)
@@ -315,38 +323,23 @@ class FormEvents:
     ################################################################################
     def programs_tableWidget_clicked(self, item):
         self.enable_widgets(True)
-        selected_game = self.qtObj.programs_tableWidget.currentItem()
+        #clicked_item = self.qtObj.programs_tableWidget.currentItem()
+        clicked_row = self.qtObj.programs_tableWidget.selectedItems()
 
-        if hasattr(selected_game, "text"):
-            self.selected_game = utilities.Object()
-            self.selected_game.name = selected_game.text()
-            self.selected_game.column = item.column()
-            self.selected_game.row = item.row()
+        self.selected_game = utilities.Object()
+        #self.selected_game.column = item.column()
+        #self.selected_game.row = item.row()
+        self.selected_game.name = clicked_row[0].text()
+        self.selected_game.architecture = clicked_row[1].text()
+        self.selected_game.api = clicked_row[2].text()
+        self.selected_game.path = clicked_row[3].text()
 
-            search_pattern = self.selected_game.name
-            games_sql = GamesSql(self)
-            if item.column() == 0:
-                rs = games_sql.get_game_by_name(search_pattern)
-            else:
-                rs = games_sql.get_game_by_path(search_pattern)
-
-            if rs is not None and len(rs) > 0:
-                self.selected_game.rs = rs
-                self.selected_game.game_dir = '\\'.join(self.selected_game.rs[0]["path"].split("\\")[:-1])
-
-                if rs[0]["architecture"] == "32bits":
-                    self.qtObj.radioButton_32bits.setChecked(True)
-                    self.qtObj.radioButton_64bits.setChecked(False)
-                else:
-                    self.qtObj.radioButton_32bits.setChecked(False)
-                    self.qtObj.radioButton_64bits.setChecked(True)
-
-                if rs[0]["api"] == "DX9":
-                    self.qtObj.dx9_radioButton.setChecked(True)
-                    self.qtObj.dx11_radioButton.setChecked(False)
-                else:
-                    self.qtObj.dx9_radioButton.setChecked(False)
-                    self.qtObj.dx11_radioButton.setChecked(True)
+        search_pattern = self.selected_game.name
+        games_sql = GamesSql(self)
+        rs = games_sql.get_game_by_name(search_pattern)
+        if rs is not None and len(rs) > 0:
+            self.selected_game.rs = rs
+            self.selected_game.game_dir = '\\'.join(self.selected_game.rs[0].get("path").split("\\")[:-1])
 
     ################################################################################
     def apply_all(self):
@@ -382,7 +375,7 @@ class FormEvents:
                     games_obj.path = rs_all_games[i]["path"]
                     len_games = len_games - 1
                     result = _apply_single(self, games_obj)
-                    if len(result) > 0:
+                    if result is not None:
                         errors.append(result)
 
                 self.enable_form(True)
@@ -412,7 +405,7 @@ class FormEvents:
                 return
 
             if not self.game_config_form.qtObj.dx9_radioButton.isChecked() \
-                    and not self.game_config_form.qtObj.dx11_radioButton.isChecked():
+                    and not self.game_config_form.qtObj.dx_radioButton.isChecked():
                 self.progressBar.close()
                 utilities.show_message_window("error", "ERROR", messages.missing_api)
                 return
@@ -437,9 +430,9 @@ class FormEvents:
                     dst_path = os.path.join(self.selected_game.game_dir, constants.DXGI)
 
                 # checking name / api / architecture changes
-                if self.selected_game.rs[0]["name"] != games_obj.game_name \
-                    or (self.selected_game.rs[0]["architecture"] != games_obj.architecture) \
-                        or (self.selected_game.rs[0]["api"] != games_obj.api):
+                if self.selected_game.rs[0].get("name") != games_obj.game_name \
+                    or (self.selected_game.rs[0].get("architecture") != games_obj.architecture) \
+                        or (self.selected_game.rs[0].get("api") != games_obj.api):
 
                     # checking name changes
                     # create Reshade.ini to replace edit CurrentPresetPath
@@ -451,8 +444,9 @@ class FormEvents:
                         new_screenshots_path = ""
 
                     try:
+                        dst_res_ini_path = os.path.join(self.selected_game.game_dir, constants.RESHADE_INI)
                         create_files = CreateFiles(self)
-                        create_files.create_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
+                        create_files.create_reshade_ini_file(dst_res_ini_path, new_screenshots_path)
                     except Exception as e:
                         self.log.error(f"create_reshade_ini_file: {e}")
 
@@ -484,15 +478,19 @@ class FormEvents:
                     utilities.show_message_window("info", "SUCCESS", f"{messages.game_updated}\n\n"
                                                                      f"{games_obj.game_name}")
 
-                games_obj.id = self.selected_game.rs[0]["id"]
+                games_obj.id = self.selected_game.rs[0].get("id")
                 games_sql.update_game(games_obj)
                 self.progressBar.close()
             else:
                 # new game added
                 if self.game_config_form.qtObj.dx9_radioButton.isChecked():
                     games_obj.api = "DX9"
+                elif self.game_config_form.qtObj.opengl_radioButton.isChecked():
+                    games_obj.api = "OpenGL"
+                elif self.game_config_form.qtObj.vulkan_radioButton.isChecked():
+                    games_obj.api = "Vulkan"
                 else:
-                    games_obj.api = "DX11"
+                    games_obj.api = "DX10_11_12"
 
                 games_obj.path = self.added_game_path
                 games_sql.insert_game(games_obj)
@@ -502,7 +500,7 @@ class FormEvents:
                 _apply_single(self, games_obj)
                 utilities.show_message_window("info", "SUCCESS", f"{messages.game_added}\n\n{games_obj.game_name}")
 
-            self.populate_programs_listWidget()
+            self.populate_datagrid()
             self.game_config_form.close()
             self.enable_widgets(False)
         else:
@@ -539,20 +537,24 @@ def _get_screenshot_path(self, game_path, game_name):
 
 ################################################################################
 def _apply_single(self, games_obj):
-    errors = ""
+    errors = None
     game_path = '\\'.join(games_obj.path.split("\\")[:-1])
     game_name = games_obj.game_name
     dst_res_ini_path = f"{game_path}\\{constants.RESHADE_INI}"
     dst_res_plug_ini_path = f"{game_path}\\{constants.RESHADE_PRESET_INI}"
     game_screenshots_path = _get_screenshot_path(self, game_path, game_name)
 
-    if games_obj.architecture == "32bits":
+    if games_obj.architecture.lower() == "32bits":
         src_path = constants.RESHADE32_PATH
     else:
         src_path = constants.RESHADE64_PATH
 
-    if games_obj.api == "DX9":
+    if games_obj.api.lower() == "dx9":
         dst_path = f"{game_path}\\{constants.D3D9}"
+    elif games_obj.api.lower() == "opengl":
+        dst_path = f"{game_path}\\{constants.OPENGL}"
+    elif games_obj.api.lower() == "vulkan":
+        dst_path = f"{game_path}\\{constants.VULKAN}"
     else:
         dst_path = f"{game_path}\\{constants.DXGI}"
 
@@ -563,20 +565,45 @@ def _apply_single(self, games_obj):
         except shutil.Error as e:
             self.log.error(f"copyfile: {e}")
 
-        try:
-            # create Reshade.ini
-            if self.reset_reshade_files or not os.path.exists(dst_res_ini_path):
-                create_files = CreateFiles(self)
-                create_files.create_reshade_ini_file(game_path, game_screenshots_path)
-        except Exception as e:
-            self.log.error(f"create_reshade_ini_file: {e}")
-
-        # copying ReShadePreset.ini
-        if self.reset_reshade_files or not os.path.exists(dst_res_plug_ini_path):
+        create_files = CreateFiles(self)
+        if self.reset_reshade_files:
             try:
+                # create Reshade.ini for each game, because each game has different paths
+                create_files.create_reshade_ini_file(dst_res_ini_path, game_screenshots_path)
+            except Exception as e:
+                self.log.error(f"create_reshade_ini_file: {e}")
+
+            try:
+                # create ReShadePreset.ini inside program dir, then copy to game path
+                create_files.create_reshade_preset_ini_file()
                 shutil.copyfile(constants.RESHADE_PRESET_FILENAME, dst_res_plug_ini_path)
             except shutil.Error as e:
-                self.log.error(f"copyfile: {e}")
+                self.log.error(f"create_reshade_preset_ini_file: {e}")
+
+            try:
+                # create style.qss nside program dir
+                create_files.create_style_file()
+            except shutil.Error as e:
+                self.log.error(f"create_style_file: {e}")
+        else:
+            if not os.path.exists(dst_res_ini_path):
+                try:
+                    create_files.create_reshade_ini_file(dst_res_ini_path, game_screenshots_path)
+                except Exception as e:
+                    self.log.error(f"create_reshade_ini_file: {e}")
+
+            if not os.path.exists(constants.RESHADE_PRESET_FILENAME):
+                try:
+                    create_files.create_reshade_preset_ini_file()
+                    shutil.copyfile(constants.RESHADE_PRESET_FILENAME, dst_res_plug_ini_path)
+                except shutil.Error as e:
+                    self.log.error(f"create_reshade_preset_ini_file: {e}")
+
+            if not os.path.exists(constants.STYLE_QSS_FILENAME):
+                try:
+                    create_files.create_style_file()
+                except shutil.Error as e:
+                    self.log.error(f"create_style_file: {e}")
     except OSError as e:
         self.log.error(f"apply:[{game_name}:][{e.strerror.lower()}]")
         errors = f"- {game_name}: {e.strerror.lower()}"

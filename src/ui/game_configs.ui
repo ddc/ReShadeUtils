@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>270</width>
-    <height>185</height>
+    <width>325</width>
+    <height>280</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>325</width>
+    <height>280</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>270</width>
-    <height>185</height>
+    <width>325</width>
+    <height>280</height>
    </size>
   </property>
   <property name="sizeIncrement">
@@ -34,8 +40,8 @@
   <widget class="QPushButton" name="cancel_pushButton">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>150</y>
+     <x>20</x>
+     <y>240</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -43,13 +49,17 @@
    <property name="text">
     <string>Cancel</string>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../images/cancel.png</normaloff>../images/cancel.png</iconset>
+   </property>
   </widget>
   <widget class="QLineEdit" name="game_name_lineEdit">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>30</y>
-     <width>251</width>
+     <width>291</width>
      <height>22</height>
     </rect>
    </property>
@@ -73,8 +83,8 @@
   <widget class="QPushButton" name="ok_pushButton">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>150</y>
+     <x>200</x>
+     <y>240</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -85,14 +95,18 @@
    <property name="text">
     <string>OK</string>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
+   </property>
   </widget>
   <widget class="QGroupBox" name="architecture_groupBox">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>60</y>
-     <width>120</width>
-     <height>80</height>
+     <width>291</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="title">
@@ -102,20 +116,20 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>30</y>
       <width>95</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>32its</string>
+     <string>32bits</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButton_64bits">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>50</y>
+      <x>150</x>
+      <y>30</y>
       <width>95</width>
       <height>20</height>
      </rect>
@@ -128,10 +142,10 @@
   <widget class="QGroupBox" name="api_groupBox">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>60</y>
-     <width>120</width>
-     <height>80</height>
+     <x>10</x>
+     <y>130</y>
+     <width>291</width>
+     <height>91</height>
     </rect>
    </property>
    <property name="title">
@@ -141,7 +155,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>30</y>
       <width>100</width>
       <height>20</height>
      </rect>
@@ -150,17 +164,43 @@
      <string>DX9</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="dx11_radioButton">
+   <widget class="QRadioButton" name="dx_radioButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>100</width>
+      <x>150</x>
+      <y>30</y>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>DX11 / DX12</string>
+     <string>DX10 / 11 / 12</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="opengl_radioButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>95</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>OpenGL</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="vulkan_radioButton">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>60</y>
+      <width>95</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Vulkan</string>
     </property>
    </widget>
   </widget>

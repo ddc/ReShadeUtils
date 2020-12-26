@@ -6,31 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>950</width>
+    <width>1000</width>
     <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>950</width>
+    <width>1000</width>
     <height>700</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>950</width>
-    <height>700</height>
-   </size>
-  </property>
-  <property name="sizeIncrement">
-   <size>
-    <width>950</width>
-    <height>700</height>
-   </size>
-  </property>
-  <property name="baseSize">
-   <size>
-    <width>950</width>
+    <width>1000</width>
     <height>700</height>
    </size>
   </property>
@@ -40,10 +28,10 @@
   <widget class="QLabel" name="reshade_version_label">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>860</x>
      <y>10</y>
-     <width>191</width>
-     <height>20</height>
+     <width>121</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="font">
@@ -62,119 +50,39 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>40</y>
-     <width>911</width>
-     <height>611</height>
+     <y>10</y>
+     <width>961</width>
+     <height>641</height>
     </rect>
    </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>20</width>
+     <height>20</height>
+    </size>
+   </property>
    <property name="usesScrollButtons">
     <bool>false</bool>
    </property>
    <widget class="QWidget" name="games_tab">
-    <attribute name="title">
-     <string>Games</string>
+    <attribute name="icon">
+     <iconset>
+      <normaloff>../images/controller.png</normaloff>../images/controller.png</iconset>
     </attribute>
-    <widget class="QGroupBox" name="architecture_groupBox">
-     <property name="geometry">
-      <rect>
-       <x>550</x>
-       <y>470</y>
-       <width>90</width>
-       <height>100</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Architecture</string>
-     </property>
-     <widget class="QRadioButton" name="radioButton_32bits">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>70</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>32bits</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radioButton_64bits">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>70</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>64bits</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="api_groupBox">
-     <property name="geometry">
-      <rect>
-       <x>660</x>
-       <y>470</y>
-       <width>120</width>
-       <height>100</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>API</string>
-     </property>
-     <widget class="QRadioButton" name="dx9_radioButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>105</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>DX9</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="dx11_radioButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>105</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>DX11 / DX12</string>
-      </property>
-     </widget>
-    </widget>
+    <attribute name="title">
+     <string>GAMES</string>
+    </attribute>
     <widget class="QPushButton" name="add_button">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>510</y>
-       <width>120</width>
+       <x>40</x>
+       <y>560</y>
+       <width>160</width>
        <height>30</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="toolTip">
       <string>Click to add a game</string>
@@ -182,89 +90,69 @@
      <property name="text">
       <string>ADD</string>
      </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../images/add.png</normaloff>../images/add.png</iconset>
+     </property>
     </widget>
     <widget class="QPushButton" name="edit_path_button">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>510</y>
-       <width>120</width>
+       <x>550</x>
+       <y>560</y>
+       <width>160</width>
        <height>30</height>
       </rect>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
      <property name="toolTip">
-      <string>Click to edit the game path</string>
+      <string>Edit the selected game path</string>
      </property>
      <property name="text">
-      <string>EDIT PATH</string>
+      <string>EDIT LOCATION</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../images/arrow.png</normaloff>../images/arrow.png</iconset>
      </property>
     </widget>
     <widget class="QPushButton" name="delete_button">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>510</y>
-       <width>120</width>
+       <x>210</x>
+       <y>560</y>
+       <width>160</width>
        <height>30</height>
       </rect>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
      <property name="toolTip">
-      <string>Click to delete the selected game</string>
+      <string>Delete the selected game</string>
      </property>
      <property name="text">
       <string>DELETE</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../images/delete.png</normaloff>../images/delete.png</iconset>
      </property>
     </widget>
     <widget class="QPushButton" name="apply_button">
      <property name="geometry">
       <rect>
-       <x>800</x>
-       <y>470</y>
-       <width>100</width>
-       <height>100</height>
+       <x>780</x>
+       <y>560</y>
+       <width>160</width>
+       <height>30</height>
       </rect>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>100</height>
-      </size>
-     </property>
      <property name="toolTip">
-      <string>APPLY</string>
+      <string>Apply Reshade and Settings to All Games</string>
      </property>
      <property name="text">
       <string>APPLY</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
      </property>
     </widget>
     <widget class="QTableWidget" name="programs_tableWidget">
@@ -272,8 +160,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>901</width>
-       <height>461</height>
+       <width>961</width>
+       <height>541</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -310,13 +198,13 @@
       <bool>false</bool>
      </property>
      <property name="columnCount">
-      <number>2</number>
+      <number>4</number>
      </property>
      <attribute name="horizontalHeaderVisible">
       <bool>true</bool>
      </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>150</number>
+      <number>100</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
@@ -343,59 +231,71 @@
      </column>
      <column>
       <property name="text">
-       <string>Path</string>
+       <string>Architecture</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>API</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Location</string>
       </property>
      </column>
     </widget>
     <widget class="QPushButton" name="edit_config_button">
      <property name="geometry">
       <rect>
-       <x>410</x>
-       <y>510</y>
-       <width>120</width>
+       <x>380</x>
+       <y>560</y>
+       <width>160</width>
        <height>30</height>
       </rect>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
      <property name="toolTip">
-      <string>Click to edit the game path</string>
+      <string>Edit the selected reshade plugins file settings</string>
      </property>
      <property name="text">
       <string>EDIT CONFIG</string>
      </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../images/edit.png</normaloff>../images/edit.png</iconset>
+     </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="configs_tab">
+   <widget class="QWidget" name="settings_tab">
+    <attribute name="icon">
+     <iconset>
+      <normaloff>../images/gear.png</normaloff>../images/gear.png</iconset>
+    </attribute>
     <attribute name="title">
-     <string>Configs</string>
+     <string>SETTINGS</string>
     </attribute>
     <widget class="QGroupBox" name="update_shaders_groupBox">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>300</y>
-       <width>175</width>
+       <x>130</x>
+       <y>110</y>
+       <width>300</width>
        <height>60</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Update Shader Files Everytime on Apply</string>
+     </property>
      <property name="title">
-      <string>Update Shader Files</string>
+      <string>Update Shader Files on Apply</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <widget class="QRadioButton" name="yes_update_shaders_radioButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>90</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -408,7 +308,7 @@
      <widget class="QRadioButton" name="no_update_shaders_radioButton">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>170</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -422,19 +322,22 @@
     <widget class="QGroupBox" name="check_program_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>520</x>
-       <y>180</y>
-       <width>175</width>
+       <x>130</x>
+       <y>40</y>
+       <width>300</width>
        <height>60</height>
       </rect>
      </property>
      <property name="title">
-      <string>Check for Program Updates</string>
+      <string>Check for Program Updates on Startup</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <widget class="QRadioButton" name="yes_check_program_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>90</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -447,7 +350,7 @@
      <widget class="QRadioButton" name="no_check_program_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>160</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -461,19 +364,22 @@
     <widget class="QGroupBox" name="use_dark_theme_groupBox">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>90</y>
-       <width>175</width>
+       <x>530</x>
+       <y>40</y>
+       <width>300</width>
        <height>60</height>
       </rect>
      </property>
      <property name="title">
       <string>Use Dark Theme</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
      <widget class="QRadioButton" name="yes_dark_theme_radioButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>90</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -486,7 +392,7 @@
      <widget class="QRadioButton" name="no_dark_theme_radioButton">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>160</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -500,19 +406,22 @@
     <widget class="QGroupBox" name="create_screenshots_folder_groupBox">
      <property name="geometry">
       <rect>
-       <x>520</x>
-       <y>300</y>
-       <width>175</width>
+       <x>530</x>
+       <y>110</y>
+       <width>300</width>
        <height>60</height>
       </rect>
      </property>
      <property name="title">
-      <string>Create Screenshot Folders</string>
+      <string>Create Screenshot Folders for Every Game</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <widget class="QRadioButton" name="yes_screenshots_folder_radioButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>90</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -525,7 +434,7 @@
      <widget class="QRadioButton" name="no_screenshots_folder_radioButton">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>170</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -539,19 +448,22 @@
     <widget class="QGroupBox" name="reset_all_reshade_config_groupBox">
      <property name="geometry">
       <rect>
-       <x>350</x>
-       <y>380</y>
-       <width>210</width>
+       <x>530</x>
+       <y>180</y>
+       <width>300</width>
        <height>60</height>
       </rect>
      </property>
      <property name="title">
-      <string>Reset All Reshade Config Files</string>
+      <string>Reset All Games Reshade Files to Deafult on Apply</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <widget class="QRadioButton" name="yes_reset_reshade_radioButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>90</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -564,7 +476,7 @@
      <widget class="QRadioButton" name="no_reset_reshade_radioButton">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>170</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -578,19 +490,22 @@
     <widget class="QGroupBox" name="check_reshade_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>130</x>
        <y>180</y>
-       <width>175</width>
+       <width>300</width>
        <height>60</height>
       </rect>
      </property>
      <property name="title">
-      <string>Check for Reshade Updates</string>
+      <string>Check for Reshade Updates on Startup</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <widget class="QRadioButton" name="yes_check_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>90</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -603,7 +518,7 @@
      <widget class="QRadioButton" name="no_check_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>170</x>
         <y>30</y>
         <width>50</width>
         <height>20</height>
@@ -614,57 +529,26 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="edit_default_config_button">
-     <property name="geometry">
-      <rect>
-       <x>380</x>
-       <y>450</y>
-       <width>150</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Click to edit the game path</string>
-     </property>
-     <property name="text">
-      <string>EDIT DEFAULT CONFIGS</string>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="silent_reshade_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>240</y>
-       <width>175</width>
-       <height>45</height>
+       <x>130</x>
+       <y>250</y>
+       <width>300</width>
+       <height>60</height>
       </rect>
      </property>
      <property name="title">
-      <string>Silent update on startup</string>
+      <string>Silent Reshade Updates</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <widget class="QRadioButton" name="yes_silent_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>20</y>
+        <x>90</x>
+        <y>30</y>
         <width>50</width>
         <height>18</height>
        </rect>
@@ -676,8 +560,8 @@
      <widget class="QRadioButton" name="no_silent_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>20</y>
+        <x>170</x>
+        <y>30</y>
         <width>45</width>
         <height>18</height>
        </rect>
@@ -687,18 +571,103 @@
       </property>
      </widget>
     </widget>
+    <widget class="QGroupBox" name="apply_custom_config_groupBox">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>250</y>
+       <width>300</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Apply Custom Config to All Games</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <widget class="QPushButton" name="edit_all_games_custom_config_button">
+      <property name="geometry">
+       <rect>
+        <x>19</x>
+        <y>60</y>
+        <width>270</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="toolTip">
+       <string>Edit reshade plugins file settings</string>
+      </property>
+      <property name="text">
+       <string>SET CUSTOM PLUGINS CONFIG</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../images/plugin.png</normaloff>../images/plugin.png</iconset>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="yes_all_games_custom_config_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>YES</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="no_all_games_custom_config_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NO</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="default_config_label">
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>360</y>
+       <width>391</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DEFAULT CONFIGURATION WILL BE USED IF THIS IS SET TO NO</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="about_tab">
+    <attribute name="icon">
+     <iconset>
+      <normaloff>../images/help.png</normaloff>../images/help.png</iconset>
+    </attribute>
     <attribute name="title">
-     <string>About</string>
+     <string>ABOUT</string>
     </attribute>
     <widget class="QTextBrowser" name="about_textBrowser">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>50</y>
-       <width>921</width>
-       <height>531</height>
+       <y>0</y>
+       <width>961</width>
+       <height>611</height>
       </rect>
      </property>
      <property name="acceptDrops">
@@ -722,10 +691,15 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Reshade Utilities&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Program to copy reshade DLLs, shaders and config fiies to several games.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Developed as an open source project and hosted on GitHub.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Implemented using Python3 and QT5.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Program to copy reshade DLLs, shaders and config fiies to several games&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Developed as an open source project and hosted on GitHub&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Implemented using Python3, QT5 and SQLite3&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -754,8 +728,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="paypal_button">
      <property name="geometry">
       <rect>
-       <x>410</x>
-       <y>10</y>
+       <x>430</x>
+       <y>30</y>
        <width>80</width>
        <height>30</height>
       </rect>
@@ -792,6 +766,10 @@ p, li { white-space: pre-wrap; }
      <property name="text">
       <string/>
      </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../images/paypal.png</normaloff>../images/paypal.png</iconset>
+     </property>
      <property name="iconSize">
       <size>
        <width>100</width>
@@ -804,7 +782,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QLabel" name="updateAvail_label">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>260</x>
      <y>655</y>
      <width>481</width>
      <height>40</height>
@@ -825,28 +803,27 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="update_button">
    <property name="geometry">
     <rect>
-     <x>790</x>
+     <x>820</x>
      <y>660</y>
-     <width>120</width>
+     <width>130</width>
      <height>30</height>
     </rect>
    </property>
-   <property name="minimumSize">
-    <size>
-     <width>120</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>120</width>
-     <height>30</height>
-    </size>
+   <property name="toolTip">
+    <string>Update program version</string>
    </property>
    <property name="text">
     <string>UPDATE</string>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../images/update.png</normaloff>../images/update.png</iconset>
+   </property>
   </widget>
+  <zorder>main_tabWidget</zorder>
+  <zorder>updateAvail_label</zorder>
+  <zorder>update_button</zorder>
+  <zorder>reshade_version_label</zorder>
  </widget>
  <resources/>
  <connections/>

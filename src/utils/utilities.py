@@ -316,14 +316,67 @@ def check_database_updated_columns(self):
 
 
 ################################################################################
-def set_paypal_button(self):
-    url = constants.PAYPAL_REMOTE_FILENAME
-    data = requests.get(url, stream=True)
-    if data.status_code == 200:
-        pixmap = QtGui.QPixmap()
-        pixmap.loadFromData(data.content)
-        icon = QtGui.QIcon(pixmap)
-        self.qtObj.paypal_button.setIcon(icon)
+def set_icons(self):
+    icon = QtGui.QIcon()
+    icon.addPixmap(QtGui.QPixmap(resource_path("images/add.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.add_button.setIcon(icon)
+
+    icon1 = QtGui.QIcon()
+    icon1.addPixmap(QtGui.QPixmap(resource_path("images/arrow.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.edit_path_button.setIcon(icon1)
+
+    icon2 = QtGui.QIcon()
+    icon2.addPixmap(QtGui.QPixmap(resource_path("images/delete.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.delete_button.setIcon(icon2)
+
+    icon3 = QtGui.QIcon()
+    icon3.addPixmap(QtGui.QPixmap(resource_path("images/apply.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.apply_button.setIcon(icon3)
+
+    icon4 = QtGui.QIcon()
+    icon4.addPixmap(QtGui.QPixmap(resource_path("images/edit.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.edit_config_button.setIcon(icon4)
+
+    icon5 = QtGui.QIcon()
+    icon5.addPixmap(QtGui.QPixmap(resource_path("images/controller.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.main_tabWidget.addTab(self.qtObj.games_tab, icon5, "GAMES")
+
+    icon6 = QtGui.QIcon()
+    icon6.addPixmap(QtGui.QPixmap(resource_path("images/plugin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.edit_all_games_custom_config_button.setIcon(icon6)
+
+    icon7 = QtGui.QIcon()
+    icon7.addPixmap(QtGui.QPixmap(resource_path("images/gear.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.main_tabWidget.addTab(self.qtObj.settings_tab, icon7, "SETTINGS")
+
+    icon8 = QtGui.QIcon()
+    icon8.addPixmap(QtGui.QPixmap(resource_path("images/paypal.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.paypal_button.setIcon(icon8)
+
+    icon9 = QtGui.QIcon()
+    icon9.addPixmap(QtGui.QPixmap(resource_path("images/help.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.main_tabWidget.addTab(self.qtObj.about_tab, icon9, "ABOUT")
+
+    icon10 = QtGui.QIcon()
+    icon10.addPixmap(QtGui.QPixmap(resource_path("images/update.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.qtObj.update_button.setIcon(icon10)
+
+
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath("./src")
+
+    return os.path.join(base_path, relative_path)
+
+
+def check_game_dir(self):
+    if self.selected_game is not None:
+        if not os.path.isfile(self.selected_game.rs[0].get("path")):
+            return False
     else:
-        _translate = QtCore.QCoreApplication.translate
-        self.qtObj.paypal_button.setText(_translate("Main", "PayPal"))
+        if not os.path.isfile(self.added_game_path):
+            return False
+    return True

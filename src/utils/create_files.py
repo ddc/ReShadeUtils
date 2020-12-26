@@ -56,9 +56,28 @@ show_sharpen=0
                 file.close()
 
     ################################################################################
-    def create_reshade_ini_file(self, game_path:str, screenshot_path:str):
-        file = open(os.path.join(game_path, constants.RESHADE_INI), encoding="utf-8", mode="w")
-        file.write(
+    def create_reshade_ini_file(self, dst_res_ini_path:str, screenshot_path:str):
+        reshade_config_remote_file = constants.RESHADE_REMOTE_FILENAME
+
+        try:
+            req = requests.get(reshade_config_remote_file)
+            with open(dst_res_ini_path, 'wb') as outfile:
+                outfile.write(req.content)
+
+
+            #fazer o append no arquivo baixado nas seguintes secoes
+            # general
+                # EffectSearchPaths = {constants.PROGRAM_PATH}\\Reshade - shaders\\Shaders
+                # PresetPath =.\\{constants.RESHADE_PRESET_INI}
+                # TextureSearchPaths = {constants.PROGRAM_PATH}\\Reshade - shaders\\Textures
+
+            # screenshot
+                # SavePath={screenshot_path}
+
+
+        except requests.HTTPError as e:
+            file = open(dst_res_ini_path, encoding="utf-8", mode="w")
+            file.write(
 f"""[D3D11]
 DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
@@ -137,7 +156,7 @@ StyleIndex=0
 TabRounding=12.000000
 WindowRounding=12.000000
 """)
-        file.close()
+            file.close()
 
     ################################################################################
     def create_style_file(self):

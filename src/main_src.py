@@ -11,12 +11,12 @@ import os
 import sys
 
 import requests
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from bs4 import BeautifulSoup
 
 from src.form_events import FormEvents
-from src.game_configs import UiGameConfigForm
+from src.game_configs import Ui_game_config_Form
 from src.sql.configs_sql import ConfigsSql
 from src.sql.games_sql import GamesSql
 from src.utils import constants, messages, utilities
@@ -49,10 +49,10 @@ class MainSrc:
     ################################################################################
     def init(self):
         self.progressBar.setValues(messages.initializing, 0)
-        utilities.set_paypal_button(self)
         utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
+        utilities.set_icons(self)
 
         self.progressBar.setValues(messages.checking_files, 15)
         utilities.check_files(self)
@@ -94,8 +94,14 @@ class MainSrc:
         self.progressBar.setValues(messages.checking_new_version, 90)
         self._check_new_program_version()
         self.qtObj.main_tabWidget.setCurrentIndex(0)
-        self.qtObj.architecture_groupBox.setEnabled(False)
-        self.qtObj.api_groupBox.setEnabled(False)
+
+        self.qtObj.programs_tableWidget.setColumnWidth(0, 150)
+        self.qtObj.programs_tableWidget.setColumnWidth(1, 100)
+        self.qtObj.programs_tableWidget.setColumnWidth(2, 100)
+        self.qtObj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
+        #from PyQt5.QtWidgets import QHeaderView
+        #self.qtObj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
+
         self.enable_widgets(False)
         self.progressBar.close()
 
@@ -134,7 +140,7 @@ class MainSrc:
         self.qtObj.yes_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "YES"))
         self.qtObj.no_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
         #########
-        self.qtObj.edit_default_config_button.clicked.connect(lambda: FormEvents.edit_default_config_file(self))
+        self.qtObj.edit_all_games_custom_config_button.clicked.connect(lambda: FormEvents.edit_all_games_custom_config_button(self))
         # TAB 3 - about
         #########
         self.qtObj.paypal_button.clicked.connect(lambda: FormEvents.donate_clicked())
@@ -276,6 +282,7 @@ class MainSrc:
             self.log.error(f"{e}")
 
     ################################################################################
+    # enable / disable  apply button
     def _en_dis_apply_button(self):
         len_games = self.qtObj.programs_tableWidget.rowCount()
         if len_games == 0:
@@ -289,14 +296,14 @@ class MainSrc:
 
     ################################################################################
     def _programs_tableWidget_double_clicked(self):
-        self.show_game_config_form(self.selected_game.rs[0]["name"])
+        self.show_game_config_form(self.selected_game.rs[0].get("name"))
 
     ################################################################################
     def _set_all_configs(self):
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
 
-        self.populate_programs_listWidget()
+        self.populate_datagrid()
 
         if rsConfig is not None and len(rsConfig) > 0:
             if rsConfig[0]["use_dark_theme"].upper() == "N":
@@ -373,13 +380,27 @@ class MainSrc:
 
     ################################################################################
     def show_game_config_form(self, game_name: str):
+        if not utilities.check_game_dir(self):
+            utilities.show_message_window("error", "ERROR", f"{messages.error_game_not_found}")
+            return
+
         self.game_config_form = QtWidgets.QWidget()
         _translate = QtCore.QCoreApplication.translate
-        qtObj = UiGameConfigForm()
+        qtObj = Ui_game_config_Form()
         qtObj.setupUi(self.game_config_form)
         self.game_config_form.qtObj = qtObj
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(utilities.resource_path("images/cancel.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.game_config_form.qtObj.cancel_pushButton.setIcon(icon)
+
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(utilities.resource_path("images/apply.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.game_config_form.qtObj.ok_pushButton.setIcon(icon1)
+
         if self.use_dark_theme:
             self.game_config_form.setStyleSheet(open(constants.STYLE_QSS_FILENAME, "r").read())
+
         self.game_config_form.qtObj.game_name_lineEdit.setFocus()
         self.game_config_form.show()
         QtWidgets.QApplication.processEvents()
@@ -388,20 +409,34 @@ class MainSrc:
         self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: FormEvents.game_config_form(self, "CANCEL"))
 
         if self.selected_game is not None:
-            self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.rs[0]["name"])
-            if self.selected_game.rs[0]["architecture"] == "32bits":
+            self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.rs[0].get("name"))
+            if self.selected_game.rs[0].get("architecture").lower() == "32bits":
                 self.game_config_form.qtObj.radioButton_32bits.setChecked(True)
                 self.game_config_form.qtObj.radioButton_64bits.setChecked(False)
             else:
                 self.game_config_form.qtObj.radioButton_32bits.setChecked(False)
                 self.game_config_form.qtObj.radioButton_64bits.setChecked(True)
 
-            if self.selected_game.rs[0]["api"] == "DX9":
+            if self.selected_game.rs[0].get("api").lower() == "dx9":
                 self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
-                self.game_config_form.qtObj.dx11_radioButton.setChecked(False)
+                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
+                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
+                self.game_config_form.qtObj.vulkan_radioButton.setChecked(False)
+            elif self.selected_game.rs[0].get("api").lower() == "opengl":
+                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
+                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
+                self.game_config_form.qtObj.opengl_radioButton.setChecked(True)
+                self.game_config_form.qtObj.vulkan_radioButton.setChecked(False)
+            elif self.selected_game.rs[0].get("api").lower() == "vulkan":
+                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
+                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
+                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
+                self.game_config_form.qtObj.vulkan_radioButton.setChecked(True)
             else:
                 self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
-                self.game_config_form.qtObj.dx11_radioButton.setChecked(True)
+                self.game_config_form.qtObj.dx_radioButton.setChecked(True)
+                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
+                self.game_config_form.qtObj.vulkan_radioButton.setChecked(False)
         else:
             self.game_config_form.qtObj.game_name_lineEdit.setText(game_name)
 
@@ -413,7 +448,7 @@ class MainSrc:
             self.form.setStyleSheet("")
 
     ################################################################################
-    def populate_programs_listWidget(self):
+    def populate_datagrid(self):
         self.qtObj.programs_tableWidget.setRowCount(0)
         games_sql = GamesSql(self)
         rs_all_games = games_sql.get_games()
@@ -424,6 +459,10 @@ class MainSrc:
                 self.qtObj.programs_tableWidget.setItem(len_games, 0,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i]["name"]))
                 self.qtObj.programs_tableWidget.setItem(len_games, 1,
+                                                        QtWidgets.QTableWidgetItem(rs_all_games[i]["architecture"]))
+                self.qtObj.programs_tableWidget.setItem(len_games, 2,
+                                                        QtWidgets.QTableWidgetItem(rs_all_games[i]["api"]))
+                self.qtObj.programs_tableWidget.setItem(len_games, 3,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i]["path"]))
 
     ################################################################################
@@ -444,18 +483,6 @@ class MainSrc:
     def enable_widgets(self, status: bool):
         if not status:
             self.selected_game = None
-
-            self.qtObj.radioButton_32bits.setAutoExclusive(False)
-            self.qtObj.radioButton_32bits.setChecked(False)
-
-            self.qtObj.radioButton_64bits.setAutoExclusive(False)
-            self.qtObj.radioButton_64bits.setChecked(False)
-
-            self.qtObj.dx9_radioButton.setAutoExclusive(False)
-            self.qtObj.dx9_radioButton.setChecked(False)
-
-            self.qtObj.dx11_radioButton.setAutoExclusive(False)
-            self.qtObj.dx11_radioButton.setChecked(False)
 
         self._en_dis_apply_button()
         self.qtObj.delete_button.setEnabled(status)

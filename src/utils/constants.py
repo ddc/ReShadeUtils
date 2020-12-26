@@ -15,7 +15,7 @@ import sys
 from src.utils import utilities
 
 
-VERSION = "4.1"
+VERSION = "4.2"
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
@@ -56,13 +56,15 @@ RESHADE_SCREENSHOT_PATH = os.path.join(utilities.get_pictures_path(), 'Screensho
 SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, 'database.db')
 STYLE_QSS_FILENAME = os.path.join(PROGRAM_PATH, 'style.qss')
 ERROR_LOGS_FILENAME = os.path.join(PROGRAM_PATH, 'errors.log')
+RESHADE_INI_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 ################################################################################
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
 REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/VERSION"
-CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/files/style.qss"
+RESHADE_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/files/Reshade.ini"
 PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/files/ReShadePreset.ini"
+CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/files/style.qss"
 PAYPAL_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/images/paypal.png"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
