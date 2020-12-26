@@ -362,6 +362,7 @@ def set_icons(self):
     self.qtObj.update_button.setIcon(icon10)
 
 
+################################################################################
 def resource_path(relative_path):
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
@@ -371,6 +372,7 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
+################################################################################
 def check_game_dir(self):
     if self.selected_game is not None:
         if not os.path.isfile(self.selected_game.rs[0].get("path")):
@@ -379,3 +381,17 @@ def check_game_dir(self):
         if not os.path.isfile(self.added_game_path):
             return False
     return True
+
+
+################################################################################
+def set_file_settings(filename: str, section: str, config_name: str, value):
+    parser = configparser.ConfigParser(delimiters='=', allow_no_value=False)
+    parser.optionxform = str  # this wont change all values to lowercase
+    parser._interpolation = configparser.ExtendedInterpolation()
+    parser.read(filename)
+    parser.set(section, config_name, value)
+    try:
+        with open(filename, 'w') as configfile:
+            parser.write(configfile, space_around_delimiters=False)
+    except configparser.DuplicateOptionError:
+        return

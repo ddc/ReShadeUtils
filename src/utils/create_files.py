@@ -7,8 +7,7 @@
 #|*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.utils import constants
-import os
+from src.utils import constants, utilities
 import requests
 
 
@@ -64,18 +63,15 @@ show_sharpen=0
             with open(dst_res_ini_path, 'wb') as outfile:
                 outfile.write(req.content)
 
-
-            #fazer o append no arquivo baixado nas seguintes secoes
-            # general
-                # EffectSearchPaths = {constants.PROGRAM_PATH}\\Reshade - shaders\\Shaders
-                # PresetPath =.\\{constants.RESHADE_PRESET_INI}
-                # TextureSearchPaths = {constants.PROGRAM_PATH}\\Reshade - shaders\\Textures
-
-            # screenshot
-                # SavePath={screenshot_path}
-
-
-        except requests.HTTPError as e:
+            utilities.set_file_settings(dst_res_ini_path, "GENERAL", "EffectSearchPaths",
+                                        f"{constants.PROGRAM_PATH}\\Reshade - shaders\\Shaders")
+            utilities.set_file_settings(dst_res_ini_path, "GENERAL", "TextureSearchPaths",
+                                        f"{constants.PROGRAM_PATH}\\Reshade - shaders\\Textures")
+            utilities.set_file_settings(dst_res_ini_path, "GENERAL", "PresetPath",
+                                        f".\\{constants.RESHADE_PRESET_INI}")
+            utilities.set_file_settings(dst_res_ini_path, "SCREENSHOTS", "SavePath",
+                                        f"{screenshot_path}")
+        except requests.HTTPError:
             file = open(dst_res_ini_path, encoding="utf-8", mode="w")
             file.write(
 f"""[D3D11]

@@ -598,6 +598,8 @@ def _apply_single(self, games_obj):
                     shutil.copyfile(constants.RESHADE_PRESET_FILENAME, dst_res_plug_ini_path)
                 except shutil.Error as e:
                     self.log.error(f"create_reshade_preset_ini_file: {e}")
+            else:
+                shutil.copyfile(constants.RESHADE_PRESET_FILENAME, dst_res_plug_ini_path)
 
             if not os.path.exists(constants.STYLE_QSS_FILENAME):
                 try:
