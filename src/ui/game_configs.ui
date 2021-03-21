@@ -6,32 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
-    <height>280</height>
+    <width>360</width>
+    <height>195</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>325</width>
-    <height>280</height>
+    <width>360</width>
+    <height>195</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>325</width>
-    <height>280</height>
-   </size>
-  </property>
-  <property name="sizeIncrement">
-   <size>
-    <width>270</width>
-    <height>185</height>
-   </size>
-  </property>
-  <property name="baseSize">
-   <size>
-    <width>270</width>
-    <height>185</height>
+    <width>360</width>
+    <height>195</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -41,7 +29,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>240</y>
+     <y>150</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -59,7 +47,7 @@
     <rect>
      <x>10</x>
      <y>30</y>
-     <width>291</width>
+     <width>341</width>
      <height>22</height>
     </rect>
    </property>
@@ -72,19 +60,19 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>291</width>
+     <width>71</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Name of the game:</string>
+    <string>Name:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="ok_pushButton">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>240</y>
+     <x>250</x>
+     <y>150</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -100,52 +88,13 @@
      <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
    </property>
   </widget>
-  <widget class="QGroupBox" name="architecture_groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>291</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Architecture</string>
-   </property>
-   <widget class="QRadioButton" name="radioButton_32bits">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>95</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>32bits</string>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioButton_64bits">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>30</y>
-      <width>95</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>64bits</string>
-    </property>
-   </widget>
-  </widget>
   <widget class="QGroupBox" name="api_groupBox">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>130</y>
-     <width>291</width>
-     <height>91</height>
+     <y>60</y>
+     <width>341</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="title">
@@ -154,53 +103,40 @@
    <widget class="QRadioButton" name="dx9_radioButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>110</x>
       <y>30</y>
-      <width>100</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>DX9</string>
+     <string>DirectX 9</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="dx_radioButton">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>210</x>
       <y>30</y>
-      <width>131</width>
+      <width>111</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>DX10 / 11 / 12</string>
+     <string>DirectX 10/11/12</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="opengl_radioButton">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
-      <width>95</width>
+      <y>30</y>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>OpenGL</string>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="vulkan_radioButton">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>60</y>
-      <width>95</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Vulkan</string>
     </property>
    </widget>
   </widget>

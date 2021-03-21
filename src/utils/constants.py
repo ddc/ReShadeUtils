@@ -3,7 +3,6 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
@@ -11,7 +10,6 @@ import logging
 import os
 import platform
 import sys
-
 from src.utils import utilities
 
 
@@ -21,10 +19,10 @@ SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 ################################################################################
-DATE_FORMATTER = "%b/%d/%Y"
+DATE_FORMATTER = "%Y-%m-%d"
 TIME_FORMATTER = "%H:%M:%S"
 LOG_LEVEL = logging.INFO
-LOG_FORMATTER = logging.Formatter('%(asctime)s:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s',
+LOG_FORMATTER = logging.Formatter("%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s",
                                   datefmt=f"[{DATE_FORMATTER} {TIME_FORMATTER}]")
 ################################################################################
 IS_WINDOWS = os.name == "nt"
@@ -33,29 +31,28 @@ IS_LINUX = sys.platform == "linux"
 IS_64BIT = platform.machine().endswith("64")
 PYTHON_OK = sys.version_info >= (3, 6)
 ################################################################################
-APPDATA_PATH = os.getenv('APPDATA')  # returns AppData\Roaming. 'LOCALAPPDATA' == AppData\Local.
+APPDATA_PATH = os.getenv("APPDATA")  # returns AppData\Roaming. "LOCALAPPDATA" == AppData\Local.
 PROGRAM_PATH = os.path.join(APPDATA_PATH, SHORT_PROGRAM_NAME)
 ################################################################################
-DXGI = "dxgi.dll"
-D3D9 = "d3d9.dll"
 RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "Reshade.ini"
 RESHADE_PRESET_INI = "ReShadePreset.ini"
-RESHADE_X64LOG = "dxgi.log"
-RESHADE_X32LOG = "d3d9.log"
 RESHADE32 = "Reshade32.dll"
 RESHADE64 = "ReShade64.dll"
+DXGI = "dxgi.dll"
+D3D9 = "d3d9.dll"
+OPENGL = "opengl32.dll"
 ################################################################################
 RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32)
 RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64)
 SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}.zip")
 SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-master")
-RESHADE_SCREENSHOT_PATH = os.path.join(utilities.get_pictures_path(), 'Screenshots')
+RESHADE_SCREENSHOT_PATH = os.path.join(utilities.get_pictures_path(), "Screenshots")
 ################################################################################
-SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, 'database.db')
-STYLE_QSS_FILENAME = os.path.join(PROGRAM_PATH, 'style.qss')
-ERROR_LOGS_FILENAME = os.path.join(PROGRAM_PATH, 'errors.log')
+SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, "database.db")
+STYLE_QSS_FILENAME = os.path.join(PROGRAM_PATH, "style.qss")
+ERROR_LOGS_FILENAME = os.path.join(PROGRAM_PATH, "errors.log")
 RESHADE_INI_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 ################################################################################

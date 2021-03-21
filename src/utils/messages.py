@@ -3,7 +3,6 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 

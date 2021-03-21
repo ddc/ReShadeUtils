@@ -3,11 +3,10 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.databases.databases import Databases
+from src.sql.sqlite3_connection import Sqlite3
 
 
 class ConfigsSql:
@@ -15,95 +14,95 @@ class ConfigsSql:
         self.main = main
         self.log = main.log
 
-    ################################################################################
+
     def get_configs(self):
         sql = "SELECT * from configs where id = 1;"
-        databases = Databases(self.main)
-        return databases.select(sql)
+        sqlite3 = Sqlite3(self.main)
+        return sqlite3.select(sql)
 
-    ################################################################################
+
     def set_default_configs(self):
         sql = """DELETE from configs;
                 INSERT INTO configs(id) VALUES (1);"""
-        databases = Databases(self.main)
-        databases.execute(sql)
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
 
-    #################################################################################
-    def update_dark_theme(self, configsObj: object):
-        sql = f"""UPDATE configs SET
-                use_dark_theme = '{configsObj.status}'
-                WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
 
-    #################################################################################
-    def update_shaders(self, configsObj: object):
+    def update_dark_theme(self, configs_obj):
         sql = f"""UPDATE configs SET
-                update_shaders = '{configsObj.status}'
+                use_dark_theme = '{configs_obj.status}'
                 WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
 
-    #################################################################################
-    def update_check_program_updates(self, configsObj: object):
-        sql = f"""UPDATE configs SET
-                check_program_updates = '{configsObj.status}'
-                WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
 
-    #################################################################################
-    def update_check_resahde_updates(self, configsObj: object):
+    def update_shaders(self, configs_obj):
         sql = f"""UPDATE configs SET
-                check_reshade_updates = '{configsObj.status}'
+                update_shaders = '{configs_obj.status}'
                 WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
 
-    #################################################################################
-    def update_silent_reshade_updates(self, configsObj: object):
-        sql = f"""UPDATE configs SET
-                silent_reshade_updates = '{configsObj.status}'
-                WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
 
-    #################################################################################
-    def update_create_screenshots_folder(self, configsObj: object):
+    def update_check_program_updates(self, configs_obj):
         sql = f"""UPDATE configs SET
-                create_screenshots_folder = '{configsObj.status}'
+                check_program_updates = '{configs_obj.status}'
                 WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
 
-    #################################################################################
-    def update_reshade_version(self, configsObj: object):
-        sql = f"""UPDATE configs SET
-                reshade_version = '{configsObj.reshade_version}'
-                WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
 
-    ################################################################################
-    def update_reset_reshade_files(self, configsObj: object):
+    def update_check_resahde_updates(self, configs_obj):
         sql = f"""UPDATE configs SET
-                reset_reshade_files = '{configsObj.status}'
+                check_reshade_updates = '{configs_obj.status}'
                 WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
 
-    ################################################################################
-    def update_custom_config(self, configsObj: object):
-        sql = f"""UPDATE configs SET
-                use_custom_config = '{configsObj.status}'
-                WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
 
-    ################################################################################
-    def update_program_version(self, configsObj: object):
+    def update_silent_reshade_updates(self, configs_obj):
         sql = f"""UPDATE configs SET
-                program_version = '{configsObj.program_version}'
+                silent_reshade_updates = '{configs_obj.status}'
                 WHERE id = 1;"""
-        databases = Databases(self.main)
-        databases.execute(sql)
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
+
+
+    def update_create_screenshots_folder(self, configs_obj):
+        sql = f"""UPDATE configs SET
+                create_screenshots_folder = '{configs_obj.status}'
+                WHERE id = 1;"""
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
+
+
+    def update_reshade_version(self, configs_obj):
+        sql = f"""UPDATE configs SET
+                reshade_version = '{configs_obj.reshade_version}'
+                WHERE id = 1;"""
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
+
+
+    def update_reset_reshade_files(self, configs_obj):
+        sql = f"""UPDATE configs SET
+                reset_reshade_files = '{configs_obj.status}'
+                WHERE id = 1;"""
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
+
+
+    def update_custom_config(self, configs_obj):
+        sql = f"""UPDATE configs SET
+                use_custom_config = '{configs_obj.status}'
+                WHERE id = 1;"""
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
+
+
+    def update_program_version(self, configs_obj):
+        sql = f"""UPDATE configs SET
+                program_version = '{configs_obj.program_version}'
+                WHERE id = 1;"""
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)

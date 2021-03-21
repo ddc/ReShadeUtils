@@ -3,17 +3,14 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
 import os
-import subprocess
 import sys
-
 import requests
-from PyQt5 import QtCore, QtWidgets
-
+import subprocess
+from PyQt6 import QtCore, QtWidgets
 from src.sql.configs_sql import ConfigsSql
 from src.utils import constants, messages, utilities
 
@@ -22,31 +19,29 @@ class Launcher:
     def __init__(self):
         self.progressBar = utilities.ProgressBar()
         self.log = None
-        self.database_settings = None
         self.new_version = None
         self.new_version_msg = None
         self.client_version = None
 
-    ################################################################################
+
     def init(self):
-        self.progressBar.setValues(messages.checking_files, 25)
+        self.progressBar.set_values(messages.checking_files, 25)
         utilities.check_dirs()
         self.log = utilities.setup_logging(self)
         sys.excepthook = utilities.log_uncaught_exceptions
         utilities.check_files(self)
-        self.database_settings = dict(DatabaseInUse='sqlite')
 
-        self.progressBar.setValues(messages.checking_db_connection, 50)
+        self.progressBar.set_values(messages.checking_db_connection, 50)
         utilities.check_db_connection(self)
         utilities.set_default_database_configs(self)
         utilities.check_database_updated_columns(self)
 
-        self.progressBar.setValues(messages.checking_new_version, 75)
+        self.progressBar.set_values(messages.checking_new_version, 75)
         self._check_update_required()
         self.progressBar.close()
         self._call_program()
 
-    ################################################################################
+
     def _check_update_required(self):
         configSql = ConfigsSql(self)
         rsConfig = configSql.get_configs()
@@ -63,7 +58,7 @@ class Launcher:
                 self.new_version_msg = new_version_obj.new_version_msg
                 self._download_new_program_version(False)
 
-    ################################################################################
+
     def _download_new_program_version(self, show_dialog=True):
         if show_dialog:
             msg = f"""{messages.new_version_available}
@@ -82,14 +77,14 @@ class Launcher:
 
         r = requests.get(program_url)
         if r.status_code == 200:
-            with open(downloaded_program_path, 'wb') as outfile:
+            with open(downloaded_program_path, "wb") as outfile:
                 outfile.write(r.content)
             utilities.show_message_window("Info", "INFO", f"{messages.program_updated}v{self.new_version}")
         else:
             utilities.show_message_window("error", "ERROR", f"{messages.error_dl_new_version}")
             self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
 
-    ################################################################################
+
     def _call_program(self):
         code = None
         cmd = [f"{os.path.abspath(os.getcwd())}\\{constants.EXE_PROGRAM_NAME}"]

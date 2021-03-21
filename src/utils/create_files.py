@@ -3,7 +3,6 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 #|*****************************************************
 # # -*- coding: utf-8 -*-
 
@@ -16,18 +15,19 @@ class CreateFiles:
         self.main = main
         self.log = main.log
 
-    ################################################################################
-    def create_reshade_preset_ini_file(self):
+
+    @staticmethod
+    def create_reshade_preset_ini_file():
         dst_path = constants.RESHADE_PRESET_FILENAME
         preset_remote_file = constants.PRESET_REMOTE_FILENAME
 
         try:
             req = requests.get(preset_remote_file)
-            with open(dst_path, 'wb') as outfile:
+            with open(dst_path, "wb") as outfile:
                 outfile.write(req.content)
-        except requests.HTTPError as e:
-                file = open(constants.RESHADE_PRESET_FILENAME, encoding="utf-8", mode="w")
-                file.write(
+        except requests.HTTPError:
+            file = open(constants.RESHADE_PRESET_FILENAME, encoding="UTF-8", mode="w")
+            file.write(
 """PreprocessorDefinitions=
 Techniques=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx
 TechniqueSorting=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx
@@ -52,15 +52,16 @@ sharp_clamp=1.000000
 sharp_strength=1.200000
 show_sharpen=0
 """)
-                file.close()
+            file.close()
 
-    ################################################################################
-    def create_reshade_ini_file(self, dst_res_ini_path:str, screenshot_path:str):
+
+    @staticmethod
+    def create_reshade_ini_file(dst_res_ini_path, screenshot_path):
         reshade_config_remote_file = constants.RESHADE_REMOTE_FILENAME
 
         try:
             req = requests.get(reshade_config_remote_file)
-            with open(dst_res_ini_path, 'wb') as outfile:
+            with open(dst_res_ini_path, "wb") as outfile:
                 outfile.write(req.content)
 
             utilities.set_file_settings(dst_res_ini_path, "GENERAL", "EffectSearchPaths",
@@ -91,13 +92,13 @@ DisableINTZ=0
 UseAspectRatioHeuristics=1
 
 [GENERAL]
-EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Shaders
 PerformanceMode=1
-PreprocessorDefinitions=
-PresetPath=.\\{constants.RESHADE_PRESET_INI}
+PreprocessorDefinitions=RESHADE_DEPTH_LINEARIZATION_FAR_PLANE=1000.0,RESHADE_DEPTH_INPUT_IS_UPSIDE_DOWN=0,RESHADE_DEPTH_INPUT_IS_REVERSED=1,RESHADE_DEPTH_INPUT_IS_LOGARITHMIC=0
 PresetTransitionDelay=1000
 SkipLoadingDisabledEffects=1
+EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Shaders
 TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Textures
+PresetPath=.\\{constants.RESHADE_PRESET_INI}
 
 [INPUT]
 ForceShortcutModifiers=1
@@ -131,8 +132,8 @@ FileNamingFormat=0
 JPEGQuality=100
 SaveBeforeShot=0
 SaveOverlayShot=0
-SavePath={screenshot_path}
 SavePresetFile=0
+SavePath={screenshot_path}
 
 [STYLE]
 Alpha=1.000000
@@ -154,17 +155,18 @@ WindowRounding=12.000000
 """)
             file.close()
 
-    ################################################################################
-    def create_style_file(self):
+
+    @staticmethod
+    def create_style_file():
         dst_path = constants.STYLE_QSS_FILENAME
         css_remote_file = constants.CSS_REMOTE_FILENAME
 
         try:
             req = requests.get(css_remote_file)
-            with open(dst_path, 'wb') as outfile:
+            with open(dst_path, "wb") as outfile:
                 outfile.write(req.content)
         except requests.HTTPError as e:
-            file = open(constants.STYLE_QSS_FILENAME, encoding="utf-8", mode="w")
+            file = open(constants.STYLE_QSS_FILENAME, encoding="UTF-8", mode="w")
             file.write(
 """QWidget {
    background-color: #222222;

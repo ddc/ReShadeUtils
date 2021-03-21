@@ -3,7 +3,6 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
@@ -16,22 +15,20 @@ class Sqlite3:
         self.log = main.log
         self.db_file = constants.SQLITE3_FILENAME
 
-    ################################################################################
+
     def create_connection(self):
         try:
             conn = sqlite3.connect(self.db_file)
         except Exception as e:
             conn = None
             msg = "sqlite3: Cannot Create Database Connection."
-            self.log.error(f"{msg}\n({e})")
+            self.log.error(f"{msg}{str(e)}")
             self.log.exception("sqlite", exc_info=e)
-            print(f"{msg}\n({e})")
             # utils.wait_return()
             raise sqlite3.OperationalError(e)
-        finally:
-            return conn
+        return conn
 
-    ################################################################################
+
     def executescript(self, sql):
         result = None
         conn = self.create_connection()
@@ -49,7 +46,6 @@ class Sqlite3:
                 result = e
                 self.log.exception("sqlite", exc_info=e)
                 self.log.error(f"sql:({sql})")
-                print(str(e))
                 # utils.wait_return()
                 raise sqlite3.OperationalError(e)
             finally:
@@ -57,7 +53,7 @@ class Sqlite3:
                     conn.close()
                 return result
 
-    ################################################################################
+
     def select(self, sql):
         conn = self.create_connection()
         if conn is not None:
@@ -76,7 +72,6 @@ class Sqlite3:
             except Exception as e:
                 self.log.exception("sqlite", exc_info=e)
                 self.log.error(f"sql:({sql})")
-                print(str(e))
                 # utils.wait_return()
                 # raise sqlite3.OperationalError(e)
             finally:

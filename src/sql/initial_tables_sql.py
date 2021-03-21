@@ -3,11 +3,10 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.databases.databases import Databases
+from src.sql.sqlite3_connection import Sqlite3
 
 
 class InitialTablesSql:
@@ -15,14 +14,11 @@ class InitialTablesSql:
         self.main = main
         self.log = main.log
 
-    ################################################################################
-    def create_initial_tables(self):
-        databases = Databases(self.main)
-        primary_key_type = databases.set_primary_key_type()
 
+    def create_initial_tables(self):
         sql = f"""
         CREATE TABLE IF NOT EXISTS configs (
-            id                              {primary_key_type},
+            id                              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
             use_dark_theme                  int(1)  NOT NULL DEFAULT 0,
             update_shaders                  int(1)  NOT NULL DEFAULT 1,
             check_program_updates           int(1)  NOT NULL DEFAULT 1,
@@ -44,7 +40,7 @@ class InitialTablesSql:
         );
         
         CREATE TABLE IF NOT EXISTS games (
-            id             {primary_key_type},
+            id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
             name           TEXT     NOT NULL,
             architecture   TEXT     NOT NULL,
             api            TEXT     NOT NULL,
@@ -52,4 +48,5 @@ class InitialTablesSql:
         );
 
         """
-        databases.execute(sql)
+        sqlite3 = Sqlite3(self.main)
+        sqlite3.executescript(sql)
