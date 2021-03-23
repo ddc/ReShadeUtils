@@ -1,3 +1,4 @@
 requests>=2.25.1
 PyQt6>=6.0.3
 beautifulsoup4>=4.9.3
+PyInstaller>=4.2

@@ -1,12 +1,13 @@
 # -*- mode: python -*-
 
 block_cipher = None
-add_images = [ ('src/images/*.*', 'images') ]
+
+add_media = [ ('src/media/*.*', 'media') ]
 
 a = Analysis(['main.py'],
              pathex=['*path*'],
              binaries=[],
-             datas = add_images,
+             datas=add_media,
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -14,11 +15,11 @@ a = Analysis(['main.py'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
-             
+
 pyz = PYZ(a.pure,
 		  a.zipped_data,
           cipher=block_cipher)
-          
+
 exe = EXE(pyz,
           a.scripts,
           a.binaries,
@@ -29,11 +30,11 @@ exe = EXE(pyz,
           strip=False,
           upx=False,
           runtime_tmpdir=None,
-          console=False, 
+          console=False,
           version='resources.rc',
           uac_admin=True,
           icon='')
-          
+
 #coll = COLLECT(exe,
 #               strip=False,
 #               upx=False,

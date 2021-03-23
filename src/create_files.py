@@ -31,26 +31,26 @@ class CreateFiles:
             file.write(
 """PreprocessorDefinitions=
 Techniques=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx
-TechniqueSorting=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx
+TechniqueSorting=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,HDR@FakeHDR.fx,Border@Border.fx,LeiFx_Tech@3DFX.fx,MotionBlur@FakeMotionBlur.fx,Tonemap@Tonemap.fx,MagicBloom@MagicBloom.fx,PPFXBloom@PPFX_Bloom.fx,FXAA@FXAA.fx,FilmGrain@FilmGrain.fx,Cartoon@Cartoon.fx,AdaptiveFog@AdaptiveFog.fx,Depth3D@Depth3D.fx,AdvancedCRT@CRT.fx,SMAA@SMAA.fx,Chromakey@Chromakey.fx,TriDither@TriDither.fx,FilmGrain2@FilmGrain2.fx,PPFX_Godrays@PPFX_Godrays.fx,LevelsPlus@LevelsPlus.fx,DepthHaze@DepthHaze.fx,Curves@Curves.fx,CA@ChromaticAberration.fx,Monochrome@Monochrome.fx,LiftGammaGain@LiftGammaGain.fx,FilmicAnamorphSharpen@FilmicAnamorphSharpen.fx,GaussianBlur@GaussianBlur.fx,Before@Splitscreen.fx,After@Splitscreen.fx,UIDetect@UIDetect.fx,UIDetect_Before@UIDetect.fx,UIDetect_After@UIDetect.fx,StageDepth@StageDepth.fx,PPFXSSDO@PPFX_SSDO.fx,FilmicPass@FilmicPass.fx,DisplayDepth@DisplayDepth.fx,Daltonize@Daltonize.fx,UIMask_Top@UIMask.fx,UIMask_Bottom@UIMask.fx,GlitchB@Glitch.fx,MultiLUT@MultiLUT.fx,AdaptiveSharpen@AdaptiveSharpen.fx,ChromaticAberration@Prism.fx,LightDoF_AutoFocus@LightDoF.fx,LightDoF_Far@LightDoF.fx,LightDoF_Near@LightDoF.fx,Deband@Deband.fx,Vibrance@Vibrance.fx,Layer@Layer.fx,KNearestNeighbors@Denoise.fx,NonLocalMeans@Denoise.fx,Mode1@FineSharp.fx,Mode2@FineSharp.fx,Mode3@FineSharp.fx,CinematicDOF@CinematicDOF.fx,HighPassSharp@HighPassSharpen.fx,Vignette@Vignette.fx,LUT@LUT.fx,SurfaceBlur@SurfaceBlur.fx,MXAO@MXAO.fx,ReflectiveBumpmapping@ReflectiveBumpMapping.fx,HQ4X@HQ4X.fx,Technicolor@Technicolor.fx,RingDOF@DOF.fx,MagicDOF@DOF.fx,GP65CJ042DOF@DOF.fx,MatsoDOF@DOF.fx,MartyMcFlyDOF@DOF.fx,AmbientLight@AmbientLight.fx,Technicolor2@Technicolor2.fx,Nightvision@NightVision.fx,Tint@Sepia.fx,HSLShift@HSLShift.fx,Clarity@Clarity.fx,Colourfulness@Colourfulness.fx,TiltShift@TiltShift.fx,ASCII@ASCII.fx,ColorMatrix@ColorMatrix.fx,Emphasize@Emphasize.fx,AspectRatioPS@AspectRatio.fx,EyeAdaption@EyeAdaption.fx,Nostalgia@Nostalgia.fx,BloomAndLensFlares@Bloom.fx,PerfectPerspective@PerfectPerspective.fx
 
 [DPX.fx]
 Colorfulness=2.500000
 Contrast=0.100000
 RGB_C=0.360000,0.360000,0.340000
 RGB_Curve=8.000000,8.000000,8.000000
-Saturation=1.500000
+Saturation=1.800000
 Strength=0.200000
 
 [Levels.fx]
 BlackPoint=5
 HighlightClipping=0
-WhitePoint=245
+WhitePoint=235
 
 [LumaSharpen.fx]
 offset_bias=1.000000
 pattern=1
 sharp_clamp=1.000000
-sharp_strength=1.200000
+sharp_strength=1.000000
 show_sharpen=0
 """)
             file.close()
@@ -61,17 +61,18 @@ show_sharpen=0
         reshade_config_remote_file = constants.RESHADE_REMOTE_FILENAME
         effect_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade - shaders", "Shaders")
         texture_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade - shaders", "Textures")
-        preset_path = os.path.join(constants.PROGRAM_PATH, constants.RESHADE_PRESET_INI)
+        intermediate_cache_path = os.getenv("TEMP")
+        preset_path = f".\\{constants.RESHADE_PRESET_INI}"
 
         try:
             req = requests.get(reshade_config_remote_file)
             with open(dst_res_ini_path, "wb") as outfile:
                 outfile.write(req.content)
-
             utils.set_file_settings(dst_res_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
             utils.set_file_settings(dst_res_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+            utils.set_file_settings(dst_res_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
             utils.set_file_settings(dst_res_ini_path, "GENERAL", "PresetPath", preset_path)
-            utils.set_file_settings(dst_res_ini_path, "SCREENSHOTS", "SavePath", screenshot_path)
+            utils.set_file_settings(dst_res_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
         except requests.HTTPError:
             file = open(dst_res_ini_path, encoding="UTF-8", mode="w")
             file.write(
@@ -91,14 +92,10 @@ DepthCopyBeforeClears=0
 DisableINTZ=0
 UseAspectRatioHeuristics=1
 
-[GENERAL]
-PerformanceMode=1
-PreprocessorDefinitions=RESHADE_DEPTH_LINEARIZATION_FAR_PLANE=1000.0,RESHADE_DEPTH_INPUT_IS_UPSIDE_DOWN=0,RESHADE_DEPTH_INPUT_IS_REVERSED=1,RESHADE_DEPTH_INPUT_IS_LOGARITHMIC=0
-PresetTransitionDelay=1000
-SkipLoadingDisabledEffects=1
-EffectSearchPaths={effect_search_paths}
-TextureSearchPaths={texture_search_paths}
-PresetPath={preset_path}
+[DEPTH]
+DepthCopyAtClearIndex=0
+DepthCopyBeforeClears=0
+UseAspectRatioHeuristics=1
 
 [INPUT]
 ForceShortcutModifiers=1
@@ -125,16 +122,6 @@ TutorialProgress=4
 VariableListHeight=300.000000
 VariableListUseTabs=1
 
-[SCREENSHOTS]
-ClearAlpha=1
-FileFormat=1
-FileNamingFormat=0
-JPEGQuality=100
-SaveBeforeShot=0
-SaveOverlayShot=0
-SavePresetFile=0
-SavePath={screenshot_path}
-
 [STYLE]
 Alpha=1.000000
 ChildRounding=12.000000
@@ -152,6 +139,26 @@ ScrollbarRounding=12.000000
 StyleIndex=0
 TabRounding=12.000000
 WindowRounding=12.000000
+
+[GENERAL]
+PerformanceMode=1
+PreprocessorDefinitions=RESHADE_DEPTH_LINEARIZATION_FAR_PLANE=1000.0,RESHADE_DEPTH_INPUT_IS_UPSIDE_DOWN=0,RESHADE_DEPTH_INPUT_IS_REVERSED=1,RESHADE_DEPTH_INPUT_IS_LOGARITHMIC=0
+PresetTransitionDelay=1000
+SkipLoadingDisabledEffects=1
+EffectSearchPaths={effect_search_paths}
+TextureSearchPaths={texture_search_paths}
+IntermediateCachePath={intermediate_cache_path}
+PresetPath={preset_path}
+
+[SCREENSHOT]
+ClearAlpha=1
+FileFormat=1
+FileNamingFormat=0
+JPEGQuality=100
+SaveBeforeShot=0
+SaveOverlayShot=0
+SavePresetFile=0
+SavePath={screenshot_path}
 """)
             file.close()
 

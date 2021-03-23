@@ -39,7 +39,7 @@
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>../images/cancel.png</normaloff>../images/cancel.png</iconset>
+     <normaloff>src/media/cancel.png</normaloff>src/media/cancel.png</iconset>
    </property>
   </widget>
   <widget class="QLineEdit" name="game_name_lineEdit">
@@ -85,7 +85,7 @@
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
+     <normaloff>src/media/apply.png</normaloff>src/media/apply.png</iconset>
    </property>
   </widget>
   <widget class="QGroupBox" name="api_groupBox">
@@ -116,14 +116,14 @@
    <widget class="QRadioButton" name="dx_radioButton">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>200</x>
       <y>30</y>
-      <width>111</width>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>DirectX 10/11/12</string>
+     <string>DirectX (10,11,12)</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="opengl_radioButton">

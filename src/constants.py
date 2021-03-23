@@ -16,8 +16,8 @@ SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 ################################################################################
-APPDATA_PATH = os.getenv("APPDATA")  # returns AppData\Roaming. "LOCALAPPDATA" == AppData\Local.
-PROGRAM_PATH = os.path.join(APPDATA_PATH, SHORT_PROGRAM_NAME)
+LOCAL_APPDATA_PATH = os.getenv("LOCALAPPDATA")
+PROGRAM_PATH = os.path.join(LOCAL_APPDATA_PATH, SHORT_PROGRAM_NAME)
 ################################################################################
 RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "Reshade.ini"
@@ -51,7 +51,6 @@ REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/mast
 RESHADE_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/files/Reshade.ini"
 PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/files/ReShadePreset.ini"
 CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/files/style.qss"
-PAYPAL_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/src/images/paypal.png"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"

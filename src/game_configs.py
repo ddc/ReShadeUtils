@@ -18,7 +18,7 @@ class Ui_game_config_Form(object):
         self.cancel_pushButton = QtWidgets.QPushButton(game_config_Form)
         self.cancel_pushButton.setGeometry(QtCore.QRect(20, 150, 93, 28))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("src/images/cancel.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap(":/src/media/cancel.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.cancel_pushButton.setIcon(icon)
         self.cancel_pushButton.setObjectName("cancel_pushButton")
         self.game_name_lineEdit = QtWidgets.QLineEdit(game_config_Form)
@@ -32,7 +32,7 @@ class Ui_game_config_Form(object):
         self.ok_pushButton.setGeometry(QtCore.QRect(250, 150, 93, 28))
         self.ok_pushButton.setFocusPolicy(QtCore.Qt.FocusPolicy.WheelFocus)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("src/images/apply.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/src/media/apply.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.ok_pushButton.setIcon(icon1)
         self.ok_pushButton.setObjectName("ok_pushButton")
         self.api_groupBox = QtWidgets.QGroupBox(game_config_Form)
@@ -42,7 +42,7 @@ class Ui_game_config_Form(object):
         self.dx9_radioButton.setGeometry(QtCore.QRect(110, 30, 91, 20))
         self.dx9_radioButton.setObjectName("dx9_radioButton")
         self.dx_radioButton = QtWidgets.QRadioButton(self.api_groupBox)
-        self.dx_radioButton.setGeometry(QtCore.QRect(210, 30, 111, 20))
+        self.dx_radioButton.setGeometry(QtCore.QRect(200, 30, 131, 20))
         self.dx_radioButton.setObjectName("dx_radioButton")
         self.opengl_radioButton = QtWidgets.QRadioButton(self.api_groupBox)
         self.opengl_radioButton.setGeometry(QtCore.QRect(10, 30, 81, 20))
@@ -50,6 +50,7 @@ class Ui_game_config_Form(object):
 
         self.retranslateUi(game_config_Form)
         QtCore.QMetaObject.connectSlotsByName(game_config_Form)
+
 
     def retranslateUi(self, game_config_Form):
         _translate = QtCore.QCoreApplication.translate
@@ -59,7 +60,7 @@ class Ui_game_config_Form(object):
         self.ok_pushButton.setText(_translate("game_config_Form", "OK"))
         self.api_groupBox.setTitle(_translate("game_config_Form", "API"))
         self.dx9_radioButton.setText(_translate("game_config_Form", "DirectX 9"))
-        self.dx_radioButton.setText(_translate("game_config_Form", "DirectX 10/11/12"))
+        self.dx_radioButton.setText(_translate("game_config_Form", "DirectX (10,11,12)"))
         self.opengl_radioButton.setText(_translate("game_config_Form", "OpenGL"))
 
 
@@ -70,4 +71,4 @@ if __name__ == "__main__":
     ui = Ui_game_config_Form()
     ui.setupUi(game_config_Form)
     game_config_Form.show()
-    sys.exit(app.exec())
+    app.exec()

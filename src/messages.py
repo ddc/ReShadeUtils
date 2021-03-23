@@ -9,7 +9,9 @@
 # general
 initializing = "Initializing..."
 not_found = " not found!"
+unable_start = " unable to start"
 checking_files = "Checking files..."
+unable_create_dirs = "Error creating program directories."
 checking_db_connection = "Checking DB connection..."
 error_create_sql_config_msg = "Could not create initial SQL Configs."
 error_db_connection = "Cannot create database connection."

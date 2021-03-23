@@ -19,9 +19,9 @@ from src import constants, form_events, messages, utils, log, qtutils
 
 class MainSrc:
     def __init__(self, qtobj, form):
-        self.progressBar = qtutils.ProgressBar()
         self.qtobj = qtobj
         self.form = form
+        self.progressBar = None
         self.selected_game = None
         self.game_config_form = None
         self.reshade_version = None
@@ -43,9 +43,11 @@ class MainSrc:
 
 
     def init(self):
-        self.progressBar.set_values(messages.initializing, 0)
         utils.check_dirs()
+        self.progressBar = qtutils.ProgressBar()
+        self.progressBar.set_values(messages.initializing, 0)
         self.log = log.setup_logging(constants.DIR_LOGS)
+        self.log.info(f"Starting {constants.FULL_PROGRAM_NAME}")
         qtutils.set_icons(self)
 
         self.progressBar.set_values(messages.checking_files, 15)
@@ -79,7 +81,7 @@ class MainSrc:
                     self._download_new_reshade_version()
                 else:
                     msg = messages.update_reshade_question
-                    reply = qtutils.show_message_window("question", "New Reshade Version", msg)
+                    reply = qtutils.show_message_window(self.log, "question", msg)
                     if reply == QtWidgets.QMessageBox.Yes:
                         self._download_new_reshade_version()
 
@@ -170,7 +172,7 @@ class MainSrc:
                             break
             except requests.exceptions.ConnectionError as e:
                 self.log.error(f"{messages.reshade_website_unreacheable} {str(e)}")
-                qtutils.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
+                qtutils.show_message_window(self.log, "error", messages.reshade_website_unreacheable)
                 return
 
 
@@ -178,7 +180,7 @@ class MainSrc:
         self.progressBar.set_values(messages.downloading_new_reshade_version, 75)
         if not self.silent_reshade_updates:
             msg = messages.update_reshade_question
-            reply = qtutils.show_message_window("question", "Download new Reshade version", msg)
+            reply = qtutils.show_message_window(self.log, "question", msg)
             if reply == QtWidgets.QMessageBox.No:
                 return
 
@@ -213,7 +215,7 @@ class MainSrc:
                         break
         except requests.exceptions.ConnectionError as e:
             self.log.error(f"{messages.reshade_website_unreacheable} {str(e)}")
-            qtutils.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
+            qtutils.show_message_window(self.log, "error", messages.reshade_website_unreacheable)
             return
 
         # download new reshade version exe
@@ -224,7 +226,7 @@ class MainSrc:
                 outfile.write(r.content)
         except Exception as e:
             if hasattr(e, "errno") and e.errno == 13:
-                qtutils.show_message_window("error", "ERROR", messages.error_permissionError)
+                qtutils.show_message_window(self.log, "error", messages.error_permissionError)
             else:
                 self.log.error(f"{messages.error_check_new_reshade_version} {str(e)}")
             return
@@ -244,7 +246,7 @@ class MainSrc:
 
         if self.need_apply:
             form_events.apply_all(self)
-            qtutils.show_message_window("info", "INFO",
+            qtutils.show_message_window(self.log, "info",
                                         f"{messages.new_reshade_version}\n"
                                         f"Version: {self.remote_reshade_version}\n\n"
                                         f"{messages.apply_success}")
@@ -383,7 +385,7 @@ class MainSrc:
 
     def show_game_config_form(self, game_name, architecture):
         if not utils.check_game_file(self):
-            qtutils.show_message_window("error", "ERROR", messages.error_game_not_found)
+            qtutils.show_message_window(self.log, "error", messages.error_game_not_found)
             return
 
         self.game_config_form = QtWidgets.QWidget()
@@ -393,12 +395,12 @@ class MainSrc:
         self.game_config_form.qtObj = qt_obj
 
         icon_cancel = QtGui.QIcon()
-        icon_cancel_pixmap = QtGui.QPixmap(utils.resource_path("images/cancel.png"))
+        icon_cancel_pixmap = QtGui.QPixmap(utils.resource_path("media/cancel.png"))
         icon_cancel.addPixmap(icon_cancel_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.game_config_form.qtObj.cancel_pushButton.setIcon(icon_cancel)
 
         icon_apply = QtGui.QIcon()
-        icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("images/apply.png"))
+        icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("media/apply.png"))
         icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.game_config_form.qtObj.ok_pushButton.setIcon(icon_apply)
 

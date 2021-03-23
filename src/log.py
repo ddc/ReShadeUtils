@@ -49,7 +49,11 @@ def setup_logging(dir_logs):
         print(f"[ERROR]:[EXITING]:[{str(e)}]:Unable to open the log file for writing: {log_file_path}\n")
         sys.exit(1)
 
-    formatt = "%(asctime)s.%(msecs)03d]:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
+    if log_level == logging.DEBUG:
+        formatt = "%(asctime)s.%(msecs)03d]:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
+    else:
+        formatt = "%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s"
+
     formatter = logging.Formatter(formatt, datefmt=f"[{date_formatter} {time_formatter}")
 
     logger = logging.getLogger()

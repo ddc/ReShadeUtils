@@ -31,7 +31,10 @@ class Object:
 
 
 def get_current_path():
-    return os.path.abspath(os.getcwd())
+    path = os.path.abspath(os.getcwd())
+    if path is not None:
+        return os.path.normpath(path)
+    return None
 
 
 def get_ini_settings(file_name: str, section: str, config_name: str):
@@ -106,22 +109,21 @@ def check_new_program_version(self):
                 obj_return.new_version_msg = f"Version {remote_version} available for download"
                 obj_return.new_version = float(remote_version)
         else:
-            self.log.error(messages.error_check_new_version)
-            self.log.error(f"{messages.remote_version_file_not_found} code: {req.status_code}")
-            qtutils.show_message_window("critical", "ERROR", f"{messages.error_check_new_version}")
+            err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\ncode: {req.status_code}"
+            qtutils.show_message_window(self.log, "error", err_msg)
     except requests.exceptions.ConnectionError as e:
-        self.log.error(f"{messages.dl_new_version_timeout} {e}")
-        qtutils.show_message_window("error", "ERROR", messages.dl_new_version_timeout)
+        qtutils.show_message_window(self.log, "error", messages.dl_new_version_timeout)
     finally:
         return obj_return
 
 
 def check_dirs():
     try:
-        if not os.path.exists(constants.PROGRAM_PATH):
+        if not os.path.isdir(constants.PROGRAM_PATH):
             os.makedirs(constants.PROGRAM_PATH)
     except OSError as e:
-        qtutils.show_message_window("error", "ERROR", f"Error creating program directories.\n{e}")
+        err_msg = f"{messages.unable_create_dirs}\n{e}"
+        qtutils.show_message_window(None, "error", err_msg)
         exit(1)
 
 
@@ -129,16 +131,22 @@ def check_files(self):
     create_files = CreateFiles(self)
 
     try:
-        if not os.path.exists(constants.STYLE_QSS_FILENAME):
+        if not os.path.isfile(constants.STYLE_QSS_FILENAME):
             create_files.create_style_file()
     except Exception as e:
-        self.log.error(str(e))
+        err_msg = f"{str(e)}\n\n{constants.STYLE_QSS_FILENAME}{messages.not_found}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+        return False
 
     try:
-        if not os.path.exists(constants.RESHADE_PRESET_FILENAME):
+        if not os.path.isfile(constants.RESHADE_PRESET_FILENAME):
             create_files.create_reshade_preset_ini_file()
     except Exception as e:
-        self.log.error(str(e))
+        err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_FILENAME}{messages.not_found}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+        return False
+
+    return True
 
 
 def set_default_database_configs(self):
@@ -171,8 +179,9 @@ def check_db_connection(self):
     if conn is None:
         error_db_conn = messages.error_db_connection
         msg_exit = messages.exit_program
-        qtutils.show_message_window("error", "ERROR", f"{error_db_conn}\n\n{msg_exit}")
-        sys.exit(1)
+        err_msg = f"{error_db_conn}\n\n{msg_exit}"
+        if qtutils.show_message_window(self.log, "error", err_msg):
+            sys.exit(1)
     else:
         conn.close()
 
@@ -182,7 +191,7 @@ def resource_path(relative_path):
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath("./src")
+        base_path = os.path.abspath("src")
     return os.path.join(base_path, relative_path)
 
 
@@ -209,7 +218,7 @@ def set_file_settings(filename: str, section: str, config_name: str, value):
         return
 
 
-def get_binary_type(main_src, game_path):
+def get_binary_type(self, game_path):
     import struct
 
     image_file_machine_i386 = 332
@@ -221,7 +230,7 @@ def get_binary_type(main_src, game_path):
     with open(game_path, "rb") as f:
         s = f.read(2)
         if s != b"MZ":
-            main_src.log.info("Not an EXE file")
+            self.log.info("Not an EXE file")
             return None
         else:
             f.seek(60)
@@ -232,20 +241,20 @@ def get_binary_type(main_src, game_path):
             machine = struct.unpack("<H", s)[0]
 
             if machine == image_file_machine_i386:
-                # main_src.log.info("IA32 (32-bit x86)")
+                # self.log.info("IA32 (32-bit x86)")
                 return "IA32"
             elif machine == image_file_machine_ia64:
-                # main_src.log.info("IA64 (Itanium)")
+                # self.log.info("IA64 (Itanium)")
                 return "IA64"
             elif machine == image_file_machine_amd64:
-                # main_src.log.info("AMD64 (64-bit x86)")
+                # self.log.info("AMD64 (64-bit x86)")
                 return "AMD64"
             elif machine == image_file_machine_arm:
-                # main_src.log.info("ARM eabi (32-bit)")
+                # self.log.info("ARM eabi (32-bit)")
                 return "ARM-32bits"
             elif machine == image_file_machine_aarch64:
-                # main_src.log.info("AArch64 (ARM-64, 64-bit)")
+                # self.log.info("AArch64 (ARM-64, 64-bit)")
                 return "ARM-64bits"
             else:
-                # main_src.log.info(f"Unknown architecture {machine}")
+                # self.log.info(f"Unknown architecture {machine}")
                 return None

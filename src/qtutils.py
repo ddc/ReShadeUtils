@@ -7,7 +7,7 @@
 # # -*- coding: utf-8 -*-
 
 import os
-from src import utils
+from src import utils, constants
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -53,27 +53,30 @@ def open_qt_file_dialog():
         return os.path.normpath(filepath)
 
 
-def show_message_window(window_type: str, window_title: str, msg: str):
+def show_message_window(log, window_type, msg):
+    msg_box = QtWidgets.QMessageBox()
+
     if window_type.lower() == "error":
         icon = QtWidgets.QMessageBox.Icon.Critical
+        button = QtWidgets.QMessageBox.StandardButtons.Ok
+        log.error(msg) if log else None
     elif window_type.lower() == "warning":
         icon = QtWidgets.QMessageBox.Icon.Warning
-    elif window_type.lower() == "question":
-        icon = QtWidgets.QMessageBox.Icon.Question
-    else:
+        button = QtWidgets.QMessageBox.StandardButtons.Ok
+        log.warning(msg) if log else None
+    elif window_type.lower() == "info":
         icon = QtWidgets.QMessageBox.Icon.Information
-
-    msg_box = QtWidgets.QMessageBox()
-    msg_box.setIcon(icon)
-    msg_box.setWindowTitle(window_title)
-    msg_box.setInformativeText(msg)
-
-    if window_type.lower() == "question":
-        msg_box.setStandardButtons(QtWidgets.QMessageBox.StandardButtons.Yes | QtWidgets.QMessageBox.StandardButtons.No)
-        msg_box.setDefaultButton(QtWidgets.QMessageBox.StandardButtons.Yes)
+        button = QtWidgets.QMessageBox.StandardButtons.Ok
+        log.info(msg) if log else None
     else:
-        msg_box.setStandardButtons(QtWidgets.QMessageBox.StandardButtons.Ok)
-        msg_box.setDefaultButton(QtWidgets.QMessageBox.StandardButtons.Ok)
+        icon = QtWidgets.QMessageBox.Icon.Question
+        button = QtWidgets.QMessageBox.StandardButtons.Yes | QtWidgets.QMessageBox.StandardButtons.No
+        msg_box.setDefaultButton(QtWidgets.QMessageBox.StandardButtons.Yes)
+
+    msg_box.setWindowTitle(constants.FULL_PROGRAM_NAME)
+    msg_box.setIcon(icon)
+    msg_box.setText(msg)
+    msg_box.setStandardButtons(button)
 
     user_answer = msg_box.exec()
     return user_answer
@@ -81,47 +84,47 @@ def show_message_window(window_type: str, window_title: str, msg: str):
 
 def set_icons(self):
     icon_add = QtGui.QIcon()
-    icon_add_pixmap = QtGui.QPixmap(utils.resource_path("images/add.png"))
+    icon_add_pixmap = QtGui.QPixmap(utils.resource_path("media/add.png"))
     icon_add.addPixmap(icon_add_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_arrow = QtGui.QIcon()
-    icon_arrow_pixmap = QtGui.QPixmap(utils.resource_path("images/arrow.png"))
+    icon_arrow_pixmap = QtGui.QPixmap(utils.resource_path("media/arrow.png"))
     icon_arrow.addPixmap(icon_arrow_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_delete = QtGui.QIcon()
-    icon_delete_pixmap = QtGui.QPixmap(utils.resource_path("images/delete.png"))
+    icon_delete_pixmap = QtGui.QPixmap(utils.resource_path("media/delete.png"))
     icon_delete.addPixmap(icon_delete_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_apply = QtGui.QIcon()
-    icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("images/apply.png"))
+    icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("media/apply.png"))
     icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_edit = QtGui.QIcon()
-    icon_edit_pixmap = QtGui.QPixmap(utils.resource_path("images/edit.png"))
+    icon_edit_pixmap = QtGui.QPixmap(utils.resource_path("media/edit.png"))
     icon_edit.addPixmap(icon_edit_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_controller = QtGui.QIcon()
-    icon_controller_pixmap = QtGui.QPixmap(utils.resource_path("images/controller.png"))
+    icon_controller_pixmap = QtGui.QPixmap(utils.resource_path("media/controller.png"))
     icon_controller.addPixmap(icon_controller_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_plugin = QtGui.QIcon()
-    icon_plugin_pixmap = QtGui.QPixmap(utils.resource_path("images/plugin.png"))
+    icon_plugin_pixmap = QtGui.QPixmap(utils.resource_path("media/plugin.png"))
     icon_plugin.addPixmap(icon_plugin_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_gear = QtGui.QIcon()
-    icon_gear_pixmap = QtGui.QPixmap(utils.resource_path("images/gear.png"))
+    icon_gear_pixmap = QtGui.QPixmap(utils.resource_path("media/gear.png"))
     icon_gear.addPixmap(icon_gear_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_paypal = QtGui.QIcon()
-    icon_paypal_pixmap = QtGui.QPixmap(utils.resource_path("images/paypal.png"))
+    icon_paypal_pixmap = QtGui.QPixmap(utils.resource_path("media/paypal.png"))
     icon_paypal.addPixmap(icon_paypal_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_help = QtGui.QIcon()
-    icon_help_pixmap = QtGui.QPixmap(utils.resource_path("images/help.png"))
+    icon_help_pixmap = QtGui.QPixmap(utils.resource_path("media/help.png"))
     icon_help.addPixmap(icon_help_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     icon_update = QtGui.QIcon()
-    icon_update_pixmap = QtGui.QPixmap(utils.resource_path("images/update.png"))
+    icon_update_pixmap = QtGui.QPixmap(utils.resource_path("media/update.png"))
     icon_update.addPixmap(icon_update_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
     self.qtobj.add_button.setIcon(icon_add)
