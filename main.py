@@ -8,7 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from src.main_src import MainSrc
-from src.utils import constants
+from src import constants
 
 
 class Ui_Main(object):
@@ -81,9 +81,9 @@ class Ui_Main(object):
         item = QtWidgets.QTableWidgetItem()
         self.programs_tableWidget.setHorizontalHeaderItem(3, item)
         self.programs_tableWidget.horizontalHeader().setVisible(True)
-        self.programs_tableWidget.horizontalHeader().setDefaultSectionSize(100)
+        self.programs_tableWidget.horizontalHeader().setDefaultSectionSize(110)
         self.programs_tableWidget.horizontalHeader().setHighlightSections(False)
-        self.programs_tableWidget.horizontalHeader().setMinimumSectionSize(100)
+        self.programs_tableWidget.horizontalHeader().setMinimumSectionSize(80)
         self.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         self.programs_tableWidget.verticalHeader().setVisible(True)
         self.programs_tableWidget.verticalHeader().setDefaultSectionSize(30)
@@ -304,10 +304,10 @@ class Ui_Main(object):
         self.no_silent_reshade_updates_radioButton.setText(_translate("Main", "NO"))
         self.apply_custom_config_groupBox.setTitle(_translate("Main", "Always Apply Custom Config to New Added Games"))
         self.edit_all_games_custom_config_button.setToolTip(_translate("Main", "Edit reshade plugins file settings"))
-        self.edit_all_games_custom_config_button.setText(_translate("Main", "SET DEFAULT CUSTOM PLUGINS CONFIG"))
+        self.edit_all_games_custom_config_button.setText(_translate("Main", "EDIT DEFAULT CUSTOM PLUGINS CONFIG"))
         self.yes_custom_config_radioButton.setText(_translate("Main", "YES"))
         self.no_custom_config_radioButton.setText(_translate("Main", "NO"))
-        self.apply_all_games_custom_config_button.setText(_translate("Main", "APPLY CUSTOM CONFIG TO ALL GAMES NOW"))
+        self.apply_all_games_custom_config_button.setText(_translate("Main", "APPLY CUSTOM CONFIG TO ALL GAMES"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.settings_tab), _translate("Main", "SETTINGS"))
         self.about_textBrowser.setHtml(_translate("Main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

@@ -1,13 +1,14 @@
 #! /usr/bin/env python3
-#|*****************************************************
+# |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-#|*****************************************************
+# |*****************************************************
 # # -*- coding: utf-8 -*-
 
-from src.utils import constants, utilities
+import os
 import requests
+from src import constants, utils
 
 
 class CreateFiles:
@@ -58,22 +59,21 @@ show_sharpen=0
     @staticmethod
     def create_reshade_ini_file(dst_res_ini_path, screenshot_path):
         reshade_config_remote_file = constants.RESHADE_REMOTE_FILENAME
+        effect_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade - shaders", "Shaders")
+        texture_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade - shaders", "Textures")
+        preset_path = os.path.join(constants.PROGRAM_PATH, constants.RESHADE_PRESET_INI)
 
         try:
             req = requests.get(reshade_config_remote_file)
             with open(dst_res_ini_path, "wb") as outfile:
                 outfile.write(req.content)
 
-            utilities.set_file_settings(dst_res_ini_path, "GENERAL", "EffectSearchPaths",
-                                        f"{constants.PROGRAM_PATH}\\Reshade - shaders\\Shaders")
-            utilities.set_file_settings(dst_res_ini_path, "GENERAL", "TextureSearchPaths",
-                                        f"{constants.PROGRAM_PATH}\\Reshade - shaders\\Textures")
-            utilities.set_file_settings(dst_res_ini_path, "GENERAL", "PresetPath",
-                                        f".\\{constants.RESHADE_PRESET_INI}")
-            utilities.set_file_settings(dst_res_ini_path, "SCREENSHOTS", "SavePath",
-                                        f"{screenshot_path}")
+            utils.set_file_settings(dst_res_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+            utils.set_file_settings(dst_res_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+            utils.set_file_settings(dst_res_ini_path, "GENERAL", "PresetPath", preset_path)
+            utils.set_file_settings(dst_res_ini_path, "SCREENSHOTS", "SavePath", screenshot_path)
         except requests.HTTPError:
-            file = open(dst_res_ini_path, encoding="utf-8", mode="w")
+            file = open(dst_res_ini_path, encoding="UTF-8", mode="w")
             file.write(
 f"""[D3D11]
 DepthCopyAtClearIndex=0
@@ -96,9 +96,9 @@ PerformanceMode=1
 PreprocessorDefinitions=RESHADE_DEPTH_LINEARIZATION_FAR_PLANE=1000.0,RESHADE_DEPTH_INPUT_IS_UPSIDE_DOWN=0,RESHADE_DEPTH_INPUT_IS_REVERSED=1,RESHADE_DEPTH_INPUT_IS_LOGARITHMIC=0
 PresetTransitionDelay=1000
 SkipLoadingDisabledEffects=1
-EffectSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Shaders
-TextureSearchPaths={constants.PROGRAM_PATH}\\Reshade-shaders\\Textures
-PresetPath=.\\{constants.RESHADE_PRESET_INI}
+EffectSearchPaths={effect_search_paths}
+TextureSearchPaths={texture_search_paths}
+PresetPath={preset_path}
 
 [INPUT]
 ForceShortcutModifiers=1
@@ -165,7 +165,7 @@ WindowRounding=12.000000
             req = requests.get(css_remote_file)
             with open(dst_path, "wb") as outfile:
                 outfile.write(req.content)
-        except requests.HTTPError as e:
+        except requests.HTTPError:
             file = open(constants.STYLE_QSS_FILENAME, encoding="UTF-8", mode="w")
             file.write(
 """QWidget {

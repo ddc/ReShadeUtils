@@ -7,7 +7,7 @@
 # # -*- coding: utf-8 -*-
 
 import sqlite3
-from src.utils import constants
+from src import constants
 
 
 class Sqlite3:
@@ -24,7 +24,6 @@ class Sqlite3:
             msg = "sqlite3: Cannot Create Database Connection."
             self.log.error(f"{msg}{str(e)}")
             self.log.exception("sqlite", exc_info=e)
-            # utils.wait_return()
             raise sqlite3.OperationalError(e)
         return conn
 
@@ -43,38 +42,37 @@ class Sqlite3:
                 c.close()
                 conn.commit()
             except Exception as e:
-                result = e
                 self.log.exception("sqlite", exc_info=e)
                 self.log.error(f"sql:({sql})")
-                # utils.wait_return()
                 raise sqlite3.OperationalError(e)
-            finally:
-                if conn is not None:
-                    conn.close()
-                return result
+
+            if conn is not None:
+                conn.close()
+        return result
 
 
     def select(self, sql):
+        final_data = None
         conn = self.create_connection()
         if conn is not None:
             try:
                 if sql is not None and len(sql) > 0:
-                    finalData = {}
+                    final_data = {}
                     c = conn.cursor()
                     c.execute(sql)
                     rows = c.fetchall()
-                    columnNames = list(map(lambda x: x[0], c.description))
+                    column_names = list(map(lambda x: x[0], c.description))
                     c.close()
                     for lineNumber, data in enumerate(rows):
-                        finalData[lineNumber] = {}
+                        final_data[lineNumber] = {}
                         for columnNumber, value in enumerate(data):
-                            finalData[lineNumber][columnNames[columnNumber]] = value
+                            final_data[lineNumber][column_names[columnNumber]] = value
+                    if len(final_data) == 0:
+                        final_data = None
             except Exception as e:
                 self.log.exception("sqlite", exc_info=e)
                 self.log.error(f"sql:({sql})")
-                # utils.wait_return()
-                # raise sqlite3.OperationalError(e)
-            finally:
-                if conn is not None:
-                    conn.close()
-                return finalData
+
+            if conn is not None:
+                conn.close()
+        return final_data

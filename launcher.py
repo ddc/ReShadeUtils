@@ -11,13 +11,13 @@ import sys
 import requests
 import subprocess
 from PyQt6 import QtCore, QtWidgets
-from src.sql.configs_sql import ConfigsSql
-from src.utils import constants, messages, utilities
+from src.sql.config_sql import ConfigSql
+from src import constants, messages, utils, qtutils, log
 
 
 class Launcher:
     def __init__(self):
-        self.progressBar = utilities.ProgressBar()
+        self.progressBar = qtutils.ProgressBar()
         self.log = None
         self.new_version = None
         self.new_version_msg = None
@@ -26,15 +26,13 @@ class Launcher:
 
     def init(self):
         self.progressBar.set_values(messages.checking_files, 25)
-        utilities.check_dirs()
-        self.log = utilities.setup_logging(self)
-        sys.excepthook = utilities.log_uncaught_exceptions
-        utilities.check_files(self)
+        utils.check_dirs()
+        self.log = log.setup_logging(self)
+        utils.check_files(self)
 
         self.progressBar.set_values(messages.checking_db_connection, 50)
-        utilities.check_db_connection(self)
-        utilities.set_default_database_configs(self)
-        utilities.check_database_updated_columns(self)
+        utils.check_db_connection(self)
+        utils.set_default_database_configs(self)
 
         self.progressBar.set_values(messages.checking_new_version, 75)
         self._check_update_required()
@@ -43,16 +41,16 @@ class Launcher:
 
 
     def _check_update_required(self):
-        configSql = ConfigsSql(self)
-        rsConfig = configSql.get_configs()
+        config_sql = ConfigSql(self)
+        rs_config = config_sql.get_configs()
 
-        if rsConfig[0].get("program_version") is None:
+        if rs_config[0].get("program_version") is None:
             self.client_version = constants.VERSION
         else:
-            self.client_version = rsConfig[0].get("program_version")
+            self.client_version = rs_config[0].get("program_version")
 
-        if rsConfig[0].get("check_program_updates"):
-            new_version_obj = utilities.check_new_program_version(self)
+        if rs_config[0].get("check_program_updates"):
+            new_version_obj = utils.check_new_program_version(self)
             if new_version_obj.new_version_available:
                 self.new_version = new_version_obj.new_version
                 self.new_version_msg = new_version_obj.new_version_msg
@@ -64,7 +62,7 @@ class Launcher:
             msg = f"""{messages.new_version_available}
                 \nYour version: v{self.client_version}\nNew version: v{self.new_version}
                 \n{messages.confirm_download}"""
-            reply = utilities.show_message_window("question", self.new_version_msg, msg)
+            reply = qtutils.show_message_window("question", self.new_version_msg, msg)
 
             if reply == QtWidgets.QMessageBox.No:
                 new_title = f"{constants.FULL_PROGRAM_NAME} ({self.new_version_msg})"
@@ -73,15 +71,15 @@ class Launcher:
                 return
 
         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
-        downloaded_program_path = f"{utilities.get_current_path()}\\{constants.EXE_PROGRAM_NAME}"
+        downloaded_program_path = f"{utils.get_current_path()}\\{constants.EXE_PROGRAM_NAME}"
 
         r = requests.get(program_url)
         if r.status_code == 200:
             with open(downloaded_program_path, "wb") as outfile:
                 outfile.write(r.content)
-            utilities.show_message_window("Info", "INFO", f"{messages.program_updated}v{self.new_version}")
+            qtutils.show_message_window("Info", "INFO", f"{messages.program_updated}v{self.new_version}")
         else:
-            utilities.show_message_window("error", "ERROR", f"{messages.error_dl_new_version}")
+            qtutils.show_message_window("error", "ERROR", f"{messages.error_dl_new_version}")
             self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
 
 
@@ -99,7 +97,7 @@ class Launcher:
                 emsg = f"cmd:{cmd} - code:{code} - {e}"
             self.log.error(f"{messages.error_executing_program}{constants.EXE_PROGRAM_NAME}"
                            f" - {messages.error_check_installation} - {emsg}")
-            utilities.show_message_window("error", "ERROR",
+            qtutils.show_message_window("error", "ERROR",
                                           f"{messages.error_executing_program}{constants.EXE_PROGRAM_NAME}\n"
                                           f"{messages.error_check_installation}")
 

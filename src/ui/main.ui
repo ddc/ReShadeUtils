@@ -207,10 +207,10 @@
       <bool>true</bool>
      </attribute>
      <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>100</number>
+      <number>80</number>
      </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>100</number>
+      <number>110</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
@@ -608,7 +608,7 @@
        <string>Edit reshade plugins file settings</string>
       </property>
       <property name="text">
-       <string>SET DEFAULT CUSTOM PLUGINS CONFIG</string>
+       <string>EDIT DEFAULT CUSTOM PLUGINS CONFIG</string>
       </property>
       <property name="icon">
        <iconset>
@@ -651,7 +651,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>APPLY CUSTOM CONFIG TO ALL GAMES NOW</string>
+       <string>APPLY CUSTOM CONFIG TO ALL GAMES</string>
       </property>
       <property name="icon">
        <iconset>

@@ -6,11 +6,8 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-import logging
 import os
-import platform
-import sys
-from src.utils import utilities
+from src import utils
 
 
 VERSION = "4.2"
@@ -19,40 +16,32 @@ SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 ################################################################################
-DATE_FORMATTER = "%Y-%m-%d"
-TIME_FORMATTER = "%H:%M:%S"
-LOG_LEVEL = logging.INFO
-LOG_FORMATTER = logging.Formatter("%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s",
-                                  datefmt=f"[{DATE_FORMATTER} {TIME_FORMATTER}]")
-################################################################################
-IS_WINDOWS = os.name == "nt"
-IS_MAC = sys.platform == "darwin"
-IS_LINUX = sys.platform == "linux"
-IS_64BIT = platform.machine().endswith("64")
-PYTHON_OK = sys.version_info >= (3, 6)
-################################################################################
 APPDATA_PATH = os.getenv("APPDATA")  # returns AppData\Roaming. "LOCALAPPDATA" == AppData\Local.
 PROGRAM_PATH = os.path.join(APPDATA_PATH, SHORT_PROGRAM_NAME)
 ################################################################################
 RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "Reshade.ini"
 RESHADE_PRESET_INI = "ReShadePreset.ini"
-RESHADE32 = "Reshade32.dll"
-RESHADE64 = "ReShade64.dll"
-DXGI = "dxgi.dll"
-D3D9 = "d3d9.dll"
-OPENGL = "opengl32.dll"
+RESHADE32_DLL = "Reshade32.dll"
+RESHADE64_DLL = "ReShade64.dll"
+DXGI_DLL = "dxgi.dll"
+D3D9_DLL = "d3d9.dll"
+OPENGL_DLL = "opengl32.dll"
 ################################################################################
-RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32)
-RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64)
+DX9_DISPLAY_NAME = "DirectX 9"
+DXGI_DISPLAY_NAME = "DirectX (10,11,12)"
+OPENGL_DISPLAY_NAME = "OpenGL"
+################################################################################
+RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
+RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
 SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}.zip")
 SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-master")
-RESHADE_SCREENSHOT_PATH = os.path.join(utilities.get_pictures_path(), "Screenshots")
+RESHADE_SCREENSHOT_PATH = os.path.join(utils.get_pictures_path(), "Screenshots")
 ################################################################################
 SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, "database.db")
 STYLE_QSS_FILENAME = os.path.join(PROGRAM_PATH, "style.qss")
-ERROR_LOGS_FILENAME = os.path.join(PROGRAM_PATH, "errors.log")
+DIR_LOGS = os.path.join(PROGRAM_PATH)
 RESHADE_INI_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 ################################################################################
@@ -68,5 +57,3 @@ RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"
 PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"
 ################################################################################
-# table columns after fisrt release
-NEW_CONFIG_TABLE_COLUMNS = ["silent_reshade_updates", "program_version"]

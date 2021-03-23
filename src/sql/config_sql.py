@@ -9,7 +9,7 @@
 from src.sql.sqlite3_connection import Sqlite3
 
 
-class ConfigsSql:
+class ConfigSql:
     def __init__(self, main):
         self.main = main
         self.log = main.log

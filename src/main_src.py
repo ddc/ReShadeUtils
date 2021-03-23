@@ -7,21 +7,19 @@
 # # -*- coding: utf-8 -*-
 
 import os
-import sys
 import requests
-from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt
 from bs4 import BeautifulSoup
-from src.form_events import FormEvents
-from src.game_configs import Ui_game_config_Form
-from src.sql.configs_sql import ConfigsSql
 from src.sql.games_sql import GamesSql
-from src.utils import constants, messages, utilities
+from src.sql.config_sql import ConfigSql
+from PyQt6 import QtCore, QtGui, QtWidgets
+from src.game_configs import Ui_game_config_Form
+from src import constants, form_events, messages, utils, log, qtutils
 
 
 class MainSrc:
     def __init__(self, qtobj, form):
-        self.progressBar = utilities.ProgressBar()
+        self.progressBar = qtutils.ProgressBar()
         self.qtobj = qtobj
         self.form = form
         self.selected_game = None
@@ -46,19 +44,17 @@ class MainSrc:
 
     def init(self):
         self.progressBar.set_values(messages.initializing, 0)
-        utilities.check_dirs()
-        self.log = utilities.setup_logging(self)
-        sys.excepthook = utilities.log_uncaught_exceptions
-        utilities.set_icons(self)
+        utils.check_dirs()
+        self.log = log.setup_logging(constants.DIR_LOGS)
+        qtutils.set_icons(self)
 
         self.progressBar.set_values(messages.checking_files, 15)
-        utilities.check_files(self)
+        utils.check_files(self)
         self.client_version = constants.VERSION
 
         self.progressBar.set_values(messages.checking_db_connection, 30)
-        utilities.check_db_connection(self)
-        utilities.set_default_database_configs(self)
-        utilities.check_database_updated_columns(self)
+        utils.check_db_connection(self)
+        utils.set_default_database_configs(self)
 
         self.progressBar.set_values(messages.checking_configs, 45)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.Alignment.AlignLeft)
@@ -82,8 +78,8 @@ class MainSrc:
                 if self.silent_reshade_updates:
                     self._download_new_reshade_version()
                 else:
-                    msg = f"{messages.update_reshade_question}"
-                    reply = utilities.show_message_window("question", "Download new Reshade version", msg)
+                    msg = messages.update_reshade_question
+                    reply = qtutils.show_message_window("question", "New Reshade Version", msg)
                     if reply == QtWidgets.QMessageBox.Yes:
                         self._download_new_reshade_version()
 
@@ -92,10 +88,10 @@ class MainSrc:
         self.qtobj.main_tabWidget.setCurrentIndex(0)
 
         self.qtobj.programs_tableWidget.setColumnWidth(0, 150)
-        self.qtobj.programs_tableWidget.setColumnWidth(1, 100)
-        self.qtobj.programs_tableWidget.setColumnWidth(2, 100)
+        self.qtobj.programs_tableWidget.setColumnWidth(1, 80)
+        self.qtobj.programs_tableWidget.setColumnWidth(2, 110)
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
-        #from PyQt5.QtWidgets import QHeaderView
+        #from PyQt6.QtWidgets import QHeaderView
         #self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
 
         self.enable_widgets(False)
@@ -104,56 +100,55 @@ class MainSrc:
 
     def _register_form_events(self):
         # TAB 1 - games
-        self.qtobj.add_button.clicked.connect(lambda: FormEvents.add_game(self))
-        self.qtobj.delete_button.clicked.connect(lambda: FormEvents.delete_game(self))
-        self.qtobj.edit_path_button.clicked.connect(lambda: FormEvents.edit_game_path(self))
-        self.qtobj.edit_config_button.clicked.connect(lambda: FormEvents.open_reshade_config_file(self))
-        self.qtobj.apply_button.clicked.connect(lambda: FormEvents.apply_all(self))
-        self.qtobj.update_button.clicked.connect(lambda: FormEvents.update_clicked())
+        self.qtobj.add_button.clicked.connect(lambda: form_events.add_game(self))
+        self.qtobj.delete_button.clicked.connect(lambda: form_events.delete_game(self))
+        self.qtobj.edit_path_button.clicked.connect(lambda: form_events.edit_game_path(self))
+        self.qtobj.edit_config_button.clicked.connect(lambda: form_events.open_reshade_config_file(self))
+        self.qtobj.apply_button.clicked.connect(lambda: form_events.apply_all(self))
+        self.qtobj.update_button.clicked.connect(lambda: form_events.update_clicked())
         #########
         self.qtobj.programs_tableWidget.clicked.connect(self._programs_table_widget_clicked)
         self.qtobj.programs_tableWidget.itemDoubleClicked.connect(self._programs_table_widget_double_clicked)
         # TAB 2 - configs
         #########
-        self.qtobj.yes_dark_theme_radioButton.clicked.connect(lambda: FormEvents.dark_theme_clicked(self, "YES"))
-        self.qtobj.no_dark_theme_radioButton.clicked.connect(lambda: FormEvents.dark_theme_clicked(self, "NO"))
+        self.qtobj.yes_dark_theme_radioButton.clicked.connect(lambda: form_events.dark_theme_clicked(self, "YES"))
+        self.qtobj.no_dark_theme_radioButton.clicked.connect(lambda: form_events.dark_theme_clicked(self, "NO"))
         #########
-        self.qtobj.yes_check_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.check_reshade_updates_clicked(self, "YES"))
-        self.qtobj.no_check_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.check_reshade_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_reshade_updates_radioButton.clicked.connect(lambda: form_events.check_reshade_updates_clicked(self, "YES"))
+        self.qtobj.no_check_reshade_updates_radioButton.clicked.connect(lambda: form_events.check_reshade_updates_clicked(self, "NO"))
         #########
-        self.qtobj.yes_silent_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.silent_reshade_updates_clicked(self, "YES"))
-        self.qtobj.no_silent_reshade_updates_radioButton.clicked.connect(lambda: FormEvents.silent_reshade_updates_clicked(self, "NO"))
+        self.qtobj.yes_silent_reshade_updates_radioButton.clicked.connect(lambda: form_events.silent_reshade_updates_clicked(self, "YES"))
+        self.qtobj.no_silent_reshade_updates_radioButton.clicked.connect(lambda: form_events.silent_reshade_updates_clicked(self, "NO"))
         #########
-        self.qtobj.yes_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "YES"))
-        self.qtobj.no_check_program_updates_radioButton.clicked.connect(lambda: FormEvents.check_program_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_program_updates_radioButton.clicked.connect(lambda: form_events.check_program_updates_clicked(self, "YES"))
+        self.qtobj.no_check_program_updates_radioButton.clicked.connect(lambda: form_events.check_program_updates_clicked(self, "NO"))
         #########
-        self.qtobj.yes_update_shaders_radioButton.clicked.connect(lambda: FormEvents.update_shaders_clicked(self, "YES"))
-        self.qtobj.no_update_shaders_radioButton.clicked.connect(lambda: FormEvents.update_shaders_clicked(self, "NO"))
+        self.qtobj.yes_update_shaders_radioButton.clicked.connect(lambda: form_events.update_shaders_clicked(self, "YES"))
+        self.qtobj.no_update_shaders_radioButton.clicked.connect(lambda: form_events.update_shaders_clicked(self, "NO"))
         #########
-        self.qtobj.yes_screenshots_folder_radioButton.clicked.connect(lambda: FormEvents.create_screenshots_folder_clicked(self, "YES"))
-        self.qtobj.no_screenshots_folder_radioButton.clicked.connect(lambda: FormEvents.create_screenshots_folder_clicked(self, "NO"))
+        self.qtobj.yes_screenshots_folder_radioButton.clicked.connect(lambda: form_events.create_screenshots_folder_clicked(self, "YES"))
+        self.qtobj.no_screenshots_folder_radioButton.clicked.connect(lambda: form_events.create_screenshots_folder_clicked(self, "NO"))
         #########
-        self.qtobj.yes_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "YES"))
-        self.qtobj.no_reset_reshade_radioButton.clicked.connect(lambda: FormEvents.reset_reshade_files_clicked(self, "NO"))
+        self.qtobj.yes_reset_reshade_radioButton.clicked.connect(lambda: form_events.reset_reshade_files_clicked(self, "YES"))
+        self.qtobj.no_reset_reshade_radioButton.clicked.connect(lambda: form_events.reset_reshade_files_clicked(self, "NO"))
         #########
-        self.qtobj.yes_custom_config_radioButton.clicked.connect(lambda: FormEvents.custom_config_clicked(self, "YES"))
-        self.qtobj.no_custom_config_radioButton.clicked.connect(lambda: FormEvents.custom_config_clicked(self, "NO"))
+        self.qtobj.yes_custom_config_radioButton.clicked.connect(lambda: form_events.custom_config_clicked(self, "YES"))
+        self.qtobj.no_custom_config_radioButton.clicked.connect(lambda: form_events.custom_config_clicked(self, "NO"))
         #########
-        self.qtobj.edit_all_games_custom_config_button.clicked.connect(lambda: FormEvents.edit_all_games_custom_config_button(self))
+        self.qtobj.edit_all_games_custom_config_button.clicked.connect(lambda: form_events.edit_all_games_custom_config_button(self))
         # TAB 3 - about
         #########
-        self.qtobj.paypal_button.clicked.connect(lambda: FormEvents.donate_clicked())
+        self.qtobj.paypal_button.clicked.connect(lambda: form_events.donate_clicked())
 
 
     def _check_reshade_files(self):
-        configSql = ConfigsSql(self)
-        rsConfig = configSql.get_configs()
-
-        if rsConfig[0].get("reshade_version") is not None and len(rsConfig[0].get("reshade_version")) > 0:
-            self.reshade_version = rsConfig[0].get("reshade_version")
+        config_sql = ConfigSql(self)
+        rs_config = config_sql.get_configs()
+        if rs_config[0].get("reshade_version") is not None and len(rs_config[0].get("reshade_version")) > 0:
+            self.reshade_version = rs_config[0].get("reshade_version")
             self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
             self.enable_form(True)
-            self.local_reshade_exe = f"{constants.PROGRAM_PATH}\\ReShade_Setup_{self.reshade_version}.exe"
+            self.local_reshade_exe = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.reshade_version}.exe")
 
 
     def _check_new_reshade_version(self):
@@ -175,25 +170,24 @@ class MainSrc:
                             break
             except requests.exceptions.ConnectionError as e:
                 self.log.error(f"{messages.reshade_website_unreacheable} {str(e)}")
-                utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
+                qtutils.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
                 return
 
 
     def _download_new_reshade_version(self):
         self.progressBar.set_values(messages.downloading_new_reshade_version, 75)
         if not self.silent_reshade_updates:
-            msg = f"{messages.update_reshade_question}"
-            reply = utilities.show_message_window("question", "Download new Reshade version", msg)
+            msg = messages.update_reshade_question
+            reply = qtutils.show_message_window("question", "Download new Reshade version", msg)
             if reply == QtWidgets.QMessageBox.No:
                 return
 
         self.remote_reshade_version = None
         exe_download_url = None
-        download_path = f"{constants.PROGRAM_PATH}\\ReShade_Setup_"
 
         # remove old version
         if self.reshade_version is not None:
-            old_local_reshade_exe = f"{download_path}{self.reshade_version}.exe"
+            old_local_reshade_exe = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.reshade_version}.exe")
             if os.path.isfile(old_local_reshade_exe):
                 os.remove(old_local_reshade_exe)
             if os.path.isfile(constants.RESHADE32_PATH):
@@ -219,18 +213,18 @@ class MainSrc:
                         break
         except requests.exceptions.ConnectionError as e:
             self.log.error(f"{messages.reshade_website_unreacheable} {str(e)}")
-            utilities.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
+            qtutils.show_message_window("error", "ERROR", messages.reshade_website_unreacheable)
             return
 
         # download new reshade version exe
         try:
-            self.local_reshade_exe = f"{download_path}{self.remote_reshade_version}.exe"
+            self.local_reshade_exe = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.remote_reshade_version}.exe")
             r = requests.get(exe_download_url)
             with open(self.local_reshade_exe, "wb") as outfile:
                 outfile.write(r.content)
         except Exception as e:
             if hasattr(e, "errno") and e.errno == 13:
-                utilities.show_message_window("error", "ERROR", messages.error_permissionError)
+                qtutils.show_message_window("error", "ERROR", messages.error_permissionError)
             else:
                 self.log.error(f"{messages.error_check_new_reshade_version} {str(e)}")
             return
@@ -239,8 +233,8 @@ class MainSrc:
         self._unzip_reshade(self.local_reshade_exe)
 
         # save version to sql table
-        config_sql = ConfigsSql(self)
-        configs_obj = utilities.Object()
+        config_sql = ConfigSql(self)
+        configs_obj = utils.Object()
         configs_obj.reshade_version = self.remote_reshade_version
         config_sql.update_reshade_version(configs_obj)
 
@@ -249,11 +243,11 @@ class MainSrc:
         self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.remote_reshade_version}")
 
         if self.need_apply:
-            FormEvents.apply_all(self)
-            utilities.show_message_window("info", "INFO",
-                                          f"{messages.new_reshade_version}\n"
-                                          f"Version: {self.remote_reshade_version}\n\n"
-                                          f"{messages.apply_success}")
+            form_events.apply_all(self)
+            qtutils.show_message_window("info", "INFO",
+                                        f"{messages.new_reshade_version}\n"
+                                        f"Version: {self.remote_reshade_version}\n\n"
+                                        f"{messages.apply_success}")
             self.need_apply = False
 
         self.reshade_version = self.remote_reshade_version
@@ -262,7 +256,7 @@ class MainSrc:
     def _check_new_program_version(self):
         self.qtobj.update_button.setVisible(False)
         if self.check_program_updates:
-            new_version_obj = utilities.check_new_program_version(self)
+            new_version_obj = utils.check_new_program_version(self)
             if new_version_obj.new_version_available:
                 self.qtobj.updateAvail_label.clear()
                 self.qtobj.updateAvail_label.setText(new_version_obj.new_version_msg)
@@ -272,7 +266,7 @@ class MainSrc:
     def _unzip_reshade(self, local_reshade_exe):
         try:
             out_path = constants.PROGRAM_PATH
-            utilities.unzip_file(local_reshade_exe, out_path)
+            utils.unzip_file(local_reshade_exe, out_path)
         # except FileNotFoundError as e:
         #    self.log.error(str(e))
         # except zipfile.BadZipFile as e:
@@ -291,7 +285,7 @@ class MainSrc:
 
 
     def _programs_table_widget_clicked(self, item):
-        FormEvents.programs_tableWidget_clicked(self, item)
+        form_events.programs_tableWidget_clicked(self, item)
 
 
     def _programs_table_widget_double_clicked(self):
@@ -299,7 +293,7 @@ class MainSrc:
 
 
     def _set_all_configs(self):
-        config_sql = ConfigsSql(self)
+        config_sql = ConfigSql(self)
         rs_config = config_sql.get_configs()
 
         self.populate_datagrid()
@@ -382,14 +376,14 @@ class MainSrc:
             self.qtobj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
 
             if rs_config[0].get("program_version") is None or rs_config[0].get("program_version") != constants.VERSION:
-                config_obj = utilities.Object()
+                config_obj = utils.Object()
                 config_obj.program_version = constants.VERSION
                 config_sql.update_program_version(config_obj)
 
 
     def show_game_config_form(self, game_name, architecture):
-        if not utilities.check_game_dir(self):
-            utilities.show_message_window("error", "ERROR", f"{messages.error_game_not_found}")
+        if not utils.check_game_file(self):
+            qtutils.show_message_window("error", "ERROR", messages.error_game_not_found)
             return
 
         self.game_config_form = QtWidgets.QWidget()
@@ -399,12 +393,12 @@ class MainSrc:
         self.game_config_form.qtObj = qt_obj
 
         icon_cancel = QtGui.QIcon()
-        icon_cancel_pixmap = QtGui.QPixmap(utilities.resource_path("images/cancel.png"))
+        icon_cancel_pixmap = QtGui.QPixmap(utils.resource_path("images/cancel.png"))
         icon_cancel.addPixmap(icon_cancel_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.game_config_form.qtObj.cancel_pushButton.setIcon(icon_cancel)
 
         icon_apply = QtGui.QIcon()
-        icon_apply_pixmap = QtGui.QPixmap(utilities.resource_path("images/apply.png"))
+        icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("images/apply.png"))
         icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.game_config_form.qtObj.ok_pushButton.setIcon(icon_apply)
 
@@ -415,17 +409,17 @@ class MainSrc:
         self.game_config_form.show()
         QtWidgets.QApplication.processEvents()
 
-        self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: FormEvents.game_config_form_result(self, architecture, "OK"))
-        self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: FormEvents.game_config_form_result(self, architecture, "CANCEL"))
+        self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: form_events.game_config_form_result(self, architecture, "OK"))
+        self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: form_events.game_config_form_result(self, architecture, "CANCEL"))
 
         if self.selected_game is not None:
             self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.name)
 
-            if self.selected_game.api.lower() == "dx9":
+            if self.selected_game.api == constants.DX9_DISPLAY_NAME:
                 self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
                 self.game_config_form.qtObj.dx_radioButton.setChecked(False)
                 self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
-            elif self.selected_game.api.lower() == "opengl":
+            elif self.selected_game.api == constants.OPENGL_DISPLAY_NAME:
                 self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
                 self.game_config_form.qtObj.dx_radioButton.setChecked(False)
                 self.game_config_form.qtObj.opengl_radioButton.setChecked(True)
