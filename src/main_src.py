@@ -8,12 +8,12 @@
 
 import os
 import requests
-from PyQt6.QtCore import Qt
+from PyQt5.QtCore import Qt
 from bs4 import BeautifulSoup
 from src.sql.games_sql import GamesSql
 from src.sql.config_sql import ConfigSql
-from PyQt6 import QtCore, QtGui, QtWidgets
-from src.game_configs import Ui_game_config_Form
+from PyQt5 import QtCore, QtGui, QtWidgets
+from src.game_configs import Ui_game_config_form
 from src import constants, form_events, messages, utils, log, qtutils
 
 
@@ -59,7 +59,7 @@ class MainSrc:
         utils.set_default_database_configs(self)
 
         self.progressBar.set_values(messages.checking_configs, 45)
-        self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.Alignment.AlignLeft)
+        self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
         self._set_all_configs()
         self._register_form_events()
 
@@ -93,8 +93,8 @@ class MainSrc:
         self.qtobj.programs_tableWidget.setColumnWidth(1, 80)
         self.qtobj.programs_tableWidget.setColumnWidth(2, 110)
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
-        #from PyQt6.QtWidgets import QHeaderView
-        #self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
+        # from PyQt6.QtWidgets import QHeaderView
+        # self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
 
         self.enable_widgets(False)
         self.progressBar.close()
@@ -140,7 +140,7 @@ class MainSrc:
         self.qtobj.edit_all_games_custom_config_button.clicked.connect(lambda: form_events.edit_all_games_custom_config_button(self))
         # TAB 3 - about
         #########
-        self.qtobj.paypal_button.clicked.connect(lambda: form_events.donate_clicked())
+        self.qtobj.donate_button.clicked.connect(lambda: form_events.donate_clicked())
 
 
     def _check_reshade_files(self):
@@ -390,18 +390,18 @@ class MainSrc:
 
         self.game_config_form = QtWidgets.QWidget()
         _translate = QtCore.QCoreApplication.translate
-        qt_obj = Ui_game_config_Form()
+        qt_obj = Ui_game_config_form()
         qt_obj.setupUi(self.game_config_form)
         self.game_config_form.qtObj = qt_obj
 
         icon_cancel = QtGui.QIcon()
         icon_cancel_pixmap = QtGui.QPixmap(utils.resource_path("media/cancel.png"))
-        icon_cancel.addPixmap(icon_cancel_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon_cancel.addPixmap(icon_cancel_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.game_config_form.qtObj.cancel_pushButton.setIcon(icon_cancel)
 
         icon_apply = QtGui.QIcon()
         icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("media/apply.png"))
-        icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.game_config_form.qtObj.ok_pushButton.setIcon(icon_apply)
 
         if self.use_dark_theme:

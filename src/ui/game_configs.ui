@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>game_config_Form</class>
- <widget class="QWidget" name="game_config_Form">
+ <class>game_config_form</class>
+ <widget class="QWidget" name="game_config_form">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -39,7 +39,7 @@
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>src/media/cancel.png</normaloff>src/media/cancel.png</iconset>
+     <normaloff>../images/cancel.png</normaloff>../images/cancel.png</iconset>
    </property>
   </widget>
   <widget class="QLineEdit" name="game_name_lineEdit">
@@ -85,7 +85,7 @@
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>src/media/apply.png</normaloff>src/media/apply.png</iconset>
+     <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
    </property>
   </widget>
   <widget class="QGroupBox" name="api_groupBox">

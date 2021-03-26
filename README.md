@@ -3,7 +3,7 @@
 [<img src="https://img.shields.io/github/license/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9-blue.svg?style=plastic)](https://www.python.org/downloads/)
 [![GitHub release](https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic)](https://github.com/ddc/ReshadeUtils/releases/latest)
-[![QT5](https://img.shields.io/badge/QT-6-brightgreen.svg?style=plastic)](https://www.qt.io/)
+[![QT5](https://img.shields.io/badge/QT-5-brightgreen.svg?style=plastic)](https://www.qt.io/)
 
 Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to several games at once.
 
@@ -27,7 +27,7 @@ Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to severa
 
 
 ## Acknowledgements
-+ [QT6](https://www.qt.io)
++ [QT5](https://www.qt.io)
 + [Python3.9](https://www.python.org/downloads/)
 + [Reshade](https://reshade.me/)
 + [Inno Setup](http://www.innosetup.com/)

@@ -70,7 +70,7 @@ def setup_logging(dir_logs):
     file_hdlr.rotator = GZipRotator()
     logger.addHandler(file_hdlr)
 
-    stream_hdlr = logging.StreamHandler(stream=sys.stdout)
+    stream_hdlr = logging.StreamHandler()
     stream_hdlr.setFormatter(formatter)
     stream_hdlr.setLevel(log_level)
     logger.addHandler(stream_hdlr)

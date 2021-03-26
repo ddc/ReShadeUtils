@@ -69,8 +69,8 @@
    </property>
    <widget class="QWidget" name="games_tab">
     <attribute name="icon">
-     <iconset resource="../../resources.qrc">
-      <normaloff>:/src/media/controller.png</normaloff>:/src/media/controller.png</iconset>
+     <iconset>
+      <normaloff>../images/controller.png</normaloff>../images/controller.png</iconset>
     </attribute>
     <attribute name="title">
      <string>GAMES</string>
@@ -91,8 +91,8 @@
       <string>ADD</string>
      </property>
      <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/src/media/add.png</normaloff>:/src/media/add.png</iconset>
+      <iconset>
+       <normaloff>../images/add.png</normaloff>../images/add.png</iconset>
      </property>
     </widget>
     <widget class="QPushButton" name="edit_path_button">
@@ -111,8 +111,8 @@
       <string>EDIT LOCATION</string>
      </property>
      <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/src/media/arrow.png</normaloff>:/src/media/arrow.png</iconset>
+      <iconset>
+       <normaloff>../images/arrow.png</normaloff>../images/arrow.png</iconset>
      </property>
     </widget>
     <widget class="QPushButton" name="delete_button">
@@ -131,8 +131,8 @@
       <string>DELETE</string>
      </property>
      <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/src/media/delete.png</normaloff>:/src/media/delete.png</iconset>
+      <iconset>
+       <normaloff>../images/delete.png</normaloff>../images/delete.png</iconset>
      </property>
     </widget>
     <widget class="QPushButton" name="apply_button">
@@ -151,8 +151,8 @@
       <string>APPLY</string>
      </property>
      <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/src/media/apply.png</normaloff>:/src/media/apply.png</iconset>
+      <iconset>
+       <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
      </property>
     </widget>
     <widget class="QTableWidget" name="programs_tableWidget">
@@ -264,15 +264,15 @@
       <string>EDIT CONFIG</string>
      </property>
      <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/src/media/edit.png</normaloff>:/src/media/edit.png</iconset>
+      <iconset>
+       <normaloff>../images/edit.png</normaloff>../images/edit.png</iconset>
      </property>
     </widget>
    </widget>
    <widget class="QWidget" name="settings_tab">
     <attribute name="icon">
-     <iconset resource="../../resources.qrc">
-      <normaloff>:/src/media/gear.png</normaloff>:/src/media/gear.png</iconset>
+     <iconset>
+      <normaloff>../images/gear.png</normaloff>../images/gear.png</iconset>
     </attribute>
     <attribute name="title">
      <string>SETTINGS</string>
@@ -611,8 +611,8 @@
        <string>EDIT DEFAULT CUSTOM PLUGINS CONFIG</string>
       </property>
       <property name="icon">
-       <iconset resource="../../resources.qrc">
-        <normaloff>:/src/media/plugin.png</normaloff>:/src/media/plugin.png</iconset>
+       <iconset>
+        <normaloff>../images/plugin.png</normaloff>../images/plugin.png</iconset>
       </property>
      </widget>
      <widget class="QRadioButton" name="yes_custom_config_radioButton">
@@ -654,16 +654,16 @@
        <string>APPLY CUSTOM CONFIG TO ALL GAMES</string>
       </property>
       <property name="icon">
-       <iconset resource="../../resources.qrc">
-        <normaloff>:/src/media/apply.png</normaloff>:/src/media/apply.png</iconset>
+       <iconset>
+        <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
       </property>
      </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="about_tab">
     <attribute name="icon">
-     <iconset resource="../../resources.qrc">
-      <normaloff>:/src/media/help.png</normaloff>:/src/media/help.png</iconset>
+     <iconset>
+      <normaloff>../images/help.png</normaloff>../images/help.png</iconset>
     </attribute>
     <attribute name="title">
      <string>ABOUT</string>
@@ -703,16 +703,18 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Reshade Utilities&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Program to copy reshade DLLs, shaders and config fiies to several games&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Developed as an open source project and hosted on GitHub&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Implemented using Python3, Qt6 and SQLite3&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Implemented using Python3, Qt5 and SQLite3&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Acknowledgements&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://www.qt.io&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Qt6&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://www.qt.io&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Qt5&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://www.python.org&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Python3&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://reshade.me/&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;Reshade&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://pyinstaller.readthedocs.io&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#8b0000;&quot;&gt;PyInstaller&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
@@ -732,38 +734,38 @@ p, li { white-space: pre-wrap; }
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="paypal_button">
+    <widget class="QPushButton" name="donate_button">
      <property name="geometry">
       <rect>
-       <x>430</x>
-       <y>30</y>
-       <width>80</width>
-       <height>30</height>
+       <x>360</x>
+       <y>20</y>
+       <width>230</width>
+       <height>90</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>80</width>
-       <height>30</height>
+       <width>230</width>
+       <height>90</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>80</width>
-       <height>30</height>
+       <width>230</width>
+       <height>90</height>
       </size>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="toolTip">
-      <string notr="true">PayPal</string>
+      <string notr="true">Donate</string>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">#paypal_button {
+      <string notr="true">#donate_button {
     background-color: transparent;
     background: none;
     border: none;
@@ -774,8 +776,8 @@ p, li { white-space: pre-wrap; }
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/src/media/paypal.png</normaloff>:/src/media/paypal.png</iconset>
+      <iconset>
+       <normaloff>../images/donate.png</normaloff>../images/donate.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -823,8 +825,8 @@ p, li { white-space: pre-wrap; }
     <string>UPDATE</string>
    </property>
    <property name="icon">
-    <iconset resource="../../resources.qrc">
-     <normaloff>:/src/media/update.png</normaloff>:/src/media/update.png</iconset>
+    <iconset>
+     <normaloff>../images/update.png</normaloff>../images/update.png</iconset>
    </property>
   </widget>
   <zorder>main_tabWidget</zorder>
@@ -832,8 +834,6 @@ p, li { white-space: pre-wrap; }
   <zorder>update_button</zorder>
   <zorder>reshade_version_label</zorder>
  </widget>
- <resources>
-  <include location="../../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

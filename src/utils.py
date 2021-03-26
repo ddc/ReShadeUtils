@@ -82,10 +82,8 @@ def get_pictures_path():
             pictures_path = winreg.QueryValueEx(key, pictures_guid)[0]
         return pictures_path
     else:
-        t1_path = str(os.path.expanduser("~/Pictures"))
-        t2_path = t1_path.split("\\")
-        pictures_path = "/".join(t2_path)
-        return pictures_path.replace("\\", "/")
+        pictures_path = os.path.normpath(os.path.expanduser("~/Pictures"))
+        return pictures_path
 
 
 def check_new_program_version(self):
@@ -111,7 +109,7 @@ def check_new_program_version(self):
         else:
             err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\ncode: {req.status_code}"
             qtutils.show_message_window(self.log, "error", err_msg)
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         qtutils.show_message_window(self.log, "error", messages.dl_new_version_timeout)
     finally:
         return obj_return
@@ -191,7 +189,7 @@ def resource_path(relative_path):
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath("src")
+        base_path = os.path.abspath("./src")
     return os.path.join(base_path, relative_path)
 
 

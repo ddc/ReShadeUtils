@@ -10,10 +10,10 @@ import os
 import shutil
 import zipfile
 import requests
-from PyQt6 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from src.sql.games_sql import GamesSql
 from src.create_files import CreateFiles
-from PyQt6.QtGui import QDesktopServices
+from PyQt5.QtGui import QDesktopServices
 from src.sql.config_sql import ConfigSql
 from src import constants, messages, utils, qtutils
 
@@ -325,12 +325,12 @@ def custom_config_clicked(self, status: str):
 
 def programs_tableWidget_clicked(self, item):
     self.enable_widgets(True)
-    #clicked_item = self.qtobj.programs_tableWidget.currentItem()
+    # clicked_item = self.qtobj.programs_tableWidget.currentItem()
     clicked_row = self.qtobj.programs_tableWidget.selectedItems()
 
     self.selected_game = utils.Object()
-    #self.selected_game.column = item.column()
-    #self.selected_game.row = item.row()
+    # self.selected_game.column = item.column()
+    # self.selected_game.row = item.row()
     self.selected_game.name = clicked_row[0].text()
     self.selected_game.architecture = clicked_row[1].text()
     self.selected_game.api = clicked_row[2].text()

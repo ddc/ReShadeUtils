@@ -1,13 +1,12 @@
 # -*- mode: python -*-
 
 block_cipher = None
-
-add_media = [ ('src/media/*.*', 'media') ]
+add_images = [ ('src/images/*.*', 'images') ]
 
 a = Analysis(['main.py'],
              pathex=['*path*'],
              binaries=[],
-             datas=add_media,
+             datas = add_images,
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
