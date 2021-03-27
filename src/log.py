@@ -13,65 +13,69 @@ import logging.handlers
 from src import constants
 
 
-def setup_logging(dir_logs):
-    backup_days = 7
-    date_formatter = "%Y-%m-%d"
-    time_formatter = "%H:%M:%S"
-    log_level = logging.INFO
+class Logs:
+    def __init__(self, dir_logs):
+        self.dir_logs = dir_logs
+        self.backup_days = 7
+        self.date_formatter = "%Y-%m-%d"
+        self.time_formatter = "%H:%M:%S"
+        self.log_level = logging.INFO
 
-    class GZipRotator:
-        def __call__(self, source, dest):
+
+    def setup_logging(self):
+        class GZipRotator:
+            def __call__(self, source, dest):
+                try:
+                    sfname, sext = os.path.splitext(source)
+                    dfname, dext = os.path.splitext(dest)
+                    renamed_dst = f"{sfname}_{dext.replace('.', '')}{sext}"
+                    os.rename(source, renamed_dst)
+                    with open(renamed_dst, "rb") as fin:
+                        with gzip.open(f"{renamed_dst}.gz", "wb") as fout:
+                            fout.writelines(fin)
+                    os.remove(renamed_dst)
+                except Exception as ex:
+                    print(f"[ERROR]:Unable to compact the log file:[{str(ex)}]: {source}\n")
+
+        if not os.path.isdir(self.dir_logs):
             try:
-                sfname, sext = os.path.splitext(source)
-                dfname, dext = os.path.splitext(dest)
-                renamed_dst = f"{sfname}_{dext.replace('.', '')}{sext}"
-                os.rename(source, renamed_dst)
-                with open(renamed_dst, "rb") as fin:
-                    with gzip.open(f"{renamed_dst}.gz", "wb") as fout:
-                        fout.writelines(fin)
-                os.remove(renamed_dst)
-            except Exception as ex:
-                print(f"[ERROR]:Unable to compact the log file:[{str(ex)}]: {source}\n")
+                os.makedirs(self.dir_logs, exist_ok=True)
+            except Exception as e:
+                print(f"[ERROR]:[EXITING]:[{str(e)}]:Unable to create logs directory: {self.dir_logs}\n")
+                sys.exit(1)
 
-    if not os.path.isdir(dir_logs):
+        log_filename = f"{constants.SHORT_PROGRAM_NAME}.log"
+        log_file_path = os.path.join(self.dir_logs, log_filename)
+
         try:
-            os.makedirs(dir_logs, exist_ok=True)
-        except Exception as e:
-            print(f"[ERROR]:[EXITING]:[{str(e)}]:Unable to create logs directory: {dir_logs}\n")
+            open(log_file_path, "a+").close()
+        except IOError as e:
+            print(f"[ERROR]:[EXITING]:[{str(e)}]:Unable to open the log file for writing: {log_file_path}\n")
             sys.exit(1)
 
-    log_filename = f"{constants.SHORT_PROGRAM_NAME}.log"
-    log_file_path = os.path.join(dir_logs, log_filename)
+        if self.log_level == logging.DEBUG:
+            formatt = "%(asctime)s.%(msecs)03d]:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
+        else:
+            formatt = "%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s"
 
-    try:
-        open(log_file_path, "a+").close()
-    except IOError as e:
-        print(f"[ERROR]:[EXITING]:[{str(e)}]:Unable to open the log file for writing: {log_file_path}\n")
-        sys.exit(1)
+        formatter = logging.Formatter(formatt, datefmt=f"[{self.date_formatter} {self.time_formatter}")
 
-    if log_level == logging.DEBUG:
-        formatt = "%(asctime)s.%(msecs)03d]:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
-    else:
-        formatt = "%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s"
+        logger = logging.getLogger()
+        logger.setLevel(self.log_level)
+        file_hdlr = logging.handlers.RotatingFileHandler(
+            filename=log_file_path,
+            maxBytes=1 * 1024 * 1024,
+            encoding="UTF-8",
+            backupCount=self.backup_days,
+            mode="a")
 
-    formatter = logging.Formatter(formatt, datefmt=f"[{date_formatter} {time_formatter}")
+        file_hdlr.setFormatter(formatter)
+        file_hdlr.suffix = "%Y%m%d"
+        file_hdlr.rotator = GZipRotator()
+        logger.addHandler(file_hdlr)
 
-    logger = logging.getLogger()
-    logger.setLevel(log_level)
-    file_hdlr = logging.handlers.RotatingFileHandler(
-        filename=log_file_path,
-        maxBytes=1 * 1024 * 1024,
-        encoding="UTF-8",
-        backupCount=backup_days,
-        mode="a")
-
-    file_hdlr.setFormatter(formatter)
-    file_hdlr.suffix = "%Y%m%d"
-    file_hdlr.rotator = GZipRotator()
-    logger.addHandler(file_hdlr)
-
-    stream_hdlr = logging.StreamHandler()
-    stream_hdlr.setFormatter(formatter)
-    stream_hdlr.setLevel(log_level)
-    logger.addHandler(stream_hdlr)
-    return logger
+        stream_hdlr = logging.StreamHandler()
+        stream_hdlr.setFormatter(formatter)
+        stream_hdlr.setLevel(self.log_level)
+        logger.addHandler(stream_hdlr)
+        return logger

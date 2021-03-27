@@ -15,6 +15,8 @@ from src.sql.config_sql import ConfigSql
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.game_configs import Ui_game_config_form
 from src import constants, form_events, messages, utils, log, qtutils
+from src.progressbar import ProgressBar
+from src.log import Logs
 
 
 class MainSrc:
@@ -44,9 +46,9 @@ class MainSrc:
 
     def init(self):
         utils.check_dirs()
-        self.progressBar = qtutils.ProgressBar()
+        self.progressBar = ProgressBar()
         self.progressBar.set_values(messages.initializing, 0)
-        self.log = log.setup_logging(constants.DIR_LOGS)
+        self.log = Logs(constants.DIR_LOGS).setup_logging()
         self.log.info(f"Starting {constants.FULL_PROGRAM_NAME}")
         qtutils.set_icons(self)
 
@@ -395,12 +397,12 @@ class MainSrc:
         self.game_config_form.qtObj = qt_obj
 
         icon_cancel = QtGui.QIcon()
-        icon_cancel_pixmap = QtGui.QPixmap(utils.resource_path("media/cancel.png"))
+        icon_cancel_pixmap = QtGui.QPixmap(utils.resource_path("images/cancel.png"))
         icon_cancel.addPixmap(icon_cancel_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.game_config_form.qtObj.cancel_pushButton.setIcon(icon_cancel)
 
         icon_apply = QtGui.QIcon()
-        icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("media/apply.png"))
+        icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("images/apply.png"))
         icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.game_config_form.qtObj.ok_pushButton.setIcon(icon_apply)
 
