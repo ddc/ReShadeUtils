@@ -10,14 +10,16 @@ import os
 import sys
 import requests
 import subprocess
-from PyQt6 import QtWidgets
+from PyQt5 import QtWidgets
 from src.sql.config_sql import ConfigSql
-from src import constants, messages, utils, qtutils, log
+from src import constants, messages, utils, qtutils
+from src.progressbar import ProgressBar
+from src.log import Logs
 
 
 class Launcher:
     def __init__(self):
-        self.progressBar = qtutils.ProgressBar()
+        self.progressBar = ProgressBar()
         self.log = None
         self.new_version = None
         self.new_version_msg = None
@@ -27,8 +29,8 @@ class Launcher:
     def init(self):
         utils.check_dirs()
         self.progressBar.set_values(messages.checking_files, 25)
-        self.log = log.setup_logging(constants.DIR_LOGS)
-        if utils.check_files(self):
+        self.log = Logs(constants.DIR_LOGS).setup_logging()
+        if utils.create_reshade_ini_files(self):
             self.progressBar.set_values(messages.checking_db_connection, 50)
             utils.check_db_connection(self)
             utils.set_default_database_configs(self)

@@ -59,15 +59,15 @@ def show_message_window(log, window_type, msg):
     if window_type.lower() == "error":
         icon = QtWidgets.QMessageBox.Icon.Critical
         button = QtWidgets.QMessageBox.Ok
-        log.error(msg) if log else None
+        log.error(msg.replace("\n", ":")) if log else None
     elif window_type.lower() == "warning":
         icon = QtWidgets.QMessageBox.Icon.Warning
         button = QtWidgets.QMessageBox.Ok
-        log.warning(msg) if log else None
+        log.warning(msg.replace("\n", ":")) if log else None
     elif window_type.lower() == "info":
         icon = QtWidgets.QMessageBox.Icon.Information
         button = QtWidgets.QMessageBox.Ok
-        log.info(msg) if log else None
+        log.info(msg.replace("\n", ":")) if log else None
     else:
         icon = QtWidgets.QMessageBox.Icon.Question
         button = QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No

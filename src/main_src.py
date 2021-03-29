@@ -49,12 +49,13 @@ class MainSrc:
         self.progressBar = ProgressBar()
         self.progressBar.set_values(messages.initializing, 0)
         self.log = Logs(constants.DIR_LOGS).setup_logging()
-        self.log.info(f"Starting {constants.FULL_PROGRAM_NAME}")
+        self.client_version = constants.VERSION
         qtutils.set_icons(self)
 
+        self.log.info(f"STARTING {constants.FULL_PROGRAM_NAME}")
+
         self.progressBar.set_values(messages.checking_files, 15)
-        utils.check_files(self)
-        self.client_version = constants.VERSION
+        utils.create_reshade_ini_files(self)
 
         self.progressBar.set_values(messages.checking_db_connection, 30)
         utils.check_db_connection(self)
@@ -66,7 +67,7 @@ class MainSrc:
         self._register_form_events()
 
         self.progressBar.set_values(messages.checking_new_reshade_version, 60)
-        self._check_reshade_files()
+        self._check_local_reshade_version()
 
         if self.local_reshade_exe is None:
             self._download_new_reshade_version()
@@ -145,7 +146,7 @@ class MainSrc:
         self.qtobj.donate_button.clicked.connect(lambda: form_events.donate_clicked())
 
 
-    def _check_reshade_files(self):
+    def _check_local_reshade_version(self):
         config_sql = ConfigSql(self)
         rs_config = config_sql.get_configs()
         if rs_config[0].get("reshade_version") is not None and len(rs_config[0].get("reshade_version")) > 0:

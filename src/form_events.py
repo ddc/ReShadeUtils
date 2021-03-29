@@ -198,7 +198,7 @@ def open_reshade_config_file(self):
 
 
 def edit_all_games_custom_config_button(self):
-    if utils.check_files(self):
+    if utils.create_reshade_ini_files(self):
         try:
             os.startfile(constants.RESHADE_PRESET_FILENAME)
         except Exception as e:

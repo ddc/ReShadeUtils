@@ -125,7 +125,7 @@ def check_dirs():
         exit(1)
 
 
-def check_files(self):
+def create_reshade_ini_files(self):
     create_files = CreateFiles(self)
 
     try:
