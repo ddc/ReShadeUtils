@@ -7,7 +7,11 @@
 # # -*- coding: utf-8 -*-
 
 import os
+import sys
 from src import utils
+
+
+DEBUG = False
 
 
 VERSION = "4.2"
@@ -16,8 +20,8 @@ SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 ################################################################################
-LOCAL_APPDATA_PATH = os.getenv("LOCALAPPDATA")
-PROGRAM_PATH = os.path.join(LOCAL_APPDATA_PATH, SHORT_PROGRAM_NAME)
+PROGRAM_PATH = os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "DEV") if DEBUG
+                                else os.path.join(os.getenv("LOCALAPPDATA"), SHORT_PROGRAM_NAME))
 ################################################################################
 RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "Reshade.ini"
@@ -45,12 +49,13 @@ DIR_LOGS = os.path.join(PROGRAM_PATH)
 RESHADE_INI_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 ################################################################################
+BRANCH = "dev" if DEBUG else "master"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
-REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/master/VERSION"
-RESHADE_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/dev/src/files/Reshade.ini"
-PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/dev/src/files/ReShadePreset.ini"
-CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/dev/src/files/style.qss"
+REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/VERSION"
+RESHADE_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/files/Reshade.ini"
+PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/files/ReShadePreset.ini"
+CSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/files/style.qss"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"

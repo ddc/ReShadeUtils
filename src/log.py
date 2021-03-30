@@ -19,7 +19,7 @@ class Logs:
         self.backup_days = 7
         self.date_formatter = "%Y-%m-%d"
         self.time_formatter = "%H:%M:%S"
-        self.log_level = logging.INFO
+        self.log_level = logging.DEBUG if constants.DEBUG else logging.INFO
 
 
     def setup_logging(self):

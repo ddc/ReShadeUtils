@@ -1,16 +1,16 @@
 # -*- mode: python -*-
 
 block_cipher = None
-add_images = [ ('src/images/*.*', 'images') ]
+add_images = [ ('../src/images/*.*', 'images') ]
 
-a = Analysis(['main.py'],
+a = Analysis(['../main.py'],
              pathex=['*path*'],
              binaries=[],
              datas = add_images,
-             hiddenimports=[],
+             hiddenimports=['sqlalchemy.sql.default_comparator'],
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
+             excludes=['pysqlite2', 'MySQLdb', 'psycopg2', 'sip'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
@@ -31,10 +31,13 @@ exe = EXE(pyz,
           runtime_tmpdir=None,
           console=False,
           version='resources.rc',
-          uac_admin=True,
+          uac_admin=False,
           icon='')
 
 #coll = COLLECT(exe,
+#               a.binaries,
+#               a.zipfiles,
+#               a.datas,
 #               strip=False,
 #               upx=False,
 #               name='ReshadeUtils')

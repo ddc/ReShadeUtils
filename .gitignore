@@ -1,14 +1,12 @@
 __pycache__/
 .git/
 venv*/
+DEV/
 
 # PyInstaller
 *.manifest
 build/
 dist/
-
-# Eclipse
-.settings/
 
 # Pycharm
 .idea/

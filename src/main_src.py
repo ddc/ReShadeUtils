@@ -7,6 +7,7 @@
 # # -*- coding: utf-8 -*-
 
 import os
+import sys
 import requests
 from PyQt5.QtCore import Qt
 from bs4 import BeautifulSoup
@@ -14,15 +15,17 @@ from src.sql.games_sql import GamesSql
 from src.sql.config_sql import ConfigSql
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.game_configs import Ui_game_config_form
-from src import constants, form_events, messages, utils, log, qtutils
+from src import constants, form_events, messages, utils, qtutils
 from src.progressbar import ProgressBar
 from src.log import Logs
+from src.sql.database import DatabaseClass
 
 
 class MainSrc:
     def __init__(self, qtobj, form):
         self.qtobj = qtobj
         self.form = form
+        self.db_engine = None
         self.progressBar = None
         self.selected_game = None
         self.game_config_form = None
@@ -38,7 +41,6 @@ class MainSrc:
         self.use_custom_config = None
         self.need_apply = False
         self.new_version = None
-        self.db_conn = None
         self.remote_reshade_version = None
         self.client_version = None
         self.log = None
@@ -47,19 +49,34 @@ class MainSrc:
     def init(self):
         utils.check_dirs()
         self.progressBar = ProgressBar()
-        self.progressBar.set_values(messages.initializing, 0)
         self.log = Logs(constants.DIR_LOGS).setup_logging()
+        self.db_engine = DatabaseClass(self).create_engine()
         self.client_version = constants.VERSION
         qtutils.set_icons(self)
 
         self.log.info(f"STARTING {constants.FULL_PROGRAM_NAME}")
+        self.progressBar.set_values(messages.checking_db_connection, 15)
+        if not utils.check_db_connection(self):
+            error_db_conn = messages.error_db_connection
+            msg_exit = messages.exit_program
+            err_msg = f"{error_db_conn}\n\n{msg_exit}"
+            if qtutils.show_message_window(self.log, "error", err_msg):
+                sys.exit(1)
+        elif not utils.create_default_tables(self):
+            error = messages.error_db_connection
+            msg_exit = messages.exit_program
+            err_msg = f"{error}\n\n{msg_exit}"
+            if qtutils.show_message_window(self.log, "error", err_msg):
+                sys.exit(1)
+        elif not utils.set_default_database_configs(self):
+            error = messages.error_create_sql_config_msg
+            msg_exit = messages.exit_program
+            err_msg = f"{error}\n\n{msg_exit}"
+            if qtutils.show_message_window(self.log, "error", err_msg):
+                sys.exit(1)
 
-        self.progressBar.set_values(messages.checking_files, 15)
+        self.progressBar.set_values(messages.checking_files, 30)
         utils.create_reshade_ini_files(self)
-
-        self.progressBar.set_values(messages.checking_db_connection, 30)
-        utils.check_db_connection(self)
-        utils.set_default_database_configs(self)
 
         self.progressBar.set_values(messages.checking_configs, 45)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)

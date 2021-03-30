@@ -13,8 +13,8 @@ import os
 import sys
 import zipfile
 import requests
-from src import constants, messages, qtutils
 from src.create_files import CreateFiles
+from src import constants, messages, qtutils
 
 
 class Object:
@@ -147,41 +147,34 @@ def create_reshade_ini_files(self):
     return True
 
 
+def check_db_connection(self):
+    if self.db_engine is not None:
+        conn = self.db_engine.connect()
+        if conn is not None:
+            conn.close()
+            return True
+    return False
+
+
+def create_default_tables(self):
+    from src.sql.tables import Configs, Games
+    try:
+        Configs.__table__.create(self.db_engine, checkfirst=True)
+        Games.__table__.create(self.db_engine, checkfirst=True)
+    except Exception as e:
+        self.log.error(str(e))
+        return False
+    return True
+
+
 def set_default_database_configs(self):
-    from src.sql.initial_tables_sql import InitialTablesSql
-    from src.sql.triggers_sql import TriggersSql
     from src.sql.config_sql import ConfigSql
-
-    initial_tables_sql = InitialTablesSql(self)
-    it = initial_tables_sql.create_initial_tables()
-    if it is not None:
-        err_msg = messages.error_create_sql_config_msg
-        self.log.error(err_msg)
-
     config_sql = ConfigSql(self)
     rs_config = config_sql.get_configs()
-    if rs_config is not None and len(rs_config) == 0:
-        config_sql.set_default_configs()
-
-    triggers_sql = TriggersSql(self)
-    tr = triggers_sql.create_triggers()
-    if tr is not None:
-        err_msg = messages.error_create_sql_config_msg
-        self.log.error(err_msg)
-
-
-def check_db_connection(self):
-    from src.sql.sqlite3_connection import Sqlite3
-    sqlite3 = Sqlite3(self)
-    conn = sqlite3.create_connection()
-    if conn is None:
-        error_db_conn = messages.error_db_connection
-        msg_exit = messages.exit_program
-        err_msg = f"{error_db_conn}\n\n{msg_exit}"
-        if qtutils.show_message_window(self.log, "error", err_msg):
-            sys.exit(1)
-    else:
-        conn.close()
+    if rs_config is None:
+        if not config_sql.set_default_configs():
+            return False
+    return True
 
 
 def resource_path(relative_path):
