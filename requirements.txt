@@ -14,4 +14,4 @@ PyQt5-stubs==5.14.2.2
 pywin32-ctypes==0.2.0
 requests==2.25.1
 soupsieve==2.1
-urllib3==1.26.3
+urllib3==1.26.4
