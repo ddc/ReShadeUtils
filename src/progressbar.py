@@ -13,26 +13,26 @@ class ProgressBar:
     def __init__(self):
         _width = 350
         _height = 25
-        self.progressBar = QtWidgets.QProgressBar()
-        self.progressBar.setObjectName("progressBar")
-        self.progressBar.setMinimumSize(QtCore.QSize(_width, _height))
-        self.progressBar.setMaximumSize(QtCore.QSize(_width, _height))
-        self.progressBar.setSizeIncrement(QtCore.QSize(_width, _height))
-        self.progressBar.setBaseSize(QtCore.QSize(_width, _height))
-        # self.progressBar.setGeometry(QtCore.QRect(960, 540, width, height))
-        self.progressBar.setMinimum(0)
-        self.progressBar.setMaximum(100)
-        self.progressBar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
+        self.pbar = QtWidgets.QProgressBar()
+        self.pbar.setObjectName("progressBar")
+        self.pbar.setMinimumSize(QtCore.QSize(_width, _height))
+        self.pbar.setMaximumSize(QtCore.QSize(_width, _height))
+        self.pbar.setSizeIncrement(QtCore.QSize(_width, _height))
+        self.pbar.setBaseSize(QtCore.QSize(_width, _height))
+        # self.pbar.setGeometry(QtCore.QRect(960, 540, width, height))
+        self.pbar.setMinimum(0)
+        self.pbar.setMaximum(100)
+        self.pbar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.pbar.setAlignment(QtCore.Qt.AlignCenter)
 
     def set_values(self, message="", value=0):
         _translate = QtCore.QCoreApplication.translate
-        self.progressBar.setFormat(_translate("Main", f"{message}  %p%"))
-        self.progressBar.show()
+        self.pbar.setFormat(_translate("Main", f"{message}  %p%"))
+        self.pbar.show()
         QtWidgets.QApplication.processEvents()
-        self.progressBar.setValue(value)
+        self.pbar.setValue(value)
         if value == 100:
-            self.progressBar.close()
+            self.pbar.close()
 
     def close(self):
-        self.progressBar.close()
+        self.pbar.close()

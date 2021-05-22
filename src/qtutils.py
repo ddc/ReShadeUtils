@@ -9,36 +9,7 @@
 import os
 from src import utils, constants
 from PyQt5.QtWidgets import QFileDialog
-from PyQt5 import QtCore, QtGui, QtWidgets
-
-
-# class ProgressBar:
-#     def __init__(self):
-#         _width = 350
-#         _height = 25
-#         self.progressBar = QtWidgets.QProgressBar()
-#         self.progressBar.setObjectName("progressBar")
-#         self.progressBar.setMinimumSize(QtCore.QSize(_width, _height))
-#         self.progressBar.setMaximumSize(QtCore.QSize(_width, _height))
-#         self.progressBar.setSizeIncrement(QtCore.QSize(_width, _height))
-#         self.progressBar.setBaseSize(QtCore.QSize(_width, _height))
-#         # self.progressBar.setGeometry(QtCore.QRect(960, 540, width, height))
-#         self.progressBar.setMinimum(0)
-#         self.progressBar.setMaximum(100)
-#         self.progressBar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-#         self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
-#
-#     def set_values(self, message="", value=0):
-#         _translate = QtCore.QCoreApplication.translate
-#         self.progressBar.setFormat(_translate("Main", f"{message}  %p%"))
-#         self.progressBar.show()
-#         QtWidgets.QApplication.processEvents()
-#         self.progressBar.setValue(value)
-#         if value == 100:
-#             self.progressBar.close()
-#
-#     def close(self):
-#         self.progressBar.close()
+from PyQt5 import QtGui, QtWidgets
 
 
 def open_qt_file_dialog():
@@ -84,47 +55,47 @@ def show_message_window(log, window_type, msg):
 
 def set_icons(self):
     icon_add = QtGui.QIcon()
-    icon_add_pixmap = QtGui.QPixmap(utils.resource_path("images/add.png"))
+    icon_add_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/add.png"))
     icon_add.addPixmap(icon_add_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_arrow = QtGui.QIcon()
-    icon_arrow_pixmap = QtGui.QPixmap(utils.resource_path("images/arrow.png"))
+    icon_arrow_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/arrow.png"))
     icon_arrow.addPixmap(icon_arrow_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_delete = QtGui.QIcon()
-    icon_delete_pixmap = QtGui.QPixmap(utils.resource_path("images/delete.png"))
+    icon_delete_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/delete.png"))
     icon_delete.addPixmap(icon_delete_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_apply = QtGui.QIcon()
-    icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("images/apply.png"))
+    icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/apply.png"))
     icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_edit = QtGui.QIcon()
-    icon_edit_pixmap = QtGui.QPixmap(utils.resource_path("images/edit.png"))
+    icon_edit_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/edit.png"))
     icon_edit.addPixmap(icon_edit_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_controller = QtGui.QIcon()
-    icon_controller_pixmap = QtGui.QPixmap(utils.resource_path("images/controller.png"))
+    icon_controller_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/controller.png"))
     icon_controller.addPixmap(icon_controller_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_plugin = QtGui.QIcon()
-    icon_plugin_pixmap = QtGui.QPixmap(utils.resource_path("images/plugin.png"))
+    icon_plugin_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/plugin.png"))
     icon_plugin.addPixmap(icon_plugin_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_gear = QtGui.QIcon()
-    icon_gear_pixmap = QtGui.QPixmap(utils.resource_path("images/gear.png"))
+    icon_gear_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/gear.png"))
     icon_gear.addPixmap(icon_gear_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_donate = QtGui.QIcon()
-    icon_donate_pixmap = QtGui.QPixmap(utils.resource_path("images/donate.png"))
+    icon_donate_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/donate.png"))
     icon_donate.addPixmap(icon_donate_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_help = QtGui.QIcon()
-    icon_help_pixmap = QtGui.QPixmap(utils.resource_path("images/help.png"))
+    icon_help_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/help.png"))
     icon_help.addPixmap(icon_help_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     icon_update = QtGui.QIcon()
-    icon_update_pixmap = QtGui.QPixmap(utils.resource_path("images/update.png"))
+    icon_update_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/update.png"))
     icon_update.addPixmap(icon_update_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     self.qtobj.add_button.setIcon(icon_add)

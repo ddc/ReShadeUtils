@@ -25,12 +25,16 @@ class GamesSql:
 
 
     def get_game_by_path(self, path):
-        sql = self.table.select().where(self.table.columns.path == path).order_by(self.table.columns.name.asc())
+        sql = self.table.select().\
+            where(self.table.columns.path == path).\
+            order_by(self.table.columns.name.asc())
         return self.database.select(sql)
 
 
     def get_game_by_name(self, game_name):
-        sql = self.table.select().where(self.table.columns.name == game_name).order_by(self.table.columns.name.asc())
+        sql = self.table.select().\
+            where(self.table.columns.name == game_name).\
+            order_by(self.table.columns.name.asc())
         return self.database.select(sql)
 
 
@@ -39,8 +43,7 @@ class GamesSql:
             name=games_obj.game_name,
             architecture=games_obj.architecture,
             api=games_obj.api,
-            path=games_obj.path
-        )
+            path=games_obj.path)
         return self.database.execute(sql)
 
 
@@ -48,23 +51,29 @@ class GamesSql:
         sql = self.table.update().values(
             name=games_obj.game_name,
             architecture=games_obj.architecture,
-            api=games_obj.api
-        ).where(self.table.columns.id == games_obj.id)
+            api=games_obj.api).\
+            where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
 
 
     def update_game_path(self, games_obj):
-        sql = self.table.update().values(path=games_obj.path).where(self.table.columns.id == games_obj.id)
+        sql = self.table.update().\
+            values(path=games_obj.path).\
+            where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
 
 
     def update_game_architecture(self, games_obj):
-        sql = self.table.update().values(architecture=games_obj.architecture).where(self.table.columns.id == games_obj.id)
+        sql = self.table.update().\
+            values(architecture=games_obj.architecture).\
+            where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
 
 
     def update_game_api(self, games_obj):
-        sql = self.table.update().values(api=games_obj.api).where(self.table.columns.id == games_obj.id)
+        sql = self.table.update().\
+            values(api=games_obj.api).\
+            where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
 
 

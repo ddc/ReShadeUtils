@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -10,6 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.main_src import MainSrc
 from src.utils import constants
+from src import resources
 
 
 class Ui_Main(object):
@@ -36,25 +36,25 @@ class Ui_Main(object):
         self.add_button = QtWidgets.QPushButton(self.games_tab)
         self.add_button.setGeometry(QtCore.QRect(40, 560, 160, 30))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("src\\ui\\../images/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/resources/images/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.add_button.setIcon(icon)
         self.add_button.setObjectName("add_button")
         self.edit_path_button = QtWidgets.QPushButton(self.games_tab)
         self.edit_path_button.setGeometry(QtCore.QRect(550, 560, 160, 30))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("src\\ui\\../images/arrow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/resources/images/arrow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.edit_path_button.setIcon(icon1)
         self.edit_path_button.setObjectName("edit_path_button")
         self.delete_button = QtWidgets.QPushButton(self.games_tab)
         self.delete_button.setGeometry(QtCore.QRect(210, 560, 160, 30))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("src\\ui\\../images/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/resources/images/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.delete_button.setIcon(icon2)
         self.delete_button.setObjectName("delete_button")
         self.apply_button = QtWidgets.QPushButton(self.games_tab)
         self.apply_button.setGeometry(QtCore.QRect(780, 560, 160, 30))
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("src\\ui\\../images/apply.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/resources/images/apply.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.apply_button.setIcon(icon3)
         self.apply_button.setObjectName("apply_button")
         self.programs_tableWidget = QtWidgets.QTableWidget(self.games_tab)
@@ -82,9 +82,9 @@ class Ui_Main(object):
         item = QtWidgets.QTableWidgetItem()
         self.programs_tableWidget.setHorizontalHeaderItem(3, item)
         self.programs_tableWidget.horizontalHeader().setVisible(True)
-        self.programs_tableWidget.horizontalHeader().setDefaultSectionSize(110)
+        self.programs_tableWidget.horizontalHeader().setDefaultSectionSize(100)
         self.programs_tableWidget.horizontalHeader().setHighlightSections(False)
-        self.programs_tableWidget.horizontalHeader().setMinimumSectionSize(80)
+        self.programs_tableWidget.horizontalHeader().setMinimumSectionSize(100)
         self.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         self.programs_tableWidget.verticalHeader().setVisible(True)
         self.programs_tableWidget.verticalHeader().setDefaultSectionSize(30)
@@ -92,11 +92,11 @@ class Ui_Main(object):
         self.edit_config_button = QtWidgets.QPushButton(self.games_tab)
         self.edit_config_button.setGeometry(QtCore.QRect(380, 560, 160, 30))
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("src\\ui\\../images/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/resources/images/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.edit_config_button.setIcon(icon4)
         self.edit_config_button.setObjectName("edit_config_button")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("src\\ui\\../images/controller.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/resources/images/controller.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.main_tabWidget.addTab(self.games_tab, icon5, "")
         self.settings_tab = QtWidgets.QWidget()
         self.settings_tab.setObjectName("settings_tab")
@@ -118,7 +118,7 @@ class Ui_Main(object):
         self.yes_check_program_updates_radioButton.setGeometry(QtCore.QRect(90, 30, 50, 20))
         self.yes_check_program_updates_radioButton.setObjectName("yes_check_program_updates_radioButton")
         self.no_check_program_updates_radioButton = QtWidgets.QRadioButton(self.check_program_updates_groupBox)
-        self.no_check_program_updates_radioButton.setGeometry(QtCore.QRect(190, 30, 50, 20))
+        self.no_check_program_updates_radioButton.setGeometry(QtCore.QRect(200, 30, 50, 20))
         self.no_check_program_updates_radioButton.setObjectName("no_check_program_updates_radioButton")
         self.use_dark_theme_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.use_dark_theme_groupBox.setGeometry(QtCore.QRect(100, 40, 330, 60))
@@ -128,7 +128,7 @@ class Ui_Main(object):
         self.yes_dark_theme_radioButton.setGeometry(QtCore.QRect(90, 30, 50, 20))
         self.yes_dark_theme_radioButton.setObjectName("yes_dark_theme_radioButton")
         self.no_dark_theme_radioButton = QtWidgets.QRadioButton(self.use_dark_theme_groupBox)
-        self.no_dark_theme_radioButton.setGeometry(QtCore.QRect(190, 30, 50, 20))
+        self.no_dark_theme_radioButton.setGeometry(QtCore.QRect(200, 30, 50, 20))
         self.no_dark_theme_radioButton.setObjectName("no_dark_theme_radioButton")
         self.create_screenshots_folder_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.create_screenshots_folder_groupBox.setGeometry(QtCore.QRect(500, 110, 330, 60))
@@ -165,10 +165,10 @@ class Ui_Main(object):
         self.silent_reshade_updates_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.silent_reshade_updates_groupBox.setObjectName("silent_reshade_updates_groupBox")
         self.yes_silent_reshade_updates_radioButton = QtWidgets.QRadioButton(self.silent_reshade_updates_groupBox)
-        self.yes_silent_reshade_updates_radioButton.setGeometry(QtCore.QRect(90, 30, 50, 18))
+        self.yes_silent_reshade_updates_radioButton.setGeometry(QtCore.QRect(90, 30, 50, 20))
         self.yes_silent_reshade_updates_radioButton.setObjectName("yes_silent_reshade_updates_radioButton")
         self.no_silent_reshade_updates_radioButton = QtWidgets.QRadioButton(self.silent_reshade_updates_groupBox)
-        self.no_silent_reshade_updates_radioButton.setGeometry(QtCore.QRect(200, 30, 45, 18))
+        self.no_silent_reshade_updates_radioButton.setGeometry(QtCore.QRect(200, 30, 50, 20))
         self.no_silent_reshade_updates_radioButton.setObjectName("no_silent_reshade_updates_radioButton")
         self.apply_custom_config_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.apply_custom_config_groupBox.setGeometry(QtCore.QRect(500, 250, 330, 150))
@@ -182,7 +182,7 @@ class Ui_Main(object):
         sizePolicy.setHeightForWidth(self.edit_all_games_custom_config_button.sizePolicy().hasHeightForWidth())
         self.edit_all_games_custom_config_button.setSizePolicy(sizePolicy)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("src\\ui\\../images/plugin.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(":/resources/images/plugin.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.edit_all_games_custom_config_button.setIcon(icon6)
         self.edit_all_games_custom_config_button.setObjectName("edit_all_games_custom_config_button")
         self.yes_custom_config_radioButton = QtWidgets.QRadioButton(self.apply_custom_config_groupBox)
@@ -196,7 +196,7 @@ class Ui_Main(object):
         self.apply_all_games_custom_config_button.setIcon(icon3)
         self.apply_all_games_custom_config_button.setObjectName("apply_all_games_custom_config_button")
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("src\\ui\\../images/gear.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(":/resources/images/gear.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.main_tabWidget.addTab(self.settings_tab, icon7, "")
         self.about_tab = QtWidgets.QWidget()
         self.about_tab.setObjectName("about_tab")
@@ -225,12 +225,12 @@ class Ui_Main(object):
 "}")
         self.donate_button.setText("")
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("src\\ui\\../images/donate.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap("D:\\Workspaces\\Python\\ReshadeUtils\\src\\ui\\../images/donate.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.donate_button.setIcon(icon8)
         self.donate_button.setIconSize(QtCore.QSize(100, 100))
         self.donate_button.setObjectName("donate_button")
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap("src\\ui\\../images/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(QtGui.QPixmap(":/resources/images/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.main_tabWidget.addTab(self.about_tab, icon9, "")
         self.updateAvail_label = QtWidgets.QLabel(Main)
         self.updateAvail_label.setGeometry(QtCore.QRect(260, 655, 481, 40))
@@ -243,7 +243,7 @@ class Ui_Main(object):
         self.update_button = QtWidgets.QPushButton(Main)
         self.update_button.setGeometry(QtCore.QRect(820, 660, 130, 30))
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap("src\\ui\\../images/update.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon10.addPixmap(QtGui.QPixmap(":/resources/images/update.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.update_button.setIcon(icon10)
         self.update_button.setObjectName("update_button")
         self.main_tabWidget.raise_()
@@ -255,8 +255,8 @@ class Ui_Main(object):
         self.main_tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Main)
 
-        mainSrc = MainSrc(self, Main)
-        mainSrc.init()
+        main_src = MainSrc(self, Main)
+        main_src.start()
 
 
     def retranslateUi(self, Main):
@@ -332,7 +332,7 @@ class Ui_Main(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Acknowledgements</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.qt.io\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">PyQt5</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://riverbankcomputing.com/software/pyqt/download\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">PyQt5</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.python.org\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Python3</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://reshade.me/\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Reshade</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://pyinstaller.readthedocs.io\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">PyInstaller</span></a></p>\n"
@@ -340,8 +340,7 @@ class Ui_Main(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Developed by</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Discord: Hadesz#1223</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:hadesz456@gmail.com\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:dddcsta@gmail.com\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/ddc/ReshadeUtils/releases/latest\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Download</span></a></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.about_tab), _translate("Main", "ABOUT"))

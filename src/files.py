@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -11,72 +10,67 @@ import requests
 from src import constants, utils
 
 
-class CreateFiles:
+class Files:
     def __init__(self, main):
         self.main = main
         self.log = main.log
 
 
-    @staticmethod
-    def create_reshade_preset_ini_file():
-        dst_path = constants.RESHADE_PRESET_FILENAME
-        preset_remote_file = constants.PRESET_REMOTE_FILENAME
+    def create_reshade_ini_file(self, local_file_path, screenshot_path):
+        remote_file = constants.RESHADE_REMOTE_FILENAME
+        self._download_file(remote_file, local_file_path, _ini_file_contents)
 
-        try:
-            req = requests.get(preset_remote_file)
-            with open(dst_path, "wb") as outfile:
-                outfile.write(req.content)
-        except requests.HTTPError:
-            file = open(constants.RESHADE_PRESET_FILENAME, encoding="UTF-8", mode="w")
-            file.write(
-"""PreprocessorDefinitions=
-Techniques=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx
-TechniqueSorting=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,HDR@FakeHDR.fx,Border@Border.fx,LeiFx_Tech@3DFX.fx,MotionBlur@FakeMotionBlur.fx,Tonemap@Tonemap.fx,MagicBloom@MagicBloom.fx,PPFXBloom@PPFX_Bloom.fx,FXAA@FXAA.fx,FilmGrain@FilmGrain.fx,Cartoon@Cartoon.fx,AdaptiveFog@AdaptiveFog.fx,Depth3D@Depth3D.fx,AdvancedCRT@CRT.fx,SMAA@SMAA.fx,Chromakey@Chromakey.fx,TriDither@TriDither.fx,FilmGrain2@FilmGrain2.fx,PPFX_Godrays@PPFX_Godrays.fx,LevelsPlus@LevelsPlus.fx,DepthHaze@DepthHaze.fx,Curves@Curves.fx,CA@ChromaticAberration.fx,Monochrome@Monochrome.fx,LiftGammaGain@LiftGammaGain.fx,FilmicAnamorphSharpen@FilmicAnamorphSharpen.fx,GaussianBlur@GaussianBlur.fx,Before@Splitscreen.fx,After@Splitscreen.fx,UIDetect@UIDetect.fx,UIDetect_Before@UIDetect.fx,UIDetect_After@UIDetect.fx,StageDepth@StageDepth.fx,PPFXSSDO@PPFX_SSDO.fx,FilmicPass@FilmicPass.fx,DisplayDepth@DisplayDepth.fx,Daltonize@Daltonize.fx,UIMask_Top@UIMask.fx,UIMask_Bottom@UIMask.fx,GlitchB@Glitch.fx,MultiLUT@MultiLUT.fx,AdaptiveSharpen@AdaptiveSharpen.fx,ChromaticAberration@Prism.fx,LightDoF_AutoFocus@LightDoF.fx,LightDoF_Far@LightDoF.fx,LightDoF_Near@LightDoF.fx,Deband@Deband.fx,Vibrance@Vibrance.fx,Layer@Layer.fx,KNearestNeighbors@Denoise.fx,NonLocalMeans@Denoise.fx,Mode1@FineSharp.fx,Mode2@FineSharp.fx,Mode3@FineSharp.fx,CinematicDOF@CinematicDOF.fx,HighPassSharp@HighPassSharpen.fx,Vignette@Vignette.fx,LUT@LUT.fx,SurfaceBlur@SurfaceBlur.fx,MXAO@MXAO.fx,ReflectiveBumpmapping@ReflectiveBumpMapping.fx,HQ4X@HQ4X.fx,Technicolor@Technicolor.fx,RingDOF@DOF.fx,MagicDOF@DOF.fx,GP65CJ042DOF@DOF.fx,MatsoDOF@DOF.fx,MartyMcFlyDOF@DOF.fx,AmbientLight@AmbientLight.fx,Technicolor2@Technicolor2.fx,Nightvision@NightVision.fx,Tint@Sepia.fx,HSLShift@HSLShift.fx,Clarity@Clarity.fx,Colourfulness@Colourfulness.fx,TiltShift@TiltShift.fx,ASCII@ASCII.fx,ColorMatrix@ColorMatrix.fx,Emphasize@Emphasize.fx,AspectRatioPS@AspectRatio.fx,EyeAdaption@EyeAdaption.fx,Nostalgia@Nostalgia.fx,BloomAndLensFlares@Bloom.fx,PerfectPerspective@PerfectPerspective.fx
-
-[DPX.fx]
-Colorfulness=2.500000
-Contrast=0.100000
-RGB_C=0.360000,0.360000,0.340000
-RGB_Curve=8.000000,8.000000,8.000000
-Saturation=1.800000
-Strength=0.200000
-
-[Levels.fx]
-BlackPoint=5
-HighlightClipping=0
-WhitePoint=235
-
-[LumaSharpen.fx]
-offset_bias=1.000000
-pattern=1
-sharp_clamp=1.000000
-sharp_strength=1.000000
-show_sharpen=0
-""")
-            file.close()
-
-
-    @staticmethod
-    def create_reshade_ini_file(dst_res_ini_path, screenshot_path):
-        reshade_config_remote_file = constants.RESHADE_REMOTE_FILENAME
-        effect_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade - shaders", "Shaders")
-        texture_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade - shaders", "Textures")
+        effect_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Shaders")
+        texture_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Textures")
         intermediate_cache_path = os.getenv("TEMP")
         preset_path = f".\\{constants.RESHADE_PRESET_INI}"
 
+        utils.set_file_settings(local_file_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+        utils.set_file_settings(local_file_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        utils.set_file_settings(local_file_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        utils.set_file_settings(local_file_path, "GENERAL", "PresetPath", preset_path)
+        utils.set_file_settings(local_file_path, "SCREENSHOT", "SavePath", screenshot_path)
+
+
+    def create_reshade_preset_ini_file(self):
+        local_file_path = constants.RESHADE_PRESET_FILENAME
+        remote_file = constants.PRESET_REMOTE_FILENAME
+        self._download_file(remote_file, local_file_path, _preset_file_contents)
+
+
+    def create_qss_file(self):
+        local_file_path = constants.QSS_FILENAME
+        remote_file = constants.QSS_REMOTE_FILENAME
+        self._download_file(remote_file, local_file_path, _qss_file_contents)
+
+
+    def _download_file(self, remote_file, local_file_path, contents):
         try:
-            req = requests.get(reshade_config_remote_file)
-            with open(dst_res_ini_path, "wb") as outfile:
-                outfile.write(req.content)
-            utils.set_file_settings(dst_res_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-            utils.set_file_settings(dst_res_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
-            utils.set_file_settings(dst_res_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-            utils.set_file_settings(dst_res_ini_path, "GENERAL", "PresetPath", preset_path)
-            utils.set_file_settings(dst_res_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
+            req = requests.get(remote_file)
+            if req.status_code == 200:
+                with open(local_file_path, "wb") as outfile:
+                    outfile.write(req.content)
+            else:
+                self._write_contents_local_file(local_file_path, contents)
         except requests.HTTPError:
-            file = open(dst_res_ini_path, encoding="UTF-8", mode="w")
-            file.write(
-f"""[D3D11]
+            self._write_contents_local_file(local_file_path, contents)
+
+
+    @staticmethod
+    def _write_contents_local_file(local_file_path, contents):
+        file = open(local_file_path, encoding="UTF-8", mode="w")
+        file.write(contents)
+        file.close()
+
+
+_ini_file_contents = (
+f"""[D3D9]
+DepthCopyAtClearIndex=0
+DepthCopyBeforeClears=0
+DisableINTZ=0
+UseAspectRatioHeuristics=1
+
+[D3D11]
 DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 UseAspectRatioHeuristics=1
@@ -86,16 +80,17 @@ DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 UseAspectRatioHeuristics=1
 
-[D3D9]
+[DEPTH]
 DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 DisableINTZ=0
 UseAspectRatioHeuristics=1
 
-[DEPTH]
-DepthCopyAtClearIndex=0
-DepthCopyBeforeClears=0
-UseAspectRatioHeuristics=1
+[GENERAL]
+PerformanceMode=1
+PreprocessorDefinitions=
+PresetTransitionDelay=1000
+SkipLoadingDisabledEffects=1
 
 [INPUT]
 ForceShortcutModifiers=1
@@ -109,18 +104,27 @@ KeyReload=0,0,0,0
 KeyScreenshot=44,0,0,0
 
 [OVERLAY]
-ClockFormat=1
-FPSPosition=1
+ClockFormat=0
+FPSPosition=3
 NoFontScaling=1
-SaveWindowState=0
+SaveWindowState=1
 ShowClock=0
 ShowForceLoadEffectsButton=1
-ShowFPS=0
+ShowFPS=1
 ShowFrameTime=0
 ShowScreenshotMessage=1
 TutorialProgress=4
-VariableListHeight=300.000000
+VariableListHeight=336.000000
 VariableListUseTabs=1
+
+[SCREENSHOT]
+ClearAlpha=1
+FileFormat=1
+FileNamingFormat=0
+JPEGQuality=90
+SaveBeforeShot=1
+SaveOverlayShot=1
+SavePresetFile=1
 
 [STYLE]
 Alpha=1.000000
@@ -131,7 +135,7 @@ EditorFontSize=13
 EditorStyleIndex=0
 Font=ProggyClean.ttf
 FontSize=13
-FPSScale=1.000000
+FPSScale=1.300000
 FrameRounding=12.000000
 GrabRounding=12.000000
 PopupRounding=12.000000
@@ -139,42 +143,49 @@ ScrollbarRounding=12.000000
 StyleIndex=0
 TabRounding=12.000000
 WindowRounding=12.000000
-
-[GENERAL]
-PerformanceMode=1
-PreprocessorDefinitions=RESHADE_DEPTH_LINEARIZATION_FAR_PLANE=1000.0,RESHADE_DEPTH_INPUT_IS_UPSIDE_DOWN=0,RESHADE_DEPTH_INPUT_IS_REVERSED=1,RESHADE_DEPTH_INPUT_IS_LOGARITHMIC=0
-PresetTransitionDelay=1000
-SkipLoadingDisabledEffects=1
-EffectSearchPaths={effect_search_paths}
-TextureSearchPaths={texture_search_paths}
-IntermediateCachePath={intermediate_cache_path}
-PresetPath={preset_path}
-
-[SCREENSHOT]
-ClearAlpha=1
-FileFormat=1
-FileNamingFormat=0
-JPEGQuality=100
-SaveBeforeShot=0
-SaveOverlayShot=0
-SavePresetFile=0
-SavePath={screenshot_path}
 """)
-            file.close()
 
 
-    @staticmethod
-    def create_style_file():
-        dst_path = constants.STYLE_QSS_FILENAME
-        css_remote_file = constants.CSS_REMOTE_FILENAME
+_preset_file_contents = (
+"""PreprocessorDefinitions=
+Techniques=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,Clarity@Clarity.fx
+TechniqueSorting=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,Clarity@Clarity.fx
 
-        try:
-            req = requests.get(css_remote_file)
-            with open(dst_path, "wb") as outfile:
-                outfile.write(req.content)
-        except requests.HTTPError:
-            file = open(constants.STYLE_QSS_FILENAME, encoding="UTF-8", mode="w")
-            file.write(
+[Clarity.fx]
+ClarityBlendIfDark=50
+ClarityBlendIfLight=205
+ClarityBlendMode=2
+ClarityDarkIntensity=0.400000
+ClarityLightIntensity=0.000000
+ClarityOffset=2.000000
+ClarityRadius=3
+ClarityStrength=0.400000
+ClarityViewBlendIfMask=0
+ClarityViewMask=0
+
+[DPX.fx]
+Colorfulness=2.500000
+Contrast=0.000000
+RGB_C=0.360000,0.360000,0.340000
+RGB_Curve=8.000000,8.000000,8.000000
+Saturation=2.200001
+Strength=0.200000
+
+[Levels.fx]
+BlackPoint=5
+HighlightClipping=0
+WhitePoint=235
+
+[LumaSharpen.fx]
+offset_bias=1.000000
+pattern=1
+sharp_clamp=0.035000
+sharp_strength=0.500000
+show_sharpen=0
+""")
+
+
+_qss_file_contents = (
 """QWidget {
    background-color: #222222;
 }
@@ -426,4 +437,3 @@ QTableCornerButton::section {
     border: 1px transparent rgba(128, 128, 128, 128);
 }
 """)
-            file.close()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>game_config_form</class>
- <widget class="QWidget" name="game_config_form">
+ <class>config</class>
+ <widget class="QWidget" name="config">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -28,7 +28,7 @@
   <widget class="QPushButton" name="cancel_pushButton">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>250</x>
      <y>150</y>
      <width>93</width>
      <height>28</height>
@@ -38,8 +38,8 @@
     <string>Cancel</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>../images/cancel.png</normaloff>../images/cancel.png</iconset>
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/images/cancel.png</normaloff>:/resources/images/cancel.png</iconset>
    </property>
   </widget>
   <widget class="QLineEdit" name="game_name_lineEdit">
@@ -71,7 +71,7 @@
   <widget class="QPushButton" name="ok_pushButton">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>20</x>
      <y>150</y>
      <width>93</width>
      <height>28</height>
@@ -84,8 +84,8 @@
     <string>OK</string>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>../images/apply.png</normaloff>../images/apply.png</iconset>
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/images/apply.png</normaloff>:/resources/images/apply.png</iconset>
    </property>
   </widget>
   <widget class="QGroupBox" name="api_groupBox">
@@ -103,7 +103,7 @@
    <widget class="QRadioButton" name="dx9_radioButton">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>100</x>
       <y>30</y>
       <width>91</width>
       <height>20</height>
@@ -141,6 +141,8 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

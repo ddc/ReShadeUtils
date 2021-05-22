@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -13,13 +12,13 @@ import os
 import sys
 import zipfile
 import requests
-from src.create_files import CreateFiles
+from src.files import Files
 from src import constants, messages, qtutils
 
 
 class Object:
     def __init__(self):
-        self._created = str(datetime.datetime.now().strftime("%Y-%m-%d" "%H:%M:%S"))
+        self._created = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
@@ -37,7 +36,7 @@ def get_current_path():
     return None
 
 
-def get_ini_settings(file_name: str, section: str, config_name: str):
+def get_ini_settings(file_name, section, config_name):
     parser = configparser.ConfigParser(delimiters="=", allow_no_value=True)
     parser.optionxform = str  # this wont change all values to lowercase
     parser._interpolation = configparser.ExtendedInterpolation()
@@ -51,7 +50,7 @@ def get_ini_settings(file_name: str, section: str, config_name: str):
     return value
 
 
-def unzip_file(file_name: str, out_path: str):
+def unzip_file(file_name, out_path):
     zipfile_path = file_name
     zipf = zipfile.ZipFile(zipfile_path)
     zipf.extractall(out_path)
@@ -111,8 +110,8 @@ def check_new_program_version(self):
             qtutils.show_message_window(self.log, "error", err_msg)
     except requests.exceptions.ConnectionError:
         qtutils.show_message_window(self.log, "error", messages.dl_new_version_timeout)
-    finally:
-        return obj_return
+
+    return obj_return
 
 
 def check_dirs():
@@ -125,14 +124,14 @@ def check_dirs():
         exit(1)
 
 
-def create_reshade_ini_files(self):
-    create_files = CreateFiles(self)
+def create_reshade_files(self):
+    create_files = Files(self)
 
     try:
-        if not os.path.isfile(constants.STYLE_QSS_FILENAME):
-            create_files.create_style_file()
+        if not os.path.isfile(constants.QSS_FILENAME):
+            create_files.create_qss_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.STYLE_QSS_FILENAME}{messages.not_found}"
+        err_msg = f"{str(e)}\n\n{constants.QSS_FILENAME}{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
         return False
 
@@ -171,9 +170,8 @@ def set_default_database_configs(self):
     from src.sql.config_sql import ConfigSql
     config_sql = ConfigSql(self)
     rs_config = config_sql.get_configs()
-    if rs_config is None:
-        if not config_sql.set_default_configs():
-            return False
+    if rs_config is None and not config_sql.set_default_configs():
+        return False
     return True
 
 

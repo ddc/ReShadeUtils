@@ -1,6 +1,4 @@
-beautifulsoup4>=4.9.3
-PyQt5>=5.15.4
-PyQt5-stubs>=5.15.2.0
+SQLAlchemy>=1.4.15
 requests>=2.25.1
-pyinstaller>=4.2
-SQLAlchemy>=1.4.3
+PyQt5>=5.15.4
+beautifulsoup4>=4.9.3

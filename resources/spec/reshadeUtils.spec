@@ -1,11 +1,12 @@
 # -*- mode: python -*-
 
 block_cipher = None
+add_images = [ ('../images/*.*', 'images') ]
 
-a = Analysis(['../launcher.py'],
+a = Analysis(['../../main.py'],
              pathex=['*path*'],
              binaries=[],
-             datas=[],
+             datas = add_images,
              hiddenimports=['sqlalchemy.sql.default_comparator'],
              hookspath=[],
              runtime_hooks=[],
@@ -23,20 +24,12 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='Launcher',
+          name='ReshadeUtils',
           debug=False,
           strip=False,
           upx=False,
           runtime_tmpdir=None,
           console=False,
-          version='resources.rc',
+          version='version.rc',
           uac_admin=False,
           icon='')
-
-#coll = COLLECT(exe,
-#               a.binaries,
-#               a.zipfiles,
-#               a.datas,
-#               strip=False,
-#               upx=False,
-#               name='Launcher')

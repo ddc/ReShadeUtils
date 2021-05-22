@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -12,9 +11,9 @@ import zipfile
 import requests
 from PyQt5 import QtCore, QtWidgets
 from src.sql.games_sql import GamesSql
-from src.create_files import CreateFiles
-from PyQt5.QtGui import QDesktopServices
 from src.sql.config_sql import ConfigSql
+from src.files import Files
+from PyQt5.QtGui import QDesktopServices
 from src import constants, messages, utils, qtutils
 
 
@@ -157,7 +156,7 @@ def edit_game_path(self):
 
             try:
                 dst_res_ini_path = os.path.join(new_game_dir, constants.RESHADE_INI)
-                create_files = CreateFiles(self)
+                create_files = Files(self)
                 create_files.create_reshade_ini_file(dst_res_ini_path, game_screenshots_path)
             except Exception as e:
                 self.log.error(f"create_files: {str(e)}")
@@ -177,7 +176,7 @@ def open_reshade_config_file(self):
 
         try:
             if not os.path.isfile(constants.RESHADE_PRESET_FILENAME):
-                create_files = CreateFiles(self)
+                create_files = Files(self)
                 create_files.create_reshade_preset_ini_file()
         except Exception as e:
             self.log.error(f"create_files: {str(e)}")
@@ -198,7 +197,7 @@ def open_reshade_config_file(self):
 
 
 def edit_all_games_custom_config_button(self):
-    if utils.create_reshade_ini_files(self):
+    if utils.create_reshade_files(self):
         try:
             os.startfile(constants.RESHADE_PRESET_FILENAME)
         except Exception as e:
@@ -206,7 +205,7 @@ def edit_all_games_custom_config_button(self):
             qtutils.show_message_window(self.log, "error", err_msg)
 
 
-def dark_theme_clicked(self, status: str):
+def dark_theme_clicked(self, status):
     if status == "YES":
         self.set_style_sheet(True)
         self.use_dark_theme = True
@@ -217,12 +216,10 @@ def dark_theme_clicked(self, status: str):
         status = 0
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_dark_theme(configs_obj)
+    config_sql.update_dark_theme(status)
 
 
-def check_program_updates_clicked(self, status: str):
+def check_program_updates_clicked(self, status):
     if status == "YES":
         self.check_program_updates = True
         status = 1
@@ -231,12 +228,10 @@ def check_program_updates_clicked(self, status: str):
         status = 0
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_check_program_updates(configs_obj)
+    config_sql.update_check_program_updates(status)
 
 
-def check_reshade_updates_clicked(self, status: str):
+def check_reshade_updates_clicked(self, status):
     if status == "YES":
         self.check_reshade_updates = True
         status = 1
@@ -248,12 +243,10 @@ def check_reshade_updates_clicked(self, status: str):
     self.qtobj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_check_resahde_updates(configs_obj)
+    config_sql.update_check_resahde_updates(status)
 
 
-def silent_reshade_updates_clicked(self, status: str):
+def silent_reshade_updates_clicked(self, status):
     if status == "YES":
         self.silent_reshade_updates = True
         status = 1
@@ -262,12 +255,10 @@ def silent_reshade_updates_clicked(self, status: str):
         status = 0
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_silent_reshade_updates(configs_obj)
+    config_sql.update_silent_reshade_updates(status)
 
 
-def update_shaders_clicked(self, status: str):
+def update_shaders_clicked(self, status):
     if status == "YES":
         self.update_shaders = True
         status = 1
@@ -276,12 +267,10 @@ def update_shaders_clicked(self, status: str):
         status = 0
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_shaders(configs_obj)
+    config_sql.update_shaders(status)
 
 
-def create_screenshots_folder_clicked(self, status: str):
+def create_screenshots_folder_clicked(self, status):
     if status == "YES":
         self.create_screenshots_folder = True
         status = 1
@@ -290,12 +279,10 @@ def create_screenshots_folder_clicked(self, status: str):
         status = 0
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_create_screenshots_folder(configs_obj)
+    config_sql.update_create_screenshots_folder(status)
 
 
-def reset_reshade_files_clicked(self, status: str):
+def reset_reshade_files_clicked(self, status):
     if status == "YES":
         self.reset_reshade_files = True
         status = 1
@@ -304,12 +291,10 @@ def reset_reshade_files_clicked(self, status: str):
         status = 0
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_reset_reshade_files(configs_obj)
+    config_sql.update_reset_reshade_files(status)
 
 
-def custom_config_clicked(self, status: str):
+def custom_config_clicked(self, status):
     if status == "YES":
         self.use_custom_config = True
         status = 1
@@ -318,9 +303,7 @@ def custom_config_clicked(self, status: str):
         status = 0
 
     config_sql = ConfigSql(self)
-    configs_obj = utils.Object()
-    configs_obj.status = status
-    config_sql.update_custom_config(configs_obj)
+    config_sql.update_custom_config(status)
 
 
 def programs_tableWidget_clicked(self, item):
@@ -368,9 +351,9 @@ def apply_all(self):
             # begin games update section
             errors = []
             games_obj = utils.Object()
-            self.progressBar.set_values(messages.copying_DLLs, 0)
+            self.progressbar.set_values(messages.copying_DLLs, 0)
             for i in range(len(rs_all_games)):
-                self.progressBar.set_values(messages.copying_DLLs, 100 / len_games)
+                self.progressbar.set_values(messages.copying_DLLs, 100 / len_games)
                 games_obj.api = rs_all_games[i]["api"]
                 games_obj.architecture = rs_all_games[i]["architecture"]
                 games_obj.game_name = rs_all_games[i]["name"]
@@ -389,7 +372,7 @@ def apply_all(self):
                 err = "\n".join(errors)
                 qtutils.show_message_window(self.log, "error", f"{messages.apply_success_with_errors}\n\n{err}")
 
-            self.progressBar.close()
+            self.progressbar.close()
 
 
 def game_config_form_result(self, architecture, status):
@@ -398,16 +381,16 @@ def game_config_form_result(self, architecture, status):
     opengl_name = constants.OPENGL_DISPLAY_NAME
 
     if status == "OK":
-        self.progressBar.set_values(messages.copying_DLLs, 50)
+        self.progressbar.set_values(messages.copying_DLLs, 50)
         if self.game_config_form.qtObj.game_name_lineEdit.text() == "":
-            self.progressBar.close()
+            self.progressbar.close()
             qtutils.show_message_window(self.log, "error", messages.missing_game_name)
             return
 
         if not self.game_config_form.qtObj.opengl_radioButton.isChecked() \
             and not self.game_config_form.qtObj.dx9_radioButton.isChecked() \
-            and not self.game_config_form.qtObj.dx_radioButton.isChecked():
-            self.progressBar.close()
+                and not self.game_config_form.qtObj.dx_radioButton.isChecked():
+            self.progressbar.close()
             qtutils.show_message_window(self.log, "error", messages.missing_api)
             return
 
@@ -445,7 +428,7 @@ def game_config_form_result(self, architecture, status):
 
                 try:
                     dst_res_ini_path = os.path.join(self.selected_game.game_dir, constants.RESHADE_INI)
-                    create_files = CreateFiles(self)
+                    create_files = Files(self)
                     create_files.create_reshade_ini_file(dst_res_ini_path, new_screenshots_path)
                 except Exception as e:
                     self.log.error(f"create_reshade_ini_file: {str(e)}")
@@ -484,7 +467,7 @@ def game_config_form_result(self, architecture, status):
 
             sql_games_obj.id = self.selected_game.id
             games_sql.update_game(sql_games_obj)
-            self.progressBar.close()
+            self.progressbar.close()
         else:
             # new game added
             if self.game_config_form.qtObj.dx9_radioButton.isChecked():
@@ -499,7 +482,7 @@ def game_config_form_result(self, architecture, status):
             del self.added_game_path
             if self.update_shaders:
                 _download_shaders(self)
-            self.progressBar.close()
+            self.progressbar.close()
             _apply_single(self, sql_games_obj)
             qtutils.show_message_window(self.log, "info", f"{messages.game_added}\n\n{sql_games_obj.game_name}")
 
@@ -549,6 +532,15 @@ def _apply_single(self, games_obj):
     else:
         src_dll_path = constants.RESHADE64_PATH
 
+    if not os.path.isfile(src_dll_path):
+        if self.local_reshade_exe is None:
+            self._download_new_reshade_version()
+        else:
+            if not os.path.isfile(self.local_reshade_exe):
+                self._download_new_reshade_version()
+            else:
+                self._unzip_reshade(self.local_reshade_exe)
+
     if games_obj.api == constants.DX9_DISPLAY_NAME:
         dst_dll_path = os.path.join(game_dir, constants.D3D9_DLL)
     elif games_obj.api == constants.OPENGL_DISPLAY_NAME:
@@ -563,7 +555,7 @@ def _apply_single(self, games_obj):
         except Exception as e:
             self.log.error(f"[apply_single]: {str(e)}")
 
-        create_files = CreateFiles(self)
+        create_files = Files(self)
         if self.reset_reshade_files:
             try:
                 # create Reshade.ini for each game, because each game has different paths
@@ -580,9 +572,9 @@ def _apply_single(self, games_obj):
 
             try:
                 # create style.qss nside program dir
-                create_files.create_style_file()
+                create_files.create_qss_file()
             except shutil.Error as e:
-                self.log.error(f"[apply_single]:[create_style_file]: {str(e)}")
+                self.log.error(f"[apply_single]:[create_qss_file]: {str(e)}")
         else:
             if not os.path.exists(dst_res_ini_path):
                 try:
@@ -599,11 +591,11 @@ def _apply_single(self, games_obj):
             else:
                 shutil.copy2(constants.RESHADE_PRESET_FILENAME, dst_res_plug_ini_path)
 
-            if not os.path.exists(constants.STYLE_QSS_FILENAME):
+            if not os.path.exists(constants.QSS_FILENAME):
                 try:
-                    create_files.create_style_file()
+                    create_files.create_qss_file()
                 except shutil.Error as e:
-                    self.log.error(f"[apply_single]:[create_style_file]: {str(e)}")
+                    self.log.error(f"[apply_single]:[create_qss_file]: {str(e)}")
     except Exception as e:
         self.log.error(f"apply:[{game_name}]:[{str(e)}]")
         errors = f"- {game_name}: {str(e)}"
@@ -621,7 +613,7 @@ def _download_shaders(self):
 
     if downloaded_new_shaders is not None and downloaded_new_shaders is True:
         try:
-            self.progressBar.set_values(messages.downloading_shaders, 50)
+            self.progressbar.set_values(messages.downloading_shaders, 50)
             r = requests.get(constants.SHADERS_ZIP_URL)
             with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
                 outfile.write(r.content)
@@ -641,7 +633,7 @@ def _download_shaders(self):
         except OSError as e:
             self.log.error(f"rmtree: {str(e)}")
 
-        self.progressBar.set_values(messages.downloading_shaders, 75)
+        self.progressbar.set_values(messages.downloading_shaders, 75)
         if os.path.isfile(constants.SHADERS_ZIP_PATH):
             try:
                 utils.unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
@@ -662,4 +654,4 @@ def _download_shaders(self):
         except OSError as e:
             self.log.error(f"rename_path: {str(e)}")
 
-        self.progressBar.set_values(messages.downloading_shaders, 99)
+        self.progressbar.set_values(messages.downloading_shaders, 99)
