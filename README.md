@@ -21,16 +21,17 @@ Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to severa
 ## To compile
 + Install requirements:
     + pip install -r requirements.txt
-+ Compile with PyInstaller both launcher and program:
-    + python3 -O -m PyInstaller --uac-admin --clean -y -F launcher.spec
-    + python3 -O -m PyInstaller --uac-admin --clean -y -F reshadeUtils.spec
++ Compile both launcher and program with PyInstaller:
+    + python.exe -O -m PyInstaller -y --clean --onefile --noupx -F resources/spec/launcher.spec
+    + python.exe -O -m PyInstaller -y --clean --onefile --noupx -F resources/spec/reshadeUtils.spec
 
 
 ## Acknowledgements
-+ [PyQt5](https://riverbankcomputing.com/software/pyqt/download)
-+ [Python3.9](https://www.python.org/downloads/)
-+ [Reshade](https://reshade.me/)
-+ [Inno Setup](http://www.innosetup.com/)
++ [PyQt5](https://pypi.org/project/PyQt5)
++ [Python3.9](https://www.python.org/downloads)
++ [Reshade](https://reshade.me)
++ [Inno Setup](http://www.innosetup.com)
++ [PyInstaller](https://www.pyinstaller.org)
 
 
 ## License

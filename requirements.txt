@@ -2,3 +2,4 @@ SQLAlchemy>=1.4.15
 requests>=2.25.1
 PyQt5>=5.15.4
 beautifulsoup4>=4.9.3
+pyinstaller>=4.3
