@@ -10,7 +10,7 @@ import sys
 from src import utils
 
 
-DEBUG = False
+DEBUG = True
 
 
 VERSION = "4.2"
@@ -19,6 +19,7 @@ SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 ################################################################################
+RESET_DATABASE_VERSION = "4.2"
 PROGRAM_PATH = os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "dev") if DEBUG
                                 else os.path.join(os.getenv("LOCALAPPDATA"), SHORT_PROGRAM_NAME))
 ################################################################################

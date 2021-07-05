@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -17,12 +16,11 @@ class Configs(Base):
     __tablename__ = "configs"
     id = Column(Integer, Sequence("configs_pk_seq"), primary_key=True, nullable=False, unique=True, autoincrement=True)
     use_dark_theme = Column(Integer, nullable=False, server_default=text("1"))
-    update_shaders = Column(Integer, nullable=False, server_default=text("1"))
     check_program_updates = Column(Integer, nullable=False, server_default=text("1"))
+    show_info_messages = Column(Integer, nullable=False, server_default=text("1"))
     check_reshade_updates = Column(Integer, nullable=False, server_default=text("1"))
     silent_reshade_updates = Column(Integer, nullable=False, server_default=text("1"))
-    reset_reshade_files = Column(Integer, nullable=False, server_default=text("0"))
-    use_custom_config = Column(Integer, nullable=False, server_default=text("0"))
+    update_shaders = Column(Integer, nullable=False, server_default=text("1"))
     create_screenshots_folder = Column(Integer, nullable=False, server_default=text("1"))
     program_version = Column(String(10), nullable=True)
     reshade_version = Column(String(10), nullable=True)

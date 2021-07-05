@@ -18,7 +18,7 @@ from src import constants, messages, qtutils
 
 class Object:
     def __init__(self):
-        self._created = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        self._created = datetime.datetime.now().isoformat()
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
@@ -48,6 +48,17 @@ def get_ini_settings(file_name, section, config_name):
     if value is not None and len(value) == 0:
         value = None
     return value
+
+
+def unzip_reshade(self, local_reshade_exe):
+    try:
+        if os.path.isfile(constants.RESHADE32_PATH):
+            os.remove(constants.RESHADE32_PATH)
+        if os.path.isfile(constants.RESHADE64_PATH):
+            os.remove(constants.RESHADE64_PATH)
+        unzip_file(local_reshade_exe, constants.PROGRAM_PATH)
+    except Exception as e:
+        self.log.error(str(e))
 
 
 def unzip_file(file_name, out_path):
@@ -124,22 +135,30 @@ def check_dirs():
         exit(1)
 
 
-def create_reshade_files(self):
-    create_files = Files(self)
+def check_local_reshade_files(self):
+    files = Files(self)
 
     try:
-        if not os.path.isfile(constants.QSS_FILENAME):
-            create_files.create_qss_file()
+        if not os.path.isfile(constants.RESHADE_INI_FILENAME):
+            files.download_reshade_ini_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.QSS_FILENAME}{messages.not_found}"
+        err_msg = f"{str(e)}\n\n{constants.RESHADE_INI_FILENAME}{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
         return False
 
     try:
         if not os.path.isfile(constants.RESHADE_PRESET_FILENAME):
-            create_files.create_reshade_preset_ini_file()
+            files.download_reshade_preset_file()
     except Exception as e:
         err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_FILENAME}{messages.not_found}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+        return False
+
+    try:
+        if not os.path.isfile(constants.QSS_FILENAME):
+            files.download_qss_file()
+    except Exception as e:
+        err_msg = f"{str(e)}\n\n{constants.QSS_FILENAME}{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
         return False
 
@@ -147,31 +166,34 @@ def create_reshade_files(self):
 
 
 def check_db_connection(self):
-    if self.db_engine is not None:
-        conn = self.db_engine.connect()
+    if self.database is not None:
+        conn = self.database.engine.connect()
         if conn is not None:
             conn.close()
             return True
-    return False
+    err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
+    if qtutils.show_message_window(self.log, "error", err_msg):
+        sys.exit(1)
 
 
 def create_default_tables(self):
     from src.sql.tables import Configs, Games
     try:
-        Configs.__table__.create(self.db_engine, checkfirst=True)
-        Games.__table__.create(self.db_engine, checkfirst=True)
+        Configs.__table__.create(self.database.engine, checkfirst=True)
+        Games.__table__.create(self.database.engine, checkfirst=True)
     except Exception as e:
         self.log.error(str(e))
         return False
     return True
 
 
-def set_default_database_configs(self):
+def set_default_database_configs(self, program_version):
     from src.sql.config_sql import ConfigSql
     config_sql = ConfigSql(self)
-    rs_config = config_sql.get_configs()
+    rs_config = config_sql.get_program_version()
     if rs_config is None and not config_sql.set_default_configs():
         return False
+    config_sql.update_program_version(program_version)
     return True
 
 

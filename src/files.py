@@ -6,6 +6,7 @@
 # # -*- coding: utf-8 -*-
 
 import os
+import shutil
 import requests
 from src import constants, utils
 
@@ -16,32 +17,65 @@ class Files:
         self.log = main.log
 
 
-    def create_reshade_ini_file(self, local_file_path, screenshot_path):
+    def download_all_files(self):
+        self.download_reshade_ini_file()
+        self.download_reshade_preset_file()
+        self.download_qss_file()
+
+
+    def download_reshade_ini_file(self):
+        local_file_path = constants.RESHADE_INI_FILENAME
         remote_file = constants.RESHADE_REMOTE_FILENAME
-        self._download_file(remote_file, local_file_path, _ini_file_contents)
+        self._download_file(remote_file, local_file_path, _preset_file_contents)
+
+
+    def download_reshade_preset_file(self):
+        local_file_path = constants.RESHADE_PRESET_FILENAME
+        remote_file = constants.PRESET_REMOTE_FILENAME
+        self._download_file(remote_file, local_file_path, _preset_file_contents)
+
+
+    def download_qss_file(self):
+        local_file_path = constants.QSS_FILENAME
+        remote_file = constants.QSS_REMOTE_FILENAME
+        self._download_file(remote_file, local_file_path, _qss_file_contents)
+
+
+    @staticmethod
+    def apply_reshade_ini_file(game_file_path, screenshot_path):
+        try:
+            shutil.copy(constants.RESHADE_INI_FILENAME, game_file_path)
+        except Exception as e:
+            return e
 
         effect_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Shaders")
         texture_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Textures")
         intermediate_cache_path = os.getenv("TEMP")
         preset_path = f".\\{constants.RESHADE_PRESET_INI}"
 
-        utils.set_file_settings(local_file_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-        utils.set_file_settings(local_file_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
-        utils.set_file_settings(local_file_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-        utils.set_file_settings(local_file_path, "GENERAL", "PresetPath", preset_path)
-        utils.set_file_settings(local_file_path, "SCREENSHOT", "SavePath", screenshot_path)
+        utils.set_file_settings(game_file_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+        utils.set_file_settings(game_file_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        utils.set_file_settings(game_file_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        utils.set_file_settings(game_file_path, "GENERAL", "PresetPath", preset_path)
+        utils.set_file_settings(game_file_path, "SCREENSHOT", "SavePath", screenshot_path)
+        return None
+
+    @staticmethod
+    def apply_reshade_preset_file(game_file_path):
+        try:
+            shutil.copy(constants.RESHADE_PRESET_FILENAME, game_file_path)
+        except Exception as e:
+            return e
+        return None
 
 
-    def create_reshade_preset_ini_file(self):
-        local_file_path = constants.RESHADE_PRESET_FILENAME
-        remote_file = constants.PRESET_REMOTE_FILENAME
-        self._download_file(remote_file, local_file_path, _preset_file_contents)
-
-
-    def create_qss_file(self):
-        local_file_path = constants.QSS_FILENAME
-        remote_file = constants.QSS_REMOTE_FILENAME
-        self._download_file(remote_file, local_file_path, _qss_file_contents)
+    @staticmethod
+    def apply_reshade_dll_file(src_dll_path, dst_dll_path):
+        try:
+            shutil.copy(src_dll_path, dst_dll_path)
+        except Exception as e:
+            return e
+        return None
 
 
     def _download_file(self, remote_file, local_file_path, contents):
@@ -112,7 +146,7 @@ ShowClock=0
 ShowForceLoadEffectsButton=1
 ShowFPS=1
 ShowFrameTime=0
-ShowScreenshotMessage=1
+ShowScreenshotMessage=0
 TutorialProgress=4
 VariableListHeight=336.000000
 VariableListUseTabs=1
@@ -121,10 +155,10 @@ VariableListUseTabs=1
 ClearAlpha=1
 FileFormat=1
 FileNamingFormat=0
-JPEGQuality=90
-SaveBeforeShot=1
-SaveOverlayShot=1
-SavePresetFile=1
+JPEGQuality=100
+SaveBeforeShot=0
+SaveOverlayShot=0
+SavePresetFile=0
 
 [STYLE]
 Alpha=1.000000
@@ -152,13 +186,13 @@ Techniques=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,Clarity@Clarit
 TechniqueSorting=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,Clarity@Clarity.fx
 
 [Clarity.fx]
-ClarityBlendIfDark=50
-ClarityBlendIfLight=205
+ClarityBlendIfDark=0
+ClarityBlendIfLight=255
 ClarityBlendMode=2
 ClarityDarkIntensity=0.400000
 ClarityLightIntensity=0.000000
-ClarityOffset=2.000000
-ClarityRadius=3
+ClarityOffset=5.000000
+ClarityRadius=4
 ClarityStrength=0.400000
 ClarityViewBlendIfMask=0
 ClarityViewMask=0
@@ -168,7 +202,7 @@ Colorfulness=2.500000
 Contrast=0.000000
 RGB_C=0.360000,0.360000,0.340000
 RGB_Curve=8.000000,8.000000,8.000000
-Saturation=2.200001
+Saturation=2.499999
 Strength=0.200000
 
 [Levels.fx]
@@ -180,7 +214,7 @@ WhitePoint=235
 offset_bias=1.000000
 pattern=1
 sharp_clamp=0.035000
-sharp_strength=0.500000
+sharp_strength=0.700000
 show_sharpen=0
 """)
 

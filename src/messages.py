@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -19,6 +18,7 @@ error_executing_program = "Could not initialize "
 error_check_installation = "Please check your installation and try again"
 checking_configs = "Checking config files..."
 error_game_not_found = "Game not found.\n Please check the game path and try again"
+config_reset_msg = "Your configuration has been RESET due to program update!!!\nWe apologize for the inconvenience."
 
 # reshade
 checking_new_reshade_files = "Checking for local reshade files..."

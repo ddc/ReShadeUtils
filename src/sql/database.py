@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -13,11 +12,11 @@ from sqlalchemy.engine import create_engine
 
 
 class DatabaseClass:
-    def __init__(self, main):
-        self.log = main.log
+    def __init__(self, log):
+        self.log = log
         self.db_file = constants.SQLITE3_FILENAME
         self.batch_size = 100
-        self.db_engine = main.db_engine
+        self.engine = self.create_engine()
 
 
     def create_engine(self):
@@ -35,7 +34,7 @@ class DatabaseClass:
 
 
     def execute(self, query):
-        with contextlib.closing(self.db_engine.connect()) as connection:
+        with contextlib.closing(self.engine.connect()) as connection:
             try:
                 connection.execute(query)
                 return True
@@ -45,8 +44,9 @@ class DatabaseClass:
 
 
     def select(self, query):
-        if self.db_engine is not None:
-            with contextlib.closing(self.db_engine.connect()) as connection:
+        final_data = None
+        if self.engine is not None:
+            with contextlib.closing(self.engine.connect()) as connection:
                 try:
                     if query is not None:
                         final_data = {}
@@ -59,7 +59,6 @@ class DatabaseClass:
                         if len(final_data) == 0:
                             final_data = None
                 except Exception as e:
-                    self.log.exception("sqlite", exc_info=e)
-                    self.log.error(f"sql:({query})")
+                    self.log.warning(f"[{str(e)}]")
                     final_data = None
         return final_data

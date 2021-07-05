@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -74,6 +73,10 @@ def set_icons(self):
     icon_edit_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/edit.png"))
     icon_edit.addPixmap(icon_edit_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
+    icon_reset = QtGui.QIcon()
+    icon_reset_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/reset.png"))
+    icon_reset.addPixmap(icon_reset_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
     icon_controller = QtGui.QIcon()
     icon_controller_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/controller.png"))
     icon_controller.addPixmap(icon_controller_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -98,15 +101,17 @@ def set_icons(self):
     icon_update_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/update.png"))
     icon_update.addPixmap(icon_update_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
-    self.qtobj.add_button.setIcon(icon_add)
-    self.qtobj.edit_path_button.setIcon(icon_arrow)
-    self.qtobj.delete_button.setIcon(icon_delete)
-    self.qtobj.apply_button.setIcon(icon_apply)
-    self.qtobj.apply_all_games_custom_config_button.setIcon(icon_apply)
-    self.qtobj.edit_config_button.setIcon(icon_edit)
     self.qtobj.main_tabWidget.addTab(self.qtobj.games_tab, icon_controller, "GAMES")
-    self.qtobj.edit_all_games_custom_config_button.setIcon(icon_plugin)
-    self.qtobj.main_tabWidget.addTab(self.qtobj.settings_tab, icon_gear, "SETTINGS")
-    self.qtobj.donate_button.setIcon(icon_donate)
-    self.qtobj.main_tabWidget.addTab(self.qtobj.about_tab, icon_help, "ABOUT")
+    self.qtobj.add_button.setIcon(icon_add)
+    self.qtobj.delete_button.setIcon(icon_delete)
+    self.qtobj.edit_preset_button.setIcon(icon_edit)
+    self.qtobj.edit_path_button.setIcon(icon_arrow)
+    self.qtobj.apply_button.setIcon(icon_apply)
     self.qtobj.update_button.setIcon(icon_update)
+
+    self.qtobj.main_tabWidget.addTab(self.qtobj.settings_tab, icon_gear, "SETTINGS")
+    self.qtobj.edit_default_preset_plugin_button.setIcon(icon_plugin)
+    self.qtobj.reset_all_button.setIcon(icon_reset)
+
+    self.qtobj.main_tabWidget.addTab(self.qtobj.about_tab, icon_help, "ABOUT")
+    self.qtobj.donate_button.setIcon(icon_donate)

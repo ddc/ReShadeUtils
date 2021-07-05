@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>../../resources/images/reset.png</file>
     <file>../../resources/images/add.png</file>
     <file>../../resources/images/apply.png</file>
     <file>../../resources/images/arrow.png</file>

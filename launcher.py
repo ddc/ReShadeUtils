@@ -25,15 +25,15 @@ class Launcher:
         self.new_version = None
         self.new_version_msg = None
         self.client_version = None
-        self.db_engine = None
+        self.database.engine = None
 
 
     def init(self):
         utils.check_dirs()
         self.progressbar.set_values(messages.checking_files, 25)
         self.log = Logs(constants.DIR_LOGS).setup_logging()
-        self.db_engine = DatabaseClass(self).create_engine()
-        if utils.create_reshade_files(self):
+        self.database.engine = DatabaseClass(self).create_engine()
+        if utils.check_local_reshade_files(self):
             self.progressbar.set_values(messages.checking_db_connection, 50)
             utils.check_db_connection(self)
             utils.set_default_database_configs(self)

@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 # |*****************************************************
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
@@ -7,16 +6,14 @@
 # # -*- coding: utf-8 -*-
 
 from src.sql.tables import Games
-from src.sql.database import DatabaseClass
 
 
 class GamesSql:
     def __init__(self, main):
         self.main = main
         self.log = main.log
-        self.db_engine = main.db_engine
         self.table = Games.__table__
-        self.database = DatabaseClass(self)
+        self.database = main.database
 
 
     def get_games(self):

@@ -1,11 +1,11 @@
 # Reshade Utilities
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=plastic)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE)
 [<img src="https://img.shields.io/github/license/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
-[![Python](https://img.shields.io/badge/python-3.9-blue.svg?style=plastic)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.9-blue.svg?style=plastic)](https://www.python.org/)
 [![GitHub release](https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic)](https://github.com/ddc/ReshadeUtils/releases/latest)
-[![QT5](https://img.shields.io/badge/PyQt-5-brightgreen.svg?style=plastic)](https://riverbankcomputing.com/software/pyqt/download)
+[![QT5](https://img.shields.io/badge/PyQt-5-brightgreen.svg?style=plastic)](https://riverbankcomputing.com/software/pyqt)
 
-Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to several games at once.
+Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to several games at once
 
 ![screenshot](resources/images/screenshot.png)
 
@@ -27,15 +27,15 @@ Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to severa
 
 
 ## Acknowledgements
-+ [PyQt5](https://pypi.org/project/PyQt5)
-+ [Python3.9](https://www.python.org/downloads)
++ [PyQt5](https://riverbankcomputing.com/software/pyqt)
++ [Python3.9](https://www.python.org)
 + [Reshade](https://reshade.me)
 + [Inno Setup](http://www.innosetup.com)
 + [PyInstaller](https://www.pyinstaller.org)
 
 
 ## License
-Released under the [GNU GPL v3](LICENSE).
+Released under the [GNU GPL v3](LICENSE)
 
 
 ## Buy Me a Cup of Coffee

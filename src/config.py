@@ -2,7 +2,6 @@
 # * Copyright         : Copyright (C) 2019
 # * Author            : ddc
 # * License           : GPL v3
-# * Python            : 3.6
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
@@ -18,7 +17,7 @@ class Ui_config(object):
         config.setMinimumSize(QtCore.QSize(360, 195))
         config.setMaximumSize(QtCore.QSize(360, 195))
         self.cancel_pushButton = QtWidgets.QPushButton(config)
-        self.cancel_pushButton.setGeometry(QtCore.QRect(250, 150, 93, 28))
+        self.cancel_pushButton.setGeometry(QtCore.QRect(20, 150, 93, 28))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/resources/images/cancel.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.cancel_pushButton.setIcon(icon)
@@ -31,7 +30,7 @@ class Ui_config(object):
         self.game_label.setGeometry(QtCore.QRect(10, 10, 71, 16))
         self.game_label.setObjectName("game_label")
         self.ok_pushButton = QtWidgets.QPushButton(config)
-        self.ok_pushButton.setGeometry(QtCore.QRect(20, 150, 93, 28))
+        self.ok_pushButton.setGeometry(QtCore.QRect(250, 150, 93, 28))
         self.ok_pushButton.setFocusPolicy(QtCore.Qt.WheelFocus)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/resources/images/apply.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -52,7 +51,6 @@ class Ui_config(object):
 
         self.retranslateUi(config)
         QtCore.QMetaObject.connectSlotsByName(config)
-
 
     def retranslateUi(self, config):
         _translate = QtCore.QCoreApplication.translate
