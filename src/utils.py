@@ -5,14 +5,16 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-import configparser
-import datetime
-import json
+
 import os
 import sys
+import json
 import zipfile
 import requests
+import datetime
+import configparser
 from src.files import Files
+from src.sql.config_sql import ConfigSql
 from src import constants, messages, qtutils
 
 
@@ -29,11 +31,11 @@ class Object:
         return json_dict
 
 
-def get_current_path():
-    path = os.path.abspath(os.getcwd())
-    if path is not None:
-        return os.path.normpath(path)
-    return None
+# def get_current_path():
+#     path = os.path.abspath(os.getcwd())
+#     if path is not None:
+#         return os.path.normpath(path)
+#     return None
 
 
 def get_ini_settings(file_name, section, config_name):
@@ -135,7 +137,7 @@ def check_dirs():
         exit(1)
 
 
-def check_local_reshade_files(self):
+def create_local_reshade_files(self):
     files = Files(self)
 
     try:
@@ -174,6 +176,32 @@ def check_db_connection(self):
     err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
     if qtutils.show_message_window(self.log, "error", err_msg):
         sys.exit(1)
+
+
+def check_database_configs(self):
+    if not create_default_tables(self):
+        err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
+        if qtutils.show_message_window(self.log, "error", err_msg):
+            sys.exit(1)
+
+    config_sql = ConfigSql(self)
+    rs_config = config_sql.get_program_version()
+    if rs_config is not None:
+        program_version = rs_config[0].get("program_version")
+        if float(program_version) < float(constants.RESET_DATABASE_VERSION):
+            try:
+                os.remove(constants.SQLITE3_FILENAME)
+                check_db_connection(self)
+                qtutils.show_message_window(self.log, "warning", messages.config_reset_msg)
+            except Exception:
+                err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
+                if qtutils.show_message_window(self.log, "error", err_msg):
+                    sys.exit(1)
+
+    if not set_default_database_configs(self, constants.VERSION):
+        err_msg = f"{messages.error_create_sql_config_msg}\n\n{messages.exit_program}"
+        if qtutils.show_message_window(self.log, "error", err_msg):
+            sys.exit(1)
 
 
 def create_default_tables(self):

@@ -15,10 +15,11 @@ error_create_sql_config_msg = "Could not create initial SQL Configs"
 error_db_connection = "Cannot create database connection"
 exit_program = "Program will now exit"
 error_executing_program = "Could not initialize "
-error_check_installation = "Please check your installation and try again"
+error_check_installation = "Please check your installation and try again!!!"
 checking_configs = "Checking config files..."
 error_game_not_found = "Game not found.\n Please check the game path and try again"
 config_reset_msg = "Your configuration has been RESET due to program update!!!\nWe apologize for the inconvenience."
+reset_success = "All files were reset successfully!!!"
 
 # reshade
 checking_new_reshade_files = "Checking for local reshade files..."
@@ -52,6 +53,7 @@ no_change_path = "No changes to path were made!"
 not_same_game = "Please, choose the same game as before!"
 path_changed_success = "Path changed successfully!"
 update_reshade_question = "Download new Reshade version now?"
+removing_old_reshade_file = "Removing old reshade file..."
 
 # updating messages
 dl_new_version_msg = "Downloading new version..."

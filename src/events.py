@@ -200,7 +200,7 @@ def open_preset_config_file(self):
 
 
 def edit_default_preset_plugin_button_clicked(self):
-    if utils.check_local_reshade_files(self):
+    if utils.create_local_reshade_files(self):
         try:
             os.startfile(constants.RESHADE_PRESET_FILENAME)
         except Exception as e:
@@ -359,6 +359,8 @@ def apply_all(self, reset=False):
             qtutils.show_message_window(self.log, "error", f"{messages.apply_success_with_errors}\n\n{err}")
 
         self.progressbar.close()
+    elif reset and self.show_info_messages:
+        qtutils.show_message_window(self.log, "info", messages.reset_success)
 
 
 def game_config_form_result(self, architecture, status):
@@ -514,7 +516,7 @@ def _apply_single(self, games_obj, reset=False):
     dst_res_ini_path = os.path.join(game_dir, constants.RESHADE_INI)
     dst_preset_path = os.path.join(game_dir, constants.RESHADE_PRESET_INI)
     game_screenshots_path = _get_screenshot_path(self, game_dir, game_name)
-    utils.check_local_reshade_files(self)
+    utils.create_local_reshade_files(self)
     files = Files(self)
 
     if games_obj.architecture.lower() == "32bits":

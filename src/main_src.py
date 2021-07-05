@@ -6,7 +6,6 @@
 # # -*- coding: utf-8 -*-
 
 import os
-import sys
 import requests
 from src.log import Log
 from PyQt5.QtCore import Qt
@@ -54,18 +53,18 @@ class MainSrc:
         utils.check_db_connection(self)
 
         self.progressbar.set_values(messages.checking_db_connection, 30)
-        self.check_database_configs()
+        utils.check_database_configs(self)
 
         self.progressbar.set_values(messages.checking_files, 45)
         self.check_reshade_files()
+        self.set_ui_var_configs()
 
-        self.progressbar.set_values(messages.checking_configs, 60)
-        self.set_configs()
+        self.progressbar.set_values(messages.checking_new_reshade_version, 60)
+        self.get_remote_reshade_version()
+
+        self.progressbar.set_values(messages.checking_configs, 75)
         self.register_form_events()
         self.populate_datagrid()
-
-        self.progressbar.set_values(messages.checking_new_reshade_version, 75)
-        self.check_new_reshade_version()
 
         self.progressbar.set_values(messages.checking_new_version, 90)
         self.check_new_program_version()
@@ -77,37 +76,11 @@ class MainSrc:
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
 
-        self.enable_widgets(False)
         self.progressbar.close()
+        self.enable_widgets(False)
 
 
-    def check_database_configs(self):
-        if not utils.create_default_tables(self):
-            err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
-            if qtutils.show_message_window(self.log, "error", err_msg):
-                sys.exit(1)
-
-        config_sql = ConfigSql(self)
-        rs_config = config_sql.get_program_version()
-        if rs_config is not None:
-            program_version = rs_config[0].get("program_version")
-            if float(program_version) < float(constants.RESET_DATABASE_VERSION):
-                try:
-                    os.remove(constants.SQLITE3_FILENAME)
-                    utils.check_db_connection(self)
-                    qtutils.show_message_window(self.log, "warning", messages.config_reset_msg)
-                except Exception:
-                    err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
-                    if qtutils.show_message_window(self.log, "error", err_msg):
-                        sys.exit(1)
-
-        if not utils.set_default_database_configs(self, constants.VERSION):
-            err_msg = f"{messages.error_create_sql_config_msg}\n\n{messages.exit_program}"
-            if qtutils.show_message_window(self.log, "error", err_msg):
-                sys.exit(1)
-
-
-    def set_configs(self):
+    def set_ui_var_configs(self):
         config_sql = ConfigSql(self)
         rs_config = config_sql.get_configs()
         if rs_config is not None and len(rs_config) > 0:
@@ -219,7 +192,7 @@ class MainSrc:
         self.qtobj.donate_button.clicked.connect(lambda: events.donate_clicked())
 
 
-    def check_new_reshade_version(self):
+    def get_remote_reshade_version(self):
         self.remote_reshade_version = None
         self.remote_reshade_download_url = None
 
@@ -239,6 +212,17 @@ class MainSrc:
                             self.remote_reshade_version = content.split()[1].strip("</strong>")
                             self.remote_reshade_download_url = f"{constants.RESHADE_EXE_URL}{self.remote_reshade_version}.exe"
                             break
+
+                    if self.remote_reshade_version != self.reshade_version:
+                        self.need_apply = True
+                        if not self.silent_reshade_updates:
+                            msg = messages.update_reshade_question
+                            reply = qtutils.show_message_window(self.log, "question", msg)
+                            if reply == QtWidgets.QMessageBox.Yes:
+                                self._download_reshade()
+                        else:
+                            self._download_reshade()
+
             except requests.exceptions.ConnectionError as e:
                 self.log.error(f"{messages.reshade_website_unreacheable} {str(e)}")
                 qtutils.show_message_window(self.log, "error", messages.reshade_website_unreacheable)
@@ -246,8 +230,7 @@ class MainSrc:
 
 
     def check_reshade_files(self):
-        utils.check_local_reshade_files(self)
-
+        utils.create_local_reshade_files(self)
         config_sql = ConfigSql(self)
         rs_config = config_sql.get_configs()
         if rs_config is not None and rs_config[0].get("reshade_version") is not None:
@@ -255,16 +238,6 @@ class MainSrc:
             self.local_reshade_path = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.reshade_version}.exe")
             self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
             self.enable_form(True)
-        else:
-            if self.remote_reshade_version != self.reshade_version:
-                self.need_apply = True
-                if not self.silent_reshade_updates:
-                    msg = messages.update_reshade_question
-                    reply = qtutils.show_message_window(self.log, "question", msg)
-                    if reply == QtWidgets.QMessageBox.Yes:
-                        self._download_reshade()
-                else:
-                    self._download_reshade()
 
 
     def check_new_program_version(self):
@@ -310,7 +283,6 @@ class MainSrc:
 
         if self.selected_game is not None:
             self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.name)
-
             if self.selected_game.api == constants.DX9_DISPLAY_NAME:
                 self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
                 self.game_config_form.qtObj.dx_radioButton.setChecked(False)
@@ -386,18 +358,24 @@ class MainSrc:
             if reply == QtWidgets.QMessageBox.No:
                 return
 
-        # remove old version
+        # removing old version
         if self.reshade_version is not None:
             old_local_reshade_exe = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.reshade_version}.exe")
             if os.path.isfile(old_local_reshade_exe):
+                self.log.info(messages.removing_old_reshade_file)
                 os.remove(old_local_reshade_exe)
 
-        # download new reshade version exe
         try:
+            # downloading new reshade version
             self.local_reshade_path = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.remote_reshade_version}.exe")
             r = requests.get(self.remote_reshade_download_url)
-            with open(self.local_reshade_path, "wb") as outfile:
-                outfile.write(r.content)
+            if r.status_code == 200:
+                self.log.info(f"messages.downloading_new_reshade_version: {self.remote_reshade_version}")
+                with open(self.local_reshade_path, "wb") as outfile:
+                    outfile.write(r.content)
+            else:
+                self.log.error(f"{messages.error_check_new_reshade_version}")
+                return
         except Exception as e:
             if hasattr(e, "errno") and e.errno == 13:
                 qtutils.show_message_window(self.log, "error", messages.error_permissionError)
@@ -406,7 +384,6 @@ class MainSrc:
             return
 
         self.reshade_version = self.remote_reshade_version
-        # unzip reshade
         utils.unzip_reshade(self, self.local_reshade_path)
 
         # save version to sql table
