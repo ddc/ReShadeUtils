@@ -6,6 +6,7 @@
 # # -*- coding: utf-8 -*-
 
 from src.sql.tables import Games
+from sqlalchemy.sql import collate, asc
 
 
 class GamesSql:
@@ -17,21 +18,21 @@ class GamesSql:
 
 
     def get_games(self):
-        sql = self.table.select().order_by(self.table.columns.name.asc())
+        sql = self.table.select().order_by(asc(collate(self.table.columns.name, "NOCASE")))
         return self.database.select(sql)
 
 
     def get_game_by_path(self, path):
         sql = self.table.select().\
             where(self.table.columns.path == path).\
-            order_by(self.table.columns.name.asc())
+            order_by(asc(collate(self.table.columns.name, "NOCASE")))
         return self.database.select(sql)
 
 
     def get_game_by_name(self, game_name):
         sql = self.table.select().\
             where(self.table.columns.name == game_name).\
-            order_by(self.table.columns.name.asc())
+            order_by(asc(collate(self.table.columns.name, "NOCASE")))
         return self.database.select(sql)
 
 

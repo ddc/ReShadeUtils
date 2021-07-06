@@ -51,12 +51,14 @@ class MainSrc:
 
         self.progressbar.set_values(messages.checking_db_connection, 15)
         utils.check_db_connection(self)
+        utils.create_default_tables(self)
 
         self.progressbar.set_values(messages.checking_db_connection, 30)
         utils.check_database_configs(self)
 
         self.progressbar.set_values(messages.checking_files, 45)
         self.check_reshade_files()
+        utils.download_shaders(self)
         self.set_ui_var_configs()
 
         self.progressbar.set_values(messages.checking_new_reshade_version, 60)
@@ -370,7 +372,7 @@ class MainSrc:
             self.local_reshade_path = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.remote_reshade_version}.exe")
             r = requests.get(self.remote_reshade_download_url)
             if r.status_code == 200:
-                self.log.info(f"messages.downloading_new_reshade_version: {self.remote_reshade_version}")
+                self.log.info(f"{messages.downloading_new_reshade_version}: {self.remote_reshade_version}")
                 with open(self.local_reshade_path, "wb") as outfile:
                     outfile.write(r.content)
             else:

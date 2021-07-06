@@ -7,8 +7,6 @@
 
 import os
 import shutil
-import zipfile
-import requests
 from PyQt5 import QtCore
 from src.files import Files
 from src.sql.games_sql import GamesSql
@@ -333,7 +331,7 @@ def apply_all(self, reset=False):
         self.enable_widgets(False)
         self.qtobj.apply_button.setEnabled(False)
 
-        _download_shaders(self)
+        utils.download_shaders(self)
 
         errors = []
         games_obj = utils.Object()
@@ -470,7 +468,7 @@ def game_config_form_result(self, architecture, status):
             games_sql.insert_game(sql_games_obj)
             del self.added_game_path
             if self.update_shaders:
-                _download_shaders(self)
+                utils.download_shaders(self)
             self.progressbar.close()
             _apply_single(self, sql_games_obj)
             if self.show_info_messages:
@@ -558,57 +556,3 @@ def _apply_single(self, games_obj, reset=False):
         errors = f"- {game_name}: {str(e)}"
 
     return errors
-
-
-def _download_shaders(self):
-    downloaded_new_shaders = None
-    if not os.path.isfile(constants.SHADERS_SRC_PATH)\
-            or (self.update_shaders is not None and self.update_shaders is True):
-        downloaded_new_shaders = True
-    elif self.update_shaders is not None and self.update_shaders is False:
-        downloaded_new_shaders = False
-
-    if downloaded_new_shaders is not None and downloaded_new_shaders is True:
-        try:
-            self.progressbar.set_values(messages.downloading_shaders, 50)
-            r = requests.get(constants.SHADERS_ZIP_URL)
-            with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
-                outfile.write(r.content)
-        except Exception as e:
-            err_msg = f"{messages.dl_new_shaders_timeout} {str(e)}"
-            qtutils.show_message_window(self.log, "error", err_msg)
-
-        try:
-            if os.path.isdir(constants.SHADERS_SRC_PATH):
-                shutil.rmtree(constants.SHADERS_SRC_PATH)
-        except OSError as e:
-            self.log.error(f"rmtree: {str(e)}")
-
-        try:
-            if os.path.isdir(constants.RES_SHAD_MPATH):
-                shutil.rmtree(constants.RES_SHAD_MPATH)
-        except OSError as e:
-            self.log.error(f"rmtree: {str(e)}")
-
-        self.progressbar.set_values(messages.downloading_shaders, 75)
-        if os.path.isfile(constants.SHADERS_ZIP_PATH):
-            try:
-                utils.unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
-            except FileNotFoundError as e:
-                self.log.error(str(e))
-            except zipfile.BadZipFile as e:
-                self.log.error(str(e))
-
-            try:
-                os.remove(constants.SHADERS_ZIP_PATH)
-            except OSError as e:
-                self.log.error(f"remove_file: {str(e)}")
-
-        try:
-            if os.path.isdir(constants.RES_SHAD_MPATH):
-                out_dir = f"{constants.PROGRAM_PATH}\\{constants.RESHADE_SHADERS}"
-                os.rename(constants.RES_SHAD_MPATH, out_dir)
-        except OSError as e:
-            self.log.error(f"rename_path: {str(e)}")
-
-        self.progressbar.set_values(messages.downloading_shaders, 99)

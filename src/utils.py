@@ -9,6 +9,7 @@
 import os
 import sys
 import json
+import shutil
 import zipfile
 import requests
 import datetime
@@ -31,11 +32,11 @@ class Object:
         return json_dict
 
 
-# def get_current_path():
-#     path = os.path.abspath(os.getcwd())
-#     if path is not None:
-#         return os.path.normpath(path)
-#     return None
+def get_current_path():
+    path = os.path.abspath(os.getcwd())
+    if path is not None:
+        return os.path.normpath(path)
+    return None
 
 
 def get_ini_settings(file_name, section, config_name):
@@ -68,21 +69,6 @@ def unzip_file(file_name, out_path):
     zipf = zipfile.ZipFile(zipfile_path)
     zipf.extractall(out_path)
     zipf.close()
-
-
-# def get_download_path():
-#     if constants.IS_WINDOWS:
-#         import winreg
-#         sub_key = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
-#         downloads_guid = "{374DE290-123F-4565-9164-39C4925E467B}"
-#         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
-#             downloads_path = winreg.QueryValueEx(key, downloads_guid)[0]
-#         return downloads_path
-#     else:
-#         t1_path = str(os.path.expanduser("~/Downloads"))
-#         t2_path = f"{t1_path}".split("\\")
-#         downloads_path = "/".join(t2_path)
-#         return downloads_path.replace("\\", "/")
 
 
 def get_pictures_path():
@@ -179,11 +165,6 @@ def check_db_connection(self):
 
 
 def check_database_configs(self):
-    if not create_default_tables(self):
-        err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
-        if qtutils.show_message_window(self.log, "error", err_msg):
-            sys.exit(1)
-
     config_sql = ConfigSql(self)
     rs_config = config_sql.get_program_version()
     if rs_config is not None:
@@ -192,6 +173,7 @@ def check_database_configs(self):
             try:
                 os.remove(constants.SQLITE3_FILENAME)
                 check_db_connection(self)
+                create_default_tables(self)
                 qtutils.show_message_window(self.log, "warning", messages.config_reset_msg)
             except Exception:
                 err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
@@ -211,8 +193,9 @@ def create_default_tables(self):
         Games.__table__.create(self.database.engine, checkfirst=True)
     except Exception as e:
         self.log.error(str(e))
-        return False
-    return True
+        err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
+        if qtutils.show_message_window(self.log, "error", err_msg):
+            sys.exit(1)
 
 
 def set_default_database_configs(self, program_version):
@@ -297,3 +280,67 @@ def get_binary_type(self, game_path):
             else:
                 # self.log.info(f"Unknown architecture {machine}")
                 return None
+
+
+def download_shaders(self):
+    if not os.path.isdir(constants.SHADERS_SRC_PATH)\
+            or (self.update_shaders is not None and self.update_shaders is True):
+
+        try:
+            self.progressbar.set_values(messages.downloading_shaders, 50)
+            r = requests.get(constants.SHADERS_ZIP_URL)
+            with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
+                outfile.write(r.content)
+        except Exception as e:
+            err_msg = f"{messages.dl_new_shaders_timeout} {str(e)}"
+            qtutils.show_message_window(self.log, "error", err_msg)
+
+        try:
+            if os.path.isdir(constants.SHADERS_SRC_PATH):
+                shutil.rmtree(constants.SHADERS_SRC_PATH)
+        except OSError as e:
+            self.log.error(f"rmtree: {str(e)}")
+
+        try:
+            if os.path.isdir(constants.RES_SHAD_MPATH):
+                shutil.rmtree(constants.RES_SHAD_MPATH)
+        except OSError as e:
+            self.log.error(f"rmtree: {str(e)}")
+
+        self.progressbar.set_values(messages.downloading_shaders, 75)
+        if os.path.isfile(constants.SHADERS_ZIP_PATH):
+            try:
+                unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
+            except FileNotFoundError as e:
+                self.log.error(str(e))
+            except zipfile.BadZipFile as e:
+                self.log.error(str(e))
+
+            try:
+                os.remove(constants.SHADERS_ZIP_PATH)
+            except OSError as e:
+                self.log.error(f"remove_file: {str(e)}")
+
+        try:
+            if os.path.isdir(constants.RES_SHAD_MPATH):
+                out_dir = f"{constants.PROGRAM_PATH}\\{constants.RESHADE_SHADERS}"
+                os.rename(constants.RES_SHAD_MPATH, out_dir)
+        except OSError as e:
+            self.log.error(f"rename_path: {str(e)}")
+
+        self.progressbar.set_values(messages.downloading_shaders, 99)
+
+
+# def get_download_path():
+#     if constants.IS_WINDOWS:
+#         import winreg
+#         sub_key = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
+#         downloads_guid = "{374DE290-123F-4565-9164-39C4925E467B}"
+#         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+#             downloads_path = winreg.QueryValueEx(key, downloads_guid)[0]
+#         return downloads_path
+#     else:
+#         t1_path = str(os.path.expanduser("~/Downloads"))
+#         t2_path = f"{t1_path}".split("\\")
+#         downloads_path = "/".join(t2_path)
+#         return downloads_path.replace("\\", "/")

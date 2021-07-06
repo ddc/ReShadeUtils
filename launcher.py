@@ -21,6 +21,7 @@ from src import constants, messages, utils, qtutils
 class Launcher:
     def __init__(self):
         self.progressbar = ProgressBar()
+        self.program_path = self.program_path = os.path.join(utils.get_current_path(), constants.EXE_PROGRAM_NAME)
         self.log = None
         self.new_version = None
         self.new_version_msg = None
@@ -32,8 +33,11 @@ class Launcher:
         utils.check_dirs()
         self.progressbar.set_values(messages.checking_files, 25)
         self.log = Log(constants.DIR_LOGS, constants.DEBUG).setup_logging()
+        if not os.path.isfile(self.program_path):
+            os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)
         self.database = DatabaseClass(self.log)
         utils.check_db_connection(self)
+        utils.create_default_tables(self)
         utils.check_database_configs(self)
         if utils.create_local_reshade_files(self):
             self.progressbar.set_values(messages.checking_db_connection, 50)
@@ -46,12 +50,10 @@ class Launcher:
     def _check_update_required(self):
         config_sql = ConfigSql(self)
         rs_config = config_sql.get_configs()
-
         if rs_config[0].get("program_version") is None:
             self.client_version = constants.VERSION
         else:
             self.client_version = rs_config[0].get("program_version")
-
         if rs_config[0].get("check_program_updates"):
             new_version_obj = utils.check_new_program_version(self)
             if new_version_obj.new_version_available:
@@ -62,11 +64,9 @@ class Launcher:
 
     def _download_new_program_version(self):
         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
-        program_path = os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)
-
         r = requests.get(program_url)
         if r.status_code == 200:
-            with open(program_path, "wb") as outfile:
+            with open(self.program_path, "wb") as outfile:
                 outfile.write(r.content)
             qtutils.show_message_window(self.log, "info", f"{messages.program_updated}v{self.new_version}")
         else:
@@ -76,14 +76,12 @@ class Launcher:
 
     def _call_program(self):
         code = None
-        program_path = [os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)]
-
         try:
-            process = subprocess.run(program_path, shell=True, check=True, universal_newlines=True)
+            process = subprocess.run(self.program_path, shell=True, check=True, universal_newlines=True)
             code = process.returncode
         except Exception as e:
             if code is None:
-                self.log.error(f"cmd:{program_path} - code:{e.returncode} - {e}")
+                self.log.error(f"cmd:{self.program_path} - code:{e.returncode} - {e}")
             msg = f"{messages.error_executing_program}{constants.EXE_PROGRAM_NAME}\n"\
                   f"{messages.error_check_installation}"
             qtutils.show_message_window(self.log, "error", msg)
