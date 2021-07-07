@@ -43,7 +43,7 @@ class Launcher:
             self.progressbar.set_values(messages.checking_db_connection, 50)
             self.progressbar.set_values(messages.checking_new_version, 75)
             self._check_update_required()
-            self.progressbar.set_values(value=100)
+            self.progressbar.close()
             self._call_program()
 
 

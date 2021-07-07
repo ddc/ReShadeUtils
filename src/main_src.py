@@ -71,13 +71,13 @@ class MainSrc:
         self.check_new_program_version()
 
         self.qtobj.main_tabWidget.setCurrentIndex(0)
-        self.qtobj.programs_tableWidget.setColumnWidth(0, 150)
+        self.qtobj.programs_tableWidget.setColumnWidth(0, 120)
         self.qtobj.programs_tableWidget.setColumnWidth(1, 120)
-        self.qtobj.programs_tableWidget.setColumnWidth(2, 140)
-        self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.qtobj.programs_tableWidget.setColumnWidth(2, 130)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
+        self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
-        self.progressbar.set_values(value=100)
+        self.progressbar.close()
         self.enable_widgets(False)
 
 

@@ -356,7 +356,7 @@ def apply_all(self, reset=False):
             err = "\n".join(errors)
             qtutils.show_message_window(self.log, "error", f"{messages.apply_success_with_errors}\n\n{err}")
 
-        self.pprogressbar.set_values(value=100)
+        self.progressbar.close()
     elif reset and self.show_info_messages:
         qtutils.show_message_window(self.log, "info", messages.reset_success)
 
@@ -369,14 +369,14 @@ def game_config_form_result(self, architecture, status):
     if status == "OK":
         self.progressbar.set_values(messages.copying_DLLs, 50)
         if self.game_config_form.qtObj.game_name_lineEdit.text() == "":
-            self.progressbar.set_values(value=100)
+            self.progressbar.close()
             qtutils.show_message_window(self.log, "error", messages.missing_game_name)
             return
 
         if not self.game_config_form.qtObj.opengl_radioButton.isChecked() \
             and not self.game_config_form.qtObj.dx9_radioButton.isChecked() \
                 and not self.game_config_form.qtObj.dx_radioButton.isChecked():
-            self.progressbar.set_values(value=100)
+            self.progressbar.close()
             qtutils.show_message_window(self.log, "error", messages.missing_api)
             return
 
@@ -454,7 +454,7 @@ def game_config_form_result(self, architecture, status):
 
             sql_games_obj.id = self.selected_game.id
             games_sql.update_game(sql_games_obj)
-            self.progressbar.set_values(value=100)
+            self.progressbar.close()
         else:
             # new game added
             if self.game_config_form.qtObj.dx9_radioButton.isChecked():
@@ -469,7 +469,7 @@ def game_config_form_result(self, architecture, status):
             del self.added_game_path
             if self.update_shaders:
                 utils.download_shaders(self)
-            self.progressbar.set_values(value=100)
+            self.progressbar.close()
             _apply_single(self, sql_games_obj)
             if self.show_info_messages:
                 qtutils.show_message_window(self.log, "info", f"{messages.game_added}\n\n{sql_games_obj.game_name}")
