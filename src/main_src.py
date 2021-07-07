@@ -15,7 +15,7 @@ from src.sql.games_sql import GamesSql
 from src.progressbar import ProgressBar
 from src.sql.config_sql import ConfigSql
 from src.sql.database import DatabaseClass
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from src import constants, events, messages, utils, qtutils
 
 
@@ -47,7 +47,6 @@ class MainSrc:
     def start(self):
         utils.check_dirs()
         self.log.info(f"STARTING {constants.FULL_PROGRAM_NAME}")
-        qtutils.set_icons(self)
 
         self.progressbar.set_values(messages.checking_db_connection, 15)
         utils.check_db_connection(self)
@@ -78,7 +77,7 @@ class MainSrc:
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
 
-        self.progressbar.close()
+        self.progressbar.set_values(value=100)
         self.enable_widgets(False)
 
 
@@ -258,20 +257,9 @@ class MainSrc:
             return
 
         self.game_config_form = QtWidgets.QWidget()
-        _translate = QtCore.QCoreApplication.translate
         qt_obj = Ui_config()
         qt_obj.setupUi(self.game_config_form)
         self.game_config_form.qtObj = qt_obj
-
-        icon_cancel = QtGui.QIcon()
-        icon_cancel_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/cancel.png"))
-        icon_cancel.addPixmap(icon_cancel_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.game_config_form.qtObj.cancel_pushButton.setIcon(icon_cancel)
-
-        icon_apply = QtGui.QIcon()
-        icon_apply_pixmap = QtGui.QPixmap(utils.resource_path("../resources/images/apply.png"))
-        icon_apply.addPixmap(icon_apply_pixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.game_config_form.qtObj.ok_pushButton.setIcon(icon_apply)
 
         if self.use_dark_theme:
             self.game_config_form.setStyleSheet(open(constants.QSS_FILENAME, "r").read())

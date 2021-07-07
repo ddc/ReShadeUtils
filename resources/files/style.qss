@@ -220,24 +220,6 @@ QScrollBar::sub-page:vertical {
     background: none;
 }
 
-/* QProgressBar */
-
-QProgressBar,
-QProgressBar:horizontal {
-    border: 1px solid #b6b6b6;
-    border-radius: 4px;
-    text-align: center;
-    padding: 1px;
-    background: #bdc1c9;
-    background-color: #8b0000;
-}
-
-QProgressBar::chunk,
-QProgressBar::chunk:horizontal {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.545, x2:1, y2:0, stop:0 #3874f2, stop:1 #5e90fa);
-    border-radius: 3px;
-}
-
 /* QTableWidget */
 QTableWidget::item {
     background-color: #8b0000;

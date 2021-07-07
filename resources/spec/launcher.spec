@@ -32,11 +32,3 @@ exe = EXE(pyz,
           version='version.rc',
           uac_admin=False,
           icon='')
-
-#coll = COLLECT(exe,
-#               a.binaries,
-#               a.zipfiles,
-#               a.datas,
-#               strip=False,
-#               upx=False,
-#               name='Launcher')

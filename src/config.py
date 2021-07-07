@@ -5,9 +5,8 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src import resources
+from src import resources_rc
 
 
 class Ui_config(object):

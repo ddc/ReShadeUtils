@@ -1,6 +1,5 @@
 <RCC>
   <qresource prefix="/">
-    <file>../../resources/images/reset.png</file>
     <file>../../resources/images/add.png</file>
     <file>../../resources/images/apply.png</file>
     <file>../../resources/images/arrow.png</file>
@@ -12,6 +11,7 @@
     <file>../../resources/images/gear.png</file>
     <file>../../resources/images/help.png</file>
     <file>../../resources/images/plugin.png</file>
+    <file>../../resources/images/reset.png</file>
     <file>../../resources/images/screenshot.png</file>
     <file>../../resources/images/update.png</file>
   </qresource>

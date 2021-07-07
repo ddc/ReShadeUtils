@@ -10,7 +10,7 @@ import sys
 from src import utils
 
 
-DEBUG = True
+DEBUG = False
 
 
 VERSION = "4.2"

@@ -26,7 +26,7 @@ class Files:
     def download_reshade_ini_file(self):
         local_file_path = constants.RESHADE_INI_FILENAME
         remote_file = constants.RESHADE_REMOTE_FILENAME
-        self._download_file(remote_file, local_file_path, _preset_file_contents)
+        self._download_file(remote_file, local_file_path, _ini_file_contents)
 
 
     def download_reshade_preset_file(self):
@@ -183,8 +183,8 @@ WindowRounding=12.000000
 
 _preset_file_contents = (
 """PreprocessorDefinitions=
-Techniques=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,Clarity@Clarity.fx
-TechniqueSorting=LumaSharpen@LumaSharpen.fx,DPX@DPX.fx,Levels@Levels.fx,Clarity@Clarity.fx
+Techniques=LumaSharpen@LumaSharpen.fx,Levels@Levels.fx,Clarity@Clarity.fx
+TechniqueSorting=LumaSharpen@LumaSharpen.fx,Levels@Levels.fx,Clarity@Clarity.fx
 
 [Clarity.fx]
 ClarityBlendIfDark=0
@@ -198,14 +198,6 @@ ClarityStrength=0.400000
 ClarityViewBlendIfMask=0
 ClarityViewMask=0
 
-[DPX.fx]
-Colorfulness=2.500000
-Contrast=0.000000
-RGB_C=0.360000,0.360000,0.340000
-RGB_Curve=8.000000,8.000000,8.000000
-Saturation=2.499999
-Strength=0.200000
-
 [Levels.fx]
 BlackPoint=5
 HighlightClipping=0
@@ -215,7 +207,7 @@ WhitePoint=235
 offset_bias=1.000000
 pattern=1
 sharp_clamp=0.035000
-sharp_strength=0.700000
+sharp_strength=1.000000
 show_sharpen=0
 """)
 
@@ -441,24 +433,6 @@ QScrollBar::down-arrow:vertical {
 QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: none;
-}
-
-/* QProgressBar */
-
-QProgressBar,
-QProgressBar:horizontal {
-    border: 1px solid #b6b6b6;
-    border-radius: 4px;
-    text-align: center;
-    padding: 1px;
-    background: #bdc1c9;
-    background-color: #8b0000;
-}
-
-QProgressBar::chunk,
-QProgressBar::chunk:horizontal {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.545, x2:1, y2:0, stop:0 #3874f2, stop:1 #5e90fa);
-    border-radius: 3px;
 }
 
 /* QTableWidget */

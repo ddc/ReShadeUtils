@@ -9,7 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.main_src import MainSrc
 from src.utils import constants
-from src import resources
+from src import resources_rc
 
 
 class Ui_Main(object):
@@ -144,6 +144,11 @@ class Ui_Main(object):
         self.settings_tab.setObjectName("settings_tab")
         self.update_shaders_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.update_shaders_groupBox.setGeometry(QtCore.QRect(100, 40, 330, 60))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setWeight(50)
+        self.update_shaders_groupBox.setFont(font)
         self.update_shaders_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.update_shaders_groupBox.setObjectName("update_shaders_groupBox")
         self.yes_update_shaders_radioButton = QtWidgets.QRadioButton(self.update_shaders_groupBox)
@@ -154,6 +159,11 @@ class Ui_Main(object):
         self.no_update_shaders_radioButton.setObjectName("no_update_shaders_radioButton")
         self.check_program_updates_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.check_program_updates_groupBox.setGeometry(QtCore.QRect(500, 180, 330, 60))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setWeight(50)
+        self.check_program_updates_groupBox.setFont(font)
         self.check_program_updates_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.check_program_updates_groupBox.setObjectName("check_program_updates_groupBox")
         self.yes_check_program_updates_radioButton = QtWidgets.QRadioButton(self.check_program_updates_groupBox)
@@ -164,6 +174,11 @@ class Ui_Main(object):
         self.no_check_program_updates_radioButton.setObjectName("no_check_program_updates_radioButton")
         self.use_dark_theme_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.use_dark_theme_groupBox.setGeometry(QtCore.QRect(500, 40, 330, 60))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setWeight(50)
+        self.use_dark_theme_groupBox.setFont(font)
         self.use_dark_theme_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.use_dark_theme_groupBox.setObjectName("use_dark_theme_groupBox")
         self.yes_dark_theme_radioButton = QtWidgets.QRadioButton(self.use_dark_theme_groupBox)
@@ -174,6 +189,11 @@ class Ui_Main(object):
         self.no_dark_theme_radioButton.setObjectName("no_dark_theme_radioButton")
         self.create_screenshots_folder_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.create_screenshots_folder_groupBox.setGeometry(QtCore.QRect(100, 110, 330, 60))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setWeight(50)
+        self.create_screenshots_folder_groupBox.setFont(font)
         self.create_screenshots_folder_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.create_screenshots_folder_groupBox.setObjectName("create_screenshots_folder_groupBox")
         self.yes_screenshots_folder_radioButton = QtWidgets.QRadioButton(self.create_screenshots_folder_groupBox)
@@ -184,6 +204,11 @@ class Ui_Main(object):
         self.no_screenshots_folder_radioButton.setObjectName("no_screenshots_folder_radioButton")
         self.check_reshade_updates_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.check_reshade_updates_groupBox.setGeometry(QtCore.QRect(100, 180, 330, 60))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setWeight(50)
+        self.check_reshade_updates_groupBox.setFont(font)
         self.check_reshade_updates_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.check_reshade_updates_groupBox.setObjectName("check_reshade_updates_groupBox")
         self.yes_check_reshade_updates_radioButton = QtWidgets.QRadioButton(self.check_reshade_updates_groupBox)
@@ -194,6 +219,11 @@ class Ui_Main(object):
         self.no_check_reshade_updates_radioButton.setObjectName("no_check_reshade_updates_radioButton")
         self.silent_reshade_updates_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.silent_reshade_updates_groupBox.setGeometry(QtCore.QRect(100, 250, 330, 60))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setWeight(50)
+        self.silent_reshade_updates_groupBox.setFont(font)
         self.silent_reshade_updates_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.silent_reshade_updates_groupBox.setObjectName("silent_reshade_updates_groupBox")
         self.yes_silent_reshade_updates_radioButton = QtWidgets.QRadioButton(self.silent_reshade_updates_groupBox)
@@ -204,6 +234,11 @@ class Ui_Main(object):
         self.no_silent_reshade_updates_radioButton.setObjectName("no_silent_reshade_updates_radioButton")
         self.show_info_messages_groupBox = QtWidgets.QGroupBox(self.settings_tab)
         self.show_info_messages_groupBox.setGeometry(QtCore.QRect(500, 110, 331, 60))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setWeight(50)
+        self.show_info_messages_groupBox.setFont(font)
         self.show_info_messages_groupBox.setAlignment(QtCore.Qt.AlignCenter)
         self.show_info_messages_groupBox.setObjectName("show_info_messages_groupBox")
         self.no_show_info_messages_radioButton = QtWidgets.QRadioButton(self.show_info_messages_groupBox)
@@ -301,7 +336,6 @@ class Ui_Main(object):
         self.reshade_version_label.raise_()
 
         self.retranslateUi(Main)
-        self.main_tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Main)
 
         main_src = MainSrc(self, Main)
@@ -332,7 +366,7 @@ class Ui_Main(object):
         self.edit_preset_button.setText(_translate("Main", "EDIT PRESET FILE"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.games_tab), _translate("Main", "GAMES"))
         self.update_shaders_groupBox.setToolTip(_translate("Main", "Update Shader Files Everytime on Apply"))
-        self.update_shaders_groupBox.setTitle(_translate("Main", "Update Shader Files on Every Apply"))
+        self.update_shaders_groupBox.setTitle(_translate("Main", "Always Update Shader Files"))
         self.yes_update_shaders_radioButton.setText(_translate("Main", "YES"))
         self.no_update_shaders_radioButton.setText(_translate("Main", "NO"))
         self.check_program_updates_groupBox.setTitle(_translate("Main", "Check for Program Updates on Startup"))
@@ -341,7 +375,7 @@ class Ui_Main(object):
         self.use_dark_theme_groupBox.setTitle(_translate("Main", "Use Dark Theme"))
         self.yes_dark_theme_radioButton.setText(_translate("Main", "YES"))
         self.no_dark_theme_radioButton.setText(_translate("Main", "NO"))
-        self.create_screenshots_folder_groupBox.setTitle(_translate("Main", "Create Screenshot Folders for Every Game"))
+        self.create_screenshots_folder_groupBox.setTitle(_translate("Main", "Create Screenshot Folders"))
         self.yes_screenshots_folder_radioButton.setText(_translate("Main", "YES"))
         self.no_screenshots_folder_radioButton.setText(_translate("Main", "NO"))
         self.check_reshade_updates_groupBox.setTitle(_translate("Main", "Check for Reshade Updates on Startup"))
@@ -363,32 +397,29 @@ class Ui_Main(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Reshade Utilities</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Program to copy reshade DLLs, shaders and config fiies to several games</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Developed as an open source project and hosted on GitHub</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Implemented using Python3, PyQt5 and SQLite3</span></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Acknowledgements</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://riverbankcomputing.com/software/pyqt/download\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">PyQt5</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.python.org\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Python3</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://reshade.me/\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Reshade</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://pyinstaller.readthedocs.io\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">PyInstaller</span></a></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Developed by ddc</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:dddcsta@gmail.com\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/ddc/ReshadeUtils/releases/latest\"><span style=\" font-size:9pt; text-decoration: underline; color:#8b0000;\">Download</span></a></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Reshade Utilities</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Program to copy reshade DLLs, shaders and config fiies to several games</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Developed as an open source project and hosted on GitHub</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Implemented using Python3, PyQt5 and SQLite3</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Acknowledgements</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://riverbankcomputing.com/software/pyqt/download\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">PyQt5</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.python.org\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">Python3</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://reshade.me/\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">Reshade</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://pyinstaller.readthedocs.io\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">PyInstaller</span></a></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Developed by ddc</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"mailto:dddcsta@gmail.com\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">Email</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://github.com/ddc/ReshadeUtils/releases/latest\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">Download</span></a></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.about_tab), _translate("Main", "ABOUT"))
         self.update_button.setToolTip(_translate("Main", "Update program version"))

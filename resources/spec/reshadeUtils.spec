@@ -1,12 +1,12 @@
 # -*- mode: python -*-
 
 block_cipher = None
-add_images = [ ('../images/*.*', 'images') ]
+#images = [('../images/*.*', 'images')] no need to add images since its using QT resource file
 
 a = Analysis(['../../main.py'],
              pathex=['*path*'],
              binaries=[],
-             datas = add_images,
+             datas = [],
              hiddenimports=['sqlalchemy.sql.default_comparator'],
              hookspath=[],
              runtime_hooks=[],

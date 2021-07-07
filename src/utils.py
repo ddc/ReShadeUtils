@@ -13,7 +13,6 @@ import zipfile
 import requests
 import datetime
 import configparser
-from src.files import Files
 from src.sql.config_sql import ConfigSql
 from src import constants, messages, qtutils
 
@@ -123,6 +122,7 @@ def check_dirs():
 
 
 def create_local_reshade_files(self):
+    from src.files import Files
     files = Files(self)
 
     try:
@@ -205,15 +205,6 @@ def set_default_database_configs(self, program_version):
         return False
     config_sql.update_program_version(program_version)
     return True
-
-
-def resource_path(relative_path):
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath("./src")
-    return os.path.join(base_path, relative_path)
 
 
 def check_game_file(self):
@@ -328,6 +319,15 @@ def download_shaders(self):
             self.log.error(f"rename_path: {str(e)}")
 
         self.progressbar.set_values(messages.downloading_shaders, 99)
+
+
+# def resource_path(relative_path):
+#     try:
+#         # PyInstaller creates a temp folder and stores path in _MEIPASS
+#         base_path = sys._MEIPASS
+#     except Exception:
+#         base_path = os.path.abspath("./src")
+#     return os.path.join(base_path, relative_path)
 
 
 # def get_download_path():
