@@ -7,8 +7,8 @@
 
 import os
 from src import utils, constants
-from PyQt5.QtWidgets import QFileDialog
 from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 
 
 def open_qt_file_dialog():

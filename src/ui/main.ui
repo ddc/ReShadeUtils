@@ -242,7 +242,7 @@
       <number>120</number>
      </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>100</number>
+      <number>120</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
@@ -342,7 +342,7 @@
     <widget class="QGroupBox" name="update_shaders_groupBox">
      <property name="geometry">
       <rect>
-       <x>500</x>
+       <x>100</x>
        <y>40</y>
        <width>330</width>
        <height>60</height>
@@ -387,8 +387,8 @@
     <widget class="QGroupBox" name="check_program_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>110</y>
+       <x>500</x>
+       <y>180</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -429,7 +429,7 @@
     <widget class="QGroupBox" name="use_dark_theme_groupBox">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>500</x>
        <y>40</y>
        <width>330</width>
        <height>60</height>
@@ -471,7 +471,7 @@
     <widget class="QGroupBox" name="create_screenshots_folder_groupBox">
      <property name="geometry">
       <rect>
-       <x>500</x>
+       <x>100</x>
        <y>110</y>
        <width>330</width>
        <height>60</height>
@@ -514,7 +514,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>250</y>
+       <y>180</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -556,7 +556,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>320</y>
+       <y>250</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -597,8 +597,8 @@
     <widget class="QGroupBox" name="show_info_messages_groupBox">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>180</y>
+       <x>500</x>
+       <y>110</y>
        <width>331</width>
        <height>60</height>
       </rect>
@@ -640,7 +640,7 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>230</y>
+       <y>300</y>
        <width>330</width>
        <height>30</height>
       </rect>
@@ -672,7 +672,7 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>190</y>
+       <y>260</y>
        <width>330</width>
        <height>30</height>
       </rect>

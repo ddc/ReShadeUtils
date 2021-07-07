@@ -4,6 +4,7 @@
 # * License           : GPL v3
 # |*****************************************************
 # -*- encoding: utf-8 -*-
+
 import os
 import sys
 import gzip
@@ -12,12 +13,10 @@ from src import constants
 
 
 class Log:
-    def __init__(self, dir_logs, debug):
-        self.dir = dir_logs
-        self.date_formatter = "%Y-%m-%d"
-        self.time_formatter = "%H:%M:%S"
-        self.backup_days = 30
-        self.level = logging.DEBUG if debug else logging.INFO
+    def __init__(self):
+        self.dir = constants.DIR_LOGS
+        self.days_to_keep = int(constants.DAYS_TO_KEEP_LOGS)
+        self.level = logging.DEBUG if constants.DEBUG else logging.INFO
 
 
     def setup_logging(self):
@@ -41,19 +40,19 @@ class Log:
         else:
             formatt = "[%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s"
 
-        formatter = logging.Formatter(formatt, datefmt=f"{self.date_formatter}T{self.time_formatter}")
+        formatter = logging.Formatter(formatt, datefmt="%Y-%m-%dT%H:%M:%S")
         logger = logging.getLogger()
         logger.setLevel(self.level)
         file_hdlr = logging.handlers.RotatingFileHandler(
             filename=log_file_path,
             maxBytes=1 * 1024 * 1024,
             encoding="UTF-8",
-            backupCount=self.backup_days,
+            backupCount=self.days_to_keep,
             mode="a")
 
         file_hdlr.setFormatter(formatter)
         file_hdlr.suffix = "%Y%m%d"
-        file_hdlr.rotator = GZipRotator(self.dir, self.backup_days)
+        file_hdlr.rotator = GZipRotator(self.dir, self.days_to_keep)
         logger.addHandler(file_hdlr)
 
         stream_hdlr = logging.StreamHandler()
@@ -64,12 +63,12 @@ class Log:
 
 
 class GZipRotator:
-    def __init__(self, logs_dir, backup_days):
+    def __init__(self, logs_dir, days_to_keep):
         self.logs_dir = logs_dir
-        self.backup_days = backup_days
+        self.days_to_keep = days_to_keep
 
     def __call__(self, source, dest):
-        RemoveOldLogs(self.logs_dir, self.backup_days)
+        RemoveOldLogs(self.logs_dir, self.days_to_keep)
         if os.path.isfile(source) and os.stat(source).st_size > 0:
             try:
                 sfname, sext = os.path.splitext(source)
@@ -84,25 +83,25 @@ class GZipRotator:
 
 
 class RemoveOldLogs:
-    def __init__(self, logs_dir, backup_days):
+    def __init__(self, logs_dir, days_to_keep):
         files_list = [f for f in os.listdir(logs_dir)
                       if os.path.isfile(f"{logs_dir}/{f}") and os.path.splitext(f)[1] == ".gz"]
         for file in files_list:
             file_path = f"{logs_dir}/{file}"
-            if self._is_file_older_than_x_days(file_path, backup_days):
+            if self._is_file_older_than_x_days(file_path, days_to_keep):
                 try:
                     os.remove(file_path)
                 except Exception as e:
                     sys.stderr.write(f"[ERROR]:Unable to removed old logs:{str(e)}: {file_path}\n")
 
     @staticmethod
-    def _is_file_older_than_x_days(file_path, days):
+    def _is_file_older_than_x_days(file_path, days_to_keep):
         from datetime import datetime, timedelta
         file_time = datetime.fromtimestamp(os.path.getctime(file_path))
-        if int(days) == 1:
+        if int(days_to_keep) == 1:
             cutoff_time = datetime.today()
         else:
-            cutoff_time = datetime.today() - timedelta(days=days)
+            cutoff_time = datetime.today() - timedelta(days=days_to_keep)
         file_time = file_time.replace(hour=0, minute=0, second=0, microsecond=0)
         cutoff_time = cutoff_time.replace(hour=0, minute=0, second=0, microsecond=0)
         if file_time < cutoff_time:

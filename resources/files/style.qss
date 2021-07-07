@@ -76,6 +76,10 @@ QPushButton:pressed {
 
 /* QTabWidget */
 
+QTabWidget {
+    font-weight: bold;
+}
+
 QTabWidget::pane {
     border: 1px transparent #222222;
 }
@@ -235,7 +239,6 @@ QProgressBar::chunk:horizontal {
 }
 
 /* QTableWidget */
-
 QTableWidget::item {
     background-color: #8b0000;
 }
@@ -243,7 +246,6 @@ QTableWidget::item {
 QHeaderView::section {
     background-color: rgba(128, 128, 128, 128);
 }
-
 QTableCornerButton::section {
     background: rgba(128, 128, 128, 128);
     border: 1px transparent rgba(128, 128, 128, 128);

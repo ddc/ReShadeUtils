@@ -60,6 +60,7 @@ class Files:
         utils.set_file_settings(game_file_path, "SCREENSHOT", "SavePath", screenshot_path)
         return None
 
+
     @staticmethod
     def apply_reshade_preset_file(game_file_path):
         try:
@@ -98,7 +99,7 @@ class Files:
 
 
 _ini_file_contents = (
-f"""[D3D9]
+"""[D3D9]
 DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 DisableINTZ=0
@@ -298,6 +299,10 @@ QPushButton:pressed {
 
 /* QTabWidget */
 
+QTabWidget {
+    font-weight: bold;
+}
+
 QTabWidget::pane {
     border: 1px transparent #222222;
 }
@@ -441,7 +446,7 @@ QScrollBar::sub-page:vertical {
 /* QProgressBar */
 
 QProgressBar,
-QProgressBar:horizontal {  
+QProgressBar:horizontal {
     border: 1px solid #b6b6b6;
     border-radius: 4px;
     text-align: center;
@@ -457,7 +462,6 @@ QProgressBar::chunk:horizontal {
 }
 
 /* QTableWidget */
-
 QTableWidget::item {
     background-color: #8b0000;
 }
@@ -465,7 +469,6 @@ QTableWidget::item {
 QHeaderView::section {
     background-color: rgba(128, 128, 128, 128);
 }
-
 QTableCornerButton::section {
     background: rgba(128, 128, 128, 128);
     border: 1px transparent rgba(128, 128, 128, 128);

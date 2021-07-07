@@ -32,7 +32,7 @@ class Launcher:
     def init(self):
         utils.check_dirs()
         self.progressbar.set_values(messages.checking_files, 25)
-        self.log = Log(constants.DIR_LOGS, constants.DEBUG).setup_logging()
+        self.log = Log().setup_logging()
         if not os.path.isfile(self.program_path):
             os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)
         self.database = DatabaseClass(self.log)
@@ -80,7 +80,7 @@ class Launcher:
             process = subprocess.run(self.program_path, shell=True, check=True, universal_newlines=True)
             code = process.returncode
         except Exception as e:
-            if code is None:
+            if code is None and hasattr(e, "returncode"):
                 self.log.error(f"cmd:{self.program_path} - code:{e.returncode} - {e}")
             msg = f"{messages.error_executing_program}{constants.EXE_PROGRAM_NAME}\n"\
                   f"{messages.error_check_installation}"

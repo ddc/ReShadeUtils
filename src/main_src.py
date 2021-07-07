@@ -24,7 +24,7 @@ class MainSrc:
         self.qtobj = qtobj
         self.form = form
         self.client_version = constants.VERSION
-        self.log = Log(constants.DIR_LOGS, constants.DEBUG).setup_logging()
+        self.log = Log().setup_logging()
         self.database = DatabaseClass(self.log)
         self.progressbar = ProgressBar()
         self.need_apply = False
@@ -73,7 +73,7 @@ class MainSrc:
 
         self.qtobj.main_tabWidget.setCurrentIndex(0)
         self.qtobj.programs_tableWidget.setColumnWidth(0, 150)
-        self.qtobj.programs_tableWidget.setColumnWidth(1, 100)
+        self.qtobj.programs_tableWidget.setColumnWidth(1, 120)
         self.qtobj.programs_tableWidget.setColumnWidth(2, 140)
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
