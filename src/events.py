@@ -41,14 +41,14 @@ def add_game(self):
                 elif binary_type in ["IA32"]:
                     architecture = "32bits"
                 else:
-                    qtutils.show_message_window(self.log, "error", f"{messages.not_valid_game}")
+                    qtutils.show_message_window(self.log, "error", messages.not_valid_game)
                     return
 
                 self.show_game_config_form(file_name, architecture)
             elif rs_name is not None and len(rs_name) > 0:
                 qtutils.show_message_window(self.log, "error", f"{messages.game_already_exist}\n\n{file_name}")
         else:
-            qtutils.show_message_window(self.log, "error", f"{messages.not_valid_game}")
+            qtutils.show_message_window(self.log, "error", messages.not_valid_game)
 
 
 def delete_game(self):
@@ -103,8 +103,6 @@ def delete_game(self):
             games_sql = GamesSql(self)
             games_sql.delete_game(self.selected_game.id)
 
-            # populate datagrid
-            self.populate_datagrid()
             if self.show_info_messages:
                 if game_not_found:
                     qtutils.show_message_window(self.log, "info", f"{messages.game_not_in_path_deleted}\n\n{game_name}")
@@ -114,7 +112,9 @@ def delete_game(self):
             self.log.error(f"delete_game: {str(e)}")
             qtutils.show_message_window(self.log, "error", f"{game_name} files\n\n{str(e)}")
 
+        self.populate_datagrid()
         self.enable_widgets(False)
+        self.log.info(f"{messages.game_deleted}: {game_name}")
 
 
 def edit_game_path(self):
@@ -128,7 +128,7 @@ def edit_game_path(self):
             if old_game_path == new_game_path:
                 self.enable_widgets(False)
                 if self.show_info_messages:
-                    qtutils.show_message_window(self.log, "info", f"{messages.no_change_path}")
+                    qtutils.show_message_window(self.log, "info", messages.no_change_path)
                 return
 
             old_file_name, old_extension = os.path.splitext(os.path.basename(old_game_path))
@@ -155,17 +155,16 @@ def edit_game_path(self):
             self.selected_game.game_dir = new_game_dir
 
             try:
-                dst_res_ini_path = os.path.join(new_game_dir, constants.RESHADE_INI)
-                create_files = Files(self)
-                create_files.download_reshade_ini_file(dst_res_ini_path, game_screenshots_path)
+                files = Files(self)
+                files.apply_reshade_ini_file(new_game_dir, game_screenshots_path)
             except Exception as e:
                 self.log.error(f"create_files: {str(e)}")
 
-            # populate list
-            self.populate_datagrid()
             if self.show_info_messages:
                 qtutils.show_message_window(self.log, "info", f"{messages.path_changed_success}\n\n{new_game_path}")
 
+        self.log.info(f"{messages.path_changed_success}: {new_game_path}")
+        self.populate_datagrid()
         self.enable_widgets(False)
 
 
@@ -413,9 +412,8 @@ def game_config_form_result(self, architecture, status):
                     new_screenshots_path = ""
 
                 try:
-                    dst_res_ini_path = os.path.join(self.selected_game.game_dir, constants.RESHADE_INI)
-                    create_files = Files(self)
-                    create_files.download_reshade_ini_file(dst_res_ini_path, new_screenshots_path)
+                    files = Files(self)
+                    files.apply_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
                 except Exception as e:
                     self.log.error(f"download_reshade_ini_file: {str(e)}")
 
@@ -474,8 +472,8 @@ def game_config_form_result(self, architecture, status):
             if self.show_info_messages:
                 qtutils.show_message_window(self.log, "info", f"{messages.game_added}\n\n{sql_games_obj.game_name}")
 
-        self.populate_datagrid()
         self.game_config_form.close()
+        self.populate_datagrid()
         self.enable_widgets(False)
     else:
         self.game_config_form.close()

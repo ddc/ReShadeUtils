@@ -24,6 +24,7 @@ QProgressBar::chunk:horizontal {
 }    
 """
 
+
 class ProgressBar:
     def __init__(self):
         _width = 350

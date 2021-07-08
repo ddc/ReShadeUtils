@@ -29,16 +29,28 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Reshade Utils</string>
   </property>
   <widget class="QLabel" name="reshade_version_label">
    <property name="geometry">
     <rect>
      <x>860</x>
      <y>10</y>
-     <width>121</width>
-     <height>16</height>
+     <width>120</width>
+     <height>15</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>120</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>120</width>
+     <height>15</height>
+    </size>
    </property>
    <property name="font">
     <font>
@@ -59,9 +71,21 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>961</width>
-     <height>641</height>
+     <width>960</width>
+     <height>640</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>960</width>
+     <height>640</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>960</width>
+     <height>640</height>
+    </size>
    </property>
    <property name="currentIndex">
     <number>0</number>
@@ -92,6 +116,18 @@
        <height>30</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <weight>75</weight>
@@ -117,6 +153,18 @@
        <width>160</width>
        <height>30</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -144,6 +192,18 @@
        <height>30</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <weight>75</weight>
@@ -170,6 +230,18 @@
        <height>30</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <weight>75</weight>
@@ -192,12 +264,36 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>961</width>
-       <height>541</height>
+       <width>960</width>
+       <height>540</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>960</width>
+       <height>540</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>960</width>
+       <height>540</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
      <property name="autoScroll">
       <bool>false</bool>
@@ -220,9 +316,6 @@
      <property name="horizontalScrollMode">
       <enum>QAbstractItemView::ScrollPerPixel</enum>
      </property>
-     <property name="sortingEnabled">
-      <bool>true</bool>
-     </property>
      <property name="wordWrap">
       <bool>false</bool>
      </property>
@@ -236,12 +329,15 @@
       <bool>true</bool>
      </attribute>
      <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>120</number>
+      <number>70</number>
      </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>120</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
       <bool>false</bool>
      </attribute>
      <attribute name="verticalHeaderVisible">
@@ -307,6 +403,18 @@
        <height>30</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>160</width>
+       <height>30</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <weight>75</weight>
@@ -342,6 +450,18 @@
        <height>60</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <pointsize>9</pointsize>
@@ -363,7 +483,7 @@
        <rect>
         <x>200</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -376,7 +496,7 @@
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -393,6 +513,18 @@
        <width>330</width>
        <height>60</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -412,7 +544,7 @@
        <rect>
         <x>200</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -425,7 +557,7 @@
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -442,6 +574,18 @@
        <width>330</width>
        <height>60</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -461,7 +605,7 @@
        <rect>
         <x>200</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -474,7 +618,7 @@
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -491,6 +635,18 @@
        <width>330</width>
        <height>60</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -510,7 +666,7 @@
        <rect>
         <x>200</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -523,7 +679,7 @@
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -540,6 +696,18 @@
        <width>330</width>
        <height>60</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -559,7 +727,7 @@
        <rect>
         <x>200</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -572,7 +740,7 @@
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -589,6 +757,18 @@
        <width>330</width>
        <height>60</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -608,7 +788,7 @@
        <rect>
         <x>200</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -621,7 +801,7 @@
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -635,9 +815,21 @@
       <rect>
        <x>500</x>
        <y>110</y>
-       <width>331</width>
+       <width>330</width>
        <height>60</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>60</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -657,7 +849,7 @@
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -670,7 +862,7 @@
        <rect>
         <x>200</x>
         <y>30</y>
-        <width>50</width>
+        <width>60</width>
         <height>20</height>
        </rect>
       </property>
@@ -687,6 +879,18 @@
        <width>330</width>
        <height>30</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>30</height>
+      </size>
      </property>
      <property name="font">
       <font>
@@ -726,6 +930,18 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>330</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>30</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <weight>75</weight>
@@ -757,9 +973,21 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>961</width>
-       <height>611</height>
+       <width>960</width>
+       <height>610</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>960</width>
+       <height>610</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>960</width>
+       <height>610</height>
+      </size>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -782,6 +1010,8 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -861,7 +1091,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="iconSize">
       <size>
-       <width>100</width>
+       <width>150</width>
        <height>100</height>
       </size>
      </property>
@@ -871,11 +1101,23 @@ p, li { white-space: pre-wrap; }
   <widget class="QLabel" name="updateAvail_label">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>290</x>
      <y>655</y>
-     <width>481</width>
+     <width>480</width>
      <height>40</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>480</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>480</width>
+     <height>40</height>
+    </size>
    </property>
    <property name="font">
     <font>
@@ -894,11 +1136,23 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="update_button">
    <property name="geometry">
     <rect>
-     <x>820</x>
+     <x>800</x>
      <y>660</y>
-     <width>130</width>
+     <width>160</width>
      <height>30</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>160</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>160</width>
+     <height>30</height>
+    </size>
    </property>
    <property name="font">
     <font>
@@ -922,6 +1176,34 @@ p, li { white-space: pre-wrap; }
   <zorder>update_button</zorder>
   <zorder>reshade_version_label</zorder>
  </widget>
+ <tabstops>
+  <tabstop>main_tabWidget</tabstop>
+  <tabstop>add_button</tabstop>
+  <tabstop>delete_button</tabstop>
+  <tabstop>edit_preset_button</tabstop>
+  <tabstop>edit_path_button</tabstop>
+  <tabstop>apply_button</tabstop>
+  <tabstop>update_button</tabstop>
+  <tabstop>programs_tableWidget</tabstop>
+  <tabstop>no_update_shaders_radioButton</tabstop>
+  <tabstop>yes_update_shaders_radioButton</tabstop>
+  <tabstop>no_screenshots_folder_radioButton</tabstop>
+  <tabstop>yes_screenshots_folder_radioButton</tabstop>
+  <tabstop>no_check_reshade_updates_radioButton</tabstop>
+  <tabstop>yes_check_reshade_updates_radioButton</tabstop>
+  <tabstop>no_silent_reshade_updates_radioButton</tabstop>
+  <tabstop>yes_silent_reshade_updates_radioButton</tabstop>
+  <tabstop>no_dark_theme_radioButton</tabstop>
+  <tabstop>yes_dark_theme_radioButton</tabstop>
+  <tabstop>no_show_info_messages_radioButton</tabstop>
+  <tabstop>yes_show_info_messages_radioButton</tabstop>
+  <tabstop>no_check_program_updates_radioButton</tabstop>
+  <tabstop>yes_check_program_updates_radioButton</tabstop>
+  <tabstop>edit_default_preset_plugin_button</tabstop>
+  <tabstop>reset_all_button</tabstop>
+  <tabstop>donate_button</tabstop>
+  <tabstop>about_textBrowser</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>

@@ -8,6 +8,7 @@
 Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to several games at once
 
 ![screenshot](resources/images/screenshot.png)
+![screenshot](resources/images/screenshot_settings.png)
 
 ## Download
 + [Latest Release](https://github.com/ddc/ReshadeUtils/releases/latest)

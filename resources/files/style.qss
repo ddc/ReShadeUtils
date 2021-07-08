@@ -137,15 +137,15 @@ QCheckBox::indicator:unchecked {
 /* QScrollBar */
 
 QScrollBar:horizontal {
-    height: 15px;
-    margin: 3px 15px 3px 15px;
-    border: 1px transparent #3A3939;
+    height: 17px;
+    margin: 3px 17px 3px 17px;
+    border: 1px transparent #222222;
     border-radius: 4px;
-    background-color: #3A3939;
+    background-color: #222222;
 }
 
 QScrollBar::handle:horizontal {
-    background-color: #b6b6b6;
+    background-color: rgba(128, 128, 128, 128);
     min-width: 5px;
     border-radius: 4px;
 }
@@ -179,15 +179,15 @@ QScrollBar::sub-page:horizontal {
 }
 
 QScrollBar:vertical {
-    background-color: #3A3939;
-    width: 15px;
-    margin: 15px 3px 15px 3px;
-    border: 1px transparent #3A3939;
+    width: 17px;
+    margin: 17px 3px 17px 3px;
+    border: 1px transparent #222222;
     border-radius: 4px;
+    background-color: #222222;
 }
 
 QScrollBar::handle:vertical {
-    background-color: #b6b6b6;
+    background-color: rgba(128, 128, 128, 128);
     min-height: 5px;
     border-radius: 4px;
 }

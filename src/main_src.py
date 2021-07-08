@@ -65,19 +65,16 @@ class MainSrc:
 
         self.progressbar.set_values(messages.checking_configs, 75)
         self.register_form_events()
-        self.populate_datagrid()
 
         self.progressbar.set_values(messages.checking_new_version, 90)
         self.check_new_program_version()
 
         self.qtobj.main_tabWidget.setCurrentIndex(0)
-        self.qtobj.programs_tableWidget.setColumnWidth(0, 120)
-        self.qtobj.programs_tableWidget.setColumnWidth(1, 120)
         self.qtobj.programs_tableWidget.setColumnWidth(2, 130)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
-        self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
         self.progressbar.close()
+        self.populate_datagrid()
         self.enable_widgets(False)
 
 
@@ -297,43 +294,41 @@ class MainSrc:
 
 
     def populate_datagrid(self):
-        self.qtobj.programs_tableWidget.setRowCount(0)
+        self.qtobj.programs_tableWidget.setRowCount(0) # cleanning datagrid
         games_sql = GamesSql(self)
         rs_all_games = games_sql.get_games()
         if rs_all_games is not None and len(rs_all_games) > 0:
             for i in range(len(rs_all_games)):
-                len_games = self.qtobj.programs_tableWidget.rowCount()
-                self.qtobj.programs_tableWidget.insertRow(len_games)
-                self.qtobj.programs_tableWidget.setItem(len_games, 0,
+                self.qtobj.programs_tableWidget.insertRow(i)
+                self.qtobj.programs_tableWidget.setItem(i, 0,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i].get("name")))
-                self.qtobj.programs_tableWidget.setItem(len_games, 1,
+                self.qtobj.programs_tableWidget.setItem(i, 1,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i].get("architecture")))
-                self.qtobj.programs_tableWidget.setItem(len_games, 2,
+                self.qtobj.programs_tableWidget.setItem(i, 2,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i].get("api")))
-                self.qtobj.programs_tableWidget.setItem(len_games, 3,
+                self.qtobj.programs_tableWidget.setItem(i, 3,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i].get("path")))
+
+        self.qtobj.programs_tableWidget.resizeColumnsToContents()
+        highest_column_width = self.qtobj.programs_tableWidget.columnWidth(3)
+        if highest_column_width < 600:
+            self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
+        else:
+            self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
+            self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
 
     def enable_form(self, status: bool):
-        self.qtobj.add_button.setEnabled(status)
-        num_pages = self.qtobj.main_tabWidget.count()
-
-        if status:
-            # set to first tab
-            self.qtobj.main_tabWidget.setCurrentIndex(0)
-        else:
-            # set to last tab (about)
+        if not status:
             self.selected_game = None
-            self.qtobj.main_tabWidget.setCurrentIndex(num_pages - 1)
-
-        for x in range(0, num_pages):
-            self.qtobj.main_tabWidget.setTabEnabled(x, status)
+        self.qtobj.add_button.setEnabled(status)
+        for i in range(0, self.qtobj.main_tabWidget.count()):
+            self.qtobj.main_tabWidget.setTabEnabled(i, status)
 
 
     def enable_widgets(self, status: bool):
         if not status:
             self.selected_game = None
-
         self._set_state_apply_button()
         self.qtobj.delete_button.setEnabled(status)
         self.qtobj.edit_path_button.setEnabled(status)
@@ -364,7 +359,7 @@ class MainSrc:
                 with open(self.local_reshade_path, "wb") as outfile:
                     outfile.write(r.content)
             else:
-                self.log.error(f"{messages.error_check_new_reshade_version}")
+                self.log.error(messages.error_check_new_reshade_version)
                 return
         except Exception as e:
             if hasattr(e, "errno") and e.errno == 13:
@@ -407,4 +402,5 @@ class MainSrc:
 
 
     def _programs_table_widget_double_clicked(self):
-        self.show_game_config_form(self.selected_game.name, self.selected_game.architecture)
+        if self.selected_game is not None:
+            self.show_game_config_form(self.selected_game.name, self.selected_game.architecture)
