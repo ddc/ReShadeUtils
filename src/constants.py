@@ -24,6 +24,7 @@ RESET_DATABASE_VERSION = "4.2"
 PROGRAM_PATH = os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "dev") if DEBUG
                                 else os.path.join(os.getenv("LOCALAPPDATA"), SHORT_PROGRAM_NAME))
 ################################################################################
+RESHADE_SETUP = "ReShade_Setup"
 RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "Reshade.ini"
 RESHADE_PRESET_INI = "ReShadePreset.ini"
@@ -59,6 +60,6 @@ PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRAN
 QSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/style.qss"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
-RESHADE_EXE_URL = "https://reshade.me/downloads/ReShade_Setup_"
+RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
 PAYPAL_URL = "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"
 ################################################################################

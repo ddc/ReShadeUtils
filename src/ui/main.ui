@@ -445,7 +445,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>40</y>
+       <y>280</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -473,7 +473,7 @@
       <string>Update Shader Files Everytime on Apply</string>
      </property>
      <property name="title">
-      <string>Always Update Shader Files</string>
+      <string>Update Reshade Shader Files</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -481,7 +481,7 @@
      <widget class="QRadioButton" name="yes_update_shaders_radioButton">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>220</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -494,7 +494,7 @@
      <widget class="QRadioButton" name="no_update_shaders_radioButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>70</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -508,8 +508,8 @@
     <widget class="QGroupBox" name="check_program_updates_groupBox">
      <property name="geometry">
       <rect>
-       <x>500</x>
-       <y>180</y>
+       <x>100</x>
+       <y>140</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -542,7 +542,7 @@
      <widget class="QRadioButton" name="yes_check_program_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>220</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -555,7 +555,7 @@
      <widget class="QRadioButton" name="no_check_program_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>70</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -570,7 +570,7 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>40</y>
+       <y>140</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -595,7 +595,7 @@
       </font>
      </property>
      <property name="title">
-      <string>Use Dark Theme</string>
+      <string>Dark Theme</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -603,7 +603,7 @@
      <widget class="QRadioButton" name="yes_dark_theme_radioButton">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>220</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -616,7 +616,7 @@
      <widget class="QRadioButton" name="no_dark_theme_radioButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>70</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -630,8 +630,8 @@
     <widget class="QGroupBox" name="create_screenshots_folder_groupBox">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>110</y>
+       <x>500</x>
+       <y>210</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -656,7 +656,7 @@
       </font>
      </property>
      <property name="title">
-      <string>Create Screenshot Folders</string>
+      <string>Create Game Screenshot Folders</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -664,7 +664,7 @@
      <widget class="QRadioButton" name="yes_screenshots_folder_radioButton">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>220</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -677,7 +677,7 @@
      <widget class="QRadioButton" name="no_screenshots_folder_radioButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>70</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -692,7 +692,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>180</y>
+       <y>210</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -725,7 +725,7 @@
      <widget class="QRadioButton" name="yes_check_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>220</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -738,68 +738,7 @@
      <widget class="QRadioButton" name="no_check_reshade_updates_radioButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>30</y>
-        <width>60</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>NO</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="silent_reshade_updates_groupBox">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>250</y>
-       <width>330</width>
-       <height>60</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>330</width>
-       <height>60</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>330</width>
-       <height>60</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>9</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="title">
-      <string>Silent Reshade Updates</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <widget class="QRadioButton" name="yes_silent_reshade_updates_radioButton">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
-        <y>30</y>
-        <width>60</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>YES</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="no_silent_reshade_updates_radioButton">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
+        <x>70</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -814,7 +753,7 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>110</y>
+       <y>280</y>
        <width>330</width>
        <height>60</height>
       </rect>
@@ -839,7 +778,7 @@
       </font>
      </property>
      <property name="title">
-      <string>Always Show Info and Confirmation Messages</string>
+      <string>Show Info and Confirmation Messages</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -847,7 +786,7 @@
      <widget class="QRadioButton" name="no_show_info_messages_radioButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>70</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -860,7 +799,7 @@
      <widget class="QRadioButton" name="yes_show_info_messages_radioButton">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>220</x>
         <y>30</y>
         <width>60</width>
         <height>20</height>
@@ -875,7 +814,7 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>300</y>
+       <y>360</y>
        <width>330</width>
        <height>30</height>
       </rect>
@@ -918,8 +857,8 @@
     <widget class="QPushButton" name="edit_default_preset_plugin_button">
      <property name="geometry">
       <rect>
-       <x>500</x>
-       <y>260</y>
+       <x>100</x>
+       <y>360</y>
        <width>330</width>
        <height>30</height>
       </rect>
@@ -952,7 +891,7 @@
       <string>Edit default preset plugins config file</string>
      </property>
      <property name="text">
-      <string>EDIT DEFAULT PRESET PLUGINS CONFIG FILE</string>
+      <string>EDIT DEFAULT PLUGINS PRESET FILE</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
@@ -1136,7 +1075,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="update_button">
    <property name="geometry">
     <rect>
-     <x>800</x>
+     <x>802</x>
      <y>660</y>
      <width>160</width>
      <height>30</height>
@@ -1191,8 +1130,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>yes_screenshots_folder_radioButton</tabstop>
   <tabstop>no_check_reshade_updates_radioButton</tabstop>
   <tabstop>yes_check_reshade_updates_radioButton</tabstop>
-  <tabstop>no_silent_reshade_updates_radioButton</tabstop>
-  <tabstop>yes_silent_reshade_updates_radioButton</tabstop>
   <tabstop>no_dark_theme_radioButton</tabstop>
   <tabstop>yes_dark_theme_radioButton</tabstop>
   <tabstop>no_show_info_messages_radioButton</tabstop>

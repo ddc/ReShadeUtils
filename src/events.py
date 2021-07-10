@@ -112,7 +112,7 @@ def delete_game(self):
             self.log.error(f"delete_game: {str(e)}")
             qtutils.show_message_window(self.log, "error", f"{game_name} files\n\n{str(e)}")
 
-        self.populate_datagrid()
+        self.populate_table_widget()
         self.enable_widgets(False)
         self.log.info(f"{messages.game_deleted}: {game_name}")
 
@@ -164,7 +164,7 @@ def edit_game_path(self):
                 qtutils.show_message_window(self.log, "info", f"{messages.path_changed_success}\n\n{new_game_path}")
 
         self.log.info(f"{messages.path_changed_success}: {new_game_path}")
-        self.populate_datagrid()
+        self.populate_table_widget()
         self.enable_widgets(False)
 
 
@@ -197,17 +197,21 @@ def open_preset_config_file(self):
 
 
 def edit_default_preset_plugin_button_clicked(self):
-    if utils.create_local_reshade_files(self):
-        try:
-            os.startfile(constants.RESHADE_PRESET_FILENAME)
-        except Exception as e:
-            err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_FILENAME}{messages.unable_start}"
-            qtutils.show_message_window(self.log, "error", err_msg)
+    try:
+        utils.check_local_files(self)
+        os.startfile(constants.RESHADE_PRESET_FILENAME)
+    except Exception as e:
+        err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_FILENAME}{messages.unable_start}"
+        qtutils.show_message_window(self.log, "error", err_msg)
 
 
 def reset_all_button_clicked(self):
+    self.progressbar.set_values(messages.reseting_files, 50)
     Files(self).download_all_files()
+    self.progressbar.set_values(messages.reseting_files, 75)
     apply_all(self, reset=True)
+    self.progressbar.close()
+    qtutils.show_message_window(self.log, "info", messages.reset_success)
 
 
 def dark_theme_clicked(self, status):
@@ -256,23 +260,8 @@ def check_reshade_updates_clicked(self, status):
         self.check_reshade_updates = False
         status = 0
 
-    self.qtobj.silent_reshade_updates_groupBox.setEnabled(self.check_reshade_updates)
-    self.qtobj.silent_reshade_updates_groupBox.setVisible(self.check_reshade_updates)
-
     config_sql = ConfigSql(self)
     config_sql.update_check_resahde_updates(status)
-
-
-def silent_reshade_updates_clicked(self, status):
-    if status == "YES":
-        self.silent_reshade_updates = True
-        status = 1
-    else:
-        self.silent_reshade_updates = False
-        status = 0
-
-    config_sql = ConfigSql(self)
-    config_sql.update_silent_reshade_updates(status)
 
 
 def update_shaders_clicked(self, status):
@@ -324,13 +313,16 @@ def apply_all(self, reset=False):
     games_sql = GamesSql(self)
     rs_all_games = games_sql.get_games()
 
+    if not os.path.isdir(constants.SHADERS_SRC_PATH)\
+            or reset\
+            or (self.update_shaders is not None and self.update_shaders is True):
+        utils.download_shaders(self)
+
     len_games = self.qtobj.programs_tableWidget.rowCount()
     if len_games > 0:
         self.enable_form(False)
         self.enable_widgets(False)
         self.qtobj.apply_button.setEnabled(False)
-
-        utils.download_shaders(self)
 
         errors = []
         games_obj = utils.Object()
@@ -356,8 +348,6 @@ def apply_all(self, reset=False):
             qtutils.show_message_window(self.log, "error", f"{messages.apply_success_with_errors}\n\n{err}")
 
         self.progressbar.close()
-    elif reset and self.show_info_messages:
-        qtutils.show_message_window(self.log, "info", messages.reset_success)
 
 
 def game_config_form_result(self, architecture, status):
@@ -465,7 +455,8 @@ def game_config_form_result(self, architecture, status):
             sql_games_obj.path = self.added_game_path
             games_sql.insert_game(sql_games_obj)
             del self.added_game_path
-            if self.update_shaders:
+            if not os.path.isdir(constants.SHADERS_SRC_PATH)\
+                    or (self.update_shaders is not None and self.update_shaders is True):
                 utils.download_shaders(self)
             self.progressbar.close()
             _apply_single(self, sql_games_obj)
@@ -473,7 +464,7 @@ def game_config_form_result(self, architecture, status):
                 qtutils.show_message_window(self.log, "info", f"{messages.game_added}\n\n{sql_games_obj.game_name}")
 
         self.game_config_form.close()
-        self.populate_datagrid()
+        self.populate_table_widget()
         self.enable_widgets(False)
     else:
         self.game_config_form.close()
@@ -512,7 +503,7 @@ def _apply_single(self, games_obj, reset=False):
     dst_res_ini_path = os.path.join(game_dir, constants.RESHADE_INI)
     dst_preset_path = os.path.join(game_dir, constants.RESHADE_PRESET_INI)
     game_screenshots_path = _get_screenshot_path(self, game_dir, game_name)
-    utils.create_local_reshade_files(self)
+    utils.check_local_files(self)
     files = Files(self)
 
     if games_obj.architecture.lower() == "32bits":

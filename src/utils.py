@@ -13,8 +13,9 @@ import zipfile
 import requests
 import datetime
 import configparser
+from bs4 import BeautifulSoup
 from src.sql.config_sql import ConfigSql
-from src import constants, messages, qtutils
+from src import constants, events, messages, qtutils
 
 
 class Object:
@@ -51,6 +52,19 @@ def get_ini_settings(file_name, section, config_name):
     return value
 
 
+def set_file_settings(filename, section, config_name, value):
+    parser = configparser.ConfigParser(delimiters="=", allow_no_value=True)
+    parser.optionxform = str  # this wont change all values to lowercase
+    parser._interpolation = configparser.ExtendedInterpolation()
+    parser.read(filename)
+    parser.set(section, config_name, value)
+    try:
+        with open(filename, "w") as configfile:
+            parser.write(configfile, space_around_delimiters=False)
+    except configparser.DuplicateOptionError:
+        return None
+
+
 def unzip_reshade(self, local_reshade_exe):
     try:
         if os.path.isfile(constants.RESHADE32_PATH):
@@ -82,7 +96,193 @@ def get_pictures_path():
         return pictures_path
 
 
-def check_new_program_version(self):
+def check_local_files(self):
+    from src.files import Files
+    files = Files(self)
+
+    try:
+        if not os.path.isdir(constants.PROGRAM_PATH):
+            os.makedirs(constants.PROGRAM_PATH)
+    except OSError as e:
+        err_msg = f"{messages.unable_create_dirs}\n{e}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+        exit(1)
+
+    try:
+        if not os.path.isfile(constants.RESHADE_INI_FILENAME):
+            files.download_reshade_ini_file()
+    except Exception as e:
+        err_msg = f"{str(e)}\n\n{constants.RESHADE_INI_FILENAME}{messages.not_found}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+
+    try:
+        if not os.path.isfile(constants.RESHADE_PRESET_FILENAME):
+            files.download_reshade_preset_file()
+    except Exception as e:
+        err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_FILENAME}{messages.not_found}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+
+    try:
+        if not os.path.isfile(constants.QSS_FILENAME):
+            files.download_qss_file()
+    except Exception as e:
+        err_msg = f"{str(e)}\n\n{constants.QSS_FILENAME}{messages.not_found}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+
+
+def check_reshade_updates(self):
+    if self.check_reshade_updates:
+        self.remote_reshade_version = None
+        self.remote_reshade_download_url = None
+
+        try:
+            response = requests.get(constants.RESHADE_WEBSITE_URL)
+            if response.status_code != 200:
+                self.log.error(messages.reshade_page_error)
+            else:
+                html = str(response.text)
+                soup = BeautifulSoup(html, "html.parser")
+                body = soup.body
+                blist = str(body).split("<p>")
+
+                for content in blist:
+                    if content.startswith("<strong>Version "):
+                        self.remote_reshade_version = content.split()[1].strip("</strong>")
+                        self.remote_reshade_download_url = f"{constants.RESHADE_EXE_URL}{self.remote_reshade_version}.exe"
+                        break
+
+                if self.remote_reshade_version != self.reshade_version:
+                    self.need_apply = True
+                    download_reshade(self)
+
+        except requests.exceptions.ConnectionError as e:
+            self.log.error(f"{messages.reshade_website_unreacheable} {str(e)}")
+            qtutils.show_message_window(self.log, "error", messages.reshade_website_unreacheable)
+            return
+
+
+def check_reshade_dll_files(self):
+    missing_reshade = True
+    files_list = sorted(os.listdir(constants.PROGRAM_PATH))
+    for filename in files_list:
+        if constants.RESHADE_SETUP in filename:
+            missing_reshade = False
+    if missing_reshade:
+        download_reshade(self)
+
+    config_sql = ConfigSql(self)
+    rs_config = config_sql.get_configs()
+    if rs_config is not None and rs_config[0].get("reshade_version") is not None:
+        self.reshade_version = rs_config[0].get("reshade_version")
+        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH, f"{constants.RESHADE_SETUP}_{self.reshade_version}.exe")
+        self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
+        self.enable_form(True)
+
+
+def download_reshade(self):
+    # removing old version
+    if self.reshade_version is not None:
+        old_local_reshade_exe = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.reshade_version}.exe")
+        if os.path.isfile(old_local_reshade_exe):
+            self.log.info(messages.removing_old_reshade_file)
+            os.remove(old_local_reshade_exe)
+
+    try:
+        # downloading new reshade version
+        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.remote_reshade_version}.exe")
+        r = requests.get(self.remote_reshade_download_url)
+        if r.status_code == 200:
+            self.log.info(f"{messages.downloading_new_reshade_version}: {self.remote_reshade_version}")
+            with open(self.local_reshade_path, "wb") as outfile:
+                outfile.write(r.content)
+        else:
+            self.log.error(messages.error_check_new_reshade_version)
+            return
+    except Exception as e:
+        if hasattr(e, "errno") and e.errno == 13:
+            qtutils.show_message_window(self.log, "error", messages.error_permissionError)
+        else:
+            self.log.error(f"{messages.error_check_new_reshade_version} {str(e)}")
+        return
+
+    self.reshade_version = self.remote_reshade_version
+    unzip_reshade(self, self.local_reshade_path)
+
+    config_sql = ConfigSql(self)
+    config_sql.update_reshade_version(self.remote_reshade_version)
+
+    self.qtobj.reshade_version_label.clear()
+    self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.remote_reshade_version}")
+
+    len_games = self.qtobj.programs_tableWidget.rowCount()
+    if self.need_apply and len_games > 0:
+        events.apply_all(self)
+        qtutils.show_message_window(self.log, "info",
+                                    f"{messages.new_reshade_version}\n"
+                                    f"Version: {self.remote_reshade_version}\n\n"
+                                    f"{messages.apply_success}")
+        self.need_apply = False
+
+
+def download_shaders(self):
+    self.progressbar.set_values(messages.downloading_shaders, 50)
+
+    try:
+        r = requests.get(constants.SHADERS_ZIP_URL)
+        with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
+            outfile.write(r.content)
+    except Exception as e:
+        err_msg = f"{messages.dl_new_shaders_timeout} {str(e)}"
+        qtutils.show_message_window(self.log, "error", err_msg)
+
+    try:
+        if os.path.isdir(constants.SHADERS_SRC_PATH):
+            shutil.rmtree(constants.SHADERS_SRC_PATH)
+    except OSError as e:
+        self.log.error(f"rmtree: {str(e)}")
+
+    try:
+        if os.path.isdir(constants.RES_SHAD_MPATH):
+            shutil.rmtree(constants.RES_SHAD_MPATH)
+    except OSError as e:
+        self.log.error(f"rmtree: {str(e)}")
+
+    self.progressbar.set_values(messages.downloading_shaders, 75)
+    if os.path.isfile(constants.SHADERS_ZIP_PATH):
+        try:
+            unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
+        except FileNotFoundError as e:
+            self.log.error(str(e))
+        except zipfile.BadZipFile as e:
+            self.log.error(str(e))
+
+        try:
+            os.remove(constants.SHADERS_ZIP_PATH)
+        except OSError as e:
+            self.log.error(f"remove_file: {str(e)}")
+
+    self.progressbar.set_values(messages.downloading_shaders, 90)
+    try:
+        if os.path.isdir(constants.RES_SHAD_MPATH):
+            out_dir = f"{constants.PROGRAM_PATH}\\{constants.RESHADE_SHADERS}"
+            os.rename(constants.RES_SHAD_MPATH, out_dir)
+    except OSError as e:
+        self.log.error(f"rename_path: {str(e)}")
+
+    self.progressbar.close()
+
+
+def check_program_updates(self):
+    self.qtobj.update_button.setVisible(False)
+    if self.check_program_updates:
+        new_version_obj = get_new_program_version(self)
+        if new_version_obj.new_version_available:
+            self.qtobj.updateAvail_label.clear()
+            self.qtobj.updateAvail_label.setText(new_version_obj.new_version_msg)
+            self.qtobj.update_button.setVisible(True)
+
+
+def get_new_program_version(self):
     client_version = self.client_version
     remote_version = None
     remote_version_filename = constants.REMOTE_VERSION_FILENAME
@@ -111,48 +311,7 @@ def check_new_program_version(self):
     return obj_return
 
 
-def check_dirs():
-    try:
-        if not os.path.isdir(constants.PROGRAM_PATH):
-            os.makedirs(constants.PROGRAM_PATH)
-    except OSError as e:
-        err_msg = f"{messages.unable_create_dirs}\n{e}"
-        qtutils.show_message_window(None, "error", err_msg)
-        exit(1)
-
-
-def create_local_reshade_files(self):
-    from src.files import Files
-    files = Files(self)
-
-    try:
-        if not os.path.isfile(constants.RESHADE_INI_FILENAME):
-            files.download_reshade_ini_file()
-    except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.RESHADE_INI_FILENAME}{messages.not_found}"
-        qtutils.show_message_window(self.log, "error", err_msg)
-        return False
-
-    try:
-        if not os.path.isfile(constants.RESHADE_PRESET_FILENAME):
-            files.download_reshade_preset_file()
-    except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_FILENAME}{messages.not_found}"
-        qtutils.show_message_window(self.log, "error", err_msg)
-        return False
-
-    try:
-        if not os.path.isfile(constants.QSS_FILENAME):
-            files.download_qss_file()
-    except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.QSS_FILENAME}{messages.not_found}"
-        qtutils.show_message_window(self.log, "error", err_msg)
-        return False
-
-    return True
-
-
-def check_db_connection(self):
+def check_database_connection(self):
     if self.database is not None:
         conn = self.database.engine.connect()
         if conn is not None:
@@ -163,7 +322,7 @@ def check_db_connection(self):
         sys.exit(1)
 
 
-def check_database_configs(self):
+def check_default_database_configs(self):
     config_sql = ConfigSql(self)
     rs_config = config_sql.get_program_version()
     if rs_config is not None:
@@ -171,8 +330,8 @@ def check_database_configs(self):
         if float(program_version) < float(constants.RESET_DATABASE_VERSION):
             try:
                 os.remove(constants.SQLITE3_FILENAME)
-                check_db_connection(self)
-                create_default_tables(self)
+                check_database_connection(self)
+                check_default_database_tables(self)
                 qtutils.show_message_window(self.log, "warning", messages.config_reset_msg)
             except Exception:
                 err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
@@ -185,7 +344,7 @@ def check_database_configs(self):
             sys.exit(1)
 
 
-def create_default_tables(self):
+def check_default_database_tables(self):
     from src.sql.tables import Configs, Games
     try:
         Configs.__table__.create(self.database.engine, checkfirst=True)
@@ -215,19 +374,6 @@ def check_game_file(self):
         if not os.path.isfile(self.added_game_path):
             return False
     return True
-
-
-def set_file_settings(filename: str, section: str, config_name: str, value):
-    parser = configparser.ConfigParser(delimiters="=", allow_no_value=False)
-    parser.optionxform = str  # this wont change all values to lowercase
-    parser._interpolation = configparser.ExtendedInterpolation()
-    parser.read(filename)
-    parser.set(section, config_name, value)
-    try:
-        with open(filename, "w") as configfile:
-            parser.write(configfile, space_around_delimiters=False)
-    except configparser.DuplicateOptionError:
-        return
 
 
 def get_binary_type(self, game_path):
@@ -270,55 +416,6 @@ def get_binary_type(self, game_path):
             else:
                 # self.log.info(f"Unknown architecture {machine}")
                 return None
-
-
-def download_shaders(self):
-    if not os.path.isdir(constants.SHADERS_SRC_PATH)\
-            or (self.update_shaders is not None and self.update_shaders is True):
-
-        try:
-            self.progressbar.set_values(messages.downloading_shaders, 50)
-            r = requests.get(constants.SHADERS_ZIP_URL)
-            with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
-                outfile.write(r.content)
-        except Exception as e:
-            err_msg = f"{messages.dl_new_shaders_timeout} {str(e)}"
-            qtutils.show_message_window(self.log, "error", err_msg)
-
-        try:
-            if os.path.isdir(constants.SHADERS_SRC_PATH):
-                shutil.rmtree(constants.SHADERS_SRC_PATH)
-        except OSError as e:
-            self.log.error(f"rmtree: {str(e)}")
-
-        try:
-            if os.path.isdir(constants.RES_SHAD_MPATH):
-                shutil.rmtree(constants.RES_SHAD_MPATH)
-        except OSError as e:
-            self.log.error(f"rmtree: {str(e)}")
-
-        self.progressbar.set_values(messages.downloading_shaders, 75)
-        if os.path.isfile(constants.SHADERS_ZIP_PATH):
-            try:
-                unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
-            except FileNotFoundError as e:
-                self.log.error(str(e))
-            except zipfile.BadZipFile as e:
-                self.log.error(str(e))
-
-            try:
-                os.remove(constants.SHADERS_ZIP_PATH)
-            except OSError as e:
-                self.log.error(f"remove_file: {str(e)}")
-
-        try:
-            if os.path.isdir(constants.RES_SHAD_MPATH):
-                out_dir = f"{constants.PROGRAM_PATH}\\{constants.RESHADE_SHADERS}"
-                os.rename(constants.RES_SHAD_MPATH, out_dir)
-        except OSError as e:
-            self.log.error(f"rename_path: {str(e)}")
-
-        self.progressbar.set_values(messages.downloading_shaders, 99)
 
 
 # def resource_path(relative_path):

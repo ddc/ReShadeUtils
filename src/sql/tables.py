@@ -19,7 +19,6 @@ class Configs(Base):
     check_program_updates = Column(Integer, nullable=False, server_default=text("1"))
     show_info_messages = Column(Integer, nullable=False, server_default=text("1"))
     check_reshade_updates = Column(Integer, nullable=False, server_default=text("1"))
-    silent_reshade_updates = Column(Integer, nullable=False, server_default=text("1"))
     update_shaders = Column(Integer, nullable=False, server_default=text("1"))
     create_screenshots_folder = Column(Integer, nullable=False, server_default=text("1"))
     program_version = Column(String(10), nullable=True)

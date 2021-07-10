@@ -20,34 +20,31 @@ from src import constants, messages, utils, qtutils
 
 class Launcher:
     def __init__(self):
+        self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
-        self.program_path = self.program_path = os.path.join(utils.get_current_path(), constants.EXE_PROGRAM_NAME)
-        self.log = None
+        self.database = DatabaseClass(self.log)
+        self.program_path = os.path.join(utils.get_current_path(), constants.EXE_PROGRAM_NAME)
         self.new_version = None
         self.new_version_msg = None
         self.client_version = None
-        self.database = None
 
 
-    def init(self):
-        utils.check_dirs()
+    def start(self):
         self.progressbar.set_values(messages.checking_files, 25)
-        self.log = Log().setup_logging()
+        utils.check_local_files(self)
         if not os.path.isfile(self.program_path):
-            os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)
-        self.database = DatabaseClass(self.log)
-        utils.check_db_connection(self)
-        utils.create_default_tables(self)
-        utils.check_database_configs(self)
-        if utils.create_local_reshade_files(self):
-            self.progressbar.set_values(messages.checking_db_connection, 50)
-            self.progressbar.set_values(messages.checking_new_version, 75)
-            self._check_update_required()
-            self.progressbar.close()
-            self._call_program()
+            self.program_path = os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)
+        self.progressbar.set_values(messages.checking_database, 50)
+        utils.check_database_connection(self)
+        utils.check_default_database_tables(self)
+        utils.check_default_database_configs(self)
+        self.progressbar.set_values(messages.checking_program_updates, 75)
+        self.check_program_updates()
+        self.progressbar.close()
+        self.call_program()
 
 
-    def _check_update_required(self):
+    def check_program_updates(self):
         config_sql = ConfigSql(self)
         rs_config = config_sql.get_configs()
         if rs_config[0].get("program_version") is None:
@@ -55,14 +52,14 @@ class Launcher:
         else:
             self.client_version = rs_config[0].get("program_version")
         if rs_config[0].get("check_program_updates"):
-            new_version_obj = utils.check_new_program_version(self)
+            new_version_obj = utils.get_new_program_version(self)
             if new_version_obj.new_version_available:
                 self.new_version = new_version_obj.new_version
                 self.new_version_msg = new_version_obj.new_version_msg
-                self._download_new_program_version()
+                self.download_new_program_version()
 
 
-    def _download_new_program_version(self):
+    def download_new_program_version(self):
         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
         r = requests.get(program_url)
         if r.status_code == 200:
@@ -74,7 +71,7 @@ class Launcher:
             self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
 
 
-    def _call_program(self):
+    def call_program(self):
         code = None
         try:
             process = subprocess.run(self.program_path, shell=True, check=True, universal_newlines=True)
@@ -90,4 +87,4 @@ class Launcher:
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     launcher = Launcher()
-    launcher.init()
+    launcher.start()

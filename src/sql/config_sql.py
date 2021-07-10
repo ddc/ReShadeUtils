@@ -67,13 +67,6 @@ class ConfigSql:
         return self.database.execute(sql)
 
 
-    def update_silent_reshade_updates(self, status):
-        sql = self.table.update().\
-            values(silent_reshade_updates=status).\
-            where(self.table.columns.id == 1)
-        return self.database.execute(sql)
-
-
     def update_create_screenshots_folder(self, status):
         sql = self.table.update().\
             values(create_screenshots_folder=status).\
