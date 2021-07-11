@@ -222,14 +222,13 @@ def reset_all_button_clicked(self):
 
 def dark_theme_clicked(self, status):
     if status == "YES":
-        self.set_style_sheet(True)
         self.use_dark_theme = True
         status = 1
     else:
-        self.set_style_sheet(False)
         self.use_dark_theme = False
         status = 0
 
+    self.set_style_sheet()
     config_sql = ConfigSql(self)
     config_sql.update_dark_theme(status)
 
