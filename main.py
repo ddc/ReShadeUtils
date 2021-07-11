@@ -391,7 +391,6 @@ class Ui_Main(object):
         main_src = MainSrc(self, Main)
         main_src.start()
 
-
     def retranslateUi(self, Main):
         _translate = QtCore.QCoreApplication.translate
         Main.setWindowTitle(_translate("Main", constants.FULL_PROGRAM_NAME))
