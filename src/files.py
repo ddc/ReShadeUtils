@@ -24,47 +24,48 @@ class Files:
 
 
     def download_reshade_ini_file(self):
-        local_file_path = constants.RESHADE_INI_FILENAME
+        local_file_path = constants.RESHADE_INI_PATH
         remote_file = constants.RESHADE_REMOTE_FILENAME
         self._download_file(remote_file, local_file_path, _ini_file_contents)
 
 
     def download_reshade_preset_file(self):
-        local_file_path = constants.RESHADE_PRESET_FILENAME
+        local_file_path = constants.RESHADE_PRESET_PATH
         remote_file = constants.PRESET_REMOTE_FILENAME
         self._download_file(remote_file, local_file_path, _preset_file_contents)
 
 
     def download_qss_file(self):
-        local_file_path = constants.QSS_FILENAME
+        local_file_path = constants.QSS_PATH
         remote_file = constants.QSS_REMOTE_FILENAME
         self._download_file(remote_file, local_file_path, _qss_file_contents)
 
 
     @staticmethod
-    def apply_reshade_ini_file(game_file_path, screenshot_path):
+    def apply_reshade_ini_file(game_dir, screenshot_path):
         try:
-            shutil.copy(constants.RESHADE_INI_FILENAME, game_file_path)
+            shutil.copy(constants.RESHADE_INI_PATH, game_dir)
         except Exception as e:
             return e
 
+        game_reshade_ini_path = os.path.join(game_dir, constants.RESHADE_INI)
         effect_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Shaders")
         texture_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Textures")
         intermediate_cache_path = os.getenv("TEMP")
         preset_path = f".\\{constants.RESHADE_PRESET_INI}"
 
-        utils.set_file_settings(game_file_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-        utils.set_file_settings(game_file_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
-        utils.set_file_settings(game_file_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-        utils.set_file_settings(game_file_path, "GENERAL", "PresetPath", preset_path)
-        utils.set_file_settings(game_file_path, "SCREENSHOT", "SavePath", screenshot_path)
+        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
+        utils.set_file_settings(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
         return None
 
 
     @staticmethod
     def apply_reshade_preset_file(game_file_path):
         try:
-            shutil.copy(constants.RESHADE_PRESET_FILENAME, game_file_path)
+            shutil.copy(constants.RESHADE_PRESET_PATH, game_file_path)
         except Exception as e:
             return e
         return None

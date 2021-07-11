@@ -28,6 +28,7 @@ RESHADE_SETUP = "ReShade_Setup"
 RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "Reshade.ini"
 RESHADE_PRESET_INI = "ReShadePreset.ini"
+RESHADEGUI_INI = "ReShadeGUI.ini"
 RESHADE32_DLL = "Reshade32.dll"
 RESHADE64_DLL = "ReShade64.dll"
 DXGI_DLL = "dxgi.dll"
@@ -45,11 +46,10 @@ SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-master")
 RESHADE_SCREENSHOT_PATH = os.path.join(utils.get_pictures_path(), "Screenshots")
 ################################################################################
-SQLITE3_FILENAME = os.path.join(PROGRAM_PATH, "database.db")
-QSS_FILENAME = os.path.join(PROGRAM_PATH, "style.qss")
-DIR_LOGS = os.path.join(PROGRAM_PATH)
-RESHADE_INI_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_INI)
-RESHADE_PRESET_FILENAME = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
+SQLITE3_PATH = os.path.join(PROGRAM_PATH, "database.db")
+QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
+RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
+RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 ################################################################################
 BRANCH = "dev" if DEBUG else "master"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"

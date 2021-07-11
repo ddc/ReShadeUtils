@@ -14,7 +14,7 @@ from sqlalchemy.engine import create_engine
 class DatabaseClass:
     def __init__(self, log):
         self.log = log
-        self.db_file = constants.SQLITE3_FILENAME
+        self.db_file = constants.SQLITE3_PATH
         self.batch_size = 100
         self.engine = self.create_engine()
 

@@ -441,7 +441,7 @@
     <attribute name="title">
      <string>SETTINGS</string>
     </attribute>
-    <widget class="QGroupBox" name="update_shaders_groupBox">
+    <widget class="QGroupBox" name="download_shaders_groupBox">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -473,7 +473,7 @@
       <string>Update Shader Files Everytime on Apply</string>
      </property>
      <property name="title">
-      <string>Update Reshade Shader Files</string>
+      <string>Download Shader Files on Startup</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -656,7 +656,7 @@
       </font>
      </property>
      <property name="title">
-      <string>Create Game Screenshot Folders</string>
+      <string>Create Game Screenshot Folder</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -841,7 +841,7 @@
       <string>Reset all reshade configs to default</string>
      </property>
      <property name="text">
-      <string>RESET ALL RESHADE CONFIGS TO DEAFULT</string>
+      <string>RESET ALL GAMES FILES TO DEAFULT</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">

@@ -9,12 +9,12 @@ import os
 import sys
 import gzip
 import logging.handlers
-from src import constants
+from src import constants, qtutils
 
 
 class Log:
     def __init__(self):
-        self.dir = constants.DIR_LOGS
+        self.dir = constants.PROGRAM_PATH
         self.days_to_keep = int(constants.DAYS_TO_KEEP_LOGS)
         self.level = logging.DEBUG if constants.DEBUG else logging.INFO
 
@@ -23,7 +23,9 @@ class Log:
         try:
             os.makedirs(self.dir, exist_ok=True) if not os.path.isdir(self.dir) else None
         except Exception as e:
-            sys.stderr.write(f"[ERROR]:[EXITING]:[{str(e)}]:Unable to create logs directory: {self.dir}\n")
+            err_msg = f"[ERROR]:[EXITING]:[{str(e)}]:Unable to create logs directory: {self.dir}\n"
+            qtutils.show_message_window(None, "error", err_msg)
+            sys.stderr.write(err_msg)
             sys.exit(1)
 
         log_filename = f"{constants.SHORT_PROGRAM_NAME}.log"
@@ -32,7 +34,9 @@ class Log:
         try:
             open(log_file_path, "a+").close()
         except IOError as e:
-            sys.stderr.write(f"[ERROR]:[EXITING]:[{str(e)}]:Unable to open the log file for writing: {log_file_path}\n")
+            err_msg = f"[ERROR]:[EXITING]:[{str(e)}]:Unable to open the log file for writing: {log_file_path}\n"
+            qtutils.show_message_window(None, "error", err_msg)
+            sys.stderr.write(err_msg)
             sys.exit(1)
 
         if self.level == logging.DEBUG:
@@ -79,7 +83,9 @@ class GZipRotator:
                         fout.writelines(fin)
                 os.remove(source)
             except Exception as e:
-                sys.stderr.write(f"[ERROR]:Unable to compress the log file:[{str(e)}]: {source}\n")
+                err_msg = f"[ERROR]:Unable to compress the log file:[{str(e)}]: {source}\n"
+                qtutils.show_message_window(None, "error", err_msg)
+                sys.stderr.write(err_msg)
 
 
 class RemoveOldLogs:
@@ -92,7 +98,9 @@ class RemoveOldLogs:
                 try:
                     os.remove(file_path)
                 except Exception as e:
-                    sys.stderr.write(f"[ERROR]:Unable to removed old logs:{str(e)}: {file_path}\n")
+                    err_msg = f"[ERROR]:Unable to removed old logs:{str(e)}: {file_path}\n"
+                    qtutils.show_message_window(None, "error", err_msg)
+                    sys.stderr.write(err_msg)
 
     @staticmethod
     def _is_file_older_than_x_days(file_path, days_to_keep):

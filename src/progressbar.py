@@ -44,7 +44,7 @@ class ProgressBar:
 
     def set_values(self, message="", value=0):
         _translate = QtCore.QCoreApplication.translate
-        self.pbar.setFormat(_translate("Main", f"{message} %p%"))
+        self.pbar.setFormat(_translate("Main", f"{message}  %p%"))
         self.pbar.setValue(value)
         if value >= 100:
             self.pbar.close()

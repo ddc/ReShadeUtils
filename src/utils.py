@@ -101,32 +101,24 @@ def check_local_files(self):
     files = Files(self)
 
     try:
-        if not os.path.isdir(constants.PROGRAM_PATH):
-            os.makedirs(constants.PROGRAM_PATH)
-    except OSError as e:
-        err_msg = f"{messages.unable_create_dirs}\n{e}"
-        qtutils.show_message_window(self.log, "error", err_msg)
-        exit(1)
-
-    try:
-        if not os.path.isfile(constants.RESHADE_INI_FILENAME):
+        if not os.path.isfile(constants.RESHADE_INI_PATH):
             files.download_reshade_ini_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.RESHADE_INI_FILENAME}{messages.not_found}"
+        err_msg = f"{str(e)}\n\n{constants.RESHADE_INI_PATH}{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
 
     try:
-        if not os.path.isfile(constants.RESHADE_PRESET_FILENAME):
+        if not os.path.isfile(constants.RESHADE_PRESET_PATH):
             files.download_reshade_preset_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_FILENAME}{messages.not_found}"
+        err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_PATH}{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
 
     try:
-        if not os.path.isfile(constants.QSS_FILENAME):
+        if not os.path.isfile(constants.QSS_PATH):
             files.download_qss_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.QSS_FILENAME}{messages.not_found}"
+        err_msg = f"{str(e)}\n\n{constants.QSS_PATH}{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
 
 
@@ -225,8 +217,6 @@ def download_reshade(self):
 
 
 def download_shaders(self):
-    self.progressbar.set_values(messages.downloading_shaders, 50)
-
     try:
         r = requests.get(constants.SHADERS_ZIP_URL)
         with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
@@ -247,7 +237,6 @@ def download_shaders(self):
     except OSError as e:
         self.log.error(f"rmtree: {str(e)}")
 
-    self.progressbar.set_values(messages.downloading_shaders, 75)
     if os.path.isfile(constants.SHADERS_ZIP_PATH):
         try:
             unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
@@ -261,15 +250,12 @@ def download_shaders(self):
         except OSError as e:
             self.log.error(f"remove_file: {str(e)}")
 
-    self.progressbar.set_values(messages.downloading_shaders, 90)
     try:
         if os.path.isdir(constants.RES_SHAD_MPATH):
             out_dir = f"{constants.PROGRAM_PATH}\\{constants.RESHADE_SHADERS}"
             os.rename(constants.RES_SHAD_MPATH, out_dir)
     except OSError as e:
         self.log.error(f"rename_path: {str(e)}")
-
-    self.progressbar.close()
 
 
 def check_program_updates(self):
@@ -329,7 +315,7 @@ def check_default_database_configs(self):
         program_version = rs_config[0].get("program_version")
         if float(program_version) < float(constants.RESET_DATABASE_VERSION):
             try:
-                os.remove(constants.SQLITE3_FILENAME)
+                os.remove(constants.SQLITE3_PATH)
                 check_database_connection(self)
                 check_default_database_tables(self)
                 qtutils.show_message_window(self.log, "warning", messages.config_reset_msg)
@@ -416,6 +402,31 @@ def get_binary_type(self, game_path):
             else:
                 # self.log.info(f"Unknown architecture {machine}")
                 return None
+
+
+def get_screenshot_path(self, game_dir, game_name):
+    game_screenshots_path = ""
+    if self.qtobj.yes_screenshots_folder_radioButton.isChecked():
+        game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)
+        try:
+            if not os.path.isdir(constants.RESHADE_SCREENSHOT_PATH):
+                os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
+        except OSError as e:
+            self.log.error(f"mkdir: {constants.RESHADE_SCREENSHOT_PATH} {str(e)}")
+
+        try:
+            if not os.path.isdir(game_screenshots_path):
+                os.makedirs(game_screenshots_path)
+        except OSError as e:
+            self.log.error(f"mkdir: {game_screenshots_path} {str(e)}")
+    else:
+        reshade_ini_filepath = os.path.join(game_dir, constants.RESHADE_INI)
+        reshade_config_screenshot_path = get_ini_settings(reshade_ini_filepath, "SCREENSHOT", "SavePath")
+        if reshade_config_screenshot_path is not None:
+            game_screenshots_path = reshade_config_screenshot_path
+        elif os.path.isdir(os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)):
+            game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)
+    return game_screenshots_path
 
 
 # def resource_path(relative_path):

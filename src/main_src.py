@@ -5,11 +5,9 @@
 # |*****************************************************
 # # -*- coding: utf-8 -*-
 
-
 import os
 from src.log import Log
 from PyQt5.QtCore import Qt
-from src.config import Ui_config
 from src.sql.games_sql import GamesSql
 from src.progressbar import ProgressBar
 from src.sql.config_sql import ConfigSql
@@ -45,23 +43,27 @@ class MainSrc:
 
     def start(self):
         self.log.info(f"STARTING {constants.FULL_PROGRAM_NAME}")
-        self.progressbar.set_values(messages.checking_files, 15)
-        utils.check_local_files(self)
 
-        self.progressbar.set_values(messages.checking_database, 30)
+        self.progressbar.set_values(messages.checking_database, 15)
         utils.check_database_connection(self)
         utils.check_default_database_tables(self)
         utils.check_default_database_configs(self)
+
+        self.progressbar.set_values(messages.checking_files, 30)
+        utils.check_local_files(self)
 
         self.progressbar.set_values(messages.checking_configs, 45)
         self.set_variables()
         self.register_form_events()
 
-        self.progressbar.set_values(messages.checking_reshade_updates, 60)
+        self.progressbar.set_values(messages.downloading_shaders, 60)
+        if not os.path.isdir(constants.SHADERS_SRC_PATH)\
+                or (self.update_shaders is not None and self.update_shaders is True):
+            utils.download_shaders(self)
+
+        self.progressbar.set_values(messages.checking_reshade_updates, 80)
         utils.check_reshade_updates(self)
         utils.check_reshade_dll_files(self)
-        if not os.path.isdir(constants.SHADERS_SRC_PATH):
-            utils.download_shaders(self)
 
         self.progressbar.set_values(messages.checking_program_updates, 90)
         utils.check_program_updates(self)
@@ -80,14 +82,13 @@ class MainSrc:
         if rs_config is not None and len(rs_config) > 0:
             if not rs_config[0].get("use_dark_theme"):
                 self.use_dark_theme = False
-                self.set_style_sheet(False)
                 self.qtobj.yes_dark_theme_radioButton.setChecked(False)
                 self.qtobj.no_dark_theme_radioButton.setChecked(True)
             else:
                 self.use_dark_theme = True
-                self.set_style_sheet(True)
                 self.qtobj.yes_dark_theme_radioButton.setChecked(True)
                 self.qtobj.no_dark_theme_radioButton.setChecked(False)
+            self.set_style_sheet()
 
             if not rs_config[0].get("check_program_updates"):
                 self.check_program_updates = False
@@ -178,52 +179,15 @@ class MainSrc:
         self.qtobj.donate_button.clicked.connect(lambda: events.donate_clicked())
 
 
-    def show_game_config_form(self, game_name, architecture):
-        if not utils.check_game_file(self):
-            qtutils.show_message_window(self.log, "error", messages.error_game_not_found)
-            return
-
-        self.game_config_form = QtWidgets.QWidget()
-        qt_obj = Ui_config()
-        qt_obj.setupUi(self.game_config_form)
-        self.game_config_form.qtObj = qt_obj
-
+    def set_style_sheet(self):
         if self.use_dark_theme:
-            self.game_config_form.setStyleSheet(open(constants.QSS_FILENAME, "r").read())
-
-        self.game_config_form.qtObj.game_name_lineEdit.setFocus()
-        self.game_config_form.show()
-        QtWidgets.QApplication.processEvents()
-
-        self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "OK"))
-        self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "CANCEL"))
-
-        if self.selected_game is not None:
-            self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.name)
-            if self.selected_game.api == constants.DX9_DISPLAY_NAME:
-                self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
-                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
-                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
-            elif self.selected_game.api == constants.OPENGL_DISPLAY_NAME:
-                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
-                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
-                self.game_config_form.qtObj.opengl_radioButton.setChecked(True)
-            else:
-                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
-                self.game_config_form.qtObj.dx_radioButton.setChecked(True)
-                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
-        else:
-            self.game_config_form.qtObj.game_name_lineEdit.setText(game_name)
-
-
-    def set_style_sheet(self, status: bool):
-        if status:
-            self.form.setStyleSheet(open(constants.QSS_FILENAME, "r").read())
+            self.form.setStyleSheet(open(constants.QSS_PATH, "r").read())
         else:
             self.form.setStyleSheet("")
 
 
     def populate_table_widget(self):
+        self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
         self.qtobj.programs_tableWidget.setRowCount(0) # cleanning datagrid
         games_sql = GamesSql(self)
         rs_all_games = games_sql.get_games()
@@ -244,7 +208,6 @@ class MainSrc:
         if highest_column_width < 600:
             self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         else:
-            self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
             self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
 
@@ -281,4 +244,4 @@ class MainSrc:
 
     def _table_widget_double_clicked(self):
         if self.selected_game is not None:
-            self.show_game_config_form(self.selected_game.name, self.selected_game.architecture)
+            qtutils.show_game_config_form(self, self.selected_game.name, self.selected_game.architecture)
