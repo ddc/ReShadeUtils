@@ -145,9 +145,9 @@ class MainSrc:
     def register_form_events(self):
         # TAB 1 - games
         self.qtobj.add_button.clicked.connect(lambda: events.add_game(self))
-        self.qtobj.delete_button.clicked.connect(lambda: events.delete_game(self))
+        self.qtobj.remove_button.clicked.connect(lambda: events.delete_game(self))
         self.qtobj.edit_path_button.clicked.connect(lambda: events.edit_game_path(self))
-        self.qtobj.edit_preset_button.clicked.connect(lambda: events.open_preset_config_file(self))
+        self.qtobj.edit_plugin_button.clicked.connect(lambda: events.open_preset_config_file(self))
         self.qtobj.apply_button.clicked.connect(lambda: events.apply_all(self))
         self.qtobj.update_button.clicked.connect(lambda: events.update_clicked())
         self.qtobj.programs_tableWidget.clicked.connect(self._table_widget_clicked)
@@ -224,9 +224,11 @@ class MainSrc:
         if not status:
             self.selected_game = None
         self._set_state_apply_button()
-        self.qtobj.delete_button.setEnabled(status)
+        self.qtobj.remove_button.setEnabled(status)
+        self.qtobj.reset_files_button.setEnabled(status)
+        self.qtobj.edit_plugin_button.setEnabled(status)
         self.qtobj.edit_path_button.setEnabled(status)
-        self.qtobj.edit_preset_button.setEnabled(status)
+        self.qtobj.open_game_dir_button.setEnabled(status)
         self.qtobj.main_tabWidget.setCurrentIndex(0)
 
 

@@ -11,7 +11,7 @@ from src import utils
 
 
 DEBUG = False
-VERSION = "4.3"
+VERSION = "4.4"
 
 
 PROGRAM_NAME = "Reshade Utils"

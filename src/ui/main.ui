@@ -110,23 +110,11 @@
     <widget class="QPushButton" name="add_button">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>560</y>
+       <x>50</x>
+       <y>550</y>
        <width>160</width>
        <height>30</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="font">
       <font>
@@ -148,23 +136,11 @@
     <widget class="QPushButton" name="edit_path_button">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>560</y>
+       <x>429</x>
+       <y>570</y>
        <width>160</width>
        <height>30</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="font">
       <font>
@@ -176,33 +152,21 @@
       <string>Edit the selected game path</string>
      </property>
      <property name="text">
-      <string>EDIT LOCATION</string>
+      <string>CHANGE LOCATION</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
        <normaloff>:/resources/images/arrow.png</normaloff>:/resources/images/arrow.png</iconset>
      </property>
     </widget>
-    <widget class="QPushButton" name="delete_button">
+    <widget class="QPushButton" name="remove_button">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>560</y>
+       <x>220</x>
+       <y>550</y>
        <width>160</width>
        <height>30</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="font">
       <font>
@@ -214,7 +178,7 @@
       <string>Delete the selected game</string>
      </property>
      <property name="text">
-      <string>DELETE</string>
+      <string>REMOVE</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
@@ -224,23 +188,11 @@
     <widget class="QPushButton" name="apply_button">
      <property name="geometry">
       <rect>
-       <x>780</x>
-       <y>560</y>
-       <width>160</width>
-       <height>30</height>
+       <x>820</x>
+       <y>529</y>
+       <width>120</width>
+       <height>71</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="font">
       <font>
@@ -265,20 +217,8 @@
        <x>0</x>
        <y>0</y>
        <width>960</width>
-       <height>540</height>
+       <height>521</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>960</width>
-       <height>540</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>960</width>
-       <height>540</height>
-      </size>
      </property>
      <property name="focusPolicy">
       <enum>Qt::StrongFocus</enum>
@@ -394,26 +334,14 @@
       </property>
      </column>
     </widget>
-    <widget class="QPushButton" name="edit_preset_button">
+    <widget class="QPushButton" name="edit_plugin_button">
      <property name="geometry">
       <rect>
-       <x>380</x>
-       <y>560</y>
+       <x>600</x>
+       <y>530</y>
        <width>160</width>
        <height>30</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>160</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="font">
       <font>
@@ -425,11 +353,63 @@
       <string>Edit the selected reshade preset file</string>
      </property>
      <property name="text">
-      <string>EDIT PRESET FILE</string>
+      <string>EDIT PLUGIN</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
        <normaloff>:/resources/images/edit.png</normaloff>:/resources/images/edit.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="reset_files_button">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>530</y>
+       <width>160</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Edit the selected reshade preset file</string>
+     </property>
+     <property name="text">
+      <string>RESET FILES</string>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="open_game_dir_button">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>570</y>
+       <width>160</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Edit the selected reshade preset file</string>
+     </property>
+     <property name="text">
+      <string>OPEN LOCATION</string>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/resources/images/folder.png</normaloff>:/resources/images/folder.png</iconset>
      </property>
     </widget>
    </widget>
@@ -1040,7 +1020,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QLabel" name="updateAvail_label">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>300</x>
      <y>655</y>
      <width>480</width>
      <height>40</height>
@@ -1075,23 +1055,11 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="update_button">
    <property name="geometry">
     <rect>
-     <x>802</x>
+     <x>800</x>
      <y>660</y>
      <width>160</width>
      <height>30</height>
     </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>160</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>160</width>
-     <height>30</height>
-    </size>
    </property>
    <property name="font">
     <font>
@@ -1118,8 +1086,8 @@ p, li { white-space: pre-wrap; }
  <tabstops>
   <tabstop>main_tabWidget</tabstop>
   <tabstop>add_button</tabstop>
-  <tabstop>delete_button</tabstop>
-  <tabstop>edit_preset_button</tabstop>
+  <tabstop>remove_button</tabstop>
+  <tabstop>edit_plugin_button</tabstop>
   <tabstop>edit_path_button</tabstop>
   <tabstop>apply_button</tabstop>
   <tabstop>update_button</tabstop>

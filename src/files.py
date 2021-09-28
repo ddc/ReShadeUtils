@@ -154,8 +154,8 @@ VariableListHeight=336.000000
 VariableListUseTabs=1
 
 [SCREENSHOT]
-ClearAlpha=1
-FileFormat=1
+ClearAlpha=0
+FileFormat=2
 FileNamingFormat=0
 JPEGQuality=100
 SaveBeforeShot=0

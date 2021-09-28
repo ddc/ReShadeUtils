@@ -51,7 +51,7 @@ def add_game(self):
             qtutils.show_message_window(self.log, "error", messages.not_valid_game)
 
 
-def delete_game(self):
+def delete_game(self, remove_from_db=False):
     game_not_found = False
     if not utils.check_game_file(self):
         game_not_found = True
@@ -104,17 +104,17 @@ def delete_game(self):
             if os.path.isfile(reshadegui_ini):
                 os.remove(reshadegui_ini)
 
-            # remove from database
-            games_sql = GamesSql(self)
-            games_sql.delete_game(self.selected_game.id)
+            if remove_from_db:
+                games_sql = GamesSql(self)
+                games_sql.delete_game(self.selected_game.id)
+            else:
+                if self.show_info_messages:
+                    if game_not_found:
+                        qtutils.show_message_window(self.log, "info", f"{messages.game_not_in_path_deleted}\n\n{game_name}")
+                    else:
+                        qtutils.show_message_window(self.log, "info", f"{messages.game_deleted}\n\n{game_name}")
 
             self.populate_table_widget()
-
-            if self.show_info_messages:
-                if game_not_found:
-                    qtutils.show_message_window(self.log, "info", f"{messages.game_not_in_path_deleted}\n\n{game_name}")
-                else:
-                    qtutils.show_message_window(self.log, "info", f"{messages.game_deleted}\n\n{game_name}")
         except OSError as e:
             qtutils.show_message_window(self.log, "error", f"ERROR deleting {game_name} files\n\n{str(e)}")
 
@@ -331,6 +331,7 @@ def game_config_form_result(self, architecture, status):
             qtutils.show_message_window(self.log, "error", messages.missing_api)
             return
 
+        delete_game(self, remove_from_db=True)
         sql_games_obj = utils.Object()
         sql_games_obj.game_name = self.game_config_form.qtObj.game_name_lineEdit.text()
 
