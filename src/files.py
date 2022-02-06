@@ -3,7 +3,7 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import shutil
@@ -181,15 +181,14 @@ TabRounding=12.000000
 WindowRounding=12.000000
 """)
 
-
 _preset_file_contents = (
 """PreprocessorDefinitions=
-Techniques=LumaSharpen@LumaSharpen.fx,Levels@Levels.fx,Clarity@Clarity.fx
-TechniqueSorting=LumaSharpen@LumaSharpen.fx,Levels@Levels.fx,Clarity@Clarity.fx
+Techniques=LumaSharpen@LumaSharpen.fx,Clarity@Clarity.fx
+TechniqueSorting=LumaSharpen@LumaSharpen.fx,Clarity@Clarity.fx
 
 [Clarity.fx]
-ClarityBlendIfDark=0
-ClarityBlendIfLight=255
+ClarityBlendIfDark=50
+ClarityBlendIfLight=200
 ClarityBlendMode=2
 ClarityDarkIntensity=0.400000
 ClarityLightIntensity=0.000000
@@ -199,15 +198,10 @@ ClarityStrength=0.400000
 ClarityViewBlendIfMask=0
 ClarityViewMask=0
 
-[Levels.fx]
-BlackPoint=5
-HighlightClipping=0
-WhitePoint=235
-
 [LumaSharpen.fx]
 offset_bias=1.000000
 pattern=1
-sharp_clamp=0.035000
+sharp_clamp=0.100000
 sharp_strength=1.000000
 show_sharpen=0
 """)

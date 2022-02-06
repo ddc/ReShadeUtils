@@ -1,11 +1,11 @@
 # Reshade Utilities
+### Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders
+
 [<img src="https://img.shields.io/badge/Donate-PayPal-green.svg?style=plastic">](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE)
 [<img src="https://img.shields.io/github/license/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
 [<img src="https://img.shields.io/badge/Python-3-blue.svg?style=plastic">](https://www.python.org/)
 [<img src="https://img.shields.io/badge/PyQt-5-brightgreen.svg?style=plastic">](https://riverbankcomputing.com/software/pyqt)
 [<img src="https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/releases/latest)
-
-Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders to several games at once
 
 ![screenshot](resources/images/screenshot.png)
 ![screenshot](resources/images/screenshot_settings.png)

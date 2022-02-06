@@ -3,9 +3,10 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
-
-# general
+# -*- encoding: utf-8 -*-
+#################################
+# MAIN
+#################################
 not_found = " not found!"
 unable_start = " unable to start"
 checking_files = "Checking files"
@@ -21,14 +22,15 @@ error_game_not_found = "Game not found.\n Please check the game path and try aga
 config_reset_msg = "Your configuration has been RESET due to program update!\nWe apologize for the inconvenience"
 reseting_files = "Reseting all files to default"
 reset_success = "All files were reset successfully!"
-
-# reshade
+#################################
+# RESHADE
+#################################
 checking_new_reshade_files = "Checking for local reshade files"
 checking_reshade_updates = "Checking for Reshade updates"
 downloading_new_reshade_version = "Downloading new Reshade version "
 error_check_new_reshade_version = "There was an ERROR trying to check for a new reshade version!"
 dl_new_shaders_timeout = "Unable to reach Website to download new shader files!"
-reshade_page_error = "Error downloading reshade!"
+reshade_page_error = "Error downloading reshade! Unable to reach Website!"
 game_already_exist = "Game already exist"
 missing_game_name = "Missing game name"
 missing_architecture = "Missing architecture"
@@ -55,8 +57,9 @@ not_same_game = "Please, choose the same game as before!"
 path_changed_success = "Path changed successfully!"
 update_reshade_question = "Download new Reshade version now?"
 removing_old_reshade_file = "Removing old reshade file"
-
-# updating messages
+#################################
+# PROGRAM
+#################################
 dl_new_version_msg = "Downloading new version"
 dl_new_version_timeout = "Unable to reach Website to check for new version!"
 error_dl_new_version = "There was an ERROR trying to download new version.\nPlease try again later"

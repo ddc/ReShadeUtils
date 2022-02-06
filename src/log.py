@@ -40,7 +40,8 @@ class Log:
             sys.exit(1)
 
         if self.level == logging.DEBUG:
-            formatt = "[%(asctime)s.%(msecs)03d]:[%(levelname)s]:[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
+            formatt = f"[%(asctime)s.%(msecs)03d]:[%(levelname)s]:[PID:{os.getpid()}]:" \
+                      f"[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
         else:
             formatt = "[%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s"
 
@@ -91,7 +92,7 @@ class GZipRotator:
 class RemoveOldLogs:
     def __init__(self, logs_dir, days_to_keep):
         files_list = [f for f in os.listdir(logs_dir)
-                      if os.path.isfile(f"{logs_dir}/{f}") and os.path.splitext(f)[1] == ".gz"]
+                      if os.path.isfile(f"{logs_dir}/{f}") and f.lower().endswith(".gz")]
         for file in files_list:
             file_path = f"{logs_dir}/{file}"
             if self._is_file_older_than_x_days(file_path, days_to_keep):

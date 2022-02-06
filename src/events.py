@@ -3,7 +3,7 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import shutil
@@ -26,7 +26,7 @@ def update_clicked():
 
 
 def add_game(self):
-    filename_path = qtutils.open_qt_file_dialog()
+    filename_path = qtutils.open_exe_file_dialog()
     if filename_path is not None:
         file_name, extension = os.path.splitext(os.path.basename(filename_path))
         if extension.lower() == ".exe":
@@ -51,7 +51,7 @@ def add_game(self):
             qtutils.show_message_window(self.log, "error", messages.not_valid_game)
 
 
-def delete_game(self, remove_from_db=False):
+def delete_game(self):
     game_not_found = False
     if not utils.check_game_file(self):
         game_not_found = True
@@ -104,15 +104,14 @@ def delete_game(self, remove_from_db=False):
             if os.path.isfile(reshadegui_ini):
                 os.remove(reshadegui_ini)
 
-            if remove_from_db:
-                games_sql = GamesSql(self)
-                games_sql.delete_game(self.selected_game.id)
-            else:
-                if self.show_info_messages:
-                    if game_not_found:
-                        qtutils.show_message_window(self.log, "info", f"{messages.game_not_in_path_deleted}\n\n{game_name}")
-                    else:
-                        qtutils.show_message_window(self.log, "info", f"{messages.game_deleted}\n\n{game_name}")
+            games_sql = GamesSql(self)
+            games_sql.delete_game(self.selected_game.id)
+
+            if self.show_info_messages:
+                if game_not_found:
+                    qtutils.show_message_window(self.log, "info", f"{messages.game_not_in_path_deleted}\n\n{game_name}")
+                else:
+                    qtutils.show_message_window(self.log, "info", f"{messages.game_deleted}\n\n{game_name}")
 
             self.populate_table_widget()
         except OSError as e:
@@ -124,7 +123,7 @@ def delete_game(self, remove_from_db=False):
 def edit_game_path(self):
     if self.selected_game is not None:
         old_game_path = self.selected_game.path
-        new_game_path = qtutils.open_qt_file_dialog()
+        new_game_path = qtutils.open_exe_file_dialog()
 
         if new_game_path is not None:
             new_game_dir = os.path.dirname(new_game_path)
@@ -331,7 +330,7 @@ def game_config_form_result(self, architecture, status):
             qtutils.show_message_window(self.log, "error", messages.missing_api)
             return
 
-        delete_game(self, remove_from_db=True)
+        delete_game(self)
         sql_games_obj = utils.Object()
         sql_games_obj.game_name = self.game_config_form.qtObj.game_name_lineEdit.text()
 
@@ -438,7 +437,7 @@ def apply_all(self, reset=False):
         games_obj = utils.Object()
         self.progressbar.set_values(messages.copying_DLLs, 0)
         for i in range(len(rs_all_games)):
-            self.progressbar.set_values(messages.copying_DLLs, 100 / len_games)
+            self.progressbar.set_values(messages.copying_DLLs, 100 // len_games)
             games_obj.api = rs_all_games[i]["api"]
             games_obj.architecture = rs_all_games[i]["architecture"]
             games_obj.game_name = rs_all_games[i]["name"]

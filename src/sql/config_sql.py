@@ -3,7 +3,7 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from src.sql.tables import Configs
 
@@ -23,7 +23,7 @@ class ConfigSql:
 
     def get_program_version(self):
         from sqlalchemy.sql import select
-        sql = select(self.table.c.program_version).where(self.table.columns.id == 1)
+        sql = select(self.table.columns.program_version).where(self.table.columns.id == 1)
         return self.database.select(sql)
 
 

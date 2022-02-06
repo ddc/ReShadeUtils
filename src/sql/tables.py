@@ -3,7 +3,7 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Sequence, event, text

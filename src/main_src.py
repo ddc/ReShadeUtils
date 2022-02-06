@@ -3,7 +3,7 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 from src.log import Log

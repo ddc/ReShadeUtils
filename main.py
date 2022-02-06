@@ -4,12 +4,11 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.main_src import MainSrc
-from src.utils import constants
-from src import resources_rc
+from src import resources_rc, constants
 
 
 class Ui_Main(object):

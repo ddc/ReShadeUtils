@@ -3,7 +3,7 @@
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 from src import constants, events, messages, utils
@@ -12,7 +12,7 @@ from PyQt5 import QtWidgets
 from src.config import Ui_config
 
 
-def open_qt_file_dialog():
+def open_exe_file_dialog():
     qfd = QFileDialog()
     title = "Open file"
     path = "C:"
