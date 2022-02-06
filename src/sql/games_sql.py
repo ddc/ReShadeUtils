@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
-
+# -*- coding: utf-8 -*-
 from src.sql.tables import Games
 from sqlalchemy.sql import collate, asc
 

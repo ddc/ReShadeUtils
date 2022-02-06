@@ -1,19 +1,17 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
-
+# -*- coding: utf-8 -*-
 import os
 import sys
 from src import utils
 
 
 DEBUG = False
-VERSION = "4.3"
 
-
+VERSION = "4.4"
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
@@ -58,7 +56,7 @@ REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRA
 RESHADE_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/Reshade.ini"
 PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/ReShadePreset.ini"
 QSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/style.qss"
-SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/master.zip"
+SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/master.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
 PAYPAL_URL = "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"

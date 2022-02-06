@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
-# # -*- coding: utf-8 -*-
-
+# -*- coding: utf-8 -*-
 import os
 import sys
 import json
@@ -128,11 +127,12 @@ def check_reshade_updates(self):
         self.remote_reshade_download_url = None
 
         try:
-            response = requests.get(constants.RESHADE_WEBSITE_URL)
-            if response.status_code != 200:
-                self.log.error(messages.reshade_page_error)
+            req = requests.get(constants.RESHADE_WEBSITE_URL)
+            if req.status_code != 200:
+                msg = f"[Code {req.status_code}]: {messages.reshade_page_error}"
+                qtutils.show_message_window(self.log, "error", msg)
             else:
-                html = str(response.text)
+                html = str(req.text)
                 soup = BeautifulSoup(html, "html.parser")
                 body = soup.body
                 blist = str(body).split("<p>")
@@ -140,7 +140,8 @@ def check_reshade_updates(self):
                 for content in blist:
                     if content.startswith("<strong>Version "):
                         self.remote_reshade_version = content.split()[1].strip("</strong>")
-                        self.remote_reshade_download_url = f"{constants.RESHADE_EXE_URL}{self.remote_reshade_version}.exe"
+                        self.remote_reshade_download_url = f"{constants.RESHADE_EXE_URL}" \
+                                                           f"{self.remote_reshade_version}.exe"
                         break
 
                 if self.remote_reshade_version != self.reshade_version:
@@ -166,7 +167,8 @@ def check_reshade_dll_files(self):
     rs_config = config_sql.get_configs()
     if rs_config is not None and rs_config[0].get("reshade_version") is not None:
         self.reshade_version = rs_config[0].get("reshade_version")
-        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH, f"{constants.RESHADE_SETUP}_{self.reshade_version}.exe")
+        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
+                                               f"{constants.RESHADE_SETUP}_{self.reshade_version}.exe")
         self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
         self.enable_form(True)
 
@@ -174,14 +176,16 @@ def check_reshade_dll_files(self):
 def download_reshade(self):
     # removing old version
     if self.reshade_version is not None:
-        old_local_reshade_exe = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.reshade_version}.exe")
+        old_local_reshade_exe = os.path.join(constants.PROGRAM_PATH,
+                                             f"ReShade_Setup_{self.reshade_version}.exe")
         if os.path.isfile(old_local_reshade_exe):
             self.log.info(messages.removing_old_reshade_file)
             os.remove(old_local_reshade_exe)
 
     try:
         # downloading new reshade version
-        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH, f"ReShade_Setup_{self.remote_reshade_version}.exe")
+        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
+                                               f"ReShade_Setup_{self.remote_reshade_version}.exe")
         r = requests.get(self.remote_reshade_download_url)
         if r.status_code == 200:
             self.log.info(f"{messages.downloading_new_reshade_version}: {self.remote_reshade_version}")
@@ -289,7 +293,8 @@ def get_new_program_version(self):
                 obj_return.new_version_msg = f"Version {remote_version} available for download"
                 obj_return.new_version = float(remote_version)
         else:
-            err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\ncode: {req.status_code}"
+            err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\n" \
+                      f"code: {req.status_code}"
             qtutils.show_message_window(self.log, "error", err_msg)
     except requests.exceptions.ConnectionError:
         qtutils.show_message_window(self.log, "error", messages.dl_new_version_timeout)
