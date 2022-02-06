@@ -288,11 +288,9 @@ def get_new_program_version(self):
                     remote_version = line.rstrip()
                     break
 
-            #if remote_version is not None and (float(remote_version) > float(client_version)):
-            if remote_version is not None and (float("4.5") > float(client_version)):
+            if remote_version is not None and (float(remote_version) > float(client_version)):
                 obj_return.new_version_available = True
-                #obj_return.new_version_msg = f"Version {remote_version} available for download"
-                obj_return.new_version_msg = f"Version 4.5 available for download"
+                obj_return.new_version_msg = f"Version {remote_version} available for download"
                 obj_return.new_version = float(remote_version)
         else:
             err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\n" \
