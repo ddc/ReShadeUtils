@@ -1,11 +1,12 @@
 #! /usr/bin/env python3
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
 
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src.main_src import MainSrc
 from src import resources_rc, constants
@@ -153,16 +154,16 @@ class Ui_Main(object):
         icon5.addPixmap(QtGui.QPixmap(":/resources/images/reset.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.reset_files_button.setIcon(icon5)
         self.reset_files_button.setObjectName("reset_files_button")
-        self.open_game_dir_button = QtWidgets.QPushButton(self.games_tab)
-        self.open_game_dir_button.setGeometry(QtCore.QRect(600, 570, 160, 30))
+        self.open_game_path_button = QtWidgets.QPushButton(self.games_tab)
+        self.open_game_path_button.setGeometry(QtCore.QRect(600, 570, 160, 30))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.open_game_dir_button.setFont(font)
+        self.open_game_path_button.setFont(font)
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/resources/images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.open_game_dir_button.setIcon(icon6)
-        self.open_game_dir_button.setObjectName("open_game_dir_button")
+        self.open_game_path_button.setIcon(icon6)
+        self.open_game_path_button.setObjectName("open_game_path_button")
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap(":/resources/images/controller.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.main_tabWidget.addTab(self.games_tab, icon7, "")
@@ -415,10 +416,10 @@ class Ui_Main(object):
         item.setText(_translate("Main", "LOCATION"))
         self.edit_plugin_button.setToolTip(_translate("Main", "Edit the selected reshade preset file"))
         self.edit_plugin_button.setText(_translate("Main", "EDIT PLUGIN"))
-        self.reset_files_button.setToolTip(_translate("Main", "Edit the selected reshade preset file"))
+        self.reset_files_button.setToolTip(_translate("Main", "Reset all the selected game files"))
         self.reset_files_button.setText(_translate("Main", "RESET FILES"))
-        self.open_game_dir_button.setToolTip(_translate("Main", "Edit the selected reshade preset file"))
-        self.open_game_dir_button.setText(_translate("Main", "OPEN LOCATION"))
+        self.open_game_path_button.setToolTip(_translate("Main", "Open the selected game location in explorer"))
+        self.open_game_path_button.setText(_translate("Main", "OPEN LOCATION"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.games_tab), _translate("Main", "GAMES"))
         self.download_shaders_groupBox.setToolTip(_translate("Main", "Update Shader Files Everytime on Apply"))
         self.download_shaders_groupBox.setTitle(_translate("Main", "Download Shader Files on Startup"))
@@ -481,7 +482,6 @@ class Ui_Main(object):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     Main = QtWidgets.QWidget()
     ui = Ui_Main()

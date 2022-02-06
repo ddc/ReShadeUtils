@@ -376,7 +376,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Edit the selected reshade preset file</string>
+      <string>Reset all the selected game files</string>
      </property>
      <property name="text">
       <string>RESET FILES</string>
@@ -386,7 +386,7 @@
        <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
      </property>
     </widget>
-    <widget class="QPushButton" name="open_game_dir_button">
+    <widget class="QPushButton" name="open_game_path_button">
      <property name="geometry">
       <rect>
        <x>600</x>
@@ -402,7 +402,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Edit the selected reshade preset file</string>
+      <string>Open the selected game location in explorer</string>
      </property>
      <property name="text">
       <string>OPEN LOCATION</string>

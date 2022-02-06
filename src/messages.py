@@ -1,5 +1,5 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
@@ -57,6 +57,7 @@ not_same_game = "Please, choose the same game as before!"
 path_changed_success = "Path changed successfully!"
 update_reshade_question = "Download new Reshade version now?"
 removing_old_reshade_file = "Removing old reshade file"
+error_change_game_name = "Unable to change game name"
 #################################
 # PROGRAM
 #################################

@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- encoding: utf-8 -*-
-
 import os
 import sys
 import gzip

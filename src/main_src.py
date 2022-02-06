@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-
 import os
 from src.log import Log
 from PyQt5.QtCore import Qt
@@ -57,8 +56,8 @@ class MainSrc:
         self.register_form_events()
 
         self.progressbar.set_values(messages.downloading_shaders, 60)
-        if not os.path.isdir(constants.SHADERS_SRC_PATH)\
-                or (self.update_shaders is not None and self.update_shaders is True):
+        if not os.path.isdir(constants.SHADERS_SRC_PATH) or (
+                self.update_shaders is not None and self.update_shaders is True):
             utils.download_shaders(self)
 
         self.progressbar.set_values(messages.checking_reshade_updates, 80)
@@ -146,37 +145,54 @@ class MainSrc:
         # TAB 1 - games
         self.qtobj.add_button.clicked.connect(lambda: events.add_game(self))
         self.qtobj.remove_button.clicked.connect(lambda: events.delete_game(self))
+        self.qtobj.reset_files_button.clicked.connect(lambda: events.reset_all_files(self))
+        self.qtobj.edit_plugin_button.clicked.connect(lambda: events.edit_plugin_config_file(self))
         self.qtobj.edit_path_button.clicked.connect(lambda: events.edit_game_path(self))
-        self.qtobj.edit_plugin_button.clicked.connect(lambda: events.open_preset_config_file(self))
+        self.qtobj.open_game_path_button.clicked.connect(lambda: events.open_game_location(self))
         self.qtobj.apply_button.clicked.connect(lambda: events.apply_all(self))
-        self.qtobj.update_button.clicked.connect(lambda: events.update_clicked())
+        self.qtobj.update_button.clicked.connect(lambda: events.update_program_clicked())
         self.qtobj.programs_tableWidget.clicked.connect(self._table_widget_clicked)
         self.qtobj.programs_tableWidget.itemDoubleClicked.connect(self._table_widget_double_clicked)
 
         # TAB 2 - configs
-        self.qtobj.yes_dark_theme_radioButton.clicked.connect(lambda: events.dark_theme_clicked(self, "YES"))
-        self.qtobj.no_dark_theme_radioButton.clicked.connect(lambda: events.dark_theme_clicked(self, "NO"))
+        self.qtobj.yes_dark_theme_radioButton.clicked.connect(
+                lambda: events.dark_theme_clicked(self, "YES"))
+        self.qtobj.no_dark_theme_radioButton.clicked.connect(
+                lambda: events.dark_theme_clicked(self, "NO"))
 
-        self.qtobj.yes_check_program_updates_radioButton.clicked.connect(lambda: events.check_program_updates_clicked(self, "YES"))
-        self.qtobj.no_check_program_updates_radioButton.clicked.connect(lambda: events.check_program_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_program_updates_radioButton.clicked.connect(
+            lambda: events.check_program_updates_clicked(self, "YES"))
+        self.qtobj.no_check_program_updates_radioButton.clicked.connect(
+            lambda: events.check_program_updates_clicked(self, "NO"))
 
-        self.qtobj.yes_show_info_messages_radioButton.clicked.connect(lambda: events.show_info_messages_clicked(self, "YES"))
-        self.qtobj.no_show_info_messages_radioButton.clicked.connect(lambda: events.show_info_messages_clicked(self, "NO"))
+        self.qtobj.yes_show_info_messages_radioButton.clicked.connect(
+            lambda: events.show_info_messages_clicked(self, "YES"))
+        self.qtobj.no_show_info_messages_radioButton.clicked.connect(
+            lambda: events.show_info_messages_clicked(self, "NO"))
 
-        self.qtobj.yes_check_reshade_updates_radioButton.clicked.connect(lambda: events.check_reshade_updates_clicked(self, "YES"))
-        self.qtobj.no_check_reshade_updates_radioButton.clicked.connect(lambda: events.check_reshade_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_reshade_updates_radioButton.clicked.connect(
+            lambda: events.check_reshade_updates_clicked(self, "YES"))
+        self.qtobj.no_check_reshade_updates_radioButton.clicked.connect(
+            lambda: events.check_reshade_updates_clicked(self, "NO"))
 
-        self.qtobj.yes_update_shaders_radioButton.clicked.connect(lambda: events.update_shaders_clicked(self, "YES"))
-        self.qtobj.no_update_shaders_radioButton.clicked.connect(lambda: events.update_shaders_clicked(self, "NO"))
+        self.qtobj.yes_update_shaders_radioButton.clicked.connect(
+                lambda: events.update_shaders_clicked(self, "YES"))
+        self.qtobj.no_update_shaders_radioButton.clicked.connect(
+                lambda: events.update_shaders_clicked(self, "NO"))
 
-        self.qtobj.yes_screenshots_folder_radioButton.clicked.connect(lambda: events.create_screenshots_folder_clicked(self, "YES"))
-        self.qtobj.no_screenshots_folder_radioButton.clicked.connect(lambda: events.create_screenshots_folder_clicked(self, "NO"))
+        self.qtobj.yes_screenshots_folder_radioButton.clicked.connect(
+            lambda: events.create_screenshots_folder_clicked(self, "YES"))
+        self.qtobj.no_screenshots_folder_radioButton.clicked.connect(
+            lambda: events.create_screenshots_folder_clicked(self, "NO"))
 
-        self.qtobj.edit_default_preset_plugin_button.clicked.connect(lambda: events.edit_default_preset_plugin_button_clicked(self))
-        self.qtobj.reset_all_button.clicked.connect(lambda: events.reset_all_button_clicked(self))
+        self.qtobj.edit_default_preset_plugin_button.clicked.connect(
+            lambda: events.edit_default_preset_plugin_button_clicked(self))
+        self.qtobj.reset_all_button.clicked.connect(
+                lambda: events.reset_all_button_clicked(self))
 
         # TAB 3 - about
-        self.qtobj.donate_button.clicked.connect(lambda: events.donate_clicked())
+        self.qtobj.donate_button.clicked.connect(
+                lambda: events.donate_clicked())
 
 
     def set_style_sheet(self):
@@ -188,27 +204,25 @@ class MainSrc:
 
     def populate_table_widget(self):
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
-        self.qtobj.programs_tableWidget.setRowCount(0) # cleanning datagrid
+        self.qtobj.programs_tableWidget.setRowCount(0)  # cleanning datagrid
         games_sql = GamesSql(self)
         rs_all_games = games_sql.get_games()
         if rs_all_games is not None and len(rs_all_games) > 0:
             for i in range(len(rs_all_games)):
                 self.qtobj.programs_tableWidget.insertRow(i)
-                self.qtobj.programs_tableWidget.setItem(i, 0,
-                                                        QtWidgets.QTableWidgetItem(rs_all_games[i].get("name")))
+                self.qtobj.programs_tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(rs_all_games[i].get("name")))
                 self.qtobj.programs_tableWidget.setItem(i, 1,
                                                         QtWidgets.QTableWidgetItem(rs_all_games[i].get("architecture")))
-                self.qtobj.programs_tableWidget.setItem(i, 2,
-                                                        QtWidgets.QTableWidgetItem(rs_all_games[i].get("api")))
-                self.qtobj.programs_tableWidget.setItem(i, 3,
-                                                        QtWidgets.QTableWidgetItem(rs_all_games[i].get("path")))
+                self.qtobj.programs_tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(rs_all_games[i].get("api")))
+                self.qtobj.programs_tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(rs_all_games[i].get("path")))
 
         self.qtobj.programs_tableWidget.resizeColumnsToContents()
         highest_column_width = self.qtobj.programs_tableWidget.columnWidth(3)
         if highest_column_width < 600:
             self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         else:
-            self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+            self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(
+                    3, QtWidgets.QHeaderView.ResizeToContents)
 
 
     def enable_form(self, status: bool):
@@ -228,7 +242,7 @@ class MainSrc:
         self.qtobj.reset_files_button.setEnabled(status)
         self.qtobj.edit_plugin_button.setEnabled(status)
         self.qtobj.edit_path_button.setEnabled(status)
-        self.qtobj.open_game_dir_button.setEnabled(status)
+        self.qtobj.open_game_path_button.setEnabled(status)
         self.qtobj.main_tabWidget.setCurrentIndex(0)
 
 

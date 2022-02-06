@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-
 import os
 from src import constants, events, messages, utils
 from PyQt5.QtWidgets import QFileDialog
@@ -70,8 +69,10 @@ def show_game_config_form(self, game_name, architecture):
     self.game_config_form.show()
     QtWidgets.QApplication.processEvents()
 
-    self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "OK"))
-    self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "CANCEL"))
+    self.game_config_form.qtObj.ok_pushButton.clicked.connect(
+        lambda: events.game_config_form_result(self, architecture, "OK"))
+    self.game_config_form.qtObj.cancel_pushButton.clicked.connect(
+        lambda: events.game_config_form_result(self, architecture, "CANCEL"))
 
     if self.selected_game is not None:
         self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.name)

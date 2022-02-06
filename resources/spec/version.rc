@@ -43,7 +43,7 @@ StringFileInfo(
   StringTable(
     u'040904E4',
     [
-    StringStruct(u'LegalCopyright',         u'Copyright (c) 2019 ddc'),
+    StringStruct(u'LegalCopyright',         u'Copyright (c) 2022 ddc'),
     StringStruct(u'LegalTrademarks',        u'All rights reserved'),
     StringStruct(u'Comments',               u'Licensed under GPL3'),
     StringStruct(u'CompanyName',            u'ddc'),
@@ -58,7 +58,7 @@ StringFileInfo(
     StringStruct(u'SpecialBuild',           u''),
     StringStruct(u'FileVersion',            u'4.4'),
     StringStruct(u'ProductVersion',         u'4.4'),
-    StringStruct(u'Build',                  u'Jul 2021'),
+    StringStruct(u'Build',                  u'Fev 2022'),
     ])
   ]),
 VarFileInfo([VarStruct(u'Translation', [1033, 1200])])

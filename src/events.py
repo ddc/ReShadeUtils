@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-
 import os
 import shutil
 from PyQt5 import QtCore
@@ -20,7 +19,7 @@ def donate_clicked():
     QDesktopServices.openUrl(href)
 
 
-def update_clicked():
+def update_program_clicked():
     href = QtCore.QUrl(constants.GITHUB_LATEST_VERSION_URL)
     QDesktopServices.openUrl(href)
 
@@ -80,7 +79,8 @@ def delete_game(self):
                 os.remove(reshade_dll)
             except OSError as e:
                 self.log.error(f"remove_file: {str(e)}")
-                qtutils.show_message_window(self.log, "error", f"{messages.error_delete_dll} {game_name} dll\n\n{str(e)}")
+                qtutils.show_message_window(self.log, "error",
+                                            f"{messages.error_delete_dll} {game_name} dll\n\n{str(e)}")
                 self.enable_widgets(False)
                 return
 
@@ -171,7 +171,7 @@ def edit_game_path(self):
         self.enable_widgets(False)
 
 
-def open_preset_config_file(self):
+def edit_plugin_config_file(self):
     self.enable_widgets(True)
     if self.selected_game is not None:
         game_dir = os.path.dirname(self.selected_game.path)
@@ -325,12 +325,11 @@ def game_config_form_result(self, architecture, status):
             return
 
         if not self.game_config_form.qtObj.opengl_radioButton.isChecked() \
-            and not self.game_config_form.qtObj.dx9_radioButton.isChecked() \
+                and not self.game_config_form.qtObj.dx9_radioButton.isChecked() \
                 and not self.game_config_form.qtObj.dx_radioButton.isChecked():
             qtutils.show_message_window(self.log, "error", messages.missing_api)
             return
 
-        delete_game(self)
         sql_games_obj = utils.Object()
         sql_games_obj.game_name = self.game_config_form.qtObj.game_name_lineEdit.text()
 
@@ -356,7 +355,8 @@ def game_config_form_result(self, architecture, status):
             if self.selected_game.name != sql_games_obj.game_name or (self.selected_game.api != sql_games_obj.api):
                 # checking name changes
                 # create Reshade.ini to replace edit CurrentPresetPath
-                old_screenshots_path = utils.get_screenshot_path(self, self.selected_game.game_dir, self.selected_game.name)
+                old_screenshots_path = utils.get_screenshot_path(self, self.selected_game.game_dir,
+                                                                 self.selected_game.name)
                 if len(old_screenshots_path) > 0:
                     scrrenshot_dir_path = os.path.dirname(old_screenshots_path)
                     new_screenshots_path = os.path.join(scrrenshot_dir_path, sql_games_obj.game_name)
@@ -400,7 +400,8 @@ def game_config_form_result(self, architecture, status):
                     self.log.error(f"copyfile: {src_path} to {dst_path} - {str(e)}")
 
                 if self.show_info_messages:
-                    qtutils.show_message_window(self.log, "info", f"{messages.game_updated}\n\n{sql_games_obj.game_name}")
+                    qtutils.show_message_window(self.log, "info",
+                                                f"{messages.game_updated}\n\n{sql_games_obj.game_name}")
 
             sql_games_obj.id = self.selected_game.id
             games_sql.update_game(sql_games_obj)
@@ -415,20 +416,31 @@ def game_config_form_result(self, architecture, status):
             else:
                 sql_games_obj.api = dxgi_name
 
-            sql_games_obj.path = self.added_game_path
+            if self.added_game_path is not None:
+                sql_games_obj.path = self.added_game_path
+            elif self.selected_game is not None:
+                sql_games_obj.path = self.selected_game.game_dir
+            else:
+                if self.show_info_messages:
+                    qtutils.show_message_window(self.log, "error", f"{sql_games_obj.game_name}\n\n"
+                                                                   f"{messages.error_change_game_name}")
+                return
+
             games_sql.insert_game(sql_games_obj)
             del self.added_game_path
             _apply_single(self, sql_games_obj)
             self.populate_table_widget()
             self.enable_widgets(False)
             if self.show_info_messages:
-                qtutils.show_message_window(self.log, "info", f"{messages.game_added}\n\n{sql_games_obj.game_name}")
+                qtutils.show_message_window(self.log, "info", f"{messages.game_added}\n\n"
+                                                              f"{sql_games_obj.game_name}")
 
 
 def apply_all(self, reset=False):
     games_sql = GamesSql(self)
     rs_all_games = games_sql.get_games()
-    len_games = self.qtobj.programs_tableWidget.rowCount()
+    #len_games = self.qtobj.programs_tableWidget.rowCount()
+    len_games = len(rs_all_games)
     if len_games > 0:
         self.enable_form(False)
         self.enable_widgets(False)
@@ -436,7 +448,7 @@ def apply_all(self, reset=False):
         errors = []
         games_obj = utils.Object()
         self.progressbar.set_values(messages.copying_DLLs, 0)
-        for i in range(len(rs_all_games)):
+        for i in range(len_games):
             self.progressbar.set_values(messages.copying_DLLs, 100 // len_games)
             games_obj.api = rs_all_games[i]["api"]
             games_obj.architecture = rs_all_games[i]["architecture"]
@@ -484,7 +496,7 @@ def _apply_single(self, games_obj, reset=False):
                 dst_dll_path = os.path.join(game_dir, constants.DXGI_DLL)
             ret = files.apply_reshade_dll_file(src_dll_path, dst_dll_path)
             if ret is not None:
-                self.log.error(str(ret))
+                self.log.error(f"[{game_name}]:[{str(ret)}]")
 
         # Reshade.ini
         dst_res_ini_path = os.path.join(game_dir, constants.RESHADE_INI)
@@ -492,17 +504,53 @@ def _apply_single(self, games_obj, reset=False):
             game_screenshots_path = utils.get_screenshot_path(self, game_dir, game_name)
             ret = files.apply_reshade_ini_file(game_dir, game_screenshots_path)
             if ret is not None:
-                self.log.error(str(ret))
+                self.log.error(f"[{game_name}]:[{str(ret)}]")
 
         # ReShadePreset.ini
         dst_preset_path = os.path.join(game_dir, constants.RESHADE_PRESET_INI)
         if os.path.isfile(constants.RESHADE_PRESET_PATH) and not os.path.isfile(dst_preset_path) or reset:
             ret = files.apply_reshade_preset_file(game_dir)
             if ret is not None:
-                self.log.error(str(ret))
+                self.log.error(f"[{game_name}]:[{str(ret)}]")
+
+            if isinstance(ret, FileNotFoundError):
+                errors = f"[{game_name}]: No such file or directory"
 
     except Exception as e:
         self.log.error(f"[{game_name}]:[{str(e)}]")
-        errors = f"- {game_name}: {str(e)}"
+        errors = f"[{game_name}]: {str(e)}"
 
     return errors
+
+
+def open_game_location(self):
+    self.enable_widgets(True)
+    if self.selected_game is not None:
+        game_dir = os.path.dirname(self.selected_game.path)
+
+        try:
+            os.startfile(game_dir)
+        except Exception as e:
+            err_msg = f"{str(e)}\n\n{messages.check_game_uninstalled}"
+            qtutils.show_message_window(self.log, "error", err_msg)
+
+    self.enable_widgets(False)
+
+
+def reset_all_files(self):
+    self.enable_widgets(True)
+    if self.selected_game is not None:
+        self.progressbar.set_values(messages.reseting_files, 25)
+        Files(self).download_all_files()
+        self.progressbar.set_values(messages.reseting_files, 50)
+        utils.download_shaders(self)
+        self.progressbar.set_values(messages.reseting_files, 75)
+        games_obj = utils.Object()
+        games_obj.api = self.selected_game.api
+        games_obj.architecture = self.selected_game.architecture
+        games_obj.game_name = self.selected_game.name
+        games_obj.path = self.selected_game.path
+        _apply_single(self, games_obj, True)
+        self.progressbar.close()
+        qtutils.show_message_window(self.log, "info", messages.reset_success)
+    self.enable_widgets(False)

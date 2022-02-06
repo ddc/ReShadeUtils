@@ -1,11 +1,10 @@
 #! /usr/bin/env python3
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-
 import os
 import sys
 import requests

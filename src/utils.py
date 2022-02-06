@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-
 import os
 import sys
 import json
@@ -289,12 +288,15 @@ def get_new_program_version(self):
                     remote_version = line.rstrip()
                     break
 
-            if remote_version is not None and (float(remote_version) > float(client_version)):
+            #if remote_version is not None and (float(remote_version) > float(client_version)):
+            if remote_version is not None and (float("4.5") > float(client_version)):
                 obj_return.new_version_available = True
-                obj_return.new_version_msg = f"Version {remote_version} available for download"
+                #obj_return.new_version_msg = f"Version {remote_version} available for download"
+                obj_return.new_version_msg = f"Version 4.5 available for download"
                 obj_return.new_version = float(remote_version)
         else:
-            err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\ncode: {req.status_code}"
+            err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\n" \
+                      f"code: {req.status_code}"
             qtutils.show_message_window(self.log, "error", err_msg)
     except requests.exceptions.ConnectionError:
         qtutils.show_message_window(self.log, "error", messages.dl_new_version_timeout)

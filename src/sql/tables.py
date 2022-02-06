@@ -1,10 +1,9 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Sequence, event, text
 
@@ -36,14 +35,12 @@ class Games(Base):
 
 @event.listens_for(Configs.__table__, "after_create")
 def receive_after_create(target, connection, **kw):
-    connection.execute(
-        """CREATE TRIGGER IF NOT EXISTS before_insert_configs
+    connection.execute("""CREATE TRIGGER IF NOT EXISTS before_insert_configs
             BEFORE INSERT ON configs
             BEGIN
                 SELECT CASE
-                    WHEN (SELECT count(*) FROM configs)IS 1 THEN
+                    WHEN (SELECT COUNT(*) FROM configs)IS 1 THEN
                     RAISE(ABORT, 'CANNOT INSERT INTO CONFIGS TABLE ANYMORE')
                 END;
             END;
-    """
-    )
+    """)

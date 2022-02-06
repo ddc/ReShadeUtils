@@ -1,10 +1,10 @@
 # |*****************************************************
-# * Copyright         : Copyright (C) 2019
+# * Copyright         : Copyright (C) 2022
 # * Author            : ddc
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from src import resources_rc
 
@@ -64,7 +64,6 @@ class Ui_config(object):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     config = QtWidgets.QWidget()
     ui = Ui_config()
