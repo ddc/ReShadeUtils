@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>700</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1000</width>
-    <height>700</height>
+    <height>750</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>1000</width>
-    <height>700</height>
+    <height>750</height>
    </size>
   </property>
   <property name="font">
@@ -72,16 +72,10 @@
      <x>20</x>
      <y>10</y>
      <width>960</width>
-     <height>640</height>
+     <height>691</height>
     </rect>
    </property>
    <property name="minimumSize">
-    <size>
-     <width>960</width>
-     <height>640</height>
-    </size>
-   </property>
-   <property name="maximumSize">
     <size>
      <width>960</width>
      <height>640</height>
@@ -107,118 +101,26 @@
     <attribute name="title">
      <string>GAMES</string>
     </attribute>
-    <widget class="QPushButton" name="add_button">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>550</y>
-       <width>160</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Add a game</string>
-     </property>
-     <property name="text">
-      <string>ADD</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/add.png</normaloff>:/resources/images/add.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="edit_path_button">
-     <property name="geometry">
-      <rect>
-       <x>429</x>
-       <y>570</y>
-       <width>160</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Edit the selected game path</string>
-     </property>
-     <property name="text">
-      <string>CHANGE LOCATION</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/arrow.png</normaloff>:/resources/images/arrow.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="remove_button">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>550</y>
-       <width>160</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Delete the selected game</string>
-     </property>
-     <property name="text">
-      <string>REMOVE</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="apply_button">
-     <property name="geometry">
-      <rect>
-       <x>820</x>
-       <y>529</y>
-       <width>120</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Apply Reshade to All Games</string>
-     </property>
-     <property name="text">
-      <string>APPLY</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/apply.png</normaloff>:/resources/images/apply.png</iconset>
-     </property>
-    </widget>
     <widget class="QTableWidget" name="programs_tableWidget">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
        <width>960</width>
-       <height>521</height>
+       <height>520</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>960</width>
+       <height>520</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>960</width>
+       <height>520</height>
+      </size>
      </property>
      <property name="focusPolicy">
       <enum>Qt::StrongFocus</enum>
@@ -334,84 +236,377 @@
       </property>
      </column>
     </widget>
-    <widget class="QPushButton" name="edit_plugin_button">
+    <widget class="QGroupBox" name="groupBox">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>0</x>
        <y>530</y>
-       <width>160</width>
-       <height>30</height>
+       <width>530</width>
+       <height>120</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
+     <property name="title">
+      <string>Selected Game</string>
      </property>
-     <property name="toolTip">
-      <string>Edit the selected reshade preset file</string>
-     </property>
-     <property name="text">
-      <string>EDIT PLUGIN</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/edit.png</normaloff>:/resources/images/edit.png</iconset>
-     </property>
+     <widget class="QPushButton" name="edit_plugin_button">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>20</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Edit the selected reshade preset file</string>
+      </property>
+      <property name="text">
+       <string>EDIT PLUGIN</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/plugin.png</normaloff>:/resources/images/plugin.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="reset_files_button">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>20</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Reset all the selected game files</string>
+      </property>
+      <property name="text">
+       <string>RESET FILES</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="edit_path_button">
+      <property name="geometry">
+       <rect>
+        <x>19</x>
+        <y>70</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Edit the selected game path</string>
+      </property>
+      <property name="text">
+       <string>CHANGE LOCATION</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/arrow.png</normaloff>:/resources/images/arrow.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="open_game_path_button">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>70</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Open the selected game location in explorer</string>
+      </property>
+      <property name="text">
+       <string>OPEN LOCATION</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/folder.png</normaloff>:/resources/images/folder.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="remove_button">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>70</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Delete the selected game</string>
+      </property>
+      <property name="text">
+       <string>REMOVE</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="edit_game_button">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Edit the selected game</string>
+      </property>
+      <property name="text">
+       <string>EDIT</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/edit.png</normaloff>:/resources/images/edit.png</iconset>
+      </property>
+     </widget>
     </widget>
-    <widget class="QPushButton" name="reset_files_button">
+    <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>590</x>
        <y>530</y>
-       <width>160</width>
-       <height>30</height>
+       <width>360</width>
+       <height>120</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
+     <property name="title">
+      <string>All Games</string>
      </property>
-     <property name="toolTip">
-      <string>Reset all the selected game files</string>
-     </property>
-     <property name="text">
-      <string>RESET FILES</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
-     </property>
+     <widget class="QPushButton" name="apply_button">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>19</y>
+        <width>160</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Apply Reshade to All Games</string>
+      </property>
+      <property name="text">
+       <string>APPLY</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/apply.png</normaloff>:/resources/images/apply.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="edit_default_preset_plugin_button">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Edit default preset plugins config file</string>
+      </property>
+      <property name="text">
+       <string>EDIT PLUGINS FILE</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/plugin.png</normaloff>:/resources/images/plugin.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="add_button">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>160</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Add a game</string>
+      </property>
+      <property name="text">
+       <string>ADD</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/resources/images/add.png</normaloff>:/resources/images/add.png</iconset>
+      </property>
+     </widget>
     </widget>
-    <widget class="QPushButton" name="open_game_path_button">
-     <property name="geometry">
-      <rect>
-       <x>600</x>
-       <y>570</y>
-       <width>160</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Open the selected game location in explorer</string>
-     </property>
-     <property name="text">
-      <string>OPEN LOCATION</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/folder.png</normaloff>:/resources/images/folder.png</iconset>
-     </property>
-    </widget>
+    <zorder>groupBox</zorder>
+    <zorder>programs_tableWidget</zorder>
+    <zorder>groupBox_2</zorder>
    </widget>
    <widget class="QWidget" name="settings_tab">
     <attribute name="icon">
@@ -467,6 +662,18 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string>YES</string>
       </property>
@@ -479,6 +686,18 @@
         <width>60</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string>NO</string>
@@ -528,6 +747,18 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string>YES</string>
       </property>
@@ -540,6 +771,18 @@
         <width>60</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string>NO</string>
@@ -589,6 +832,18 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string>YES</string>
       </property>
@@ -601,6 +856,18 @@
         <width>60</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string>NO</string>
@@ -650,6 +917,18 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string>YES</string>
       </property>
@@ -662,6 +941,18 @@
         <width>60</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string>NO</string>
@@ -711,6 +1002,18 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string>YES</string>
       </property>
@@ -723,6 +1026,18 @@
         <width>60</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string>NO</string>
@@ -772,6 +1087,18 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string>NO</string>
       </property>
@@ -785,6 +1112,18 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string>YES</string>
       </property>
@@ -795,19 +1134,19 @@
       <rect>
        <x>500</x>
        <y>360</y>
-       <width>330</width>
+       <width>335</width>
        <height>30</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>330</width>
+       <width>335</width>
        <height>30</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>330</width>
+       <width>335</width>
        <height>30</height>
       </size>
      </property>
@@ -821,7 +1160,7 @@
       <string>Reset all reshade configs to default</string>
      </property>
      <property name="text">
-      <string>RESET ALL GAMES FILES TO DEAFULT</string>
+      <string>DOWNLOAD AND RESET ALL FILES TO DEAFULT</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
@@ -832,50 +1171,6 @@
        <width>27</width>
        <height>27</height>
       </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="edit_default_preset_plugin_button">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>360</y>
-       <width>330</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>330</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>330</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Edit default preset plugins config file</string>
-     </property>
-     <property name="text">
-      <string>EDIT DEFAULT PLUGINS PRESET FILE</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/resources/images/plugin.png</normaloff>:/resources/images/plugin.png</iconset>
      </property>
     </widget>
    </widget>
@@ -1021,7 +1316,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>300</x>
-     <y>655</y>
+     <y>705</y>
      <width>480</width>
      <height>40</height>
     </rect>
@@ -1056,10 +1351,22 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>800</x>
-     <y>660</y>
+     <y>710</y>
      <width>160</width>
      <height>30</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>160</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>160</width>
+     <height>30</height>
+    </size>
    </property>
    <property name="font">
     <font>
@@ -1085,11 +1392,6 @@ p, li { white-space: pre-wrap; }
  </widget>
  <tabstops>
   <tabstop>main_tabWidget</tabstop>
-  <tabstop>add_button</tabstop>
-  <tabstop>remove_button</tabstop>
-  <tabstop>edit_plugin_button</tabstop>
-  <tabstop>edit_path_button</tabstop>
-  <tabstop>apply_button</tabstop>
   <tabstop>update_button</tabstop>
   <tabstop>programs_tableWidget</tabstop>
   <tabstop>no_update_shaders_radioButton</tabstop>
@@ -1104,7 +1406,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>yes_show_info_messages_radioButton</tabstop>
   <tabstop>no_check_program_updates_radioButton</tabstop>
   <tabstop>yes_check_program_updates_radioButton</tabstop>
-  <tabstop>edit_default_preset_plugin_button</tabstop>
   <tabstop>reset_all_button</tabstop>
   <tabstop>donate_button</tabstop>
   <tabstop>about_textBrowser</tabstop>
