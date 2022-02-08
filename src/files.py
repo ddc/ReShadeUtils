@@ -200,8 +200,8 @@ ClarityViewMask=0
 [LumaSharpen.fx]
 offset_bias=1.000000
 pattern=1
-sharp_clamp=0.100000
-sharp_strength=1.000000
+sharp_clamp=0.035000
+sharp_strength=1.500000
 show_sharpen=0
 """)
 
