@@ -241,7 +241,7 @@
       <rect>
        <x>0</x>
        <y>530</y>
-       <width>530</width>
+       <width>561</width>
        <height>120</height>
       </rect>
      </property>
@@ -251,7 +251,7 @@
      <widget class="QPushButton" name="edit_plugin_button">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>200</x>
         <y>20</y>
         <width>160</width>
         <height>30</height>
@@ -289,7 +289,7 @@
      <widget class="QPushButton" name="reset_files_button">
       <property name="geometry">
        <rect>
-        <x>360</x>
+        <x>380</x>
         <y>20</y>
         <width>160</width>
         <height>30</height>
@@ -365,7 +365,7 @@
      <widget class="QPushButton" name="open_game_path_button">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>200</x>
         <y>70</y>
         <width>160</width>
         <height>30</height>
@@ -403,7 +403,7 @@
      <widget class="QPushButton" name="remove_button">
       <property name="geometry">
        <rect>
-        <x>360</x>
+        <x>380</x>
         <y>70</y>
         <width>160</width>
         <height>30</height>
@@ -480,9 +480,9 @@
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
-       <x>590</x>
+       <x>579</x>
        <y>530</y>
-       <width>360</width>
+       <width>371</width>
        <height>120</height>
       </rect>
      </property>
@@ -492,7 +492,7 @@
      <widget class="QPushButton" name="apply_button">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>200</x>
         <y>19</y>
         <width>160</width>
         <height>81</height>
@@ -555,7 +555,7 @@
        </font>
       </property>
       <property name="toolTip">
-       <string>Edit default preset plugins config file</string>
+       <string>Edit default reshade plugins config file</string>
       </property>
       <property name="text">
        <string>EDIT PLUGINS FILE</string>
@@ -1157,10 +1157,10 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Reset all reshade configs to default</string>
+      <string>Reset default config files</string>
      </property>
      <property name="text">
-      <string>DOWNLOAD AND RESET ALL FILES TO DEAFULT</string>
+      <string>RESET DEFAULT CONFIG FILES</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
@@ -1375,7 +1375,7 @@ p, li { white-space: pre-wrap; }
     </font>
    </property>
    <property name="toolTip">
-    <string>Update program version</string>
+    <string>Update ReshadeUtils</string>
    </property>
    <property name="text">
     <string>UPDATE</string>
