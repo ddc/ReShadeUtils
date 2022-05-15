@@ -22,10 +22,12 @@ class Object:
         self._created = datetime.datetime.now().isoformat()
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
 
     def to_dict(self):
-        json_string = json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        json_string = json.dumps(self, default=lambda o: o.__dict__,
+                                 sort_keys=True, indent=4)
         json_dict = json.loads(json_string)
         return json_dict
 
@@ -35,6 +37,16 @@ def get_current_path():
     if path is not None:
         return os.path.normpath(path)
     return None
+
+
+def list_files(directory, prefix):
+    files_list = []
+    if os.path.isdir(directory):
+        files_list = [os.path.join(directory, f) for f in os.listdir(directory)
+                      if os.path.isfile(os.path.join(directory, f))
+                      and f.lower().startswith(prefix.lower())]
+        files_list.sort(key=os.path.getmtime)
+    return files_list
 
 
 def get_ini_settings(file_name, section, config_name):
@@ -72,7 +84,7 @@ def unzip_reshade(self, local_reshade_exe):
             os.remove(constants.RESHADE64_PATH)
         unzip_file(local_reshade_exe, constants.PROGRAM_PATH)
     except Exception as e:
-        self.log.error(str(e))
+        self.log.error(get_exception(e))
 
 
 def unzip_file(file_name, out_path):
@@ -103,21 +115,24 @@ def check_local_files(self):
         if not os.path.isfile(constants.RESHADE_INI_PATH):
             files.download_reshade_ini_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.RESHADE_INI_PATH}{messages.not_found}"
+        err_msg = f"{get_exception(e)}\n\n{constants.RESHADE_INI_PATH}" \
+                  f"{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
 
     try:
         if not os.path.isfile(constants.RESHADE_PRESET_PATH):
             files.download_reshade_preset_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.RESHADE_PRESET_PATH}{messages.not_found}"
+        err_msg = f"{get_exception(e)}\n\n{constants.RESHADE_PRESET_PATH}" \
+                  f"{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
 
     try:
         if not os.path.isfile(constants.QSS_PATH):
             files.download_qss_file()
     except Exception as e:
-        err_msg = f"{str(e)}\n\n{constants.QSS_PATH}{messages.not_found}"
+        err_msg = f"{get_exception(e)}\n\n{constants.QSS_PATH}" \
+                  f"{messages.not_found}"
         qtutils.show_message_window(self.log, "error", err_msg)
 
 
@@ -149,8 +164,11 @@ def check_reshade_updates(self):
                     download_reshade(self)
 
         except requests.exceptions.ConnectionError as e:
-            self.log.error(f"{messages.reshade_website_unreacheable} {str(e)}")
-            qtutils.show_message_window(self.log, "error", messages.reshade_website_unreacheable)
+            self.log.error(f"{messages.reshade_website_unreacheable}:"
+                           f"{get_exception(e)}")
+            qtutils.show_message_window(self.log,
+                                        "error",
+                                        messages.reshade_website_unreacheable)
             return
 
 
@@ -168,8 +186,10 @@ def check_reshade_dll_files(self):
     if rs_config is not None and rs_config[0].get("reshade_version") is not None:
         self.reshade_version = rs_config[0].get("reshade_version")
         self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
-                                               f"{constants.RESHADE_SETUP}_{self.reshade_version}.exe")
-        self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
+                                               f"{constants.RESHADE_SETUP}_"
+                                               f"{self.reshade_version}.exe")
+        self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}"
+                                                 f"{self.reshade_version}")
         self.enable_form(True)
 
 
@@ -177,7 +197,8 @@ def download_reshade(self):
     # removing old version
     if self.reshade_version is not None:
         old_local_reshade_exe = os.path.join(constants.PROGRAM_PATH,
-                                             f"ReShade_Setup_{self.reshade_version}.exe")
+                                             f"ReShade_Setup_"
+                                             f"{self.reshade_version}.exe")
         if os.path.isfile(old_local_reshade_exe):
             self.log.info(messages.removing_old_reshade_file)
             os.remove(old_local_reshade_exe)
@@ -185,10 +206,13 @@ def download_reshade(self):
     try:
         # downloading new reshade version
         self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
-                                               f"ReShade_Setup_{self.remote_reshade_version}.exe")
+                                               f"ReShade_Setup_"
+                                               f"{self.remote_reshade_version}"
+                                               ".exe")
         r = requests.get(self.remote_reshade_download_url)
         if r.status_code == 200:
-            self.log.info(f"{messages.downloading_new_reshade_version}: {self.remote_reshade_version}")
+            self.log.info(f"{messages.downloading_new_reshade_version}: "
+                          f"{self.remote_reshade_version}")
             with open(self.local_reshade_path, "wb") as outfile:
                 outfile.write(r.content)
         else:
@@ -196,9 +220,12 @@ def download_reshade(self):
             return
     except Exception as e:
         if hasattr(e, "errno") and e.errno == 13:
-            qtutils.show_message_window(self.log, "error", messages.error_permissionError)
+            qtutils.show_message_window(self.log,
+                                        "error",
+                                        messages.error_permissionError)
         else:
-            self.log.error(f"{messages.error_check_new_reshade_version} {str(e)}")
+            self.log.error(f"{messages.error_check_new_reshade_version}:"
+                           f"{get_exception(e)}")
         return
 
     self.reshade_version = self.remote_reshade_version
@@ -208,7 +235,8 @@ def download_reshade(self):
     config_sql.update_reshade_version(self.remote_reshade_version)
 
     self.qtobj.reshade_version_label.clear()
-    self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.remote_reshade_version}")
+    self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}"
+                                             f"{self.remote_reshade_version}")
 
     len_games = self.qtobj.programs_tableWidget.rowCount()
     if self.need_apply and len_games > 0:
@@ -226,40 +254,40 @@ def download_shaders(self):
         with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
             outfile.write(r.content)
     except Exception as e:
-        err_msg = f"{messages.dl_new_shaders_timeout} {str(e)}"
+        err_msg = f"{messages.dl_new_shaders_timeout} {get_exception(e)}"
         qtutils.show_message_window(self.log, "error", err_msg)
 
     try:
         if os.path.isdir(constants.SHADERS_SRC_PATH):
             shutil.rmtree(constants.SHADERS_SRC_PATH)
     except OSError as e:
-        self.log.error(f"rmtree: {str(e)}")
+        self.log.error(f"rmtree: {get_exception(e)}")
 
     try:
         if os.path.isdir(constants.RES_SHAD_MPATH):
             shutil.rmtree(constants.RES_SHAD_MPATH)
     except OSError as e:
-        self.log.error(f"rmtree: {str(e)}")
+        self.log.error(f"rmtree: {get_exception(e)}")
 
     if os.path.isfile(constants.SHADERS_ZIP_PATH):
         try:
             unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
         except FileNotFoundError as e:
-            self.log.error(str(e))
+            self.log.error(get_exception(e))
         except zipfile.BadZipFile as e:
-            self.log.error(str(e))
+            self.log.error(get_exception(e))
 
         try:
             os.remove(constants.SHADERS_ZIP_PATH)
         except OSError as e:
-            self.log.error(f"remove_file: {str(e)}")
+            self.log.error(f"remove_file: {get_exception(e)}")
 
     try:
         if os.path.isdir(constants.RES_SHAD_MPATH):
             out_dir = f"{constants.PROGRAM_PATH}\\{constants.RESHADE_SHADERS}"
             os.rename(constants.RES_SHAD_MPATH, out_dir)
     except OSError as e:
-        self.log.error(f"rename_path: {str(e)}")
+        self.log.error(f"rename_path: {get_exception(e)}")
 
 
 def check_program_updates(self):
@@ -288,16 +316,21 @@ def get_new_program_version(self):
                     remote_version = line.rstrip()
                     break
 
-            if remote_version is not None and (float(remote_version) > float(client_version)):
+            if remote_version is not None \
+                    and (float(remote_version) > float(client_version)):
                 obj_return.new_version_available = True
-                obj_return.new_version_msg = f"Version {remote_version} available for download"
+                obj_return.new_version_msg = f"Version {remote_version} " \
+                                             f"available for download"
                 obj_return.new_version = float(remote_version)
         else:
-            err_msg = f"{messages.error_check_new_version}\n{messages.remote_version_file_not_found}\n" \
+            err_msg = f"{messages.error_check_new_version}" \
+                      f"\n{messages.remote_version_file_not_found}\n" \
                       f"code: {req.status_code}"
             qtutils.show_message_window(self.log, "error", err_msg)
     except requests.exceptions.ConnectionError:
-        qtutils.show_message_window(self.log, "error", messages.dl_new_version_timeout)
+        qtutils.show_message_window(self.log,
+                                    "error",
+                                    messages.dl_new_version_timeout)
 
     return obj_return
 
@@ -323,14 +356,18 @@ def check_default_database_configs(self):
                 os.remove(constants.SQLITE3_PATH)
                 check_database_connection(self)
                 check_default_database_tables(self)
-                qtutils.show_message_window(self.log, "warning", messages.config_reset_msg)
+                qtutils.show_message_window(self.log,
+                                            "warning",
+                                            messages.config_reset_msg)
             except Exception:
-                err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
+                err_msg = f"{messages.error_db_connection}" \
+                          f"\n\n{messages.exit_program}"
                 if qtutils.show_message_window(self.log, "error", err_msg):
                     sys.exit(1)
 
     if not set_default_database_configs(self, constants.VERSION):
-        err_msg = f"{messages.error_create_sql_config_msg}\n\n{messages.exit_program}"
+        err_msg = f"{messages.error_create_sql_config_msg}" \
+                  f"\n\n{messages.exit_program}"
         if qtutils.show_message_window(self.log, "error", err_msg):
             sys.exit(1)
 
@@ -341,7 +378,7 @@ def check_default_database_tables(self):
         Configs.__table__.create(self.database.engine, checkfirst=True)
         Games.__table__.create(self.database.engine, checkfirst=True)
     except Exception as e:
-        self.log.error(str(e))
+        self.log.error(get_exception(e))
         err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
         if qtutils.show_message_window(self.log, "error", err_msg):
             sys.exit(1)
@@ -412,26 +449,42 @@ def get_binary_type(self, game_path):
 def get_screenshot_path(self, game_dir, game_name):
     game_screenshots_path = ""
     if self.qtobj.yes_screenshots_folder_radioButton.isChecked():
-        game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)
+        game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH,
+                                             game_name)
         try:
             if not os.path.isdir(constants.RESHADE_SCREENSHOT_PATH):
                 os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
         except OSError as e:
-            self.log.error(f"mkdir: {constants.RESHADE_SCREENSHOT_PATH} {str(e)}")
+            self.log.error(f"mkdir: {constants.RESHADE_SCREENSHOT_PATH}:"
+                           f"{get_exception(e)}")
 
         try:
             if not os.path.isdir(game_screenshots_path):
                 os.makedirs(game_screenshots_path)
         except OSError as e:
-            self.log.error(f"mkdir: {game_screenshots_path} {str(e)}")
+            self.log.error(f"mkdir: {game_screenshots_path}:"
+                           f"{get_exception(e)}")
     else:
         reshade_ini_filepath = os.path.join(game_dir, constants.RESHADE_INI)
-        reshade_config_screenshot_path = get_ini_settings(reshade_ini_filepath, "SCREENSHOT", "SavePath")
+        reshade_config_screenshot_path = get_ini_settings(reshade_ini_filepath,
+                                                          "SCREENSHOT",
+                                                          "SavePath")
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
-        elif os.path.isdir(os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)):
-            game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)
+        elif os.path.isdir(os.path.join(constants.RESHADE_SCREENSHOT_PATH,
+                                        game_name)):
+            game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH,
+                                                 game_name)
     return game_screenshots_path
+
+
+def get_exception(e):
+    module = e.__class__.__module__
+    if module is None or module == str.__class__.__module__:
+        module_and_exception = f"{e.__class__.__name__}:{e}"
+    else:
+        module_and_exception = f"{module}.{e.__class__.__name__}:{e}"
+    return module_and_exception.replace("\r\n", " ").replace("\n", " ")
 
 
 # def resource_path(relative_path):

@@ -5,10 +5,10 @@
 # |*****************************************************
 # -*- coding: utf-8 -*-
 import os
-from src import constants, events, messages, utils
-from PyQt5.QtWidgets import QFileDialog
 from PyQt5 import QtWidgets
 from src.config import Ui_config
+from PyQt5.QtWidgets import QFileDialog
+from src import constants, events, messages, utils
 
 
 def open_exe_file_dialog():
@@ -16,7 +16,10 @@ def open_exe_file_dialog():
     title = "Open file"
     path = "C:"
     _filter = "exe(*.exe)"
-    filepath, extension = QFileDialog.getOpenFileName(parent=qfd, caption=title, directory=path, filter=_filter)
+    filepath, extension = QFileDialog.getOpenFileName(parent=qfd,
+                                                      caption=title,
+                                                      directory=path,
+                                                      filter=_filter)
     if filepath == "":
         return None
     else:

@@ -5,10 +5,9 @@
 # * License           : GPL v3
 # |*****************************************************
 # -*- coding: utf-8 -*-
-import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
 from src.main_src import MainSrc
 from src import resources_rc, constants
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Main(object):

@@ -19,15 +19,18 @@ EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 DAYS_TO_KEEP_LOGS = 30
 ################################################################################
 RESET_DATABASE_VERSION = "4.2"
-PROGRAM_PATH = os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "dev") if DEBUG
-                                else os.path.join(os.getenv("LOCALAPPDATA"), SHORT_PROGRAM_NAME))
+PROGRAM_PATH = os.path.normpath(
+    os.path.join(os.path.dirname(sys.argv[0]), "dev")
+    if DEBUG
+    else os.path.join(os.getenv("LOCALAPPDATA"), SHORT_PROGRAM_NAME)
+)
 ################################################################################
 RESHADE_SETUP = "ReShade_Setup"
-RESHADE_SHADERS = "Reshade-shaders"
-RESHADE_INI = "Reshade.ini"
+RESHADE_SHADERS = "ReShade-shaders"
+RESHADE_INI = "ReShade.ini"
 RESHADE_PRESET_INI = "ReShadePreset.ini"
 RESHADEGUI_INI = "ReShadeGUI.ini"
-RESHADE32_DLL = "Reshade32.dll"
+RESHADE32_DLL = "ReShade32.dll"
 RESHADE64_DLL = "ReShade64.dll"
 DXGI_DLL = "dxgi.dll"
 D3D9_DLL = "d3d9.dll"

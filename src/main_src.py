@@ -7,11 +7,11 @@
 import os
 from src.log import Log
 from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets
 from src.sql.games_sql import GamesSql
 from src.progressbar import ProgressBar
 from src.sql.config_sql import ConfigSql
 from src.sql.database import DatabaseClass
-from PyQt5 import QtWidgets
 from src import constants, events, messages, utils, qtutils
 
 
@@ -56,8 +56,9 @@ class MainSrc:
         self.register_form_events()
 
         self.progressbar.set_values(messages.downloading_shaders, 60)
-        if not os.path.isdir(constants.SHADERS_SRC_PATH) or (
-                self.update_shaders is not None and self.update_shaders is True):
+        if not os.path.isdir(constants.SHADERS_SRC_PATH)\
+                or (self.update_shaders is not None
+                    and self.update_shaders is True):
             utils.download_shaders(self)
 
         self.progressbar.set_values(messages.checking_reshade_updates, 80)
@@ -142,17 +143,35 @@ class MainSrc:
 
 
     def register_form_events(self):
-        # TAB 1 - games
-        self.qtobj.add_button.clicked.connect(lambda: events.add_game(self))
-        self.qtobj.remove_button.clicked.connect(lambda: events.delete_game(self))
-        self.qtobj.reset_files_button.clicked.connect(lambda: events.reset_all_files(self))
-        self.qtobj.edit_plugin_button.clicked.connect(lambda: events.edit_plugin_config_file(self))
-        self.qtobj.edit_path_button.clicked.connect(lambda: events.edit_game_path(self))
-        self.qtobj.open_game_path_button.clicked.connect(lambda: events.open_game_location(self))
-        self.qtobj.apply_button.clicked.connect(lambda: events.apply_all(self))
-        self.qtobj.update_button.clicked.connect(lambda: events.update_program_clicked())
-        self.qtobj.programs_tableWidget.clicked.connect(self._table_widget_clicked)
-        self.qtobj.programs_tableWidget.itemDoubleClicked.connect(self._table_widget_double_clicked)
+        # TAB 1 - grid
+        self.qtobj.programs_tableWidget.clicked.connect(
+            self._table_widget_clicked)
+        self.qtobj.programs_tableWidget.itemDoubleClicked.connect(
+            self._table_widget_double_clicked)
+
+        # TAB 1 - selected games
+        self.qtobj.edit_game_button.clicked.connect(
+            self._table_widget_double_clicked)
+        self.qtobj.edit_plugin_button.clicked.connect(
+            lambda: events.edit_selected_game_plugin_config_file(self))
+        self.qtobj.reset_files_button.clicked.connect(
+            lambda: events.reset_all_selected_game_files_btn(self))
+        self.qtobj.edit_path_button.clicked.connect(
+            lambda: events.edit_selected_game_path(self))
+        self.qtobj.open_game_path_button.clicked.connect(
+            lambda: events.open_selected_game_location(self))
+        self.qtobj.remove_button.clicked.connect(
+            lambda: events.delete_game(self))
+
+        # TAB 1 - all games
+        self.qtobj.add_button.clicked.connect(
+            lambda: events.add_game(self))
+        self.qtobj.edit_default_preset_plugin_button.clicked.connect(
+            lambda: events.edit_default_preset_plugin_button_clicked(self))
+        self.qtobj.apply_button.clicked.connect(
+            lambda: events.apply_all(self))
+        self.qtobj.update_button.clicked.connect(
+            lambda: events.update_program_clicked())
 
         # TAB 2 - configs
         self.qtobj.yes_dark_theme_radioButton.clicked.connect(
@@ -185,8 +204,6 @@ class MainSrc:
         self.qtobj.no_screenshots_folder_radioButton.clicked.connect(
             lambda: events.create_screenshots_folder_clicked(self, "NO"))
 
-        self.qtobj.edit_default_preset_plugin_button.clicked.connect(
-            lambda: events.edit_default_preset_plugin_button_clicked(self))
         self.qtobj.reset_all_button.clicked.connect(
                 lambda: events.reset_all_button_clicked(self))
 
@@ -211,8 +228,7 @@ class MainSrc:
             for i in range(len(rs_all_games)):
                 self.qtobj.programs_tableWidget.insertRow(i)
                 self.qtobj.programs_tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(rs_all_games[i].get("name")))
-                self.qtobj.programs_tableWidget.setItem(i, 1,
-                                                        QtWidgets.QTableWidgetItem(rs_all_games[i].get("architecture")))
+                self.qtobj.programs_tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(rs_all_games[i].get("architecture")))
                 self.qtobj.programs_tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(rs_all_games[i].get("api")))
                 self.qtobj.programs_tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(rs_all_games[i].get("path")))
 
@@ -221,8 +237,7 @@ class MainSrc:
         if highest_column_width < 600:
             self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
         else:
-            self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(
-                    3, QtWidgets.QHeaderView.ResizeToContents)
+            self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
 
     def enable_form(self, status: bool):
@@ -260,4 +275,6 @@ class MainSrc:
 
     def _table_widget_double_clicked(self):
         if self.selected_game is not None:
-            qtutils.show_game_config_form(self, self.selected_game.name, self.selected_game.architecture)
+            qtutils.show_game_config_form(self,
+                                          self.selected_game.name,
+                                          self.selected_game.architecture)
