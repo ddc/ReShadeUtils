@@ -5,8 +5,8 @@
 # |*****************************************************
 # -*- coding: utf-8 -*-
 import contextlib
-from src import constants
 from sqlalchemy import event
+from src import constants, messages, utils
 from sqlalchemy.engine import create_engine
 
 
@@ -21,14 +21,17 @@ class DatabaseClass:
     def create_engine(self):
         try:
             engine = create_engine(f"sqlite:///{self.db_file}", echo=False).\
-                execution_options(stream_results=False, isolation_level="AUTOCOMMIT")
+                execution_options(stream_results=False,
+                                  isolation_level="AUTOCOMMIT")
 
             @event.listens_for(engine, "before_cursor_execute")
-            def receive_before_cursor_execute(conn, cursor, statement, params, context, executemany):
+            def receive_before_cursor_execute(conn, cursor, statement,
+                                              params, context, executemany):
                 cursor.arraysize = self.batch_size
             return engine
         except Exception as err:
-            self.log.error(f"[{str(type(err))}]:[{str(err)}]:Cannot Create Database Connection")
+            self.log.error(f"[{str(type(err))}]:[{str(err)}]:"
+                           f"{messages.error_db_connection}")
             return None
 
 
@@ -38,7 +41,7 @@ class DatabaseClass:
                 connection.execute(query)
                 return True
             except Exception as e:
-                self.log.error(str(e))
+                self.log.error(utils.get_exception(e))
         return False
 
 
@@ -58,6 +61,6 @@ class DatabaseClass:
                         if len(final_data) == 0:
                             final_data = None
                 except Exception as e:
-                    self.log.warning(f"[{str(e)}]")
+                    self.log.warning(f"[{utils.get_exception(e)}]")
                     final_data = None
         return final_data

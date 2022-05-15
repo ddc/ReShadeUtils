@@ -8,7 +8,7 @@ import os
 import sys
 import gzip
 import logging.handlers
-from src import constants, qtutils
+from src import constants, qtutils, utils
 
 
 class Log:
@@ -20,9 +20,11 @@ class Log:
 
     def setup_logging(self):
         try:
-            os.makedirs(self.dir, exist_ok=True) if not os.path.isdir(self.dir) else None
+            os.makedirs(self.dir, exist_ok=True) \
+                if not os.path.isdir(self.dir) else None
         except Exception as e:
-            err_msg = f"[ERROR]:[EXITING]:[{str(e)}]:Unable to create logs directory: {self.dir}\n"
+            err_msg = f"[ERROR]:[EXITING]:[{utils.get_exception(e)}]:" \
+                      f"Unable to create logs directory: {self.dir}\n"
             qtutils.show_message_window(None, "error", err_msg)
             sys.stderr.write(err_msg)
             sys.exit(1)
@@ -33,13 +35,16 @@ class Log:
         try:
             open(log_file_path, "a+").close()
         except IOError as e:
-            err_msg = f"[ERROR]:[EXITING]:[{str(e)}]:Unable to open the log file for writing: {log_file_path}\n"
+            err_msg = f"[ERROR]:[EXITING]:[{utils.get_exception(e)}]:" \
+                      f"Unable to open the log file for writing: " \
+                      f"{log_file_path}\n"
             qtutils.show_message_window(None, "error", err_msg)
             sys.stderr.write(err_msg)
             sys.exit(1)
 
         if self.level == logging.DEBUG:
-            formatt = f"[%(asctime)s.%(msecs)03d]:[%(levelname)s]:[PID:{os.getpid()}]:" \
+            formatt = f"[%(asctime)s.%(msecs)03d]:[%(levelname)s]:" \
+                      f"[PID:{os.getpid()}]:" \
                       f"[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
         else:
             formatt = "[%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s"
@@ -83,7 +88,8 @@ class GZipRotator:
                         fout.writelines(fin)
                 os.remove(source)
             except Exception as e:
-                err_msg = f"[ERROR]:Unable to compress the log file:[{str(e)}]: {source}\n"
+                err_msg = f"[ERROR]:Unable to compress the log file:" \
+                          f"[{utils.get_exception(e)}]: {source}\n"
                 qtutils.show_message_window(None, "error", err_msg)
                 sys.stderr.write(err_msg)
 
@@ -91,14 +97,16 @@ class GZipRotator:
 class RemoveOldLogs:
     def __init__(self, logs_dir, days_to_keep):
         files_list = [f for f in os.listdir(logs_dir)
-                      if os.path.isfile(f"{logs_dir}/{f}") and f.lower().endswith(".gz")]
+                      if os.path.isfile(f"{logs_dir}/{f}")
+                      and f.lower().endswith(".gz")]
         for file in files_list:
             file_path = f"{logs_dir}/{file}"
             if self._is_file_older_than_x_days(file_path, days_to_keep):
                 try:
                     os.remove(file_path)
                 except Exception as e:
-                    err_msg = f"[ERROR]:Unable to removed old logs:{str(e)}: {file_path}\n"
+                    err_msg = f"[ERROR]:Unable to removed old logs:" \
+                              f"{utils.get_exception(e)}: {file_path}\n"
                     qtutils.show_message_window(None, "error", err_msg)
                     sys.stderr.write(err_msg)
 
@@ -110,8 +118,10 @@ class RemoveOldLogs:
             cutoff_time = datetime.today()
         else:
             cutoff_time = datetime.today() - timedelta(days=days_to_keep)
-        file_time = file_time.replace(hour=0, minute=0, second=0, microsecond=0)
-        cutoff_time = cutoff_time.replace(hour=0, minute=0, second=0, microsecond=0)
+        file_time = file_time.replace(hour=0, minute=0, second=0,
+                                      microsecond=0)
+        cutoff_time = cutoff_time.replace(hour=0, minute=0, second=0,
+                                          microsecond=0)
         if file_time < cutoff_time:
             return True
         return False

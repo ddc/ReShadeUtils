@@ -47,17 +47,41 @@ class Files:
         except Exception as e:
             return e
 
+        preset_file_path = os.path.join(game_dir, constants.RESHADE_PRESET_INI)
         game_reshade_ini_path = os.path.join(game_dir, constants.RESHADE_INI)
-        effect_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Shaders")
-        texture_search_paths = os.path.join(constants.PROGRAM_PATH, "Reshade-shaders", "Textures")
+        effect_search_paths = os.path.join(constants.PROGRAM_PATH,
+                                           "Reshade-shaders",
+                                           "Shaders")
+        texture_search_paths = os.path.join(constants.PROGRAM_PATH,
+                                            "Reshade-shaders",
+                                            "Textures")
         intermediate_cache_path = os.getenv("TEMP")
-        preset_path = f".\\{constants.RESHADE_PRESET_INI}"
 
-        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
-        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-        utils.set_file_settings(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
-        utils.set_file_settings(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
+        utils.set_file_settings(game_reshade_ini_path,
+                                "GENERAL",
+                                "EffectSearchPaths",
+                                effect_search_paths)
+        utils.set_file_settings(game_reshade_ini_path,
+                                "GENERAL",
+                                "TextureSearchPaths",
+                                texture_search_paths)
+        utils.set_file_settings(game_reshade_ini_path,
+                                "GENERAL",
+                                "IntermediateCachePath",
+                                intermediate_cache_path)
+        utils.set_file_settings(game_reshade_ini_path,
+                                "GENERAL",
+                                "PresetPath",
+                                preset_file_path)
+        utils.set_file_settings(game_reshade_ini_path,
+                                "SCREENSHOT",
+                                "SavePath",
+                                screenshot_path)
+        utils.set_file_settings(game_reshade_ini_path,
+                                "SCREENSHOT",
+                                "PostSaveCommandWorkingDirectory",
+                                screenshot_path)
+
         return None
 
 
@@ -99,13 +123,7 @@ class Files:
 
 
 _ini_file_contents = (
-"""[D3D9]
-DepthCopyAtClearIndex=0
-DepthCopyBeforeClears=0
-DisableINTZ=0
-UseAspectRatioHeuristics=1
-
-[D3D11]
+"""[D3D11]
 DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 UseAspectRatioHeuristics=1
@@ -115,16 +133,27 @@ DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 UseAspectRatioHeuristics=1
 
-[DEPTH]
+[D3D9]
 DepthCopyAtClearIndex=0
 DepthCopyBeforeClears=0
 DisableINTZ=0
 UseAspectRatioHeuristics=1
 
+[DEPTH]
+DepthCopyAtClearIndex=0
+DepthCopyBeforeClears=1
+DisableINTZ=0
+UseAspectRatioHeuristics=2
+
 [GENERAL]
+NoDebugInfo=0
+NoEffectCache=0
+NoReloadOnInit=0
+NoReloadOnInitForNonVR=0
 PerformanceMode=1
 PreprocessorDefinitions=
 PresetTransitionDelay=1000
+PresetTransitionDuration=1000
 SkipLoadingDisabledEffects=1
 
 [INPUT]
@@ -145,7 +174,7 @@ NoFontScaling=1
 SaveWindowState=1
 ShowClock=0
 ShowForceLoadEffectsButton=1
-ShowFPS=0
+ShowFPS=1
 ShowFrameTime=0
 ShowScreenshotMessage=0
 TutorialProgress=4
@@ -155,8 +184,12 @@ VariableListUseTabs=1
 [SCREENSHOT]
 ClearAlpha=0
 FileFormat=2
+FileNaming=%AppName% %Date% %Time%
 FileNamingFormat=0
 JPEGQuality=100
+PostSaveCommand=
+PostSaveCommandArguments="%TargetPath%"
+PostSaveCommandNoWindow=0
 SaveBeforeShot=0
 SaveOverlayShot=0
 SavePresetFile=0
@@ -170,7 +203,7 @@ EditorFontSize=13
 EditorStyleIndex=0
 Font=ProggyClean.ttf
 FontSize=13
-FPSScale=1.300000
+FPSScale=1.500000
 FrameRounding=12.000000
 GrabRounding=12.000000
 PopupRounding=12.000000
@@ -187,7 +220,7 @@ TechniqueSorting=LumaSharpen@LumaSharpen.fx,Clarity@Clarity.fx
 
 [Clarity.fx]
 ClarityBlendIfDark=50
-ClarityBlendIfLight=200
+ClarityBlendIfLight=205
 ClarityBlendMode=2
 ClarityDarkIntensity=0.400000
 ClarityLightIntensity=0.000000
@@ -200,8 +233,8 @@ ClarityViewMask=0
 [LumaSharpen.fx]
 offset_bias=1.000000
 pattern=1
-sharp_clamp=0.100000
-sharp_strength=1.000000
+sharp_clamp=0.035000
+sharp_strength=0.650000
 show_sharpen=0
 """)
 

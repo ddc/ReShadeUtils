@@ -22,7 +22,8 @@ class Launcher:
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
         self.database = DatabaseClass(self.log)
-        self.program_path = os.path.join(utils.get_current_path(), constants.EXE_PROGRAM_NAME)
+        self.program_path = os.path.join(utils.get_current_path(),
+                                         constants.EXE_PROGRAM_NAME)
         self.new_version = None
         self.new_version_msg = None
         self.client_version = None
@@ -32,7 +33,8 @@ class Launcher:
         self.progressbar.set_values(messages.checking_files, 25)
         utils.check_local_files(self)
         if not os.path.isfile(self.program_path):
-            self.program_path = os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)
+            self.program_path = os.path.join(constants.PROGRAM_PATH,
+                                             constants.EXE_PROGRAM_NAME)
         self.progressbar.set_values(messages.checking_database, 50)
         utils.check_database_connection(self)
         utils.check_default_database_tables(self)
@@ -59,26 +61,40 @@ class Launcher:
 
 
     def download_new_program_version(self):
-        program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}{self.new_version}/{constants.EXE_PROGRAM_NAME}"
+        program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}" \
+                      f"{self.new_version}/" \
+                      f"{constants.EXE_PROGRAM_NAME}"
         r = requests.get(program_url)
         if r.status_code == 200:
             with open(self.program_path, "wb") as outfile:
                 outfile.write(r.content)
-            qtutils.show_message_window(self.log, "info", f"{messages.program_updated}v{self.new_version}")
+            qtutils.show_message_window(self.log,
+                                        "info",
+                                        f"{messages.program_updated}"
+                                        f"v{self.new_version}")
         else:
-            qtutils.show_message_window(self.log, "error", messages.error_dl_new_version)
-            self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
+            qtutils.show_message_window(self.log,
+                                        "error",
+                                        messages.error_dl_new_version)
+            self.log.error(f"{messages.error_dl_new_version} "
+                           f"{r.status_code} "
+                           f"{r}")
 
 
     def call_program(self):
         code = None
         try:
-            process = subprocess.run(self.program_path, shell=True, check=True, universal_newlines=True)
+            process = subprocess.run(self.program_path,
+                                     shell=True,
+                                     check=True,
+                                     universal_newlines=True)
             code = process.returncode
         except Exception as e:
             if code is None and hasattr(e, "returncode"):
-                self.log.error(f"cmd:{self.program_path} - code:{e.returncode} - {e}")
-            msg = f"{messages.error_executing_program}{constants.EXE_PROGRAM_NAME}\n"\
+                self.log.error(f"cmd:{self.program_path}"
+                               f" - code:{e.returncode} - {e}")
+            msg = f"{messages.error_executing_program}" \
+                  f"{constants.EXE_PROGRAM_NAME}\n"\
                   f"{messages.error_check_installation}"
             qtutils.show_message_window(self.log, "error", msg)
 

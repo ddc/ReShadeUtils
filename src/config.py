@@ -5,8 +5,8 @@
 # |*****************************************************
 # -*- coding: utf-8 -*-
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
 from src import resources_rc
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_config(object):
@@ -18,7 +18,8 @@ class Ui_config(object):
         self.cancel_pushButton = QtWidgets.QPushButton(config)
         self.cancel_pushButton.setGeometry(QtCore.QRect(20, 150, 93, 28))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/resources/images/cancel.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/resources/images/cancel.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.cancel_pushButton.setIcon(icon)
         self.cancel_pushButton.setObjectName("cancel_pushButton")
         self.game_name_lineEdit = QtWidgets.QLineEdit(config)
@@ -32,7 +33,8 @@ class Ui_config(object):
         self.ok_pushButton.setGeometry(QtCore.QRect(250, 150, 93, 28))
         self.ok_pushButton.setFocusPolicy(QtCore.Qt.WheelFocus)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/resources/images/apply.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/resources/images/apply.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ok_pushButton.setIcon(icon1)
         self.ok_pushButton.setObjectName("ok_pushButton")
         self.api_groupBox = QtWidgets.QGroupBox(config)
