@@ -28,7 +28,6 @@ class Launcher:
         self.new_version_msg = None
         self.client_version = None
 
-
     def start(self):
         self.progressbar.set_values(messages.checking_files, 25)
         utils.check_local_files(self)
@@ -44,7 +43,6 @@ class Launcher:
         self.progressbar.close()
         self.call_program()
 
-
     def check_program_updates(self):
         config_sql = ConfigSql(self)
         rs_config = config_sql.get_configs()
@@ -58,7 +56,6 @@ class Launcher:
                 self.new_version = new_version_obj.new_version
                 self.new_version_msg = new_version_obj.new_version_msg
                 self.download_new_program_version()
-
 
     def download_new_program_version(self):
         program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}" \
@@ -79,7 +76,6 @@ class Launcher:
             self.log.error(f"{messages.error_dl_new_version} "
                            f"{r.status_code} "
                            f"{r}")
-
 
     def call_program(self):
         code = None

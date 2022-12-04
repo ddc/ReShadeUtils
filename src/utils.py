@@ -183,13 +183,16 @@ def check_reshade_dll_files(self):
 
     config_sql = ConfigSql(self)
     rs_config = config_sql.get_configs()
-    if rs_config is not None and rs_config[0].get("reshade_version") is not None:
+    if rs_config is not None \
+            and rs_config[0].get("reshade_version") is not None:
         self.reshade_version = rs_config[0].get("reshade_version")
         self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
                                                f"{constants.RESHADE_SETUP}_"
                                                f"{self.reshade_version}.exe")
-        self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}"
-                                                 f"{self.reshade_version}")
+        self.qtobj.reshade_version_label.setText(
+            f"{messages.info_reshade_version}"
+            f"{self.reshade_version}"
+        )
         self.enable_form(True)
 
 
@@ -243,8 +246,8 @@ def download_reshade(self):
         events.apply_all(self)
         qtutils.show_message_window(self.log, "info",
                                     f"{messages.new_reshade_version}\n"
-                                    f"Version: {self.remote_reshade_version}\n\n"
-                                    f"{messages.apply_success}")
+                                    f"Version: {self.remote_reshade_version}"
+                                    f"\n\n{messages.apply_success}")
         self.need_apply = False
 
 
@@ -296,7 +299,9 @@ def check_program_updates(self):
         new_version_obj = get_new_program_version(self)
         if new_version_obj.new_version_available:
             self.qtobj.updateAvail_label.clear()
-            self.qtobj.updateAvail_label.setText(new_version_obj.new_version_msg)
+            self.qtobj.updateAvail_label.setText(
+                new_version_obj.new_version_msg
+            )
             self.qtobj.update_button.setVisible(True)
 
 
@@ -466,15 +471,19 @@ def get_screenshot_path(self, game_dir, game_name):
                            f"{get_exception(e)}")
     else:
         reshade_ini_filepath = os.path.join(game_dir, constants.RESHADE_INI)
-        reshade_config_screenshot_path = get_ini_settings(reshade_ini_filepath,
-                                                          "SCREENSHOT",
-                                                          "SavePath")
+        reshade_config_screenshot_path = get_ini_settings(
+            reshade_ini_filepath,
+            "SCREENSHOT",
+            "SavePath"
+        )
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
         elif os.path.isdir(os.path.join(constants.RESHADE_SCREENSHOT_PATH,
                                         game_name)):
-            game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH,
-                                                 game_name)
+            game_screenshots_path = os.path.join(
+                constants.RESHADE_SCREENSHOT_PATH,
+                game_name
+            )
     return game_screenshots_path
 
 

@@ -15,11 +15,12 @@ class GamesSql:
         self.table = Games.__table__
         self.database = main.database
 
-
     def get_games(self):
-        sql = self.table.select().order_by(asc(collate(self.table.columns.name, "NOCASE")))
+        sql = self.table.select().order_by(asc(collate(
+            self.table.columns.name,
+            "NOCASE"))
+        )
         return self.database.select(sql)
-
 
     def get_game_by_path(self, path):
         sql = self.table.select().\
@@ -27,13 +28,11 @@ class GamesSql:
             order_by(asc(collate(self.table.columns.name, "NOCASE")))
         return self.database.select(sql)
 
-
     def get_game_by_name(self, game_name):
         sql = self.table.select().\
             where(self.table.columns.name == game_name).\
             order_by(asc(collate(self.table.columns.name, "NOCASE")))
         return self.database.select(sql)
-
 
     def insert_game(self, games_obj):
         sql = self.table.insert().values(
@@ -43,7 +42,6 @@ class GamesSql:
             path=games_obj.path)
         return self.database.execute(sql)
 
-
     def update_game(self, games_obj):
         sql = self.table.update().values(
             name=games_obj.game_name,
@@ -52,13 +50,11 @@ class GamesSql:
             where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
 
-
     def update_game_path(self, games_obj):
         sql = self.table.update().\
             values(path=games_obj.path).\
             where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
-
 
     def update_game_architecture(self, games_obj):
         sql = self.table.update().\
@@ -66,13 +62,11 @@ class GamesSql:
             where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
 
-
     def update_game_api(self, games_obj):
         sql = self.table.update().\
             values(api=games_obj.api).\
             where(self.table.columns.id == games_obj.id)
         return self.database.execute(sql)
-
 
     def delete_game(self, game_id):
         sql = self.table.delete().where(self.table.columns.id == game_id)

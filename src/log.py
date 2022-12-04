@@ -17,7 +17,6 @@ class Log:
         self.days_to_keep = int(constants.DAYS_TO_KEEP_LOGS)
         self.level = logging.DEBUG if constants.DEBUG else logging.INFO
 
-
     def setup_logging(self):
         try:
             os.makedirs(self.dir, exist_ok=True) \

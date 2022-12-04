@@ -231,10 +231,10 @@ ClarityViewBlendIfMask=0
 ClarityViewMask=0
 
 [LumaSharpen.fx]
-offset_bias=0.500000
+offset_bias=1.000000
 pattern=1
 sharp_clamp=0.050000
-sharp_strength=1.000000
+sharp_strength=0.500000
 show_sharpen=0
 """)
 
