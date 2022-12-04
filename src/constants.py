@@ -10,9 +10,9 @@ import platform
 from src import utils
 
 
-DEBUG = True
+DEBUG = False
 
-VERSION = "4.6"
+VERSION = "4.5"
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
