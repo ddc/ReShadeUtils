@@ -264,7 +264,7 @@ def edit_selected_game_plugin_config_file(self):
             self.log.error(utils.get_exception(e))
 
         try:
-            os.startfile(res_plug_ini_path)
+            utils.open_file(res_plug_ini_path)
         except Exception as e:
             err_msg = f"{utils.get_exception(e)}" \
                       f"\n\n{messages.check_game_uninstalled}"
@@ -276,7 +276,7 @@ def edit_selected_game_plugin_config_file(self):
 def edit_default_preset_plugin_button_clicked(self):
     try:
         utils.check_local_files(self)
-        os.startfile(constants.RESHADE_PRESET_PATH)
+        utils.open_file(constants.RESHADE_PRESET_PATH)
     except Exception as e:
         err_msg = f"{utils.get_exception(e)}" \
                   f"\n\n{constants.RESHADE_PRESET_PATH}{messages.unable_start}"
@@ -657,7 +657,7 @@ def open_selected_game_location(self):
         game_dir = os.path.dirname(self.selected_game.path)
 
         try:
-            os.startfile(game_dir)
+            utils.open_file(game_dir)
         except Exception as e:
             err_msg = f"{utils.get_exception(e)}" \
                       f"\n\n{messages.check_game_uninstalled}"

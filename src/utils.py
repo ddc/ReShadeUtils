@@ -8,9 +8,11 @@ import os
 import sys
 import json
 import shutil
+import struct
 import zipfile
 import requests
 import datetime
+import subprocess
 import configparser
 from bs4 import BeautifulSoup
 from src.sql.config_sql import ConfigSql
@@ -32,6 +34,16 @@ class Object:
         return json_dict
 
 
+def open_file(file_path):
+    os_name = constants.OS_NAME
+    if os_name == "Darwin":
+        subprocess.call(("open", file_path))
+    elif os_name == "Windows":
+        os.startfile(file_path)
+    else:
+        subprocess.call(("xdg-open", file_path))
+
+
 def get_current_path():
     path = os.path.abspath(os.getcwd())
     if path is not None:
@@ -49,9 +61,9 @@ def list_files(directory, prefix):
     return files_list
 
 
-def get_ini_settings(file_name, section, config_name):
+def get_ini_file_settings(file_name, section, config_name):
     parser = configparser.ConfigParser(delimiters="=", allow_no_value=True)
-    parser.optionxform = str  # this wont change all values to lowercase
+    parser.optionxform = str  # this will not change all values to lowercase
     parser._interpolation = configparser.ExtendedInterpolation()
     parser.read(file_name)
     try:
@@ -63,9 +75,9 @@ def get_ini_settings(file_name, section, config_name):
     return value
 
 
-def set_file_settings(filename, section, config_name, value):
+def set_ini_file_settings(filename, section, config_name, value):
     parser = configparser.ConfigParser(delimiters="=", allow_no_value=True)
-    parser.optionxform = str  # this wont change all values to lowercase
+    parser.optionxform = str # this will not change all values to lowercase
     parser._interpolation = configparser.ExtendedInterpolation()
     parser.read(filename)
     parser.set(section, config_name, value)
@@ -95,16 +107,54 @@ def unzip_file(file_name, out_path):
 
 
 def get_pictures_path():
-    if os.name == "nt":
+    if constants.OS_NAME == "Windows":
         import winreg
-        sub_key = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
+        sub_key = (
+            r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
+        )
         pictures_guid = "My Pictures"
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
             pictures_path = winreg.QueryValueEx(key, pictures_guid)[0]
         return pictures_path
     else:
-        pictures_path = os.path.normpath(os.path.expanduser("~/Pictures"))
+        pictures_path = os.path.join(os.getenv("HOME"), "Pictures")
         return pictures_path
+
+
+def get_screenshot_path(self, game_dir, game_name):
+    game_screenshots_path = ""
+    if self.qtobj.yes_screenshots_folder_radioButton.isChecked():
+        game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH,
+                                             game_name)
+        try:
+            if not os.path.isdir(constants.RESHADE_SCREENSHOT_PATH):
+                os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
+        except OSError as e:
+            self.log.error(f"mkdir: {constants.RESHADE_SCREENSHOT_PATH}:"
+                           f"{get_exception(e)}")
+
+        try:
+            if not os.path.isdir(game_screenshots_path):
+                os.makedirs(game_screenshots_path)
+        except OSError as e:
+            self.log.error(f"mkdir: {game_screenshots_path}:"
+                           f"{get_exception(e)}")
+    else:
+        reshade_ini_filepath = os.path.join(game_dir, constants.RESHADE_INI)
+        reshade_config_screenshot_path = get_ini_file_settings(
+            reshade_ini_filepath,
+            "SCREENSHOT",
+            "SavePath"
+        )
+        if reshade_config_screenshot_path is not None:
+            game_screenshots_path = reshade_config_screenshot_path
+        elif os.path.isdir(os.path.join(constants.RESHADE_SCREENSHOT_PATH,
+                                        game_name)):
+            game_screenshots_path = os.path.join(
+                constants.RESHADE_SCREENSHOT_PATH,
+                game_name
+            )
+    return game_screenshots_path
 
 
 def check_local_files(self):
@@ -115,24 +165,33 @@ def check_local_files(self):
         if not os.path.isfile(constants.RESHADE_INI_PATH):
             files.download_reshade_ini_file()
     except Exception as e:
-        err_msg = f"{get_exception(e)}\n\n{constants.RESHADE_INI_PATH}" \
-                  f"{messages.not_found}"
+        err_msg = (
+            f"{get_exception(e)}\n\n"
+            f"{constants.RESHADE_INI_PATH}"
+            f"{messages.not_found}"
+        )
         qtutils.show_message_window(self.log, "error", err_msg)
 
     try:
         if not os.path.isfile(constants.RESHADE_PRESET_PATH):
             files.download_reshade_preset_file()
     except Exception as e:
-        err_msg = f"{get_exception(e)}\n\n{constants.RESHADE_PRESET_PATH}" \
-                  f"{messages.not_found}"
+        err_msg = (
+            f"{get_exception(e)}\n\n"
+            f"{constants.RESHADE_PRESET_PATH}"
+            f"{messages.not_found}"
+        )
         qtutils.show_message_window(self.log, "error", err_msg)
 
     try:
         if not os.path.isfile(constants.QSS_PATH):
             files.download_qss_file()
     except Exception as e:
-        err_msg = f"{get_exception(e)}\n\n{constants.QSS_PATH}" \
-                  f"{messages.not_found}"
+        err_msg = (
+            f"{get_exception(e)}\n\n"
+            f"{constants.QSS_PATH}"
+            f"{messages.not_found}"
+        )
         qtutils.show_message_window(self.log, "error", err_msg)
 
 
@@ -144,7 +203,10 @@ def check_reshade_updates(self):
         try:
             req = requests.get(constants.RESHADE_WEBSITE_URL)
             if req.status_code != 200:
-                msg = f"[Code {req.status_code}]: {messages.reshade_page_error}"
+                msg = (
+                    f"[Code {req.status_code}]: "
+                    f"{messages.reshade_page_error}"
+                )
                 qtutils.show_message_window(self.log, "error", msg)
             else:
                 html = str(req.text)
@@ -154,9 +216,13 @@ def check_reshade_updates(self):
 
                 for content in blist:
                     if content.startswith("<strong>Version "):
-                        self.remote_reshade_version = content.split()[1].strip("</strong>")
-                        self.remote_reshade_download_url = f"{constants.RESHADE_EXE_URL}" \
-                                                           f"{self.remote_reshade_version}.exe"
+                        self.remote_reshade_version = (
+                            content.split()[1].strip("</strong>")
+                        )
+                        self.remote_reshade_download_url = (
+                            f"{constants.RESHADE_EXE_URL}"
+                            f"{self.remote_reshade_version}.exe"
+                        )
                         break
 
                 if self.remote_reshade_version != self.reshade_version:
@@ -164,11 +230,15 @@ def check_reshade_updates(self):
                     download_reshade(self)
 
         except requests.exceptions.ConnectionError as e:
-            self.log.error(f"{messages.reshade_website_unreacheable}:"
-                           f"{get_exception(e)}")
-            qtutils.show_message_window(self.log,
-                                        "error",
-                                        messages.reshade_website_unreacheable)
+            self.log.error(
+                f"{messages.reshade_website_unreacheable}:"
+                f"{get_exception(e)}"
+            )
+            qtutils.show_message_window(
+                self.log,
+                "error",
+                messages.reshade_website_unreacheable
+            )
             return
 
 
@@ -186,9 +256,11 @@ def check_reshade_dll_files(self):
     if rs_config is not None \
             and rs_config[0].get("reshade_version") is not None:
         self.reshade_version = rs_config[0].get("reshade_version")
-        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
-                                               f"{constants.RESHADE_SETUP}_"
-                                               f"{self.reshade_version}.exe")
+        self.local_reshade_path = (
+            os.path.join(constants.PROGRAM_PATH,
+                         f"{constants.RESHADE_SETUP}_"
+                         f"{self.reshade_version}.exe")
+        )
         self.qtobj.reshade_version_label.setText(
             f"{messages.info_reshade_version}"
             f"{self.reshade_version}"
@@ -287,7 +359,8 @@ def download_shaders(self):
 
     try:
         if os.path.isdir(constants.RES_SHAD_MPATH):
-            out_dir = f"{constants.PROGRAM_PATH}\\{constants.RESHADE_SHADERS}"
+            out_dir = os.path.join(constants.PROGRAM_PATH,
+                                   constants.RESHADE_SHADERS)
             os.rename(constants.RES_SHAD_MPATH, out_dir)
     except OSError as e:
         self.log.error(f"rename_path: {get_exception(e)}")
@@ -324,13 +397,16 @@ def get_new_program_version(self):
             if remote_version is not None \
                     and (float(remote_version) > float(client_version)):
                 obj_return.new_version_available = True
-                obj_return.new_version_msg = f"Version {remote_version} " \
-                                             f"available for download"
+                obj_return.new_version_msg = (
+                    f"Version {remote_version} available for download"
+                )
                 obj_return.new_version = float(remote_version)
         else:
-            err_msg = f"{messages.error_check_new_version}" \
-                      f"\n{messages.remote_version_file_not_found}\n" \
-                      f"code: {req.status_code}"
+            err_msg = (
+                f"{messages.error_check_new_version}"
+                f"\n{messages.remote_version_file_not_found}\n"
+                f"code: {req.status_code}"
+            )
             qtutils.show_message_window(self.log, "error", err_msg)
     except requests.exceptions.ConnectionError:
         qtutils.show_message_window(self.log,
@@ -365,14 +441,18 @@ def check_default_database_configs(self):
                                             "warning",
                                             messages.config_reset_msg)
             except Exception:
-                err_msg = f"{messages.error_db_connection}" \
-                          f"\n\n{messages.exit_program}"
+                err_msg = (
+                    f"{messages.error_db_connection}\n\n"
+                    f"{messages.exit_program}"
+                )
                 if qtutils.show_message_window(self.log, "error", err_msg):
                     sys.exit(1)
 
     if not set_default_database_configs(self, constants.VERSION):
-        err_msg = f"{messages.error_create_sql_config_msg}" \
-                  f"\n\n{messages.exit_program}"
+        err_msg = (
+            f"{messages.error_create_sql_config_msg}"
+            f"\n\n{messages.exit_program}"
+        )
         if qtutils.show_message_window(self.log, "error", err_msg):
             sys.exit(1)
 
@@ -410,8 +490,6 @@ def check_game_file(self):
 
 
 def get_binary_type(self, game_path):
-    import struct
-
     image_file_machine_i386 = 332
     image_file_machine_ia64 = 512
     image_file_machine_amd64 = 34404
@@ -451,42 +529,6 @@ def get_binary_type(self, game_path):
                 return None
 
 
-def get_screenshot_path(self, game_dir, game_name):
-    game_screenshots_path = ""
-    if self.qtobj.yes_screenshots_folder_radioButton.isChecked():
-        game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH,
-                                             game_name)
-        try:
-            if not os.path.isdir(constants.RESHADE_SCREENSHOT_PATH):
-                os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
-        except OSError as e:
-            self.log.error(f"mkdir: {constants.RESHADE_SCREENSHOT_PATH}:"
-                           f"{get_exception(e)}")
-
-        try:
-            if not os.path.isdir(game_screenshots_path):
-                os.makedirs(game_screenshots_path)
-        except OSError as e:
-            self.log.error(f"mkdir: {game_screenshots_path}:"
-                           f"{get_exception(e)}")
-    else:
-        reshade_ini_filepath = os.path.join(game_dir, constants.RESHADE_INI)
-        reshade_config_screenshot_path = get_ini_settings(
-            reshade_ini_filepath,
-            "SCREENSHOT",
-            "SavePath"
-        )
-        if reshade_config_screenshot_path is not None:
-            game_screenshots_path = reshade_config_screenshot_path
-        elif os.path.isdir(os.path.join(constants.RESHADE_SCREENSHOT_PATH,
-                                        game_name)):
-            game_screenshots_path = os.path.join(
-                constants.RESHADE_SCREENSHOT_PATH,
-                game_name
-            )
-    return game_screenshots_path
-
-
 def get_exception(e):
     module = e.__class__.__module__
     if module is None or module == str.__class__.__module__:
@@ -506,7 +548,7 @@ def get_exception(e):
 
 
 # def get_download_path():
-#     if constants.IS_WINDOWS:
+#     if constants.OS_NAME == "Windows":
 #         import winreg
 #         sub_key = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
 #         downloads_guid = "{374DE290-123F-4565-9164-39C4925E467B}"

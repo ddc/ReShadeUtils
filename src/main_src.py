@@ -217,7 +217,8 @@ class MainSrc:
             self.form.setStyleSheet("")
 
     def populate_table_widget(self):
-        self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
+        self.qtobj.programs_tableWidget.horizontalHeader().\
+            setStretchLastSection(False)
         self.qtobj.programs_tableWidget.setRowCount(0)  # cleanning datagrid
         games_sql = GamesSql(self)
         rs_all_games = games_sql.get_games()
@@ -232,9 +233,11 @@ class MainSrc:
         self.qtobj.programs_tableWidget.resizeColumnsToContents()
         highest_column_width = self.qtobj.programs_tableWidget.columnWidth(3)
         if highest_column_width < 600:
-            self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
+            self.qtobj.programs_tableWidget.horizontalHeader().\
+                setStretchLastSection(True)
         else:
-            self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+            self.qtobj.programs_tableWidget.horizontalHeader().\
+                setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
     def enable_form(self, status: bool):
         if not status:

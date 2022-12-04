@@ -57,30 +57,30 @@ class Files:
                                             "Textures")
         intermediate_cache_path = os.getenv("TEMP")
 
-        utils.set_file_settings(game_reshade_ini_path,
+        utils.set_ini_file_settings(game_reshade_ini_path,
                                 "GENERAL",
                                 "EffectSearchPaths",
-                                effect_search_paths)
-        utils.set_file_settings(game_reshade_ini_path,
+                                    effect_search_paths)
+        utils.set_ini_file_settings(game_reshade_ini_path,
                                 "GENERAL",
                                 "TextureSearchPaths",
-                                texture_search_paths)
-        utils.set_file_settings(game_reshade_ini_path,
+                                    texture_search_paths)
+        utils.set_ini_file_settings(game_reshade_ini_path,
                                 "GENERAL",
                                 "IntermediateCachePath",
-                                intermediate_cache_path)
-        utils.set_file_settings(game_reshade_ini_path,
+                                    intermediate_cache_path)
+        utils.set_ini_file_settings(game_reshade_ini_path,
                                 "GENERAL",
                                 "PresetPath",
-                                preset_file_path)
-        utils.set_file_settings(game_reshade_ini_path,
+                                    preset_file_path)
+        utils.set_ini_file_settings(game_reshade_ini_path,
                                 "SCREENSHOT",
                                 "SavePath",
-                                screenshot_path)
-        utils.set_file_settings(game_reshade_ini_path,
+                                    screenshot_path)
+        utils.set_ini_file_settings(game_reshade_ini_path,
                                 "SCREENSHOT",
                                 "PostSaveCommandWorkingDirectory",
-                                screenshot_path)
+                                    screenshot_path)
 
         return None
 
