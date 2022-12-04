@@ -224,17 +224,17 @@ ClarityBlendIfLight=205
 ClarityBlendMode=2
 ClarityDarkIntensity=0.400000
 ClarityLightIntensity=0.000000
-ClarityOffset=5.000000
-ClarityRadius=4
+ClarityOffset=2.000000
+ClarityRadius=3
 ClarityStrength=0.400000
 ClarityViewBlendIfMask=0
 ClarityViewMask=0
 
 [LumaSharpen.fx]
-offset_bias=1.000000
+offset_bias=0.500000
 pattern=1
-sharp_clamp=0.035000
-sharp_strength=0.650000
+sharp_clamp=0.050000
+sharp_strength=1.000000
 show_sharpen=0
 """)
 
