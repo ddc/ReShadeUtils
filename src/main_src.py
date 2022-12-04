@@ -39,7 +39,6 @@ class MainSrc:
         self.remote_reshade_version = None
         self.remote_reshade_download_url = None
 
-
     def start(self):
         self.log.info(f"STARTING {constants.FULL_PROGRAM_NAME}")
 
@@ -71,10 +70,11 @@ class MainSrc:
         self.progressbar.close()
         self.qtobj.main_tabWidget.setCurrentIndex(0)
         self.qtobj.programs_tableWidget.setColumnWidth(2, 130)
-        self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
+        self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(
+            Qt.AlignLeft
+        )
         self.populate_table_widget()
         self.enable_widgets(False)
-
 
     def set_variables(self):
         config_sql = ConfigSql(self)
@@ -140,7 +140,6 @@ class MainSrc:
 
             if rs_config[0].get("reshade_version"):
                 self.reshade_version = rs_config[0].get("reshade_version")
-
 
     def register_form_events(self):
         # TAB 1 - grid
@@ -211,16 +210,15 @@ class MainSrc:
         self.qtobj.donate_button.clicked.connect(
                 lambda: events.donate_clicked())
 
-
     def set_style_sheet(self):
         if self.use_dark_theme:
             self.form.setStyleSheet(open(constants.QSS_PATH, "r").read())
         else:
             self.form.setStyleSheet("")
 
-
     def populate_table_widget(self):
-        self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
+        self.qtobj.programs_tableWidget.horizontalHeader().\
+            setStretchLastSection(False)
         self.qtobj.programs_tableWidget.setRowCount(0)  # cleanning datagrid
         games_sql = GamesSql(self)
         rs_all_games = games_sql.get_games()
@@ -235,10 +233,11 @@ class MainSrc:
         self.qtobj.programs_tableWidget.resizeColumnsToContents()
         highest_column_width = self.qtobj.programs_tableWidget.columnWidth(3)
         if highest_column_width < 600:
-            self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
+            self.qtobj.programs_tableWidget.horizontalHeader().\
+                setStretchLastSection(True)
         else:
-            self.qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
-
+            self.qtobj.programs_tableWidget.horizontalHeader().\
+                setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
 
     def enable_form(self, status: bool):
         if not status:
@@ -247,7 +246,6 @@ class MainSrc:
         for i in range(0, self.qtobj.main_tabWidget.count()):
             self.qtobj.main_tabWidget.setTabEnabled(i, status)
         self.qtobj.main_tabWidget.setCurrentIndex(0)
-
 
     def enable_widgets(self, status: bool):
         if not status:
@@ -260,7 +258,6 @@ class MainSrc:
         self.qtobj.open_game_path_button.setEnabled(status)
         self.qtobj.main_tabWidget.setCurrentIndex(0)
 
-
     def _set_state_apply_button(self):
         len_games = self.qtobj.programs_tableWidget.rowCount()
         if len_games == 0:
@@ -268,10 +265,8 @@ class MainSrc:
         else:
             self.qtobj.apply_button.setEnabled(True)
 
-
     def _table_widget_clicked(self, item):
         events.programs_tableWidget_clicked(self, item)
-
 
     def _table_widget_double_clicked(self):
         if self.selected_game is not None:

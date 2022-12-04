@@ -40,7 +40,6 @@ class ProgressBar:
         self.pbar.setAlignment(QtCore.Qt.AlignCenter)
         self.pbar.setStyleSheet(STYLE)
 
-
     def set_values(self, message="", value=0):
         _translate = QtCore.QCoreApplication.translate
         self.pbar.setFormat(_translate("Main", f"{message}  %p%"))
@@ -50,7 +49,6 @@ class ProgressBar:
         else:
             self.pbar.show()
             QtWidgets.QApplication.processEvents()
-
 
     def close(self):
         self.pbar.close()
