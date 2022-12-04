@@ -15,30 +15,25 @@ class Files:
         self.main = main
         self.log = main.log
 
-
     def download_all_files(self):
         self.download_reshade_ini_file()
         self.download_reshade_preset_file()
         self.download_qss_file()
-
 
     def download_reshade_ini_file(self):
         local_file_path = constants.RESHADE_INI_PATH
         remote_file = constants.RESHADE_REMOTE_FILENAME
         self._download_file(remote_file, local_file_path, _ini_file_contents)
 
-
     def download_reshade_preset_file(self):
         local_file_path = constants.RESHADE_PRESET_PATH
         remote_file = constants.PRESET_REMOTE_FILENAME
         self._download_file(remote_file, local_file_path, _preset_file_contents)
 
-
     def download_qss_file(self):
         local_file_path = constants.QSS_PATH
         remote_file = constants.QSS_REMOTE_FILENAME
         self._download_file(remote_file, local_file_path, _qss_file_contents)
-
 
     @staticmethod
     def apply_reshade_ini_file(game_dir, screenshot_path):
@@ -58,32 +53,31 @@ class Files:
         intermediate_cache_path = os.getenv("TEMP")
 
         utils.set_ini_file_settings(game_reshade_ini_path,
-                                "GENERAL",
-                                "EffectSearchPaths",
+                                    "GENERAL",
+                                    "EffectSearchPaths",
                                     effect_search_paths)
         utils.set_ini_file_settings(game_reshade_ini_path,
-                                "GENERAL",
-                                "TextureSearchPaths",
+                                    "GENERAL",
+                                    "TextureSearchPaths",
                                     texture_search_paths)
         utils.set_ini_file_settings(game_reshade_ini_path,
-                                "GENERAL",
-                                "IntermediateCachePath",
+                                    "GENERAL",
+                                    "IntermediateCachePath",
                                     intermediate_cache_path)
         utils.set_ini_file_settings(game_reshade_ini_path,
-                                "GENERAL",
-                                "PresetPath",
+                                    "GENERAL",
+                                    "PresetPath",
                                     preset_file_path)
         utils.set_ini_file_settings(game_reshade_ini_path,
-                                "SCREENSHOT",
-                                "SavePath",
+                                    "SCREENSHOT",
+                                    "SavePath",
                                     screenshot_path)
         utils.set_ini_file_settings(game_reshade_ini_path,
-                                "SCREENSHOT",
-                                "PostSaveCommandWorkingDirectory",
+                                    "SCREENSHOT",
+                                    "PostSaveCommandWorkingDirectory",
                                     screenshot_path)
 
         return None
-
 
     @staticmethod
     def apply_reshade_preset_file(game_file_path):
@@ -93,7 +87,6 @@ class Files:
             return e
         return None
 
-
     @staticmethod
     def apply_reshade_dll_file(src_dll_path, dst_dll_path):
         try:
@@ -101,7 +94,6 @@ class Files:
         except Exception as e:
             return e
         return None
-
 
     def _download_file(self, remote_file, local_file_path, contents):
         try:
@@ -114,13 +106,11 @@ class Files:
         except requests.HTTPError:
             self._write_contents_local_file(local_file_path, contents)
 
-
     @staticmethod
     def _write_contents_local_file(local_file_path, contents):
         file = open(local_file_path, encoding="UTF-8", mode="w")
         file.write(contents)
         file.close()
-
 
 _ini_file_contents = (
 """[D3D11]
@@ -231,13 +221,12 @@ ClarityViewBlendIfMask=0
 ClarityViewMask=0
 
 [LumaSharpen.fx]
-offset_bias=1.000000
+offset_bias=0.500000
 pattern=1
 sharp_clamp=0.050000
-sharp_strength=0.500000
+sharp_strength=1.000000
 show_sharpen=0
 """)
-
 
 _qss_file_contents = (
 """QWidget {
