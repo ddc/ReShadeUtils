@@ -50,9 +50,10 @@ OPENGL_DISPLAY_NAME = "OpenGL"
 # ############################################################################
 RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
 RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
-SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}.zip")
+SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
 SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
-RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, "SweetFX-master")
+RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
+RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
 RESHADE_SCREENSHOT_PATH = os.path.join(utils.get_pictures_path(), "Screenshots")
 # ############################################################################
 SQLITE3_PATH = os.path.join(PROGRAM_PATH, "database.db")
@@ -67,8 +68,7 @@ REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRA
 RESHADE_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/Reshade.ini"
 PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/ReShadePreset.ini"
 QSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/style.qss"
-# SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/master.zip"
-SHADERS_ZIP_URL = "https://github.com/CeeJayDK/SweetFX/archive/master.zip"
+SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
 PAYPAL_URL = "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"

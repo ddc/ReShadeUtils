@@ -365,6 +365,15 @@ def download_shaders(self):
     except OSError as e:
         self.log.error(f"rename_path: {get_exception(e)}")
 
+    try:
+        if os.path.isdir(constants.RES_SHAD_NVIDIA_PATH):
+            out_dir = os.path.join(constants.PROGRAM_PATH,
+                                   constants.RESHADE_SHADERS,
+                                   "Shaders")
+            os.rename(constants.RES_SHAD_NVIDIA_PATH, out_dir)
+    except OSError as e:
+        self.log.error(f"rename_path: {get_exception(e)}")
+
 
 def check_program_updates(self):
     self.qtobj.update_button.setVisible(False)
