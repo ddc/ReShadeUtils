@@ -52,7 +52,7 @@ RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
 RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
 SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}.zip")
 SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
-RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-master")
+RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, "SweetFX-master")
 RESHADE_SCREENSHOT_PATH = os.path.join(utils.get_pictures_path(), "Screenshots")
 # ############################################################################
 SQLITE3_PATH = os.path.join(PROGRAM_PATH, "database.db")
