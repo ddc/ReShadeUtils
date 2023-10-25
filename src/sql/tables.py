@@ -5,7 +5,8 @@
 # |*****************************************************
 # -*- coding: utf-8 -*-
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Sequence, event, text
+from sqlalchemy import Column, Integer, String, Sequence, event
+from sqlalchemy.sql import text
 
 
 Base = declarative_base()
@@ -21,7 +22,7 @@ class Configs(Base):
                 autoincrement=True)
     use_dark_theme = Column(Integer,
                             nullable=False,
-                            server_default=text("1"))
+                            server_default=text("0"))
     check_program_updates = Column(Integer,
                                    nullable=False,
                                    server_default=text("1"))
@@ -63,7 +64,7 @@ class Games(Base):
 
 @event.listens_for(Configs.__table__, "after_create")
 def receive_after_create(target, connection, **kw):
-    connection.execute("""CREATE TRIGGER IF NOT EXISTS before_insert_configs
+    connection.execute(text("""CREATE TRIGGER before_insert_configs
             BEFORE INSERT ON configs
             BEGIN
                 SELECT CASE
@@ -71,4 +72,4 @@ def receive_after_create(target, connection, **kw):
                     RAISE(ABORT, 'CANNOT INSERT INTO CONFIGS TABLE ANYMORE')
                 END;
             END;
-    """)
+    """))

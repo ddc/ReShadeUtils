@@ -112,6 +112,7 @@ class Files:
         file.write(contents)
         file.close()
 
+
 _ini_file_contents = (
 """[D3D11]
 DepthCopyAtClearIndex=0

@@ -80,7 +80,7 @@ class GZipRotator:
         if os.path.isfile(source) and os.stat(source).st_size > 0:
             try:
                 sfname, sext = os.path.splitext(source)
-                dfname, dext = os.path.splitext(dest)
+                _, dext = os.path.splitext(dest)
                 renamed_dst = f"{sfname}_{dext.replace('.', '')}{sext}.gz"
                 with open(source, "rb") as fin:
                     with gzip.open(renamed_dst, "wb") as fout:

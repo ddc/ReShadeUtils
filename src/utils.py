@@ -449,7 +449,8 @@ def check_default_database_configs(self):
                 qtutils.show_message_window(self.log,
                                             "warning",
                                             messages.config_reset_msg)
-            except Exception:
+            except Exception as e:
+                self.log.error(get_exception(e))
                 err_msg = (
                     f"{messages.error_db_connection}\n\n"
                     f"{messages.exit_program}"
@@ -473,7 +474,7 @@ def check_default_database_tables(self):
         Games.__table__.create(self.database.engine, checkfirst=True)
     except Exception as e:
         self.log.error(get_exception(e))
-        err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
+        err_msg = f"{messages.error_create_db_tables_msg}\n\n{messages.exit_program}"
         if qtutils.show_message_window(self.log, "error", err_msg):
             sys.exit(1)
 

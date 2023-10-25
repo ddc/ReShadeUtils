@@ -5,9 +5,9 @@
 # |*****************************************************
 # -*- coding: utf-8 -*-
 import os
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 from src.config import Ui_config
-from PyQt5.QtWidgets import QFileDialog
+from PyQt6.QtWidgets import QFileDialog
 from src import constants, events, messages, utils
 
 
@@ -16,10 +16,10 @@ def open_exe_file_dialog():
     title = "Open file"
     path = "C:"
     _filter = "exe(*.exe)"
-    filepath, extension = QFileDialog.getOpenFileName(parent=qfd,
-                                                      caption=title,
-                                                      directory=path,
-                                                      filter=_filter)
+    filepath, _ = QFileDialog.getOpenFileName(parent=qfd,
+                                              caption=title,
+                                              directory=path,
+                                              filter=_filter)
     if filepath == "":
         return None
     else:
@@ -31,20 +31,20 @@ def show_message_window(log, window_type, msg):
 
     if window_type.lower() == "error":
         icon = QtWidgets.QMessageBox.Icon.Critical
-        button = QtWidgets.QMessageBox.Ok
+        button = QtWidgets.QMessageBox.StandardButton.Ok
         log.error(msg.replace("\n", ":")) if log else None
     elif window_type.lower() == "warning":
         icon = QtWidgets.QMessageBox.Icon.Warning
-        button = QtWidgets.QMessageBox.Ok
+        button = QtWidgets.QMessageBox.StandardButton.Ok
         log.warning(msg.replace("\n", ":")) if log else None
     elif window_type.lower() == "info":
         icon = QtWidgets.QMessageBox.Icon.Information
-        button = QtWidgets.QMessageBox.Ok
+        button = QtWidgets.QMessageBox.StandardButton.Ok
         log.info(msg.replace("\n", ":")) if log else None
     else:
         icon = QtWidgets.QMessageBox.Icon.Question
-        button = QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
-        msg_box.setDefaultButton(QtWidgets.QMessageBox.Yes)
+        button = QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
+        msg_box.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Yes)
 
     msg_box.setWindowTitle(constants.FULL_PROGRAM_NAME)
     msg_box.setIcon(icon)

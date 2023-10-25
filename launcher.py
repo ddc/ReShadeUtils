@@ -10,7 +10,7 @@ import sys
 import requests
 import subprocess
 from src.log import Log
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 from src.progressbar import ProgressBar
 from src.sql.config_sql import ConfigSql
 from src.sql.database import DatabaseClass

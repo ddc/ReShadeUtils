@@ -6,8 +6,8 @@
 # -*- coding: utf-8 -*-
 import os
 from src.log import Log
-from PyQt5.QtCore import Qt
-from PyQt5 import QtWidgets
+from PyQt6.QtCore import Qt
+from PyQt6 import QtWidgets
 from src.sql.games_sql import GamesSql
 from src.progressbar import ProgressBar
 from src.sql.config_sql import ConfigSql
@@ -71,7 +71,7 @@ class MainSrc:
         self.qtobj.main_tabWidget.setCurrentIndex(0)
         self.qtobj.programs_tableWidget.setColumnWidth(2, 130)
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(
-            Qt.AlignLeft
+            Qt.AlignmentFlag.AlignLeft
         )
         self.populate_table_widget()
         self.enable_widgets(False)
@@ -237,7 +237,7 @@ class MainSrc:
                 setStretchLastSection(True)
         else:
             self.qtobj.programs_tableWidget.horizontalHeader().\
-                setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+                setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
     def enable_form(self, status: bool):
         if not status:

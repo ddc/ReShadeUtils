@@ -6,11 +6,11 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 from src.files import Files
 from src.sql.games_sql import GamesSql
 from src.sql.config_sql import ConfigSql
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtGui import QDesktopServices
 from src import constants, messages, utils, qtutils
 
 
