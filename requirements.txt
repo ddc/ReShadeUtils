@@ -1,4 +1,4 @@
-pyinstaller==5.9.0
+pyinstaller==5.13.1
 beautifulsoup4==4.12.2
 urllib3==1.26.15
 SQLAlchemy==2.0.9
