@@ -1,8 +1,3 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 from PyQt6 import QtCore, QtWidgets
 

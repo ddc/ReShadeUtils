@@ -1,37 +1,27 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 import os
 import sys
 import platform
-from src import utils
+from src.utils import utils
 
 
-DEBUG = False
-
+DEBUG = True
 VERSION = "4.7"
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
-DAYS_TO_KEEP_LOGS = 30
+DAYS_TO_KEEP_LOGS = 7
 # ############################################################################
 OS_NAME = platform.system()
 RESET_DATABASE_VERSION = "4.2"
 # ############################################################################
 if DEBUG:
-    PROGRAM_PATH = os.path.normpath(
-        os.path.join(os.path.dirname(sys.argv[0]), "dev")
-    )
+    PROGRAM_PATH = os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "dev"))
 else:
     _local_app_data = os.getenv("LOCALAPPDATA") if OS_NAME == "Windows" \
         else os.path.join(os.getenv("HOME"), ".local", "share")
-    PROGRAM_PATH = os.path.normpath(
-        os.path.join(_local_app_data, SHORT_PROGRAM_NAME)
-    )
+    PROGRAM_PATH = os.path.normpath(os.path.join(_local_app_data, SHORT_PROGRAM_NAME))
 # ############################################################################
 RESHADE_SETUP = "ReShade_Setup"
 RESHADE_SHADERS = "reshade-shaders"
@@ -55,13 +45,14 @@ SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
 RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
 RESHADE_SCREENSHOT_PATH = os.path.join(utils.get_pictures_path(), "Screenshots")
+ALEMBIC_CONFIG_FILE_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "src", "database", "migrations", "alembic.ini")
 # ############################################################################
 SQLITE3_PATH = os.path.join(PROGRAM_PATH, "database.db")
 QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
 RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 # ############################################################################
-BRANCH = "dev" if DEBUG else "master"
+BRANCH = utils.get_active_branch_name() if DEBUG else "master"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/VERSION"

@@ -1,14 +1,9 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
-from src.sql.tables import Games
+from src.database.models.games_model import Games
 from sqlalchemy.sql import collate, asc
 
 
-class GamesSql:
+class GamesDal:
     def __init__(self, main):
         self.main = main
         self.log = main.log

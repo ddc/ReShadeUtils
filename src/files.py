@@ -1,13 +1,9 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 import os
 import shutil
 import requests
-from src import constants, utils
+from src import constants
+from src.utils import utils
 
 
 class Files:

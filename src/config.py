@@ -1,11 +1,6 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 import sys
-from src import resources_rc
+from src.utils import resources_rc
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 

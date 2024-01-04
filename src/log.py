@@ -1,14 +1,10 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- encoding: utf-8 -*-
 import os
 import sys
 import gzip
 import logging.handlers
-from src import constants, qtutils, utils
+from src import constants
+from src.utils import utils, qtutils
 
 
 class Log:

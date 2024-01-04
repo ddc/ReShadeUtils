@@ -1,17 +1,12 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
-from src.sql.tables import Configs
+from src.database.models.config_model import Config
 
 
-class ConfigSql:
+class ConfigDal:
     def __init__(self, main):
         self.main = main
         self.log = main.log
-        self.table = Configs.__table__
+        self.table = Config.__table__
         self.database = main.database
 
     def get_configs(self):

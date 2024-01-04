@@ -1,17 +1,13 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 import os
 import shutil
 from PyQt6 import QtCore
 from src.files import Files
-from src.sql.games_sql import GamesSql
-from src.sql.config_sql import ConfigSql
+from src.database.dal.games_dal import GamesDal
+from src.database.dal.config_dal import ConfigDal
 from PyQt6.QtGui import QDesktopServices
-from src import constants, messages, utils, qtutils
+from src import constants, messages
+from src.utils import utils, qtutils
 
 
 def donate_clicked():
@@ -31,7 +27,7 @@ def add_game(self):
             os.path.basename(filename_path)
         )
         if extension.lower() == ".exe":
-            games_sql = GamesSql(self)
+            games_sql = GamesDal(self)
             rs_name = games_sql.get_game_by_path(filename_path)
             if rs_name is None:
                 self.selected_game = None
@@ -100,7 +96,7 @@ def delete_game(self):
                 except OSError:
                     pass
 
-            games_sql = GamesSql(self)
+            games_sql = GamesDal(self)
             games_sql.delete_game(self.selected_game.id)
 
             if self.show_info_messages:
@@ -226,7 +222,7 @@ def edit_selected_game_path(self):
 
             # save into database
             games_obj = utils.Object()
-            games_sql = GamesSql(self)
+            games_sql = GamesDal(self)
             games_obj.id = self.selected_game.id
             games_obj.path = new_game_file_path
             games_sql.update_game_path(games_obj)
@@ -303,7 +299,7 @@ def dark_theme_clicked(self, status):
         status = 0
 
     self.set_style_sheet()
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     config_sql.update_dark_theme(status)
 
 
@@ -315,7 +311,7 @@ def check_program_updates_clicked(self, status):
         self.check_program_updates = False
         status = 0
 
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     config_sql.update_check_program_updates(status)
 
 
@@ -327,7 +323,7 @@ def show_info_messages_clicked(self, status):
         self.show_info_messages = False
         status = 0
 
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     config_sql.update_show_info_messages(status)
 
 
@@ -339,7 +335,7 @@ def check_reshade_updates_clicked(self, status):
         self.check_reshade_updates = False
         status = 0
 
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     config_sql.update_check_resahde_updates(status)
 
 
@@ -351,7 +347,7 @@ def update_shaders_clicked(self, status):
         self.update_shaders = False
         status = 0
 
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     config_sql.update_shaders(status)
 
 
@@ -363,7 +359,7 @@ def create_screenshots_folder_clicked(self, status):
         self.create_screenshots_folder = False
         status = 0
 
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     config_sql.update_create_screenshots_folder(status)
 
 
@@ -382,7 +378,7 @@ def programs_tableWidget_clicked(self, item):
     self.selected_game.game_dir = os.path.dirname(self.selected_game.path)
 
     search_pattern = self.selected_game.name
-    games_sql = GamesSql(self)
+    games_sql = GamesDal(self)
     rs = games_sql.get_game_by_name(search_pattern)
     if rs is not None and len(rs) > 0:
         self.selected_game.id = rs[0].get("id")
@@ -419,7 +415,7 @@ def game_config_form_result(self, architecture, status):
             sql_games_obj.architecture = "64bits"
             src_path = constants.RESHADE64_PATH
 
-        games_sql = GamesSql(self)
+        games_sql = GamesDal(self)
         if self.selected_game is not None:
             if self.game_config_form.qtObj.dx9_radioButton.isChecked():
                 sql_games_obj.api = dx9_name
@@ -550,7 +546,7 @@ def game_config_form_result(self, architecture, status):
 
 
 def apply_all(self, reset=False):
-    games_sql = GamesSql(self)
+    games_sql = GamesDal(self)
     rs_all_games = games_sql.get_games()
     # len_games = self.qtobj.programs_tableWidget.rowCount()
     len_games = len(rs_all_games)

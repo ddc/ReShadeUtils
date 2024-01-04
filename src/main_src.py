@@ -1,18 +1,13 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 import os
 from src.log import Log
 from PyQt6.QtCore import Qt
 from PyQt6 import QtWidgets
-from src.sql.games_sql import GamesSql
+from src.database.dal.games_dal import GamesDal
 from src.progressbar import ProgressBar
-from src.sql.config_sql import ConfigSql
-from src.sql.database import DatabaseClass
-from src import constants, events, messages, utils, qtutils
+from src.database.dal.config_dal import ConfigDal
+from src import constants, events, messages
+from src.utils import utils, qtutils
 
 
 class MainSrc:
@@ -21,7 +16,6 @@ class MainSrc:
         self.form = form
         self.client_version = constants.VERSION
         self.log = Log().setup_logging()
-        self.database = DatabaseClass(self.log)
         self.progressbar = ProgressBar()
         self.check_program_updates = True
         self.check_reshade_updates = True
@@ -42,13 +36,11 @@ class MainSrc:
     def start(self):
         self.log.info(f"STARTING {constants.FULL_PROGRAM_NAME}")
 
-        self.progressbar.set_values(messages.checking_database, 15)
-        utils.check_database_connection(self)
-        utils.check_default_database_tables(self)
-        utils.check_default_database_configs(self)
-
-        self.progressbar.set_values(messages.checking_files, 30)
+        self.progressbar.set_values(messages.checking_files, 15)
         utils.check_local_files(self)
+
+        self.progressbar.set_values(messages.checking_database, 30)
+        utils.run_alembic_migrations()
 
         self.progressbar.set_values(messages.checking_configs, 45)
         self.set_variables()
@@ -73,11 +65,11 @@ class MainSrc:
         self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(
             Qt.AlignmentFlag.AlignLeft
         )
-        self.populate_table_widget()
+        # self.populate_table_widget()
         self.enable_widgets(False)
 
     def set_variables(self):
-        config_sql = ConfigSql(self)
+        config_sql = ConfigDal(self)
         rs_config = config_sql.get_configs()
         if rs_config is not None and len(rs_config) > 0:
             if not rs_config[0].get("use_dark_theme"):
@@ -220,7 +212,7 @@ class MainSrc:
         self.qtobj.programs_tableWidget.horizontalHeader().\
             setStretchLastSection(False)
         self.qtobj.programs_tableWidget.setRowCount(0)  # cleanning datagrid
-        games_sql = GamesSql(self)
+        games_sql = GamesDal(self)
         rs_all_games = games_sql.get_games()
         if rs_all_games is not None and len(rs_all_games) > 0:
             for i in range(len(rs_all_games)):

@@ -1,8 +1,3 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -15,8 +10,11 @@ import datetime
 import subprocess
 import configparser
 from bs4 import BeautifulSoup
-from src.sql.config_sql import ConfigSql
+from src.database.dal.config_dal import ConfigDal
 from src import constants, events, messages, qtutils
+from pathlib import Path
+from alembic import command
+from alembic.config import Config
 
 
 class Object:
@@ -251,7 +249,7 @@ def check_reshade_dll_files(self):
     if missing_reshade:
         download_reshade(self)
 
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     rs_config = config_sql.get_configs()
     if rs_config is not None \
             and rs_config[0].get("reshade_version") is not None:
@@ -306,7 +304,7 @@ def download_reshade(self):
     self.reshade_version = self.remote_reshade_version
     unzip_reshade(self, self.local_reshade_path)
 
-    config_sql = ConfigSql(self)
+    config_sql = ConfigDal(self)
     config_sql.update_reshade_version(self.remote_reshade_version)
 
     self.qtobj.reshade_version_label.clear()
@@ -425,68 +423,74 @@ def get_new_program_version(self):
     return obj_return
 
 
-def check_database_connection(self):
-    if self.database is not None:
-        conn = self.database.engine.connect()
-        if conn is not None:
-            conn.close()
-            return True
-    err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
-    if qtutils.show_message_window(self.log, "error", err_msg):
-        sys.exit(1)
+def run_alembic_migrations():
+    alembic_cfg = Config(constants.ALEMBIC_CONFIG_FILE_PATH)
+    command.upgrade(alembic_cfg, "head")
 
 
-def check_default_database_configs(self):
-    config_sql = ConfigSql(self)
-    rs_config = config_sql.get_program_version()
-    if rs_config is not None:
-        program_version = rs_config[0].get("program_version")
-        if float(program_version) < float(constants.RESET_DATABASE_VERSION):
-            try:
-                os.remove(constants.SQLITE3_PATH)
-                check_database_connection(self)
-                check_default_database_tables(self)
-                qtutils.show_message_window(self.log,
-                                            "warning",
-                                            messages.config_reset_msg)
-            except Exception as e:
-                self.log.error(get_exception(e))
-                err_msg = (
-                    f"{messages.error_db_connection}\n\n"
-                    f"{messages.exit_program}"
-                )
-                if qtutils.show_message_window(self.log, "error", err_msg):
-                    sys.exit(1)
-
-    if not set_default_database_configs(self, constants.VERSION):
-        err_msg = (
-            f"{messages.error_create_sql_config_msg}"
-            f"\n\n{messages.exit_program}"
-        )
-        if qtutils.show_message_window(self.log, "error", err_msg):
-            sys.exit(1)
+# def check_database_connection(self):
+#     if self.database is not None:
+#         conn = self.database.engine.connect()
+#         if conn is not None:
+#             conn.close()
+#             return True
+#     err_msg = f"{messages.error_db_connection}\n\n{messages.exit_program}"
+#     if qtutils.show_message_window(self.log, "error", err_msg):
+#         sys.exit(1)
 
 
-def check_default_database_tables(self):
-    from src.sql.tables import Configs, Games
-    try:
-        Configs.__table__.create(self.database.engine, checkfirst=True)
-        Games.__table__.create(self.database.engine, checkfirst=True)
-    except Exception as e:
-        self.log.error(get_exception(e))
-        err_msg = f"{messages.error_create_db_tables_msg}\n\n{messages.exit_program}"
-        if qtutils.show_message_window(self.log, "error", err_msg):
-            sys.exit(1)
+# def check_default_database_configs(self):
+#     config_sql = ConfigSql(self)
+#     rs_config = config_sql.get_program_version()
+#     if rs_config is not None:
+#         program_version = rs_config[0].get("program_version")
+#         if float(program_version) < float(constants.RESET_DATABASE_VERSION):
+#             try:
+#                 os.remove(constants.SQLITE3_PATH)
+#                 check_database_connection(self)
+#                 check_default_database_tables(self)
+#                 qtutils.show_message_window(self.log,
+#                                             "warning",
+#                                             messages.config_reset_msg)
+#             except Exception as e:
+#                 self.log.error(get_exception(e))
+#                 err_msg = (
+#                     f"{messages.error_db_connection}\n\n"
+#                     f"{messages.exit_program}"
+#                 )
+#                 if qtutils.show_message_window(self.log, "error", err_msg):
+#                     sys.exit(1)
+#
+#     if not set_default_database_configs(self, constants.VERSION):
+#         err_msg = (
+#             f"{messages.error_create_sql_config_msg}"
+#             f"\n\n{messages.exit_program}"
+#         )
+#         if qtutils.show_message_window(self.log, "error", err_msg):
+#             sys.exit(1)
 
 
-def set_default_database_configs(self, program_version):
-    from src.sql.config_sql import ConfigSql
-    config_sql = ConfigSql(self)
-    rs_config = config_sql.get_program_version()
-    if rs_config is None and not config_sql.set_default_configs():
-        return False
-    config_sql.update_program_version(program_version)
-    return True
+# def check_default_database_tables(self):
+#     from src.database.models.config_model import Configs
+#     from src.database.models.games_model import Games
+#     try:
+#         Configs.__table__.create(self.database.engine, checkfirst=True)
+#         Games.__table__.create(self.database.engine, checkfirst=True)
+#     except Exception as e:
+#         self.log.error(get_exception(e))
+#         err_msg = f"{messages.error_create_db_tables_msg}\n\n{messages.exit_program}"
+#         if qtutils.show_message_window(self.log, "error", err_msg):
+#             sys.exit(1)
+
+
+# def set_default_database_configs(self, program_version):
+#     from src.database.dal.config_dal import ConfigDal
+#     config_sql = ConfigDal(self)
+#     rs_config = config_sql.get_program_version()
+#     if rs_config is None and not config_sql.set_default_configs():
+#         return False
+#     config_sql.update_program_version(program_version)
+#     return True
 
 
 def check_game_file(self):
@@ -546,6 +550,15 @@ def get_exception(e):
     else:
         module_and_exception = f"{module}.{e.__class__.__name__}:{e}"
     return module_and_exception.replace("\r\n", " ").replace("\n", " ")
+
+
+def get_active_branch_name():
+    head_dir = Path(".") / ".git" / "HEAD"
+    with head_dir.open("r") as f:content = f.read().splitlines()
+    for line in content:
+        if line[0:4] == "ref:":
+            return line.partition("refs/heads/")[2]
+
 
 
 # def resource_path(relative_path):

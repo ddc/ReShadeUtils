@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ReshadeUtils"
+version = "1.0"
+description = "ReshadeUtils"
+authors = ["ddc <ddc@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11, <3.13"
+pyinstaller = "^6.3.0"
+beautifulsoup4 = "^4.12.2"
+urllib3 = "^2.1.0"
+SQLAlchemy = "^2.0.25"
+requests = "^2.31.0"
+PyQt6 = "^6.6.1"
+alembic = "^1.13.1"
+
+[build-system]
+requires = ["poetry-core>=1.5.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,9 +1,4 @@
 #! /usr/bin/env python3
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -12,16 +7,16 @@ import subprocess
 from src.log import Log
 from PyQt6 import QtWidgets
 from src.progressbar import ProgressBar
-from src.sql.config_sql import ConfigSql
-from src.sql.database import DatabaseClass
-from src import constants, messages, utils, qtutils
+from src.database.dal.config_dal import ConfigDal
+from src import constants, messages
+from src.utils import utils, qtutils
 
 
 class Launcher:
     def __init__(self):
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
-        self.database = DatabaseClass(self.log)
+        # self.database = DatabaseClass(self.log)
         self.program_path = os.path.join(utils.get_current_path(),
                                          constants.EXE_PROGRAM_NAME)
         self.new_version = None
@@ -44,7 +39,7 @@ class Launcher:
         self.call_program()
 
     def check_program_updates(self):
-        config_sql = ConfigSql(self)
+        config_sql = ConfigDal(self)
         rs_config = config_sql.get_configs()
         if rs_config[0].get("program_version") is None:
             self.client_version = constants.VERSION

@@ -1,12 +1,8 @@
 #! /usr/bin/env python3
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 from src.main_src import MainSrc
-from src import resources_rc, constants
+from src import constants
+from src.utils import resources_rc
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
