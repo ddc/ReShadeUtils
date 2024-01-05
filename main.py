@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from src.main_src import MainSrc
 from src import constants
-from src.utils import resources_rc
+from src.tools import resources_rc
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 

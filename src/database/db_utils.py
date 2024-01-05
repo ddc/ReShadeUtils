@@ -11,42 +11,37 @@ class DBUtils:
         self.session = session
         self.log = log
 
-    async def add(self, stmt):
+    def add(self, stmt):
         try:
             self.session.add(stmt)
-            await self.session.commit()
+            self.session.commit()
         except Exception as e:
-            self.log.error(e)
             raise DBExecuteException(self.log, e)
 
-    async def execute(self, stmt):
+    def execute(self, stmt):
         try:
-            await self.session.execute(stmt)
-            await self.session.commit()
+            self.session.execute(stmt)
+            self.session.commit()
         except Exception as e:
-            self.log.error(e)
             raise DBExecuteException(self.log, e)
 
-    async def fetchall(self, stmt):
+    def fetchall(self, stmt):
         try:
-            cursor = await self.session.execute(stmt)
+            cursor = self.session.execute(stmt)
             return cursor.mappings().all()
         except Exception as e:
-            self.log.error(e)
             raise DBFetchAllException(self.log, e)
 
-    async def fetchone(self, stmt):
+    def fetchone(self, stmt):
         try:
-            cursor = await self.session.execute(stmt)
+            cursor = self.session.execute(stmt)
             return cursor.mappings().first()
         except Exception as e:
-            self.log.error(e)
             raise DBFetchAllException(self.log, e)
 
-    async def fetch_value(self, stmt):
+    def fetch_value(self, stmt):
         try:
-            cursor = await self.session.execute(stmt)
+            cursor = self.session.execute(stmt)
             return cursor.first()[0]
         except Exception as e:
-            self.log.error(e)
             raise DBFetchValueException(self.log, e)

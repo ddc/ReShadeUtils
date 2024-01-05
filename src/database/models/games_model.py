@@ -12,7 +12,7 @@ class GamesBase(DeclarativeBase):
 
 class Games(GamesBase):
     __tablename__ = "games"
-    id: Mapped[int] = mapped_column(primary_key=True, unique=True)
+    id: Mapped[int] = mapped_column(primary_key=True, unique=True, autoincrement=True)
     name: Mapped[str] = mapped_column()
     architecture: Mapped[str] = mapped_column()
     api: Mapped[str] = mapped_column()

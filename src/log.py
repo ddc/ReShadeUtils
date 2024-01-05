@@ -4,7 +4,8 @@ import sys
 import gzip
 import logging.handlers
 from src import constants
-from src.utils import utils, qtutils
+from src.tools import qt_utils
+from src.tools.misc_utils import get_exception
 
 
 class Log:
@@ -18,9 +19,9 @@ class Log:
             os.makedirs(self.dir, exist_ok=True) \
                 if not os.path.isdir(self.dir) else None
         except Exception as e:
-            err_msg = f"[ERROR]:[EXITING]:[{utils.get_exception(e)}]:" \
+            err_msg = f"[ERROR]:[EXITING]:[{get_exception(e)}]:" \
                       f"Unable to create logs directory: {self.dir}\n"
-            qtutils.show_message_window(None, "error", err_msg)
+            qt_utils.show_message_window(None, "error", err_msg)
             sys.stderr.write(err_msg)
             sys.exit(1)
 
@@ -30,10 +31,10 @@ class Log:
         try:
             open(log_file_path, "a+").close()
         except IOError as e:
-            err_msg = f"[ERROR]:[EXITING]:[{utils.get_exception(e)}]:" \
+            err_msg = f"[ERROR]:[EXITING]:[{get_exception(e)}]:" \
                       f"Unable to open the log file for writing: " \
                       f"{log_file_path}\n"
-            qtutils.show_message_window(None, "error", err_msg)
+            qt_utils.show_message_window(None, "error", err_msg)
             sys.stderr.write(err_msg)
             sys.exit(1)
 
@@ -84,8 +85,8 @@ class GZipRotator:
                 os.remove(source)
             except Exception as e:
                 err_msg = f"[ERROR]:Unable to compress the log file:" \
-                          f"[{utils.get_exception(e)}]: {source}\n"
-                qtutils.show_message_window(None, "error", err_msg)
+                          f"[{get_exception(e)}]: {source}\n"
+                qt_utils.show_message_window(None, "error", err_msg)
                 sys.stderr.write(err_msg)
 
 
@@ -101,8 +102,8 @@ class RemoveOldLogs:
                     os.remove(file_path)
                 except Exception as e:
                     err_msg = f"[ERROR]:Unable to removed old logs:" \
-                              f"{utils.get_exception(e)}: {file_path}\n"
-                    qtutils.show_message_window(None, "error", err_msg)
+                              f"{get_exception(e)}: {file_path}\n"
+                    qt_utils.show_message_window(None, "error", err_msg)
                     sys.stderr.write(err_msg)
 
     @staticmethod

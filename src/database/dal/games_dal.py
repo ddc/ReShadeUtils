@@ -1,68 +1,59 @@
 # -*- coding: utf-8 -*-
-from src.database.models.games_model import Games
+import sqlalchemy as sa
 from sqlalchemy.sql import collate, asc
+from src.database.db_utils import DBUtils
+from src.database.models.games_model import Games
 
 
 class GamesDal:
-    def __init__(self, main):
-        self.main = main
-        self.log = main.log
-        self.table = Games.__table__
-        self.database = main.database
-
-    def get_games(self):
-        sql = self.table.select().order_by(asc(collate(
-            self.table.columns.name,
-            "NOCASE"))
-        )
-        return self.database.select(sql)
-
-    def get_game_by_path(self, path):
-        sql = self.table.select().\
-            where(self.table.columns.path == path).\
-            order_by(asc(collate(self.table.columns.name, "NOCASE")))
-        return self.database.select(sql)
-
-    def get_game_by_name(self, game_name):
-        sql = self.table.select().\
-            where(self.table.columns.name == game_name).\
-            order_by(asc(collate(self.table.columns.name, "NOCASE")))
-        return self.database.select(sql)
+    def __init__(self, db_session, log):
+        self.log = log
+        self.columns = [x for x in Games.__table__.columns]
+        self.db_utils = DBUtils(db_session, log)
 
     def insert_game(self, games_obj):
-        sql = self.table.insert().values(
+        stmt = Games(
             name=games_obj.game_name,
             architecture=games_obj.architecture,
             api=games_obj.api,
             path=games_obj.path)
-        return self.database.execute(sql)
+        self.db_utils.add(stmt)
+
+    def get_games(self):
+        stmt = sa.select(*self.columns).order_by(asc(collate(Games.name, "NOCASE")))
+        results = self.db_utils.fetchall(stmt)
+        return results
+
+    def get_game_by_path(self, game_path):
+        stmt = sa.select(*self.columns).where(Games.path == game_path).order_by(asc(collate(Games.name, "NOCASE")))
+        results = self.db_utils.fetchall(stmt)
+        return results
+
+    def get_game_by_name(self, game_name):
+        stmt = sa.select(*self.columns).where(Games.name == game_name).order_by(asc(collate(Games.name, "NOCASE")))
+        results = self.db_utils.fetchall(stmt)
+        return results
 
     def update_game(self, games_obj):
-        sql = self.table.update().values(
+        stmt = sa.update(Games).where(Games.id == games_obj.id).values(
             name=games_obj.game_name,
             architecture=games_obj.architecture,
-            api=games_obj.api).\
-            where(self.table.columns.id == games_obj.id)
-        return self.database.execute(sql)
+            api=games_obj.api
+        )
+        self.db_utils.execute(stmt)
 
-    def update_game_path(self, games_obj):
-        sql = self.table.update().\
-            values(path=games_obj.path).\
-            where(self.table.columns.id == games_obj.id)
-        return self.database.execute(sql)
+    def update_game_path(self, game_id, game_path):
+        stmt = sa.update(Games).where(Games.id == game_id).values(path=game_path)
+        self.db_utils.execute(stmt)
 
-    def update_game_architecture(self, games_obj):
-        sql = self.table.update().\
-            values(architecture=games_obj.architecture).\
-            where(self.table.columns.id == games_obj.id)
-        return self.database.execute(sql)
+    def update_game_architecture(self, game_id, game_architecture):
+        stmt = sa.update(Games).where(Games.id == game_id).values(architecture=game_architecture)
+        self.db_utils.execute(stmt)
 
-    def update_game_api(self, games_obj):
-        sql = self.table.update().\
-            values(api=games_obj.api).\
-            where(self.table.columns.id == games_obj.id)
-        return self.database.execute(sql)
+    def update_game_api(self, game_id, game_api):
+        stmt = sa.update(Games).where(Games.id == game_id).values(api=game_api)
+        self.db_utils.execute(stmt)
 
     def delete_game(self, game_id):
-        sql = self.table.delete().where(self.table.columns.id == game_id)
-        return self.database.execute(sql)
+        stmt = sa.delete(Games).where(Games.id == game_id)
+        self.db_utils.execute(stmt)

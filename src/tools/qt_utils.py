@@ -3,7 +3,8 @@ import os
 from PyQt6 import QtWidgets
 from src.config import Ui_config
 from PyQt6.QtWidgets import QFileDialog
-from src import constants, events, messages, utils
+from src import constants, events, messages
+from src.tools import file_utils
 
 
 def open_exe_file_dialog():
@@ -51,7 +52,7 @@ def show_message_window(log, window_type, msg):
 
 
 def show_game_config_form(self, game_name, architecture):
-    if not utils.check_game_file(self):
+    if not file_utils.check_game_file(self):
         show_message_window(self.log, "error", messages.error_game_not_found)
         return
 

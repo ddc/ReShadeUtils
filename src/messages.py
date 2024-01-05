@@ -2,7 +2,7 @@
 #################################
 # MAIN
 #################################
-not_found = " not found!"
+not_found = "not found!"
 unable_start = " unable to start"
 checking_files = "Checking files"
 unable_create_dirs = "Error creating program directories"

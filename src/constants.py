@@ -2,7 +2,7 @@
 import os
 import sys
 import platform
-from src.utils import utils
+from src.tools import misc_utils
 
 
 DEBUG = True
@@ -44,7 +44,7 @@ SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
 SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
 RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
-RESHADE_SCREENSHOT_PATH = os.path.join(utils.get_pictures_path(), "Screenshots")
+RESHADE_SCREENSHOT_PATH = os.path.join(misc_utils.get_pictures_path(), "Screenshots")
 ALEMBIC_CONFIG_FILE_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "src", "database", "migrations", "alembic.ini")
 # ############################################################################
 SQLITE3_PATH = os.path.join(PROGRAM_PATH, "database.db")
@@ -52,7 +52,7 @@ QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
 RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 # ############################################################################
-BRANCH = utils.get_active_branch_name() if DEBUG else "master"
+BRANCH = misc_utils.get_active_branch_name() if DEBUG else "master"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/VERSION"

@@ -3,7 +3,7 @@ import os
 import shutil
 import requests
 from src import constants
-from src.utils import utils
+from src.tools.file_utils import set_ini_file_settings
 
 
 class Files:
@@ -48,30 +48,30 @@ class Files:
                                             "Textures")
         intermediate_cache_path = os.getenv("TEMP")
 
-        utils.set_ini_file_settings(game_reshade_ini_path,
-                                    "GENERAL",
-                                    "EffectSearchPaths",
-                                    effect_search_paths)
-        utils.set_ini_file_settings(game_reshade_ini_path,
-                                    "GENERAL",
-                                    "TextureSearchPaths",
-                                    texture_search_paths)
-        utils.set_ini_file_settings(game_reshade_ini_path,
-                                    "GENERAL",
-                                    "IntermediateCachePath",
-                                    intermediate_cache_path)
-        utils.set_ini_file_settings(game_reshade_ini_path,
-                                    "GENERAL",
-                                    "PresetPath",
-                                    preset_file_path)
-        utils.set_ini_file_settings(game_reshade_ini_path,
-                                    "SCREENSHOT",
-                                    "SavePath",
-                                    screenshot_path)
-        utils.set_ini_file_settings(game_reshade_ini_path,
-                                    "SCREENSHOT",
-                                    "PostSaveCommandWorkingDirectory",
-                                    screenshot_path)
+        set_ini_file_settings(game_reshade_ini_path,
+                              "GENERAL",
+                              "EffectSearchPaths",
+                              effect_search_paths)
+        set_ini_file_settings(game_reshade_ini_path,
+                              "GENERAL",
+                              "TextureSearchPaths",
+                              texture_search_paths)
+        set_ini_file_settings(game_reshade_ini_path,
+                              "GENERAL",
+                              "IntermediateCachePath",
+                              intermediate_cache_path)
+        set_ini_file_settings(game_reshade_ini_path,
+                              "GENERAL",
+                              "PresetPath",
+                              preset_file_path)
+        set_ini_file_settings(game_reshade_ini_path,
+                              "SCREENSHOT",
+                              "SavePath",
+                              screenshot_path)
+        set_ini_file_settings(game_reshade_ini_path,
+                              "SCREENSHOT",
+                              "PostSaveCommandWorkingDirectory",
+                              screenshot_path)
 
         return None
 
