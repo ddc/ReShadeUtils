@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-from src.tools import resources_rc
+from src.tools.qt import resources_rc
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 

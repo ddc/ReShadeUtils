@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 from src.main_src import MainSrc
-from src import constants
-from src.tools import resources_rc
+from src.constants import variables
+from src.tools.qt import resources_rc
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
@@ -444,7 +444,7 @@ class Ui_Main(object):
 
     def retranslateUi(self, Main):
         _translate = QtCore.QCoreApplication.translate
-        Main.setWindowTitle(_translate("Main", constants.FULL_PROGRAM_NAME))
+        Main.setWindowTitle(_translate("Main", variables.FULL_PROGRAM_NAME))
         item = self.programs_tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Main", "NAME"))
         item = self.programs_tableWidget.horizontalHeaderItem(1)

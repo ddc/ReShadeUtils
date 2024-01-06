@@ -4,10 +4,12 @@ from src.log import Log
 from PyQt6.QtCore import Qt
 from PyQt6 import QtWidgets
 from src.database.dal.games_dal import GamesDal
-from src.progressbar import ProgressBar
+from src.tools.qt.progressbar import ProgressBar
 from src.database.dal.config_dal import ConfigDal
-from src import constants, events, messages
-from src.tools import qt_utils, file_utils, program_utils, reshade_utils
+from src import events
+from src.constants import variables, messages
+from src.tools import file_utils, program_utils, reshade_utils
+from src.tools.qt import qt_utils
 from src.database.db import Database
 
 
@@ -15,7 +17,7 @@ class MainSrc:
     def __init__(self, qtobj, form):
         self.qtobj = qtobj
         self.form = form
-        self.client_version = constants.VERSION
+        self.client_version = variables.VERSION
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
         self.db_session = None
@@ -36,7 +38,7 @@ class MainSrc:
         self.remote_reshade_download_url = None
 
     def start(self):
-        self.log.info(f"STARTING {constants.FULL_PROGRAM_NAME}")
+        self.log.info(f"STARTING {variables.FULL_PROGRAM_NAME}")
 
         database = Database(self.log)
         database_engine = database.set_db_engine()
@@ -54,7 +56,7 @@ class MainSrc:
             self.register_form_events()
 
             self.progressbar.set_values(messages.downloading_shaders, 60)
-            if not os.path.isdir(constants.SHADERS_SRC_PATH)\
+            if not os.path.isdir(variables.SHADERS_SRC_PATH)\
                     or (self.update_shaders is not None
                         and self.update_shaders is True):
                 reshade_utils.download_shaders(self)
@@ -151,10 +153,15 @@ class MainSrc:
         self.qtobj.donate_button.clicked.connect(lambda: events.donate_clicked())
 
     def set_style_sheet(self):
-        if self.use_dark_theme:
-            self.form.setStyleSheet(open(constants.QSS_PATH, "r").read())
-        else:
+        try:
+            if self.use_dark_theme:
+                self.form.setStyleSheet(open(variables.QSS_PATH, "r").read())
+            else:
+                self.form.setStyleSheet("")
+        except FileNotFoundError:
             self.form.setStyleSheet("")
+            events.dark_theme_clicked(self, "NO")
+            qt_utils.show_message_window(self.log, "error", messages.error_rss_file_not_found)
 
     def populate_table_widget(self):
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)

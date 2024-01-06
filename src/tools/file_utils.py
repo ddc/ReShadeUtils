@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 import struct
 import zipfile
 import subprocess
 import configparser
-from src import constants, messages
-from src.tools import qt_utils, misc_utils, reshade_utils
+from src.constants import variables, messages
+from src.tools import misc_utils, reshade_utils
 from src.database.dal.config_dal import ConfigDal
+from src.tools.qt import qt_utils
 
 
 def open_file(file_path):
-    match constants.OS_NAME:
+    match variables.OS_NAME:
         case "Darwin":
             subprocess.call(("open", file_path))
         case "Windows":
@@ -59,11 +59,11 @@ def set_ini_file_settings(filename, section, config_name, value):
 
 def unzip_reshade(self, local_reshade_exe):
     try:
-        if os.path.isfile(constants.RESHADE32_PATH):
-            os.remove(constants.RESHADE32_PATH)
-        if os.path.isfile(constants.RESHADE64_PATH):
-            os.remove(constants.RESHADE64_PATH)
-        unzip_file(local_reshade_exe, constants.PROGRAM_PATH)
+        if os.path.isfile(variables.RESHADE32_PATH):
+            os.remove(variables.RESHADE32_PATH)
+        if os.path.isfile(variables.RESHADE64_PATH):
+            os.remove(variables.RESHADE64_PATH)
+        unzip_file(local_reshade_exe, variables.PROGRAM_PATH)
     except Exception as e:
         self.log.error(misc_utils.get_exception(e))
 
@@ -77,9 +77,9 @@ def unzip_file(file_name, out_path):
 
 def check_reshade_dll_files(self):
     missing_reshade = True
-    files_list = sorted(os.listdir(constants.PROGRAM_PATH))
+    files_list = sorted(os.listdir(variables.PROGRAM_PATH))
     for filename in files_list:
-        if constants.RESHADE_SETUP in filename:
+        if variables.RESHADE_SETUP in filename:
             missing_reshade = False
     if missing_reshade:
         reshade_utils.download_reshade(self)
@@ -89,8 +89,8 @@ def check_reshade_dll_files(self):
     if rs_config is not None \
             and rs_config[0].get("reshade_version") is not None:
         self.reshade_version = rs_config[0].get("reshade_version")
-        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
-                                               f"{constants.RESHADE_SETUP}_{self.reshade_version}.exe")
+        self.local_reshade_path = os.path.join(variables.PROGRAM_PATH,
+                                               f"{variables.RESHADE_SETUP}_{self.reshade_version}.exe")
         self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
         self.enable_form(True)
 
@@ -100,32 +100,32 @@ def check_local_files(self):
     files = Files(self)
 
     try:
-        if not os.path.isfile(constants.RESHADE_INI_PATH):
+        if not os.path.isfile(variables.RESHADE_INI_PATH):
             files.download_reshade_ini_file()
     except Exception as e:
         err_msg = (
             f"{misc_utils.get_exception(e)}\n\n"
-            f"{constants.RESHADE_INI_PATH} {messages.not_found}"
+            f"{variables.RESHADE_INI_PATH} {messages.not_found}"
         )
         qt_utils.show_message_window(self.log, "error", err_msg)
 
     try:
-        if not os.path.isfile(constants.RESHADE_PRESET_PATH):
+        if not os.path.isfile(variables.RESHADE_PRESET_PATH):
             files.download_reshade_preset_file()
     except Exception as e:
         err_msg = (
             f"{misc_utils.get_exception(e)}\n\n"
-            f"{constants.RESHADE_PRESET_PATH} {messages.not_found}"
+            f"{variables.RESHADE_PRESET_PATH} {messages.not_found}"
         )
         qt_utils.show_message_window(self.log, "error", err_msg)
 
     try:
-        if not os.path.isfile(constants.QSS_PATH):
+        if not os.path.isfile(variables.QSS_PATH):
             files.download_qss_file()
     except Exception as e:
         err_msg = (
             f"{misc_utils.get_exception(e)}\n\n"
-            f"{constants.QSS_PATH} {messages.not_found}"
+            f"{variables.QSS_PATH} {messages.not_found}"
         )
         qt_utils.show_message_window(self.log, "error", err_msg)
 
@@ -173,34 +173,3 @@ def get_binary_type(self, game_path):
                 case _:
                     self.log.debug(f"Unknown architecture {machine}")
                     return None
-
-
-def get_current_path():
-    path = os.path.abspath(os.getcwd())
-    if path is not None:
-        return os.path.normpath(path)
-    return None
-
-
-def get_download_path():
-    if constants.OS_NAME == "Windows":
-        import winreg
-        sub_key = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
-        downloads_guid = "{374DE290-123F-4565-9164-39C4925E467B}"
-        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
-            downloads_path = winreg.QueryValueEx(key, downloads_guid)[0]
-        return downloads_path
-    else:
-        t1_path = str(os.path.expanduser("~/Downloads"))
-        t2_path = f"{t1_path}".split("\\")
-        downloads_path = "/".join(t2_path)
-        return downloads_path.replace("\\", "/")
-
-
-def resource_path(relative_path):
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except:
-        base_path = os.path.abspath("./src")
-    return os.path.join(base_path, relative_path)

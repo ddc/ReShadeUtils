@@ -5,8 +5,10 @@ import zipfile
 import requests
 from bs4 import BeautifulSoup
 from src.database.dal.config_dal import ConfigDal
-from src import constants, events, messages
-from src.tools import qt_utils, misc_utils, file_utils
+from src import events
+from src.constants import variables, messages
+from src.tools import misc_utils, file_utils
+from src.tools.qt import qt_utils
 
 
 def check_reshade_updates(self):
@@ -15,7 +17,7 @@ def check_reshade_updates(self):
         self.remote_reshade_download_url = None
 
         try:
-            req = requests.get(constants.RESHADE_WEBSITE_URL)
+            req = requests.get(variables.RESHADE_WEBSITE_URL)
             if req.status_code != 200:
                 msg = (
                     f"[Code {req.status_code}]: "
@@ -34,7 +36,7 @@ def check_reshade_updates(self):
                             content.split()[1].strip("</strong>")
                         )
                         self.remote_reshade_download_url = (
-                            f"{constants.RESHADE_EXE_URL}"
+                            f"{variables.RESHADE_EXE_URL}"
                             f"{self.remote_reshade_version}.exe"
                         )
                         break
@@ -59,7 +61,7 @@ def check_reshade_updates(self):
 def download_reshade(self):
     # removing old version
     if self.reshade_version is not None:
-        old_local_reshade_exe = os.path.join(constants.PROGRAM_PATH,
+        old_local_reshade_exe = os.path.join(variables.PROGRAM_PATH,
                                              f"ReShade_Setup_"
                                              f"{self.reshade_version}.exe")
         if os.path.isfile(old_local_reshade_exe):
@@ -68,7 +70,7 @@ def download_reshade(self):
 
     try:
         # downloading new reshade version
-        self.local_reshade_path = os.path.join(constants.PROGRAM_PATH,
+        self.local_reshade_path = os.path.join(variables.PROGRAM_PATH,
                                                f"ReShade_Setup_"
                                                f"{self.remote_reshade_version}"
                                                ".exe")
@@ -102,56 +104,56 @@ def download_reshade(self):
     if self.need_apply and len_games > 0:
         events.apply_all(self)
         qt_utils.show_message_window(self.log, "info",
-                                    f"{messages.new_reshade_version}\n"
-                                    f"Version: {self.remote_reshade_version}"
-                                    f"\n\n{messages.apply_success}")
+                                     f"{messages.new_reshade_version}\n"
+                                     f"Version: {self.remote_reshade_version}"
+                                     f"\n\n{messages.apply_success}")
         self.need_apply = False
 
 
 def download_shaders(self):
     try:
-        r = requests.get(constants.SHADERS_ZIP_URL)
-        with open(constants.SHADERS_ZIP_PATH, "wb") as outfile:
+        r = requests.get(variables.SHADERS_ZIP_URL)
+        with open(variables.SHADERS_ZIP_PATH, "wb") as outfile:
             outfile.write(r.content)
     except Exception as e:
         err_msg = f"{messages.dl_new_shaders_timeout} {misc_utils.get_exception(e)}"
         qt_utils.show_message_window(self.log, "error", err_msg)
 
     try:
-        if os.path.isdir(constants.SHADERS_SRC_PATH):
-            shutil.rmtree(constants.SHADERS_SRC_PATH)
+        if os.path.isdir(variables.SHADERS_SRC_PATH):
+            shutil.rmtree(variables.SHADERS_SRC_PATH)
     except OSError as e:
         self.log.error(f"rmtree: {misc_utils.get_exception(e)}")
 
     try:
-        if os.path.isdir(constants.RES_SHAD_MPATH):
-            shutil.rmtree(constants.RES_SHAD_MPATH)
+        if os.path.isdir(variables.RES_SHAD_MPATH):
+            shutil.rmtree(variables.RES_SHAD_MPATH)
     except OSError as e:
         self.log.error(f"rmtree: {misc_utils.get_exception(e)}")
 
-    if os.path.isfile(constants.SHADERS_ZIP_PATH):
+    if os.path.isfile(variables.SHADERS_ZIP_PATH):
         try:
-            file_utils.unzip_file(constants.SHADERS_ZIP_PATH, constants.PROGRAM_PATH)
+            file_utils.unzip_file(variables.SHADERS_ZIP_PATH, variables.PROGRAM_PATH)
         except FileNotFoundError as e:
             self.log.error(misc_utils.get_exception(e))
         except zipfile.BadZipFile as e:
             self.log.error(misc_utils.get_exception(e))
 
         try:
-            os.remove(constants.SHADERS_ZIP_PATH)
+            os.remove(variables.SHADERS_ZIP_PATH)
         except OSError as e:
             self.log.error(f"remove_file: {misc_utils.get_exception(e)}")
 
     try:
-        if os.path.isdir(constants.RES_SHAD_MPATH):
-            out_dir = os.path.join(constants.PROGRAM_PATH, constants.RESHADE_SHADERS)
-            os.rename(constants.RES_SHAD_MPATH, out_dir)
+        if os.path.isdir(variables.RES_SHAD_MPATH):
+            out_dir = os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS)
+            os.rename(variables.RES_SHAD_MPATH, out_dir)
     except OSError as e:
         self.log.error(f"rename_path: {misc_utils.get_exception(e)}")
 
     try:
-        if os.path.isdir(constants.RES_SHAD_NVIDIA_PATH):
-            out_dir = os.path.join(constants.PROGRAM_PATH, constants.RESHADE_SHADERS, "Shaders")
-            os.rename(constants.RES_SHAD_NVIDIA_PATH, out_dir)
+        if os.path.isdir(variables.RES_SHAD_NVIDIA_PATH):
+            out_dir = os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS, "Shaders")
+            os.rename(variables.RES_SHAD_NVIDIA_PATH, out_dir)
     except OSError as e:
         self.log.error(f"rename_path: {misc_utils.get_exception(e)}")

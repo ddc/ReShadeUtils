@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
 import requests
-from src import constants, messages
+from src.constants import variables, messages
 from alembic import command
 from alembic.config import Config
-from src.tools import qt_utils, misc_utils, file_utils
+from src.tools import misc_utils, file_utils
+from src.tools.qt import qt_utils
 
 
 def run_alembic_migrations():
-    alembic_cfg = Config(constants.ALEMBIC_CONFIG_FILE_PATH)
+    alembic_cfg = Config(variables.ALEMBIC_CONFIG_PATH)
     command.upgrade(alembic_cfg, "head")
 
 
@@ -25,7 +26,7 @@ def check_program_updates(self):
 def get_new_program_version(self):
     client_version = self.client_version
     remote_version = None
-    remote_version_filename = constants.REMOTE_VERSION_FILENAME
+    remote_version_filename = variables.REMOTE_VERSION_FILENAME
     obj_return = misc_utils.Object()
     obj_return.new_version_available = False
     obj_return.new_version = None
@@ -58,12 +59,12 @@ def get_new_program_version(self):
 def get_screenshot_path(self, game_dir, game_name):
     game_screenshots_path = ""
     if self.qtobj.yes_screenshots_folder_radioButton.isChecked():
-        game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)
+        game_screenshots_path = os.path.join(variables.RESHADE_SCREENSHOT_PATH, game_name)
         try:
-            if not os.path.isdir(constants.RESHADE_SCREENSHOT_PATH):
-                os.makedirs(constants.RESHADE_SCREENSHOT_PATH)
+            if not os.path.isdir(variables.RESHADE_SCREENSHOT_PATH):
+                os.makedirs(variables.RESHADE_SCREENSHOT_PATH)
         except OSError as e:
-            self.log.error(f"mkdir: {constants.RESHADE_SCREENSHOT_PATH}: {misc_utils.get_exception(e)}")
+            self.log.error(f"mkdir: {variables.RESHADE_SCREENSHOT_PATH}: {misc_utils.get_exception(e)}")
 
         try:
             if not os.path.isdir(game_screenshots_path):
@@ -71,7 +72,7 @@ def get_screenshot_path(self, game_dir, game_name):
         except OSError as e:
             self.log.error(f"mkdir: {game_screenshots_path}: {misc_utils.get_exception(e)}")
     else:
-        reshade_ini_filepath = os.path.join(game_dir, constants.RESHADE_INI)
+        reshade_ini_filepath = os.path.join(game_dir, variables.RESHADE_INI)
         reshade_config_screenshot_path = file_utils.get_ini_file_settings(
             reshade_ini_filepath,
             "SCREENSHOT",
@@ -79,6 +80,6 @@ def get_screenshot_path(self, game_dir, game_name):
         )
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
-        elif os.path.isdir(os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)):
-            game_screenshots_path = os.path.join(constants.RESHADE_SCREENSHOT_PATH, game_name)
+        elif os.path.isdir(os.path.join(variables.RESHADE_SCREENSHOT_PATH, game_name)):
+            game_screenshots_path = os.path.join(variables.RESHADE_SCREENSHOT_PATH, game_name)
     return game_screenshots_path

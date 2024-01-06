@@ -12,9 +12,7 @@ SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 DAYS_TO_KEEP_LOGS = 7
-# ############################################################################
 OS_NAME = platform.system()
-RESET_DATABASE_VERSION = "4.2"
 # ############################################################################
 if DEBUG:
     PROGRAM_PATH = os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "dev"))
@@ -45,20 +43,19 @@ SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
 RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
 RESHADE_SCREENSHOT_PATH = os.path.join(misc_utils.get_pictures_path(), "Screenshots")
-ALEMBIC_CONFIG_FILE_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "src", "database", "migrations", "alembic.ini")
-# ############################################################################
-SQLITE3_PATH = os.path.join(PROGRAM_PATH, "database.db")
-QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
 RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
+DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
+QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
+ALEMBIC_CONFIG_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "src", "database", "migrations", "alembic.ini")
 # ############################################################################
 BRANCH = misc_utils.get_active_branch_name() if DEBUG else "master"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/VERSION"
-RESHADE_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/Reshade.ini"
-PRESET_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/ReShadePreset.ini"
-QSS_REMOTE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/resources/files/style.qss"
+REMOTE_RESHADE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/Reshade.ini"
+REMOTE_PRESET_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/ReShadePreset.ini"
+REMOTE_QSS_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/style.qss"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"

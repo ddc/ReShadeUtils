@@ -3,7 +3,8 @@ import os
 from PyQt6 import QtWidgets
 from src.config import Ui_config
 from PyQt6.QtWidgets import QFileDialog
-from src import constants, events, messages
+from src import events
+from src.constants import variables, messages
 from src.tools import file_utils
 
 
@@ -42,7 +43,7 @@ def show_message_window(log, window_type, msg):
         button = QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
         msg_box.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Yes)
 
-    msg_box.setWindowTitle(constants.FULL_PROGRAM_NAME)
+    msg_box.setWindowTitle(variables.FULL_PROGRAM_NAME)
     msg_box.setIcon(icon)
     msg_box.setText(msg)
     msg_box.setStandardButtons(button)
@@ -63,7 +64,7 @@ def show_game_config_form(self, game_name, architecture):
 
     if self.use_dark_theme:
         self.game_config_form.setStyleSheet(
-            open(constants.QSS_PATH, "r").read()
+            open(variables.QSS_PATH, "r").read()
         )
 
     self.game_config_form.qtObj.game_name_lineEdit.setFocus()
@@ -79,11 +80,11 @@ def show_game_config_form(self, game_name, architecture):
         self.game_config_form.qtObj.game_name_lineEdit.setText(
             self.selected_game.name
         )
-        if self.selected_game.api == constants.DX9_DISPLAY_NAME:
+        if self.selected_game.api == variables.DX9_DISPLAY_NAME:
             self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
             self.game_config_form.qtObj.dx_radioButton.setChecked(False)
             self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
-        elif self.selected_game.api == constants.OPENGL_DISPLAY_NAME:
+        elif self.selected_game.api == variables.OPENGL_DISPLAY_NAME:
             self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
             self.game_config_form.qtObj.dx_radioButton.setChecked(False)
             self.game_config_form.qtObj.opengl_radioButton.setChecked(True)

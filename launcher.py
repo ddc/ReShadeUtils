@@ -6,10 +6,11 @@ import requests
 import subprocess
 from src.log import Log
 from PyQt6 import QtWidgets
-from src.progressbar import ProgressBar
+from src.tools.qt.progressbar import ProgressBar
 from src.database.dal.config_dal import ConfigDal
-from src import constants, messages
-from src.tools import qt_utils, file_utils, program_utils
+from src.constants import variables, messages
+from src.tools import file_utils, program_utils, misc_utils
+from src.tools.qt import qt_utils
 from src.database.db import Database
 
 
@@ -17,7 +18,7 @@ class Launcher:
     def __init__(self):
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
-        self.program_path = os.path.join(file_utils.get_current_path(), constants.EXE_PROGRAM_NAME)
+        self.program_path = os.path.join(misc_utils.get_current_path(), variables.EXE_PROGRAM_NAME)
         self.db_session = None
         self.new_version = None
         self.new_version_msg = None
@@ -32,7 +33,7 @@ class Launcher:
             file_utils.check_local_files(self)
 
             if not os.path.isfile(self.program_path):
-                self.program_path = os.path.join(constants.PROGRAM_PATH, constants.EXE_PROGRAM_NAME)
+                self.program_path = os.path.join(variables.PROGRAM_PATH, variables.EXE_PROGRAM_NAME)
 
             self.progressbar.set_values(messages.checking_database, 50)
             program_utils.run_alembic_migrations()
@@ -46,7 +47,7 @@ class Launcher:
         config_sql = ConfigDal(self.db_session, self.log)
         rs_config = config_sql.get_configs()
         if rs_config[0].get("program_version") is None:
-            self.client_version = constants.VERSION
+            self.client_version = variables.VERSION
         else:
             self.client_version = rs_config[0].get("program_version")
         if rs_config[0].get("check_program_updates"):
@@ -57,24 +58,21 @@ class Launcher:
                 self.download_new_program_version()
 
     def download_new_program_version(self):
-        program_url = f"{constants.GITHUB_EXE_PROGRAM_URL}" \
+        program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}" \
                       f"{self.new_version}/" \
-                      f"{constants.EXE_PROGRAM_NAME}"
+                      f"{variables.EXE_PROGRAM_NAME}"
         r = requests.get(program_url)
         if r.status_code == 200:
             with open(self.program_path, "wb") as outfile:
                 outfile.write(r.content)
             qt_utils.show_message_window(self.log,
-                                        "info",
-                                        f"{messages.program_updated}"
-                                        f"v{self.new_version}")
+                                         "info",
+                                         f"{messages.program_updated} {self.new_version}")
         else:
             qt_utils.show_message_window(self.log,
-                                        "error",
-                                        messages.error_dl_new_version)
-            self.log.error(f"{messages.error_dl_new_version} "
-                           f"{r.status_code} "
-                           f"{r}")
+                                         "error",
+                                         messages.error_dl_new_version)
+            self.log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
 
     def call_program(self):
         code = None
@@ -88,8 +86,7 @@ class Launcher:
             if code is None and hasattr(e, "returncode"):
                 self.log.error(f"cmd:{self.program_path}"
                                f" - code:{e.returncode} - {e}")
-            msg = f"{messages.error_executing_program}" \
-                  f"{constants.EXE_PROGRAM_NAME}\n"\
+            msg = f"{messages.error_executing_program} {variables.EXE_PROGRAM_NAME}\n" \
                   f"{messages.error_check_installation}"
             qt_utils.show_message_window(self.log, "error", msg)
 

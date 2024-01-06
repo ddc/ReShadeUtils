@@ -2,7 +2,7 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
-from src import constants
+from src.constants import variables
 from src.database.models.config_model import ConfigBase
 from src.database.models.games_model import GamesBase
 
@@ -28,7 +28,7 @@ target_metadata = [
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
-db_file_path = constants.SQLITE3_PATH.replace(".venv/bin/", "")
+db_file_path = variables.DATABASE_PATH.replace(".venv/bin/", "")
 config.set_main_option(
     "sqlalchemy.url",
     f"sqlite:///{db_file_path}"

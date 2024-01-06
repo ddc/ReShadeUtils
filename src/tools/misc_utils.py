@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 import json
 import datetime
-from src import constants
+from src.constants import variables
 from pathlib import Path
 
 
@@ -28,8 +29,24 @@ def get_active_branch_name():
             return line.partition("refs/heads/")[2]
 
 
+def get_exception(e):
+    module = e.__class__.__module__
+    if module is None or module == str.__class__.__module__:
+        module_and_exception = f"{e.__class__.__name__}:{e}"
+    else:
+        module_and_exception = f"{module}.{e.__class__.__name__}:{e}"
+    return module_and_exception.replace("\r\n", " ").replace("\n", " ")
+
+
+def get_current_path():
+    path = os.path.abspath(os.getcwd())
+    if path is not None:
+        return os.path.normpath(path)
+    return None
+
+
 def get_pictures_path():
-    if constants.OS_NAME == "Windows":
+    if variables.OS_NAME == "Windows":
         import winreg
         sub_key = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
         pictures_guid = "My Pictures"
@@ -41,10 +58,25 @@ def get_pictures_path():
         return pictures_path
 
 
-def get_exception(e):
-    module = e.__class__.__module__
-    if module is None or module == str.__class__.__module__:
-        module_and_exception = f"{e.__class__.__name__}:{e}"
+def get_download_path():
+    if variables.OS_NAME == "Windows":
+        import winreg
+        sub_key = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
+        downloads_guid = "{374DE290-123F-4565-9164-39C4925E467B}"
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+            downloads_path = winreg.QueryValueEx(key, downloads_guid)[0]
+        return downloads_path
     else:
-        module_and_exception = f"{module}.{e.__class__.__name__}:{e}"
-    return module_and_exception.replace("\r\n", " ").replace("\n", " ")
+        t1_path = str(os.path.expanduser("~/Downloads"))
+        t2_path = f"{t1_path}".split("\\")
+        downloads_path = "/".join(t2_path)
+        return downloads_path.replace("\\", "/")
+
+
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except:
+        base_path = os.path.abspath("./src")
+    return os.path.join(base_path, relative_path)
