@@ -4,6 +4,10 @@ class DBBaseException(Exception):
         log.error(msg)
 
 
+class DBAddException(DBBaseException):
+    pass
+
+
 class DBExecuteException(DBBaseException):
     pass
 

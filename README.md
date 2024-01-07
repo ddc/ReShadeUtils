@@ -10,6 +10,7 @@
 ![screenshot](resources/images/screenshot.png)
 ![screenshot](resources/images/screenshot_settings.png)
 
+
 ## Download
 + [Latest Release](https://github.com/ddc/ReshadeUtils/releases/latest)
 
@@ -17,6 +18,14 @@
 ## Program Notes
 + Configuration, logs and database files are now being saved in "%LOCALAPPDATA%\ReshadeUtils"
 + This program was compiled with PyInstaller
+
+
+## Run tests
++ python -m coverage run -m pytest (or pytest)
+
+
+## Get coverage report
++ python -m coverage report
 
 
 ## To compile

@@ -22,11 +22,14 @@ class Object:
 
 def get_active_branch_name():
     head_dir = Path(".") / ".git" / "HEAD"
-    with head_dir.open("r") as f:
-        content = f.read().splitlines()
-    for line in content:
-        if line[0:4] == "ref:":
-            return line.partition("refs/heads/")[2]
+    try:
+        with head_dir.open("r") as f:
+            content = f.read().splitlines()
+        for line in content:
+            if line[0:4] == "ref:":
+                return line.partition("refs/heads/")[2]
+    except FileNotFoundError:
+        return "master"
 
 
 def get_exception(e):

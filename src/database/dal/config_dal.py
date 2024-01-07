@@ -10,44 +10,39 @@ class ConfigDal:
         self.columns = [x for x in Config.__table__.columns]
         self.db_utils = DBUtils(db_session, log)
 
-    def get_configs(self):
-        stmt = sa.select(*self.columns).where(Config.id == 1)
+    def get_configs(self, config_id=1):
+        stmt = sa.select(*self.columns).where(Config.id == config_id)
         results = self.db_utils.fetchall(stmt)
         return results
 
-    def get_program_version(self):
-        stmt = sa.select(Config.program_version).where(Config.id == 1)
-        program_version = self.db_utils.fetch_value(stmt)
-        return program_version
-
-    def update_dark_theme(self, status):
-        stmt = sa.update(Config).where(Config.id == 1).values(use_dark_theme=status)
+    def update_dark_theme(self, status: bool, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(use_dark_theme=status)
         self.db_utils.execute(stmt)
 
-    def update_shaders(self, status):
-        stmt = sa.update(Config).where(Config.id == 1).values(update_shaders=status)
+    def update_shaders(self, status: bool, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(update_shaders=status)
         self.db_utils.execute(stmt)
 
-    def update_check_program_updates(self, status):
-        stmt = sa.update(Config).where(Config.id == 1).values(check_program_updates=status)
+    def update_check_program_updates(self, status: bool, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(check_program_updates=status)
         self.db_utils.execute(stmt)
 
-    def update_show_info_messages(self, status):
-        stmt = sa.update(Config).where(Config.id == 1).values(show_info_messages=status)
+    def update_show_info_messages(self, status: bool, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(show_info_messages=status)
         self.db_utils.execute(stmt)
 
-    def update_check_resahde_updates(self, status):
-        stmt = sa.update(Config).where(Config.id == 1).values(check_reshade_updates=status)
+    def update_check_resahde_updates(self, status: bool, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(check_reshade_updates=status)
         self.db_utils.execute(stmt)
 
-    def update_create_screenshots_folder(self, status):
-        stmt = sa.update(Config).where(Config.id == 1).values(create_screenshots_folder=status)
+    def update_create_screenshots_folder(self, status: bool, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(create_screenshots_folder=status)
         self.db_utils.execute(stmt)
 
-    def update_reshade_version(self, reshade_version):
-        stmt = sa.update(Config).where(Config.id == 1).values(reshade_version=reshade_version)
+    def update_reshade_version(self, reshade_version: str, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(reshade_version=reshade_version)
         self.db_utils.execute(stmt)
 
-    def update_program_version(self, program_version):
-        stmt = sa.update(Config).where(Config.id == 1).values(program_version=program_version)
+    def update_program_version(self, program_version: str, config_id=1):
+        stmt = sa.update(Config).where(Config.id == config_id).values(program_version=program_version)
         self.db_utils.execute(stmt)

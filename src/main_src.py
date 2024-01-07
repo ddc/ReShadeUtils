@@ -41,7 +41,7 @@ class MainSrc:
         self.log.info(f"STARTING {variables.FULL_PROGRAM_NAME}")
 
         database = Database(self.log)
-        database_engine = database.set_db_engine()
+        database_engine = database.get_db_engine()
         with database.get_db_session(database_engine) as db_session:
             self.db_session = db_session
 
@@ -167,7 +167,7 @@ class MainSrc:
         self.qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
         self.qtobj.programs_tableWidget.setRowCount(0)  # cleanning datagrid
         games_sql = GamesDal(self.db_session, self.log)
-        rs_all_games = games_sql.get_games()
+        rs_all_games = games_sql.get_all_games()
         if rs_all_games is not None and len(rs_all_games) > 0:
             for i in range(len(rs_all_games)):
                 self.qtobj.programs_tableWidget.insertRow(i)

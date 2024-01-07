@@ -35,6 +35,8 @@ OPENGL_DLL = "opengl32.dll"
 DX9_DISPLAY_NAME = "DirectX 9"
 DXGI_DISPLAY_NAME = "DirectX (10,11,12)"
 OPENGL_DISPLAY_NAME = "OpenGL"
+ALL_ARCHITECTURES = ("32bits", "64bits",)
+ALL_APIS = (DX9_DISPLAY_NAME, DXGI_DISPLAY_NAME, OPENGL_DISPLAY_NAME)
 # ############################################################################
 RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
 RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)

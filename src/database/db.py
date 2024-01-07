@@ -6,12 +6,12 @@ from sqlalchemy.orm import Session
 
 
 class Database:
-    def __init__(self, log):
+    def __init__(self, log, db_path=None):
         self.log = log
-        self.file = variables.DATABASE_PATH
+        self.file = db_path if db_path else variables.DATABASE_PATH
         self.batch_size = 100
 
-    def set_db_engine(self):
+    def get_db_engine(self):
         try:
             engine = create_engine(f"sqlite:///{self.file}", echo=True if variables.DEBUG else False).\
                 execution_options(stream_results=True if variables.DEBUG else False,

@@ -26,7 +26,7 @@ class Launcher:
 
     def start(self):
         database = Database(self.log)
-        database_engine = database.set_db_engine()
+        database_engine = database.get_db_engine()
         with database.get_db_session(database_engine) as db_session:
             self.db_session = db_session
             self.progressbar.set_values(messages.checking_files, 25)

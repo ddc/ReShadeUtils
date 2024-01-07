@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from src.database.db_exceptions import (
+    DBAddException,
     DBExecuteException,
     DBFetchAllException,
     DBFetchValueException
@@ -16,7 +17,7 @@ class DBUtils:
             self.session.add(stmt)
             self.session.commit()
         except Exception as e:
-            raise DBExecuteException(self.log, e)
+            raise DBAddException(self.log, e)
 
     def execute(self, stmt):
         try:

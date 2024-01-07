@@ -391,35 +391,34 @@ def game_config_form_result(self, architecture, status):
             qt_utils.show_message_window(self.log, "error", messages.missing_api)
             return
 
-        sql_games_obj = misc_utils.Object()
-        sql_games_obj.game_name = (
-            self.game_config_form.qtObj.game_name_lineEdit.text()
-        )
+        sql_games_dict = {
+            "name": self.game_config_form.qtObj.game_name_lineEdit.text()
+        }
 
         if architecture == "32bits":
-            sql_games_obj.architecture = "32bits"
+            sql_games_dict["architecture"] = "32bits"
             src_path = variables.RESHADE32_PATH
         else:
-            sql_games_obj.architecture = "64bits"
+            sql_games_dict["architecture"] = "64bits"
             src_path = variables.RESHADE64_PATH
 
         games_sql = GamesDal(self.db_session, self.log)
         if self.selected_game is not None:
             if self.game_config_form.qtObj.dx9_radioButton.isChecked():
-                sql_games_obj.api = dx9_name
+                sql_games_dict["api"] = dx9_name
                 dst_path = os.path.join(self.selected_game.game_dir,
                                         variables.D3D9_DLL)
             elif self.game_config_form.qtObj.dx_radioButton.isChecked():
-                sql_games_obj.api = dxgi_name
+                sql_games_dict["api"] = dxgi_name
                 dst_path = os.path.join(self.selected_game.game_dir,
                                         variables.DXGI_DLL)
             else:
-                sql_games_obj.api = opengl_name
+                sql_games_dict["api"] = opengl_name
                 dst_path = os.path.join(self.selected_game.game_dir,
                                         variables.OPENGL_DLL)
 
-            if (self.selected_game.name != sql_games_obj.game_name
-                    or (self.selected_game.api != sql_games_obj.api)):
+            if (self.selected_game.name != sql_games_dict["name"]
+                    or (self.selected_game.api != sql_games_dict["api"])):
                 # checking name changes
                 # create Reshade.ini to replace edit CurrentPresetPath
                 old_screenshots_path = program_utils.get_screenshot_path(
@@ -429,7 +428,7 @@ def game_config_form_result(self, architecture, status):
                 )
                 if len(old_screenshots_path) > 0:
                     scrrenshot_dir_path = os.path.dirname(old_screenshots_path)
-                    new_screenshots_path = os.path.join(scrrenshot_dir_path, sql_games_obj.game_name)
+                    new_screenshots_path = os.path.join(scrrenshot_dir_path, sql_games_dict["name"])
                 else:
                     new_screenshots_path = ""
 
@@ -474,70 +473,68 @@ def game_config_form_result(self, architecture, status):
                         self.log,
                         "info",
                         f"{messages.game_updated}\n\n"
-                        f"{sql_games_obj.game_name}"
+                        f"{sql_games_dict['name']}"
                     )
 
-            sql_games_obj.id = self.selected_game.id
-            games_sql.update_game(sql_games_obj)
+            sql_games_dict["id"] = self.selected_game.id
+            games_sql.update_game(sql_games_dict)
             self.populate_table_widget()
             self.enable_widgets(False)
         else:
             # new game added
             if self.game_config_form.qtObj.dx9_radioButton.isChecked():
-                sql_games_obj.api = dx9_name
+                sql_games_dict["api"] = dx9_name
             elif self.game_config_form.qtObj.opengl_radioButton.isChecked():
-                sql_games_obj.api = opengl_name
+                sql_games_dict["api"] = opengl_name
             else:
-                sql_games_obj.api = dxgi_name
+                sql_games_dict["api"] = dxgi_name
 
             if self.added_game_path is not None:
-                sql_games_obj.path = self.added_game_path
+                sql_games_dict["path"] = self.added_game_path
             elif self.selected_game is not None:
-                sql_games_obj.path = self.selected_game.game_dir
+                sql_games_dict["path"] = self.selected_game.game_dir
             else:
                 if self.show_info_messages:
                     qt_utils.show_message_window(
                         self.log,
                         "error",
-                        f"{sql_games_obj.game_name}\n\n"
-                        f"{messages.error_change_game_name}"
+                        f"{sql_games_dict['name']}\n\n"
+                        f"{messages.error_change_name}"
                     )
                 return
 
-            games_sql.insert_game(sql_games_obj)
+            games_sql.insert_game(sql_games_dict)
             del self.added_game_path
-            _apply_single(self, sql_games_obj)
+            _apply_single(self, sql_games_dict)
             self.populate_table_widget()
             self.enable_widgets(False)
             if self.show_info_messages:
                 qt_utils.show_message_window(self.log,
                                              "info",
                                              f"{messages.game_added}\n\n"
-                                             f"{sql_games_obj.game_name}")
+                                             f"{sql_games_dict['name']}")
 
 
 def apply_all(self, reset=False):
     games_sql = GamesDal(self.db_session, self.log)
-    rs_all_games = games_sql.get_games()
-    # len_games = self.qtobj.programs_tableWidget.rowCount()
+    rs_all_games = games_sql.get_all_games()
     len_games = len(rs_all_games)
     if len_games > 0:
         self.enable_form(False)
         self.enable_widgets(False)
         self.qtobj.apply_button.setEnabled(False)
         errors = []
-        games_obj = misc_utils.Object()
         self.progressbar.set_values(messages.copying_DLLs, 0)
         for i in range(len_games):
-            self.progressbar.set_values(
-                messages.copying_DLLs, 100 // len_games
-            )
-            games_obj.api = rs_all_games[i]["api"]
-            games_obj.architecture = rs_all_games[i]["architecture"]
-            games_obj.game_name = rs_all_games[i]["name"]
-            games_obj.path = rs_all_games[i]["path"]
+            self.progressbar.set_values(messages.copying_DLLs, 100 // len_games)
             len_games = len_games - 1
-            result = _apply_single(self, games_obj, reset)
+            games_dict = {
+                "api": rs_all_games[i]["api"],
+                "architecture": rs_all_games[i]["architecture"],
+                "name": rs_all_games[i]["name"],
+                "path": rs_all_games[i]["path"]
+            }
+            result = _apply_single(self, games_dict, reset)
             if result is not None:
                 errors.append(result)
 
@@ -559,14 +556,14 @@ def apply_all(self, reset=False):
                                          f"{err}")
 
 
-def _apply_single(self, games_obj, reset=False):
+def _apply_single(self, games_dict, reset=False):
     errors = None
-    game_dir = os.path.dirname(games_obj.path)
-    game_name = games_obj.game_name
+    game_dir = os.path.dirname(games_dict["path"])
+    game_name = games_dict["name"]
     file_utils.check_local_files(self)
     files = Files(self)
 
-    if games_obj.architecture.lower() == "32bits":
+    if games_dict["architecture"].lower() == "32bits":
         src_dll_path = variables.RESHADE32_PATH
     else:
         src_dll_path = variables.RESHADE64_PATH
@@ -577,9 +574,9 @@ def _apply_single(self, games_obj, reset=False):
     try:
         # Reshade.dll
         if os.path.isfile(src_dll_path) or reset:
-            if games_obj.api == variables.DX9_DISPLAY_NAME:
+            if games_dict["api"] == variables.DX9_DISPLAY_NAME:
                 dst_dll_path = os.path.join(game_dir, variables.D3D9_DLL)
-            elif games_obj.api == variables.OPENGL_DISPLAY_NAME:
+            elif games_dict["api"] == variables.OPENGL_DISPLAY_NAME:
                 dst_dll_path = os.path.join(game_dir, variables.OPENGL_DLL)
             else:
                 dst_dll_path = os.path.join(game_dir, variables.DXGI_DLL)
@@ -597,12 +594,10 @@ def _apply_single(self, games_obj, reset=False):
 
         # ReShadePreset.ini
         dst_preset_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
-        if os.path.isfile(variables.RESHADE_PRESET_PATH) \
-                and not os.path.isfile(dst_preset_path) or reset:
+        if os.path.isfile(variables.RESHADE_PRESET_PATH) and not os.path.isfile(dst_preset_path) or reset:
             ret = files.apply_reshade_preset_file(game_dir)
             if ret is not None:
                 self.log.error(f"[{game_name}]:[{str(ret)}]")
-
             if isinstance(ret, FileNotFoundError):
                 errors = f"[{game_name}]: No such file or directory"
 
@@ -636,12 +631,13 @@ def reset_all_selected_game_files_btn(self):
         self.progressbar.set_values(messages.reseting_files, 50)
         reshade_utils.download_shaders(self)
         self.progressbar.set_values(messages.reseting_files, 75)
-        games_obj = misc_utils.Object()
-        games_obj.api = self.selected_game.api
-        games_obj.architecture = self.selected_game.architecture
-        games_obj.game_name = self.selected_game.name
-        games_obj.path = self.selected_game.path
-        _apply_single(self, games_obj, True)
+        games_dict = {
+            "api": self.selected_game.api,
+            "architecture": self.selected_game.architecture,
+            "game_name": self.selected_game.name,
+            "path": self.selected_game.path
+        }
+        _apply_single(self, games_dict, True)
         self.progressbar.close()
         qt_utils.show_message_window(self.log, "info", messages.reset_success)
     self.enable_widgets(False)
