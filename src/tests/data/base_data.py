@@ -2,6 +2,13 @@
 import random
 from faker import Faker
 from src.constants.variables import ALL_APIS, ALL_ARCHITECTURES
+from src.database.db import Database
+
+
+def get_database_engine_fixture():
+    database = Database(None, ":memory:")
+    database_engine = database.get_db_engine()
+    return database_engine
 
 
 def get_randoms():

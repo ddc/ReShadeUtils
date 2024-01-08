@@ -21,7 +21,8 @@
 
 
 ## Run tests
-+ python -m coverage run -m pytest (or pytest)
++ python -m pytest
++ python -m coverage run -m pytest
 
 
 ## Get coverage report

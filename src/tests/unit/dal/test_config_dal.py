@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
 import pytest
-from src.tests.data import base_data
-from src.tests.conftest import database_engine, db_session_fixture
-from src.database.models.config_model import Config
-from src.database.dal.config_dal import ConfigDal
 import sqlalchemy as sa
+from sqlalchemy.orm import Session
+from src.database.dal.config_dal import ConfigDal
+from src.database.models.config_model import Config
+from src.tests.data import base_data
+
+
+database_engine = base_data.get_database_engine_fixture()
+
+
+@pytest.fixture(scope="session")
+def db_session_fixture():
+    with Session(database_engine) as session:
+        yield session
 
 
 @pytest.fixture(name="db_session")

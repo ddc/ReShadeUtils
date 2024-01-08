@@ -6,7 +6,7 @@ from src.tools import misc_utils
 
 
 DEBUG = True
-VERSION = "4.7"
+VERSION = 4.7
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
@@ -52,7 +52,7 @@ QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
 ALEMBIC_CONFIG_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "src", "database", "migrations", "alembic.ini")
 # ############################################################################
 BRANCH = misc_utils.get_active_branch_name() if DEBUG else "master"
-GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download/v"
+GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/VERSION"
 REMOTE_RESHADE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/Reshade.ini"

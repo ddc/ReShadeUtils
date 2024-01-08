@@ -51,16 +51,16 @@ class Launcher:
         else:
             self.client_version = rs_config[0].get("program_version")
         if rs_config[0].get("check_program_updates"):
-            new_version_obj = program_utils.get_new_program_version(self)
-            if new_version_obj.new_version_available:
-                self.new_version = new_version_obj.new_version
-                self.new_version_msg = new_version_obj.new_version_msg
+            new_version_dict = program_utils.get_new_program_version(self)
+            client_version = new_version_dict['client_version']
+            remote_version = new_version_dict['remote_version']
+            if float(remote_version) > float(client_version):
+                self.new_version = remote_version
+                self.new_version_msg = f"Version {remote_version} available for download"
                 self.download_new_program_version()
 
     def download_new_program_version(self):
-        program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}" \
-                      f"{self.new_version}/" \
-                      f"{variables.EXE_PROGRAM_NAME}"
+        program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{self.new_version}/{variables.EXE_PROGRAM_NAME}"
         r = requests.get(program_url)
         if r.status_code == 200:
             with open(self.program_path, "wb") as outfile:

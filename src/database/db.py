@@ -13,7 +13,7 @@ class Database:
 
     def get_db_engine(self):
         try:
-            engine = create_engine(f"sqlite:///{self.file}", echo=True if variables.DEBUG else False).\
+            engine = create_engine(f"sqlite:///{self.file}", future=True, echo=True if variables.DEBUG else False).\
                 execution_options(stream_results=True if variables.DEBUG else False,
                                   isolation_level="AUTOCOMMIT")
 

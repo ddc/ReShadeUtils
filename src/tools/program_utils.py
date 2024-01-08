@@ -16,20 +16,26 @@ def run_alembic_migrations():
 def check_program_updates(self):
     self.qtobj.update_button.setVisible(False)
     if self.check_program_updates:
-        new_version_obj = get_new_program_version(self)
-        if new_version_obj.new_version_available:
+        new_version_dict = get_new_program_version(self)
+        client_version = new_version_dict["client_version"]
+        remote_version = new_version_dict["remote_version"]
+        if remote_version > client_version:
+            new_version_msg = f"Version {remote_version} available for download"
             self.qtobj.updateAvail_label.clear()
-            self.qtobj.updateAvail_label.setText(new_version_obj.new_version_msg)
+            self.qtobj.updateAvail_label.setText(new_version_msg)
             self.qtobj.update_button.setVisible(True)
+            return True
+        return False
+    return None
 
 
 def get_new_program_version(self):
-    client_version = self.client_version
-    remote_version = None
+    remote_version = 0
     remote_version_filename = variables.REMOTE_VERSION_FILENAME
-    obj_return = misc_utils.Object()
-    obj_return.new_version_available = False
-    obj_return.new_version = None
+    result = {
+        "client_version": float(self.client_version),
+        "remote_version": remote_version,
+    }
 
     try:
         req = requests.get(remote_version_filename, stream=True)
@@ -38,11 +44,7 @@ def get_new_program_version(self):
                 if line:
                     remote_version = line.rstrip()
                     break
-
-            if remote_version is not None and (float(remote_version) > float(client_version)):
-                obj_return.new_version_available = True
-                obj_return.new_version_msg = f"Version {remote_version} available for download"
-                obj_return.new_version = float(remote_version)
+            result["remote_version"] = float(remote_version)
         else:
             err_msg = (
                 f"{messages.error_check_new_version}\n"
@@ -50,10 +52,11 @@ def get_new_program_version(self):
                 f"code: {req.status_code}"
             )
             qt_utils.show_message_window(self.log, "error", err_msg)
+            result["error_msg"] = err_msg
     except requests.exceptions.ConnectionError:
         qt_utils.show_message_window(self.log, "error", messages.dl_new_version_timeout)
 
-    return obj_return
+    return result
 
 
 def get_screenshot_path(self, game_dir, game_name):
