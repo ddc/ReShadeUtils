@@ -3,7 +3,7 @@ import os
 import shutil
 import requests
 from src.constants import variables
-from src.tools.file_utils import set_ini_file_settings
+from src.tools import file_utils
 
 
 class Files:
@@ -44,30 +44,12 @@ class Files:
         preset_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
         intermediate_cache_path = os.getenv("TEMP")
 
-        set_ini_file_settings(game_reshade_ini_path,
-                              "GENERAL",
-                              "EffectSearchPaths",
-                              effect_search_paths)
-        set_ini_file_settings(game_reshade_ini_path,
-                              "GENERAL",
-                              "TextureSearchPaths",
-                              texture_search_paths)
-        set_ini_file_settings(game_reshade_ini_path,
-                              "GENERAL",
-                              "PresetPath",
-                              preset_path)
-        set_ini_file_settings(game_reshade_ini_path,
-                              "GENERAL",
-                              "IntermediateCachePath",
-                              intermediate_cache_path)
-        set_ini_file_settings(game_reshade_ini_path,
-                              "SCREENSHOT",
-                              "SavePath",
-                              screenshot_path)
-        set_ini_file_settings(game_reshade_ini_path,
-                              "SCREENSHOT",
-                              "PostSaveCommandWorkingDirectory",
-                              screenshot_path)
+        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
+        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        file_utils.set_ini_file_settings(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
+        file_utils.set_ini_file_settings(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
 
         return None
 

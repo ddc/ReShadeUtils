@@ -5,19 +5,26 @@ description = "ReshadeUtils"
 authors = ["ddc <ddc@users.noreply.github.com>"]
 readme = "README.md"
 
+[build-system]
+requires = ["poetry-core>=1.5.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry.dependencies]
 python = ">=3.11, <3.13"
-pyinstaller = "^6.3.0"
 beautifulsoup4 = "^4.12.2"
 urllib3 = "^2.1.0"
 SQLAlchemy = "^2.0.25"
 requests = "^2.31.0"
 PyQt6 = "^6.6.1"
 alembic = "^1.13.1"
-faker = "^22.0.0"
-pytest = "^7.4.4"
-coverage = "^7.4.0"
 
-[build-system]
-requires = ["poetry-core>=1.5.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.poetry.dev-dependencies]
+pyinstaller = "^6.3.0"
+pytest = "^7.4.4"
+faker = "^22.1.0"
+coverage = "^7.4.0"
+pytest-qt = "^4.3.1"
+
+[tool.poe.tasks]
+test = "coverage run -m pytest"
+coverage = "coverage report"

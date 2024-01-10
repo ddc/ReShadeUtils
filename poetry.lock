@@ -235,13 +235,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "faker"
-version = "22.0.0"
+version = "22.1.0"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Faker-22.0.0-py3-none-any.whl", hash = "sha256:9c22c0a734ca01c6e4f2259eab5dab9081905a9d67b27272aea5c9feeb5a3789"},
-    {file = "Faker-22.0.0.tar.gz", hash = "sha256:1d5dc0a75da7bc40741ee4c84d99dc087b97bd086d4222ad06ac4dd2219bcf3f"},
+    {file = "Faker-22.1.0-py3-none-any.whl", hash = "sha256:d1b8fe8e8fc96d816294a301741940c2229dcf1f5dd1231805666e4005cc6353"},
+    {file = "Faker-22.1.0.tar.gz", hash = "sha256:3cd0e04ed7da1bb8037afc40d1127d19e0ac4afac247a1fe1d8dde9b5c6d6e5b"},
 ]
 
 [package.dependencies]
@@ -609,6 +609,24 @@ pluggy = ">=0.12,<2.0"
 testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-qt"
+version = "4.3.1"
+description = "pytest support for PyQt and PySide applications"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest-qt-4.3.1.tar.gz", hash = "sha256:0256041af78082dfc08e22ccf860aaa878d8029557f03f4bfc2007fc291b1e61"},
+    {file = "pytest_qt-4.3.1-py3-none-any.whl", hash = "sha256:e1bd043a4e460f184657bc3a0eabf289ad5e88a55a2abf0436d248049a331653"},
+]
+
+[package.dependencies]
+pytest = ">=3.0.0"
+
+[package.extras]
+dev = ["pre-commit", "tox"]
+doc = ["sphinx", "sphinx-rtd-theme"]
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
@@ -809,4 +827,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11, <3.13"
-content-hash = "6976b0681ba3b20955c7e5b4d2a933c9f85b95662dfa46e63964863d1551d600"
+content-hash = "4e391c5e0434ffb4e3fa27d403bb6fe55d97293cf2160fc52405f3f7aab448dc"
