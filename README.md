@@ -21,12 +21,11 @@
 
 
 ## Run tests
-+ python -m pytest
-+ python -m coverage run -m pytest
++ poe test
 
 
 ## Get coverage report
-+ python -m coverage report
++ poe coverage
 
 
 ## To compile
