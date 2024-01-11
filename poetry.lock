@@ -235,13 +235,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "faker"
-version = "22.1.0"
+version = "22.2.0"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Faker-22.1.0-py3-none-any.whl", hash = "sha256:d1b8fe8e8fc96d816294a301741940c2229dcf1f5dd1231805666e4005cc6353"},
-    {file = "Faker-22.1.0.tar.gz", hash = "sha256:3cd0e04ed7da1bb8037afc40d1127d19e0ac4afac247a1fe1d8dde9b5c6d6e5b"},
+    {file = "Faker-22.2.0-py3-none-any.whl", hash = "sha256:2c2b7a8e55368defd718226bd5b48ef31b2d082c2900ccb4200987e433be500e"},
+    {file = "Faker-22.2.0.tar.gz", hash = "sha256:fab78f435d27fa7bd109b095eea3504477e4149051c903fd63f11ce252e3d9b7"},
 ]
 
 [package.dependencies]
@@ -827,4 +827,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11, <3.13"
-content-hash = "4e391c5e0434ffb4e3fa27d403bb6fe55d97293cf2160fc52405f3f7aab448dc"
+content-hash = "8227c9fd3b9b49391707deb5d05062380e2e57567aff9e89d5d2b5cb90fdb309"
