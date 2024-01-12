@@ -121,10 +121,10 @@ def check_local_files(self):
             qt_utils.show_message_window(self.log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isdir(variables.REMOTE_ALEMBIC_MIGRATIONS_DIR):
-        result = files.download_alembic_migrations()
+    if not os.path.isdir(variables.ALEMBIC_CONFIG_PATH):
+        result = files.download_alembic_file()
         if not result:
-            err_msg = f"{variables.REMOTE_ALEMBIC_MIGRATIONS_DIR} {messages.not_found}"
+            err_msg = f"{variables.ALEMBIC_CONFIG_PATH} {messages.not_found}"
             qt_utils.show_message_window(self.log, "error", err_msg)
             sys.exit(1)
 

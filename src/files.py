@@ -32,9 +32,10 @@ class Files:
         remote_file = variables.REMOTE_QSS_FILENAME
         return self._download_file(remote_file, local_file_path)
 
-    def download_alembic_migrations(self):
-        remote_dir = variables.REMOTE_ALEMBIC_MIGRATIONS_DIR
-        return self._download_dir(remote_dir)
+    def download_alembic_file(self):
+        local_file_path = variables.ALEMBIC_CONFIG_PATH
+        remote_file = variables.REMOTE_ALEMBIC_FILENAME
+        return self._download_file(remote_file, local_file_path)
 
     @staticmethod
     def apply_reshade_ini_file(game_dir, screenshot_path):
@@ -80,17 +81,6 @@ class Files:
             if req.status_code == 200:
                 with open(local_file_path, "wb") as outfile:
                     outfile.write(req.content)
-                return True
-        except requests.HTTPError as e:
-            self.log.error(e)
-        return False
-
-    def _download_dir(self, remote_dir):
-        try:
-            req = requests.get(remote_dir)
-            if req.status_code == 200:
-                # with open(local_file_path, "wb") as outfile:
-                #     outfile.write(req.content)
                 return True
         except requests.HTTPError as e:
             self.log.error(e)
