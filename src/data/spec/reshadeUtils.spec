@@ -3,7 +3,7 @@
 block_cipher = None
 #images = [('../images/*.*', 'images')] no need to add images since its using QT resource file
 
-a = Analysis(['../../main.py'],
+a = Analysis(['../../../main.py'],
              pathex=['*path*'],
              binaries=[],
              datas = [],

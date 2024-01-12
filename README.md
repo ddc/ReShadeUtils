@@ -29,11 +29,11 @@
 
 
 ## To compile
-+ Install requirements:
-    + pip install -r requirements.txt
++ Install requirements with poetry:
+    + poetry update
 + Compile both launcher and program with PyInstaller:
-    + python.exe -O -m PyInstaller -y --clean ./resources/spec/launcher.spec
-    + python.exe -O -m PyInstaller -y --clean ./resources/spec/reshadeUtils.spec
+    + python -O -m PyInstaller -y --clean ./src/data/spec/launcher.spec
+    + python -O -m PyInstaller -y --clean ./src/data/spec/reshadeUtils.spec
 
 
 ## Acknowledgements

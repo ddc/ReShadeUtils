@@ -30,14 +30,8 @@ class Launcher:
         with database.get_db_session(database_engine) as db_session:
             self.db_session = db_session
             self.progressbar.set_values(messages.checking_files, 25)
-            file_utils.check_local_files(self)
-
             if not os.path.isfile(self.program_path):
                 self.program_path = os.path.join(variables.PROGRAM_PATH, variables.EXE_PROGRAM_NAME)
-
-            self.progressbar.set_values(messages.checking_database, 50)
-            program_utils.run_alembic_migrations()
-
             self.progressbar.set_values(messages.checking_program_updates, 75)
             self.check_program_updates()
             self.progressbar.close()
