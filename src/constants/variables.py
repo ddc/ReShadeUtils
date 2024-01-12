@@ -5,7 +5,7 @@ import platform
 from src.tools import misc_utils
 
 
-DEBUG = True
+DEBUG = False
 VERSION = 4.7
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
