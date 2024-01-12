@@ -31,6 +31,11 @@ class Files:
         remote_file = variables.REMOTE_QSS_FILENAME
         self._download_file(remote_file, local_file_path)
 
+    def download_alembic_file(self):
+        local_file_path = variables.ALEMBIC_CONFIG_PATH
+        remote_file = variables.REMOTE_ALEMBIC_FILENAME
+        self._download_file(remote_file, local_file_path)
+
     @staticmethod
     def apply_reshade_ini_file(game_dir, screenshot_path):
         try:

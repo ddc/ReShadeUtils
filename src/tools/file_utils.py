@@ -129,6 +129,16 @@ def check_local_files(self):
         )
         qt_utils.show_message_window(self.log, "error", err_msg)
 
+    try:
+        if not os.path.isfile(variables.ALEMBIC_CONFIG_PATH):
+            files.download_alembic_file()
+    except Exception as e:
+        err_msg = (
+            f"{misc_utils.get_exception(e)}\n\n"
+            f"{variables.ALEMBIC_CONFIG_PATH} {messages.not_found}"
+        )
+        qt_utils.show_message_window(self.log, "error", err_msg)
+
 
 def check_game_file(self):
     if self.selected_game is not None:

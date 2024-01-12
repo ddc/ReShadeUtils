@@ -49,7 +49,7 @@ RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
 QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
-ALEMBIC_CONFIG_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "src", "database", "migrations", "alembic.ini")
+ALEMBIC_CONFIG_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "alembic.ini")
 # ############################################################################
 BRANCH = misc_utils.get_active_branch_name() if DEBUG else "master"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"
@@ -58,6 +58,7 @@ REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRA
 REMOTE_RESHADE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/Reshade.ini"
 REMOTE_PRESET_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/ReShadePreset.ini"
 REMOTE_QSS_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/style.qss"
+REMOTE_ALEMBIC_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/alembic.ini"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
