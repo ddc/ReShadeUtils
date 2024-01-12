@@ -15,26 +15,27 @@ class Files:
         self.download_reshade_ini_file()
         self.download_reshade_preset_file()
         self.download_qss_file()
+        self.download_alembic_file()
 
     def download_reshade_ini_file(self):
         local_file_path = variables.RESHADE_INI_PATH
         remote_file = variables.REMOTE_RESHADE_FILENAME
-        self._download_file(remote_file, local_file_path)
+        return self._download_file(remote_file, local_file_path)
 
     def download_reshade_preset_file(self):
         local_file_path = variables.RESHADE_PRESET_PATH
         remote_file = variables.REMOTE_PRESET_FILENAME
-        self._download_file(remote_file, local_file_path)
+        return self._download_file(remote_file, local_file_path)
 
     def download_qss_file(self):
         local_file_path = variables.QSS_PATH
         remote_file = variables.REMOTE_QSS_FILENAME
-        self._download_file(remote_file, local_file_path)
+        return self._download_file(remote_file, local_file_path)
 
     def download_alembic_file(self):
         local_file_path = variables.ALEMBIC_CONFIG_PATH
         remote_file = variables.REMOTE_ALEMBIC_FILENAME
-        self._download_file(remote_file, local_file_path)
+        return self._download_file(remote_file, local_file_path)
 
     @staticmethod
     def apply_reshade_ini_file(game_dir, screenshot_path):

@@ -21,7 +21,7 @@ class Object:
 
 
 def get_active_branch_name():
-    head_dir = Path(os.path.join(variables.PROGRAM_PATH, ".git", "HEAD"))
+    head_dir = Path(os.path.join(variables.PROGRAM_PATH.replace("/dev", ""), ".git", "HEAD"))
     try:
         with head_dir.open("r") as f:
             content = f.read().splitlines()

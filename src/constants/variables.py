@@ -49,7 +49,7 @@ RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
 QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
-ALEMBIC_CONFIG_PATH = os.path.join(PROGRAM_PATH.replace("/dev", ""), "alembic.ini")
+ALEMBIC_CONFIG_PATH = os.path.join(PROGRAM_PATH, "alembic.ini")
 # ############################################################################
 BRANCH = misc_utils.get_active_branch_name() if DEBUG else "master"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"

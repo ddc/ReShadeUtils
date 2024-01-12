@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import struct
+import sys
 import zipfile
 import subprocess
 import configparser
@@ -99,45 +100,33 @@ def check_local_files(self):
     from src.files import Files
     files = Files(self)
 
-    try:
-        if not os.path.isfile(variables.RESHADE_INI_PATH):
-            files.download_reshade_ini_file()
-    except Exception as e:
-        err_msg = (
-            f"{misc_utils.get_exception(e)}\n\n"
-            f"{variables.RESHADE_INI_PATH} {messages.not_found}"
-        )
-        qt_utils.show_message_window(self.log, "error", err_msg)
+    if not os.path.isfile(variables.RESHADE_INI_PATH):
+        result = files.download_reshade_ini_file()
+        if not result:
+            err_msg = f"{variables.RESHADE_INI_PATH} {messages.not_found}"
+            qt_utils.show_message_window(self.log, "error", err_msg)
+            sys.exit(1)
 
-    try:
-        if not os.path.isfile(variables.RESHADE_PRESET_PATH):
-            files.download_reshade_preset_file()
-    except Exception as e:
-        err_msg = (
-            f"{misc_utils.get_exception(e)}\n\n"
-            f"{variables.RESHADE_PRESET_PATH} {messages.not_found}"
-        )
-        qt_utils.show_message_window(self.log, "error", err_msg)
+    if not os.path.isfile(variables.RESHADE_PRESET_PATH):
+        result = files.download_reshade_preset_file()
+        if not result:
+            err_msg = f"{variables.RESHADE_PRESET_PATH} {messages.not_found}"
+            qt_utils.show_message_window(self.log, "error", err_msg)
+            sys.exit(1)
 
-    try:
-        if not os.path.isfile(variables.QSS_PATH):
-            files.download_qss_file()
-    except Exception as e:
-        err_msg = (
-            f"{misc_utils.get_exception(e)}\n\n"
-            f"{variables.QSS_PATH} {messages.not_found}"
-        )
-        qt_utils.show_message_window(self.log, "error", err_msg)
+    if not os.path.isfile(variables.QSS_PATH):
+        result = files.download_qss_file()
+        if not result:
+            err_msg = f"{variables.QSS_PATH} {messages.not_found}"
+            qt_utils.show_message_window(self.log, "error", err_msg)
+            sys.exit(1)
 
-    try:
-        if not os.path.isfile(variables.ALEMBIC_CONFIG_PATH):
-            files.download_alembic_file()
-    except Exception as e:
-        err_msg = (
-            f"{misc_utils.get_exception(e)}\n\n"
-            f"{variables.ALEMBIC_CONFIG_PATH} {messages.not_found}"
-        )
-        qt_utils.show_message_window(self.log, "error", err_msg)
+    if not os.path.isfile(variables.ALEMBIC_CONFIG_PATH):
+        result = files.download_alembic_file()
+        if not result:
+            err_msg = f"{variables.ALEMBIC_CONFIG_PATH} {messages.not_found}"
+            qt_utils.show_message_window(self.log, "error", err_msg)
+            sys.exit(1)
 
 
 def check_game_file(self):
