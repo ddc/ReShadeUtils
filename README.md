@@ -4,11 +4,12 @@
 [<img src="https://img.shields.io/badge/Donate-PayPal-green.svg?style=plastic">](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE)
 [<img src="https://img.shields.io/github/license/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
 [<img src="https://img.shields.io/badge/Python-3-blue.svg?style=plastic">](https://www.python.org/)
-[<img src="https://img.shields.io/badge/PyQt-5-brightgreen.svg?style=plastic">](https://riverbankcomputing.com/software/pyqt)
+[<img src="https://img.shields.io/badge/PyQt-6-brightgreen.svg?style=plastic">](https://riverbankcomputing.com/software/pyqt)
 [<img src="https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/releases/latest)
 
 ![screenshot](resources/images/screenshot.png)
 ![screenshot](resources/images/screenshot_settings.png)
+
 
 ## Download
 + [Latest Release](https://github.com/ddc/ReshadeUtils/releases/latest)
@@ -17,6 +18,14 @@
 ## Program Notes
 + Configuration, logs and database files are now being saved in "%LOCALAPPDATA%\ReshadeUtils"
 + This program was compiled with PyInstaller
+
+
+## Run tests
++ poe test
+
+
+## Get coverage report
++ poe coverage
 
 
 ## To compile
@@ -28,7 +37,7 @@
 
 
 ## Acknowledgements
-+ [PyQt5](https://riverbankcomputing.com/software/pyqt)
++ [PyQt6](https://riverbankcomputing.com/software/pyqt)
 + [Python3](https://www.python.org)
 + [Reshade](https://reshade.me)
 + [PyInstaller](https://www.pyinstaller.org)

@@ -1,13 +1,9 @@
 #! /usr/bin/env python3
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
 from src.main_src import MainSrc
-from src import resources_rc, constants
-from PyQt5 import QtCore, QtGui, QtWidgets
+from src.constants import variables
+from src.tools.qt import resources_rc
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Main(object):
@@ -30,7 +26,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.reshade_version_label.setFont(font)
         self.reshade_version_label.setText("")
-        self.reshade_version_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.reshade_version_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.reshade_version_label.setObjectName("reshade_version_label")
         self.main_tabWidget = QtWidgets.QTabWidget(Main)
         self.main_tabWidget.setGeometry(QtCore.QRect(20, 10, 960, 691))
@@ -44,18 +40,18 @@ class Ui_Main(object):
         self.programs_tableWidget.setGeometry(QtCore.QRect(0, 0, 960, 520))
         self.programs_tableWidget.setMinimumSize(QtCore.QSize(960, 520))
         self.programs_tableWidget.setMaximumSize(QtCore.QSize(960, 520))
-        self.programs_tableWidget.setFocusPolicy(QtCore.Qt.StrongFocus)
-        self.programs_tableWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.programs_tableWidget.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.programs_tableWidget.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
+        self.programs_tableWidget.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.programs_tableWidget.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
         self.programs_tableWidget.setLineWidth(0)
-        self.programs_tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.programs_tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         self.programs_tableWidget.setAutoScroll(False)
-        self.programs_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.programs_tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.programs_tableWidget.setDragDropOverwriteMode(False)
-        self.programs_tableWidget.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        self.programs_tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.programs_tableWidget.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
-        self.programs_tableWidget.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.programs_tableWidget.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
+        self.programs_tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.programs_tableWidget.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.programs_tableWidget.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.programs_tableWidget.setWordWrap(False)
         self.programs_tableWidget.setCornerButtonEnabled(False)
         self.programs_tableWidget.setColumnCount(4)
@@ -105,7 +101,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.edit_plugin_button.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/resources/images/plugin.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/resources/images/plugin.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.edit_plugin_button.setIcon(icon)
         self.edit_plugin_button.setObjectName("edit_plugin_button")
         self.reset_files_button = QtWidgets.QPushButton(self.groupBox)
@@ -117,7 +113,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.reset_files_button.setFont(font)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/resources/images/reset.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/resources/images/reset.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.reset_files_button.setIcon(icon1)
         self.reset_files_button.setObjectName("reset_files_button")
         self.edit_path_button = QtWidgets.QPushButton(self.groupBox)
@@ -129,7 +125,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.edit_path_button.setFont(font)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/resources/images/arrow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/resources/images/arrow.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.edit_path_button.setIcon(icon2)
         self.edit_path_button.setObjectName("edit_path_button")
         self.open_game_path_button = QtWidgets.QPushButton(self.groupBox)
@@ -141,7 +137,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.open_game_path_button.setFont(font)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/resources/images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/resources/images/folder.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.open_game_path_button.setIcon(icon3)
         self.open_game_path_button.setObjectName("open_game_path_button")
         self.remove_button = QtWidgets.QPushButton(self.groupBox)
@@ -153,7 +149,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.remove_button.setFont(font)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/resources/images/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/resources/images/delete.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.remove_button.setIcon(icon4)
         self.remove_button.setObjectName("remove_button")
         self.edit_game_button = QtWidgets.QPushButton(self.groupBox)
@@ -165,7 +161,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.edit_game_button.setFont(font)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/resources/images/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/resources/images/edit.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.edit_game_button.setIcon(icon5)
         self.edit_game_button.setObjectName("edit_game_button")
         self.groupBox_2 = QtWidgets.QGroupBox(self.games_tab)
@@ -179,12 +175,12 @@ class Ui_Main(object):
         font.setWeight(75)
         self.apply_button.setFont(font)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/resources/images/apply.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(":/resources/images/apply.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.apply_button.setIcon(icon6)
         self.apply_button.setObjectName("apply_button")
         self.edit_default_preset_plugin_button = QtWidgets.QPushButton(self.groupBox_2)
         self.edit_default_preset_plugin_button.setGeometry(QtCore.QRect(10, 70, 160, 30))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.edit_default_preset_plugin_button.sizePolicy().hasHeightForWidth())
@@ -206,14 +202,14 @@ class Ui_Main(object):
         font.setWeight(75)
         self.add_button.setFont(font)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/resources/images/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(":/resources/images/add.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.add_button.setIcon(icon7)
         self.add_button.setObjectName("add_button")
         self.groupBox.raise_()
         self.programs_tableWidget.raise_()
         self.groupBox_2.raise_()
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(":/resources/images/controller.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap(":/resources/images/controller.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.main_tabWidget.addTab(self.games_tab, icon8, "")
         self.settings_tab = QtWidgets.QWidget()
         self.settings_tab.setObjectName("settings_tab")
@@ -226,7 +222,7 @@ class Ui_Main(object):
         font.setBold(False)
         font.setWeight(50)
         self.download_shaders_groupBox.setFont(font)
-        self.download_shaders_groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.download_shaders_groupBox.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.download_shaders_groupBox.setObjectName("download_shaders_groupBox")
         self.yes_update_shaders_radioButton = QtWidgets.QRadioButton(self.download_shaders_groupBox)
         self.yes_update_shaders_radioButton.setGeometry(QtCore.QRect(220, 30, 60, 20))
@@ -247,7 +243,7 @@ class Ui_Main(object):
         font.setBold(False)
         font.setWeight(50)
         self.check_program_updates_groupBox.setFont(font)
-        self.check_program_updates_groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.check_program_updates_groupBox.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.check_program_updates_groupBox.setObjectName("check_program_updates_groupBox")
         self.yes_check_program_updates_radioButton = QtWidgets.QRadioButton(self.check_program_updates_groupBox)
         self.yes_check_program_updates_radioButton.setGeometry(QtCore.QRect(220, 30, 60, 20))
@@ -268,7 +264,7 @@ class Ui_Main(object):
         font.setBold(False)
         font.setWeight(50)
         self.use_dark_theme_groupBox.setFont(font)
-        self.use_dark_theme_groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.use_dark_theme_groupBox.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.use_dark_theme_groupBox.setObjectName("use_dark_theme_groupBox")
         self.yes_dark_theme_radioButton = QtWidgets.QRadioButton(self.use_dark_theme_groupBox)
         self.yes_dark_theme_radioButton.setGeometry(QtCore.QRect(220, 30, 60, 20))
@@ -289,7 +285,7 @@ class Ui_Main(object):
         font.setBold(False)
         font.setWeight(50)
         self.create_screenshots_folder_groupBox.setFont(font)
-        self.create_screenshots_folder_groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.create_screenshots_folder_groupBox.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.create_screenshots_folder_groupBox.setObjectName("create_screenshots_folder_groupBox")
         self.yes_screenshots_folder_radioButton = QtWidgets.QRadioButton(self.create_screenshots_folder_groupBox)
         self.yes_screenshots_folder_radioButton.setGeometry(QtCore.QRect(220, 30, 60, 20))
@@ -310,7 +306,7 @@ class Ui_Main(object):
         font.setBold(False)
         font.setWeight(50)
         self.check_reshade_updates_groupBox.setFont(font)
-        self.check_reshade_updates_groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.check_reshade_updates_groupBox.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.check_reshade_updates_groupBox.setObjectName("check_reshade_updates_groupBox")
         self.yes_check_reshade_updates_radioButton = QtWidgets.QRadioButton(self.check_reshade_updates_groupBox)
         self.yes_check_reshade_updates_radioButton.setGeometry(QtCore.QRect(220, 30, 60, 20))
@@ -331,7 +327,7 @@ class Ui_Main(object):
         font.setBold(False)
         font.setWeight(50)
         self.show_info_messages_groupBox.setFont(font)
-        self.show_info_messages_groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.show_info_messages_groupBox.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.show_info_messages_groupBox.setObjectName("show_info_messages_groupBox")
         self.no_show_info_messages_radioButton = QtWidgets.QRadioButton(self.show_info_messages_groupBox)
         self.no_show_info_messages_radioButton.setGeometry(QtCore.QRect(70, 30, 60, 20))
@@ -355,7 +351,7 @@ class Ui_Main(object):
         self.reset_all_button.setIconSize(QtCore.QSize(27, 27))
         self.reset_all_button.setObjectName("reset_all_button")
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(":/resources/images/gear.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(QtGui.QPixmap(":/resources/images/gear.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.main_tabWidget.addTab(self.settings_tab, icon9, "")
         self.about_tab = QtWidgets.QWidget()
         self.about_tab.setObjectName("about_tab")
@@ -364,18 +360,18 @@ class Ui_Main(object):
         self.about_textBrowser.setMinimumSize(QtCore.QSize(960, 610))
         self.about_textBrowser.setMaximumSize(QtCore.QSize(960, 610))
         self.about_textBrowser.setAcceptDrops(False)
-        self.about_textBrowser.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.about_textBrowser.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.about_textBrowser.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.about_textBrowser.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.about_textBrowser.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.about_textBrowser.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.about_textBrowser.setUndoRedoEnabled(False)
-        self.about_textBrowser.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
+        self.about_textBrowser.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse)
         self.about_textBrowser.setOpenExternalLinks(True)
         self.about_textBrowser.setObjectName("about_textBrowser")
         self.donate_button = QtWidgets.QPushButton(self.about_tab)
         self.donate_button.setGeometry(QtCore.QRect(360, 20, 230, 90))
         self.donate_button.setMinimumSize(QtCore.QSize(230, 90))
         self.donate_button.setMaximumSize(QtCore.QSize(230, 90))
-        self.donate_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.donate_button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.donate_button.setToolTip("Donate")
         self.donate_button.setAutoFillBackground(False)
         self.donate_button.setStyleSheet("#donate_button {\n"
@@ -386,12 +382,12 @@ class Ui_Main(object):
 "}")
         self.donate_button.setText("")
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(":/resources/images/donate.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon10.addPixmap(QtGui.QPixmap(":/resources/images/donate.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.donate_button.setIcon(icon10)
         self.donate_button.setIconSize(QtCore.QSize(150, 100))
         self.donate_button.setObjectName("donate_button")
         icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(":/resources/images/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon11.addPixmap(QtGui.QPixmap(":/resources/images/help.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.main_tabWidget.addTab(self.about_tab, icon11, "")
         self.updateAvail_label = QtWidgets.QLabel(Main)
         self.updateAvail_label.setGeometry(QtCore.QRect(300, 705, 480, 40))
@@ -403,7 +399,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.updateAvail_label.setFont(font)
         self.updateAvail_label.setText("")
-        self.updateAvail_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.updateAvail_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.updateAvail_label.setObjectName("updateAvail_label")
         self.update_button = QtWidgets.QPushButton(Main)
         self.update_button.setGeometry(QtCore.QRect(800, 710, 160, 30))
@@ -414,7 +410,7 @@ class Ui_Main(object):
         font.setWeight(75)
         self.update_button.setFont(font)
         icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(":/resources/images/update.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon12.addPixmap(QtGui.QPixmap(":/resources/images/update.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.update_button.setIcon(icon12)
         self.update_button.setObjectName("update_button")
         self.main_tabWidget.raise_()
@@ -448,7 +444,7 @@ class Ui_Main(object):
 
     def retranslateUi(self, Main):
         _translate = QtCore.QCoreApplication.translate
-        Main.setWindowTitle(_translate("Main", constants.FULL_PROGRAM_NAME))
+        Main.setWindowTitle(_translate("Main", variables.FULL_PROGRAM_NAME))
         item = self.programs_tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Main", "NAME"))
         item = self.programs_tableWidget.horizontalHeaderItem(1)
@@ -519,10 +515,10 @@ class Ui_Main(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Reshade Utilities</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Program to copy reshade DLLs, shaders and config fiies to several games</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Developed as an open source project and hosted on GitHub</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Implemented using Python3, PyQt5 and SQLite3</span></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">Implemented using Python3, PyQt6 and SQLite3</span></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; text-decoration: underline; color:#0000ff;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">Acknowledgements</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://riverbankcomputing.com/software/pyqt/download\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">PyQt5</span></a></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://riverbankcomputing.com/software/pyqt/download\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">PyQt6</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://www.python.org\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">Python3</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://reshade.me/\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">Reshade</span></a></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://pyinstaller.readthedocs.io\"><span style=\" font-size:11pt; text-decoration: underline; color:#8b0000;\">PyInstaller</span></a></p>\n"
@@ -543,4 +539,4 @@ if __name__ == "__main__":
     ui = Ui_Main()
     ui.setupUi(Main)
     Main.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

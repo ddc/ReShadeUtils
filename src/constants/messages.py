@@ -1,32 +1,27 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- encoding: utf-8 -*-
 #################################
 # MAIN
 #################################
-not_found = " not found!"
-unable_start = " unable to start"
+not_found = "not found!"
+unable_start = "unable to start"
 checking_files = "Checking files"
 unable_create_dirs = "Error creating program directories"
 checking_database = "Checking database"
+error_create_db_tables_msg = "Could not create Database tables"
 error_create_sql_config_msg = "Could not create initial SQL Configs"
 error_db_connection = "Unable to Create Database Connection"
 exit_program = "Program will now exit!"
-error_executing_program = "Could not initialize "
+error_executing_program = "Could not initialize"
 error_check_installation = "Please check your installation and try again!"
 checking_configs = "Checking configuration files"
-error_game_not_found = "Game not found.\n Please check the game path and try again"
-config_reset_msg = "Your configuration has been RESET due to program update!\nWe apologize for the inconvenience"
+error_game_not_found = "Game not found.\nPlease check the game path and try again!"
 reseting_files = "Reseting all files to default"
 reset_success = "All files were reset successfully!"
 #################################
 # RESHADE
 #################################
 checking_new_reshade_files = "Checking for local reshade files"
-checking_reshade_updates = "Checking for Reshade updates"
+checking_reshade_updates = "Checking for Reshade Updates"
 downloading_new_reshade_version = "Downloading new Reshade version "
 error_check_new_reshade_version = "There was an ERROR trying to check for a new reshade version!"
 dl_new_shaders_timeout = "Unable to reach Website to download new shader files!"
@@ -58,6 +53,7 @@ path_changed_success = "Path changed successfully!"
 update_reshade_question = "Download new Reshade version now?"
 removing_old_reshade_file = "Removing old reshade file"
 error_change_game_name = "Unable to change game name"
+error_rss_file_not_found = "Error: QSS file not found!"
 #################################
 # PROGRAM
 #################################
@@ -65,7 +61,7 @@ dl_new_version_msg = "Downloading new version"
 dl_new_version_timeout = "Unable to reach Website to check for new version!"
 error_dl_new_version = "There was an ERROR trying to download new version.\nPlease try again later"
 error_check_new_version = "There was an ERROR trying to check for a new program version!"
-program_updated = "Program updated to "
+program_updated = "Program updated to v"
 checking_program_updates = "Checking for updates"
 new_version_available = "New version available!"
 confirm_download = "Do you want to download the new version now?"

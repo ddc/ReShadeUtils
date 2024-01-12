@@ -1,0 +1,5 @@
+Single-database configuration
+
+Specifying the revision number
+    alembic -c './src/database/migrations/alembic.ini' revision --autogenerate -m "test" --rev-id=1000
+    alembic -c './src/database/migrations/alembic.ini' upgrade head

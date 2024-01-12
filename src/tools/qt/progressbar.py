@@ -1,10 +1,5 @@
-# |*****************************************************
-# * Copyright         : Copyright (C) 2022
-# * Author            : ddc
-# * License           : GPL v3
-# |*****************************************************
 # -*- coding: utf-8 -*-
-from PyQt5 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 
 STYLE = """
@@ -36,8 +31,8 @@ class ProgressBar:
         self.pbar.setBaseSize(QtCore.QSize(_width, _height))
         self.pbar.setMinimum(0)
         self.pbar.setMaximum(100)
-        self.pbar.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.pbar.setAlignment(QtCore.Qt.AlignCenter)
+        self.pbar.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
+        self.pbar.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.pbar.setStyleSheet(STYLE)
 
     def set_values(self, message="", value=0):
