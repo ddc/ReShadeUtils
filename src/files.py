@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
+from pathlib import Path
 import shutil
+import fsspec
 import requests
 from src.constants import variables
 from src.tools import file_utils
@@ -15,27 +17,26 @@ class Files:
         self.download_reshade_ini_file()
         self.download_reshade_preset_file()
         self.download_qss_file()
-        self.download_alembic_file()
+        self.download_alembic_dir()
+        # self.download_alembic_config_file()
 
     def download_reshade_ini_file(self):
-        local_file_path = variables.RESHADE_INI_PATH
         remote_file = variables.REMOTE_RESHADE_FILENAME
+        local_file_path = variables.RESHADE_INI_PATH
         return self._download_file(remote_file, local_file_path)
 
     def download_reshade_preset_file(self):
-        local_file_path = variables.RESHADE_PRESET_PATH
         remote_file = variables.REMOTE_PRESET_FILENAME
+        local_file_path = variables.RESHADE_PRESET_PATH
         return self._download_file(remote_file, local_file_path)
 
     def download_qss_file(self):
-        local_file_path = variables.QSS_PATH
         remote_file = variables.REMOTE_QSS_FILENAME
+        local_file_path = variables.QSS_PATH
         return self._download_file(remote_file, local_file_path)
 
-    def download_alembic_file(self):
-        local_file_path = variables.ALEMBIC_CONFIG_PATH
-        remote_file = variables.REMOTE_ALEMBIC_FILENAME
-        return self._download_file(remote_file, local_file_path)
+    def download_alembic_dir(self):
+        return self._download_alembic_dir(variables.ALEMBIC_MIGRATIONS_DIR)
 
     @staticmethod
     def apply_reshade_ini_file(game_dir, screenshot_path):
@@ -77,11 +78,29 @@ class Files:
 
     def _download_file(self, remote_file, local_file_path):
         try:
+            self.log.debug(remote_file)
             req = requests.get(remote_file)
             if req.status_code == 200:
                 with open(local_file_path, "wb") as outfile:
                     outfile.write(req.content)
                 return True
+        except requests.HTTPError as e:
+            self.log.error(e)
+        return False
+
+    def _download_alembic_dir(self, local_dir):
+        try:
+            destination = Path(local_dir)
+            destination.mkdir(exist_ok=True, parents=True)
+            fs = fsspec.filesystem("github", org="ddc", repo="reshadeUtils")
+            remote_files = fs.ls("src/database/migrations")
+            fs.get(remote_files, destination.as_posix(), recursive=False)
+
+            destination = Path(local_dir) / "versions"
+            remote_files = fs.ls("src/database/migrations/versions")
+            fs.get(remote_files, destination.as_posix(), recursive=False)
+
+            return True
         except requests.HTTPError as e:
             self.log.error(e)
         return False

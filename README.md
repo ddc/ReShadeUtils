@@ -28,12 +28,10 @@
 + poe coverage
 
 
-## To compile
-+ Install requirements with poetry:
-    + poetry update
+## To compile using PyInstaller
 + Compile both launcher and program with PyInstaller:
-    + python -O -m PyInstaller -y --clean ./src/data/spec/launcher.spec
-    + python -O -m PyInstaller -y --clean ./src/data/spec/reshadeUtils.spec
+    + python -O -m PyInstaller -y --clean --log-level INFO --workpath ./dist/tmp --distpath ./dist ./src/data/spec/launcher.spec
+    + python -O -m PyInstaller -y --clean --log-level INFO --workpath ./dist/tmp --distpath ./dist ./src/data/spec/reshadeUtils.spec
 
 
 ## Acknowledgements

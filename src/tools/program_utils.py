@@ -9,7 +9,7 @@ from src.tools.qt import qt_utils
 
 
 def run_alembic_migrations():
-    alembic_cfg = Config(variables.ALEMBIC_CONFIG_PATH)
+    alembic_cfg = Config(variables.ALEMBIC_CONFIG_FILE)
     command.upgrade(alembic_cfg, "head")
 
 
