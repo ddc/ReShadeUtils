@@ -1,13 +1,16 @@
 # -*- mode: python -*-
 
 block_cipher = None
-#images = [('../images/*.*', 'images')] no need to add images since its using QT resource file
 
-a = Analysis(['../../main.py'],
+data_files = [
+    #,('../images/*.*', 'images') no need to add images since its using QT resource file
+]
+
+a = Analysis(['../../../main.py'],
              pathex=['*path*'],
              binaries=[],
-             datas = [],
-             hiddenimports=['sqlalchemy.sql.default_comparator'],
+             datas = data_files,
+             hiddenimports=['sqlalchemy.sql.default_comparator', 'fsspec.implementations.github'],
              hookspath=[],
              runtime_hooks=[],
              excludes=['pysqlite2', 'MySQLdb', 'psycopg2', 'sip'],

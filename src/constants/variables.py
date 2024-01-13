@@ -5,7 +5,7 @@ import platform
 from src.tools import misc_utils
 
 
-DEBUG = False
+DEBUG = True
 VERSION = 4.7
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
@@ -49,16 +49,17 @@ RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
 QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
-ALEMBIC_CONFIG_PATH = os.path.join(PROGRAM_PATH, "alembic.ini")
+ALEMBIC_MIGRATIONS_DIR = os.path.join(PROGRAM_PATH, "src", "database", "migrations")
+ALEMBIC_CONFIG_FILE = os.path.join(ALEMBIC_MIGRATIONS_DIR, "alembic.ini")
 # ############################################################################
-BRANCH = misc_utils.get_active_branch_name() if DEBUG else "master"
+_active_dev_branch = "fix/alembic" # misc_utils.get_active_branch_name() if DEBUG else "master"
+_github_raw_files_uri = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{_active_dev_branch}"
+REMOTE_VERSION_FILENAME = f"{_github_raw_files_uri}/VERSION"
+REMOTE_RESHADE_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/Reshade.ini"
+REMOTE_PRESET_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/ReShadePreset.ini"
+REMOTE_QSS_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/style.qss"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
-REMOTE_VERSION_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/VERSION"
-REMOTE_RESHADE_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/Reshade.ini"
-REMOTE_PRESET_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/ReShadePreset.ini"
-REMOTE_QSS_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/style.qss"
-REMOTE_ALEMBIC_FILENAME = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{BRANCH}/src/data/files/alembic.ini"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"

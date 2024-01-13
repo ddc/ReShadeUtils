@@ -84,7 +84,7 @@ def delete_game(self):
 
         try:
             # remove Reshade.ini
-            all_reshade_game_dir_files = file_utils.list_files(game_dir, "reshade")
+            all_reshade_game_dir_files = file_utils.list_reshade_files(game_dir)
             for f in all_reshade_game_dir_files:
                 try:
                     os.remove(f)
@@ -197,7 +197,7 @@ def edit_selected_game_path(self):
                     pass
 
             # move all reshade files and remove reshade.ini with old path
-            all_old_game_dir_files = file_utils.list_files(old_game_dir, "reshade")
+            all_old_game_dir_files = file_utils.list_reshade_files(old_game_dir)
             for f in all_old_game_dir_files:
                 if os.path.basename(f) == variables.RESHADE_INI\
                         or os.path.basename(f).lower().endswith("log"):

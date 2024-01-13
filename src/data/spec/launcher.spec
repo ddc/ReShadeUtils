@@ -2,10 +2,12 @@
 
 block_cipher = None
 
-a = Analysis(['../../launcher.py'],
+data_files = []
+
+a = Analysis(['../../../launcher.py'],
              pathex=['*path*'],
              binaries=[],
-             datas=[],
+             datas=data_files,
              hiddenimports=['sqlalchemy.sql.default_comparator'],
              hookspath=[],
              runtime_hooks=[],

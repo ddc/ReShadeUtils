@@ -21,12 +21,12 @@ def open_file(file_path):
             subprocess.call(("xdg-open", file_path))
 
 
-def list_files(directory, prefix):
+def list_reshade_files(directory):
     files_list = []
     if os.path.isdir(directory):
         files_list = [os.path.join(directory, f) for f in os.listdir(directory)
                       if os.path.isfile(os.path.join(directory, f))
-                      and f.lower().startswith(prefix.lower())]
+                      and f.lower().startswith("reshade")]
         files_list.sort(key=os.path.getmtime)
     return files_list
 
@@ -121,11 +121,10 @@ def check_local_files(self):
             qt_utils.show_message_window(self.log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isfile(variables.ALEMBIC_CONFIG_PATH):
-        result = files.download_alembic_file()
+    if not os.path.isdir(variables.ALEMBIC_MIGRATIONS_DIR):
+        result = files.download_alembic_dir()
         if not result:
-            err_msg = f"{variables.ALEMBIC_CONFIG_PATH} {messages.not_found}"
-            qt_utils.show_message_window(self.log, "error", err_msg)
+            qt_utils.show_message_window(self.log, "error", messages.error_dl_alembic_files)
             sys.exit(1)
 
 

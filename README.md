@@ -28,12 +28,10 @@
 + poe coverage
 
 
-## To compile
-+ Install requirements:
-    + pip install -r requirements.txt
+## To compile using PyInstaller
 + Compile both launcher and program with PyInstaller:
-    + python.exe -O -m PyInstaller -y --clean ./resources/spec/launcher.spec
-    + python.exe -O -m PyInstaller -y --clean ./resources/spec/reshadeUtils.spec
+    + python -O -m PyInstaller -y --clean --log-level INFO --workpath ./dist/tmp --distpath ./dist ./src/data/spec/launcher.spec
+    + python -O -m PyInstaller -y --clean --log-level INFO --workpath ./dist/tmp --distpath ./dist ./src/data/spec/reshadeUtils.spec
 
 
 ## Acknowledgements
