@@ -52,7 +52,7 @@ QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
 ALEMBIC_MIGRATIONS_DIR = os.path.join(PROGRAM_PATH, "src", "database", "migrations")
 ALEMBIC_CONFIG_FILE = os.path.join(ALEMBIC_MIGRATIONS_DIR, "alembic.ini")
 # ############################################################################
-_active_dev_branch = "fix/alembic" # misc_utils.get_active_branch_name() if DEBUG else "master"
+_active_dev_branch = misc_utils.get_active_branch_name() if DEBUG else "master"
 _github_raw_files_uri = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{_active_dev_branch}"
 REMOTE_VERSION_FILENAME = f"{_github_raw_files_uri}/VERSION"
 REMOTE_RESHADE_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/Reshade.ini"
