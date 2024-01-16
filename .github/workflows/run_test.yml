@@ -17,8 +17,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install libgl1-mesa-glx -y
+          sudo apt-get update
+          sudo apt-get install libgl1-mesa-glx -y
           python -m pip install --upgrade pip
           python -m pip install poetry
           poetry update
