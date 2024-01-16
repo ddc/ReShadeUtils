@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install libgl1-mesa-glx -y
+          sudo apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6
           python -m pip install --upgrade pip
           python -m pip install poetry
           poetry update
