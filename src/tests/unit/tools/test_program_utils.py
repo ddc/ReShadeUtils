@@ -7,15 +7,15 @@ from PyQt6.QtWidgets import (
     QRadioButton,
 )
 import pytest
-from src.tools.program_utils import check_program_updates
+from src.tools import program_utils
 
 
 @pytest.fixture
 def qtbutton(qtbot):
-    qtbutton = QPushButton()
-    qtbutton.setVisible(True)
-    qtbot.addWidget(qtbutton)
-    return qtbutton
+    qbutton = QPushButton()
+    qbutton.setVisible(True)
+    qtbot.addWidget(qbutton)
+    return qbutton
 
 
 @pytest.fixture
@@ -53,7 +53,7 @@ class TestProgramUtils:
             "remote_version": 1.0,
         }
         obj.check_program_updates = True
-        result = check_program_updates(obj)
+        result = program_utils.check_program_updates(obj)
         assert result is False
 
         # check new version available
@@ -62,7 +62,7 @@ class TestProgramUtils:
             "remote_version": 2.1,
         }
         obj.check_program_updates = True
-        result = check_program_updates(obj)
+        result = program_utils.check_program_updates(obj)
         assert result is True
 
         # check for updates is disabled
@@ -71,5 +71,5 @@ class TestProgramUtils:
             "remote_version": 2.1,
         }
         obj.check_program_updates = False
-        result = check_program_updates(obj)
+        result = program_utils.check_program_updates(obj)
         assert result is None
