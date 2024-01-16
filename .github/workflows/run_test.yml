@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libgl1 libegl1:i386
+          sudo apt-get install -y --no-install-recommends libgl1
           python -m pip install --upgrade pip
           python -m pip install poetry
           poetry update
