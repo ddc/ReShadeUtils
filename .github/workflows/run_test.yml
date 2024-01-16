@@ -16,13 +16,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |  
-          python -m pip install --upgrade pip  
+        run: |
+          apt-get update
+          apt-get install libgl1-mesa-glx -y
+          python -m pip install --upgrade pip
           python -m pip install poetry
           poetry update
       - name: Test with pytest
-        run: |  
+        run: |
           poetry run coverage run -m pytest -v
       - name: Generate Coverage Report
-        run: |  
+        run: |
           poetry run coverage report
