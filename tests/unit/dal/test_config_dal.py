@@ -4,7 +4,7 @@ import sqlalchemy as sa
 from sqlalchemy.orm import Session
 from src.database.dal.config_dal import ConfigDal
 from src.database.models.config_model import Config
-from src.tests.data import base_data
+from tests.data import base_data
 
 
 database_engine = base_data.get_database_engine_fixture()

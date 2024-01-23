@@ -1,0 +1,9 @@
+## Description
+
+## Checklist
+#### PR Submitter
+- [ ] I have thought about how this code may affect other services.
+- [ ] This code is better than I found it.
+
+#### Reviewer
+- [ ] I understand that be approving this code I am also responsible for it going into the codebase.
