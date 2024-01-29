@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
-from src.log import Log
-from PyQt6.QtCore import Qt
 from PyQt6 import QtWidgets
-from src.database.dal.games_dal import GamesDal
-from src.tools.qt.progressbar import ProgressBar
-from src.database.dal.config_dal import ConfigDal
+from PyQt6.QtCore import Qt
 from src import events
-from src.constants import variables, messages
+from src.constants import messages, variables
+from src.database.dal.config_dal import ConfigDal
+from src.database.dal.games_dal import GamesDal
+from src.database.db import Database
+from src.log import Log
 from src.tools import file_utils, program_utils, reshade_utils
 from src.tools.qt import qt_utils
-from src.database.db import Database
+from src.tools.qt.progressbar import ProgressBar
 
 
 class MainSrc:

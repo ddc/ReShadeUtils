@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
+from ddcUtils import FileUtils, get_exception, Object
 from PyQt6 import QtCore
-from src.files import Files
-from src.database.dal.games_dal import GamesDal
-from src.database.dal.config_dal import ConfigDal
 from PyQt6.QtGui import QDesktopServices
-from src.constants import variables, messages
+from src.constants import messages, variables
+from src.database.dal.config_dal import ConfigDal
+from src.database.dal.games_dal import GamesDal
+from src.files import Files
 from src.tools import file_utils, program_utils, reshade_utils
 from src.tools.qt import qt_utils
-from ddcUtils import FileUtils, Object, get_exception
 
 
 def donate_clicked():

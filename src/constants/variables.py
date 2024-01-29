@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 import platform
+import sys
 from ddcUtils import MiscUtils, OsUtils
 
 

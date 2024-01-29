@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sqlalchemy as sa
-from src.database.models.config_model import Config
 from src.database.db_utils import DBUtils
+from src.database.models.config_model import Config
 
 
 class ConfigDal:

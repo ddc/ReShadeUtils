@@ -1,21 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-from src.constants import variables, messages
-from src.tools import reshade_utils
-from src.database.dal.config_dal import ConfigDal
-from src.tools.qt import qt_utils
 from ddcUtils import FileUtils, get_exception
+from src.constants import messages, variables
+from src.database.dal.config_dal import ConfigDal
+from src.tools import reshade_utils
+from src.tools.qt import qt_utils
 
 
 def list_reshade_files(directory):
-    files_list = []
-    if os.path.isdir(directory):
-        files_list = [os.path.join(directory, f) for f in os.listdir(directory)
-                      if os.path.isfile(os.path.join(directory, f))
-                      and f.lower().startswith("reshade")]
-        files_list.sort(key=os.path.getmtime)
-    return files_list
+    return FileUtils.list_files(directory=directory, starts_with="reshade")
 
 
 def unzip_reshade(self, local_reshade_exe):
@@ -42,8 +36,7 @@ def check_reshade_dll_files(self):
     rs_config = config_sql.get_configs()
     if rs_config is not None and rs_config[0].get("reshade_version") is not None:
         self.reshade_version = rs_config[0].get("reshade_version")
-        self.local_reshade_path = os.path.join(variables.PROGRAM_PATH,
-                                               f"{variables.RESHADE_SETUP}_{self.reshade_version}.exe")
+        self.local_reshade_path = os.path.join(variables.PROGRAM_PATH, f"{variables.RESHADE_SETUP}_{self.reshade_version}.exe")
         self.qtobj.reshade_version_label.setText(f"{messages.info_reshade_version}{self.reshade_version}")
         self.enable_form(True)
 

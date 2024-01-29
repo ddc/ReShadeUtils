@@ -4,12 +4,12 @@ import shutil
 import zipfile
 import requests
 from bs4 import BeautifulSoup
-from src.database.dal.config_dal import ConfigDal
+from ddcUtils import FileUtils, get_exception
 from src import events
-from src.constants import variables, messages
+from src.constants import messages, variables
+from src.database.dal.config_dal import ConfigDal
 from src.tools import file_utils
 from src.tools.qt import qt_utils
-from ddcUtils import FileUtils, get_exception
 
 
 def check_reshade_updates(self):

@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from unittest.mock import patch
-from PyQt6.QtWidgets import (
-    QPushButton,
-    QLabel,
-    QRadioButton,
-)
 import pytest
+from PyQt6.QtWidgets import QLabel, QPushButton, QRadioButton
 from src.tools import program_utils
 
 

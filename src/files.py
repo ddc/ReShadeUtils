@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
-from pathlib import Path
 import shutil
+from pathlib import Path
 import fsspec
 import requests
-from src.constants import variables
-from src.tools import file_utils
 from ddcUtils import FileUtils
+from src.constants import variables
 
 
 class Files:

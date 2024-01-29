@@ -1,18 +1,18 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
+import subprocess
 import sys
 import requests
-import subprocess
-from src.log import Log
+from ddcUtils import OsUtils
 from PyQt6 import QtWidgets
-from src.tools.qt.progressbar import ProgressBar
+from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
-from src.constants import variables, messages
+from src.database.db import Database
+from src.log import Log
 from src.tools import file_utils, program_utils
 from src.tools.qt import qt_utils
-from src.database.db import Database
-from ddcUtils import OsUtils
+from src.tools.qt.progressbar import ProgressBar
 
 
 class Launcher:

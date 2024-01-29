@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from src.constants import variables
 from datetime import datetime
 from sqlalchemy import Boolean, DateTime
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from src.constants import variables
 
 
 class ConfigBase(DeclarativeBase):

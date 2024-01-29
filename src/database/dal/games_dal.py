@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sqlalchemy as sa
-from sqlalchemy.sql import collate, asc
+from sqlalchemy.sql import asc, collate
 from src.database.db_utils import DBUtils
 from src.database.models.games_model import Games
 

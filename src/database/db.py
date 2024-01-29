@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy import event
-from src.constants import variables, messages
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import Session
+from src.constants import messages, variables
 
 
 class Database:

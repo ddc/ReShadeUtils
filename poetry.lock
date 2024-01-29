@@ -356,13 +356,13 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "ddcutils"
-version = "1.0.12"
+version = "1.0.13"
 description = "Few Utilities"
 optional = false
 python-versions = ">=3.11.0,<4.0.0"
 files = [
-    {file = "ddcutils-1.0.12-py3-none-any.whl", hash = "sha256:b67f996698790397602f41618ddb45e5147c509693de46df89880ed47068855b"},
-    {file = "ddcutils-1.0.12.tar.gz", hash = "sha256:72d5dfaa574cb900e1a80da4a4832784e768fa1289a7d332b098c24c6b950291"},
+    {file = "ddcutils-1.0.13-py3-none-any.whl", hash = "sha256:040c1336e8264e4ad66c7bacb4c045d9d637fca50762fdf6de4ca132b269f9ac"},
+    {file = "ddcutils-1.0.13.tar.gz", hash = "sha256:f51588fdc82ed4955d5fca3ab83b6abbb266d03de567a7cfd335fd51abbff37d"},
 ]
 
 [package.dependencies]

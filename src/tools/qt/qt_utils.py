@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 from PyQt6 import QtWidgets
-from src.config import Ui_config
 from PyQt6.QtWidgets import QFileDialog
 from src import events
-from src.constants import variables, messages
+from src.config import Ui_config
+from src.constants import messages, variables
 from src.tools import file_utils
 
 

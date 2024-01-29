@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 import requests
-from src.constants import variables, messages
 from alembic import command
 from alembic.config import Config
-from src.tools.qt import qt_utils
 from ddcUtils import FileUtils, get_exception
+from src.constants import messages, variables
+from src.tools.qt import qt_utils
 
 
 def run_alembic_migrations():
