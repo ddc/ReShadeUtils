@@ -5,7 +5,7 @@ import gzip
 import logging.handlers
 from src.constants import variables
 from src.tools.qt import qt_utils
-from src.tools.misc_utils import get_exception
+from ddcUtils import get_exception
 
 
 class Log:

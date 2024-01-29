@@ -4,8 +4,8 @@ import requests
 from src.constants import variables, messages
 from alembic import command
 from alembic.config import Config
-from src.tools import misc_utils, file_utils
 from src.tools.qt import qt_utils
+from ddcUtils import FileUtils, get_exception
 
 
 def run_alembic_migrations():
@@ -67,20 +67,16 @@ def get_screenshot_path(self, game_dir, game_name):
             if not os.path.isdir(variables.RESHADE_SCREENSHOT_PATH):
                 os.makedirs(variables.RESHADE_SCREENSHOT_PATH)
         except OSError as e:
-            self.log.error(f"mkdir: {variables.RESHADE_SCREENSHOT_PATH}: {misc_utils.get_exception(e)}")
+            self.log.error(f"mkdir: {variables.RESHADE_SCREENSHOT_PATH}: {get_exception(e)}")
 
         try:
             if not os.path.isdir(game_screenshots_path):
                 os.makedirs(game_screenshots_path)
         except OSError as e:
-            self.log.error(f"mkdir: {game_screenshots_path}: {misc_utils.get_exception(e)}")
+            self.log.error(f"mkdir: {game_screenshots_path}: {get_exception(e)}")
     else:
-        reshade_ini_filepath = os.path.join(game_dir, variables.RESHADE_INI)
-        reshade_config_screenshot_path = file_utils.get_ini_file_settings(
-            reshade_ini_filepath,
-            "SCREENSHOT",
-            "SavePath"
-        )
+        reshade_ini_filepath = str(os.path.join(game_dir, variables.RESHADE_INI))
+        reshade_config_screenshot_path = FileUtils().get_file_value(reshade_ini_filepath, "SCREENSHOT", "SavePath")
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
         elif os.path.isdir(os.path.join(variables.RESHADE_SCREENSHOT_PATH, game_name)):

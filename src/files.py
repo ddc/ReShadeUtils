@@ -6,6 +6,7 @@ import fsspec
 import requests
 from src.constants import variables
 from src.tools import file_utils
+from ddcUtils import FileUtils
 
 
 class Files:
@@ -51,12 +52,12 @@ class Files:
         preset_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
         intermediate_cache_path = os.getenv("TEMP")
 
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
 
         return None
 

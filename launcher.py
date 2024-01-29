@@ -9,16 +9,17 @@ from PyQt6 import QtWidgets
 from src.tools.qt.progressbar import ProgressBar
 from src.database.dal.config_dal import ConfigDal
 from src.constants import variables, messages
-from src.tools import file_utils, program_utils, misc_utils
+from src.tools import file_utils, program_utils
 from src.tools.qt import qt_utils
 from src.database.db import Database
+from ddcUtils import OsUtils
 
 
 class Launcher:
     def __init__(self):
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
-        self.program_path = os.path.join(misc_utils.get_current_path(), variables.EXE_PROGRAM_NAME)
+        self.program_path = os.path.join(OsUtils.get_current_path(), variables.EXE_PROGRAM_NAME)
         self.db_session = None
         self.new_version = None
         self.new_version_msg = None
