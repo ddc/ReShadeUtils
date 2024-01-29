@@ -71,9 +71,7 @@ class MainSrc:
             self.progressbar.close()
             self.qtobj.main_tabWidget.setCurrentIndex(0)
             self.qtobj.programs_tableWidget.setColumnWidth(2, 130)
-            self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(
-                Qt.AlignmentFlag.AlignLeft
-            )
+            self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignmentFlag.AlignLeft)
             self.populate_table_widget()
             self.enable_widgets(False)
 

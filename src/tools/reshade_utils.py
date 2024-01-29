@@ -33,9 +33,7 @@ def check_reshade_updates(self):
 
                 for content in blist:
                     if content.startswith("<strong>Version "):
-                        self.remote_reshade_version = (
-                            content.split()[1].strip("</strong>")
-                        )
+                        self.remote_reshade_version = (content.split()[1].strip("</strong>"))
                         self.remote_reshade_download_url = (
                             f"{variables.RESHADE_EXE_URL}"
                             f"{self.remote_reshade_version}.exe"

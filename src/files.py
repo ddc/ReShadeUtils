@@ -18,7 +18,6 @@ class Files:
         self.download_reshade_preset_file()
         self.download_qss_file()
         self.download_alembic_dir()
-        # self.download_alembic_config_file()
 
     def download_reshade_ini_file(self):
         remote_file = variables.REMOTE_RESHADE_FILENAME

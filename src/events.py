@@ -142,12 +142,8 @@ def edit_selected_game_path(self):
                     )
                 return
 
-            old_file_name, _ = os.path.splitext(
-                os.path.basename(old_game_file_path)
-            )
-            new_file_name, new_extension = os.path.splitext(
-                os.path.basename(new_game_file_path)
-            )
+            old_file_name, _ = os.path.splitext(os.path.basename(old_game_file_path))
+            new_file_name, new_extension = os.path.splitext(os.path.basename(new_game_file_path))
             if old_file_name != new_file_name:
                 self.enable_widgets(False)
                 qt_utils.show_message_window(
@@ -186,8 +182,7 @@ def edit_selected_game_path(self):
             reshade_dll, log_file_path = _get_reshade_dll_name(self, old_game_dir)
 
             try:
-                shutil.move(reshade_dll,
-                            os.path.join(new_game_dir, os.path.basename(reshade_dll)))
+                shutil.move(reshade_dll, os.path.join(new_game_dir, os.path.basename(reshade_dll)))
             except OSError:
                 pass
 
@@ -497,7 +492,7 @@ def game_config_form_result(self, architecture, status):
                         self.log,
                         "error",
                         f"{sql_games_dict['name']}\n\n"
-                        f"{messages.error_change_name}"
+                        f"{messages.error_change_game_name}"
                     )
                 return
 
@@ -540,12 +535,8 @@ def apply_all(self, reset=False):
         self.enable_form(True)
         self.qtobj.apply_button.setEnabled(True)
 
-        if len(errors) == 0 \
-                and self.need_apply is False \
-                and self.show_info_messages:
-            qt_utils.show_message_window(self.log,
-                                         "info",
-                                         messages.apply_success)
+        if len(errors) == 0 and self.need_apply is False and self.show_info_messages:
+            qt_utils.show_message_window(self.log, "info", messages.apply_success)
         elif len(errors) > 0:
             err = "\n".join(errors)
             qt_utils.show_message_window(self.log,
