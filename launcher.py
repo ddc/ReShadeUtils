@@ -5,10 +5,10 @@ import subprocess
 import sys
 import requests
 from ddcUtils import OsUtils
+from ddcUtils.databases import DBSqlite
 from PyQt6 import QtWidgets
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
-from src.database.db import Database
 from src.log import Log
 from src.tools import file_utils, program_utils
 from src.tools.qt import qt_utils
@@ -26,9 +26,8 @@ class Launcher:
         self.client_version = None
 
     def start(self):
-        database = Database(self.log)
-        database_engine = database.get_db_engine()
-        with database.get_db_session(database_engine) as db_session:
+        database = DBSqlite(variables.DATABASE_PATH)
+        with database.session() as db_session:
             self.db_session = db_session
             self.progressbar.set_values(messages.checking_files, 25)
             file_utils.check_local_files(self)

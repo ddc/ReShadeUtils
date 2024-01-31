@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import random
+from ddcUtils.databases import DBSqlite
 from faker import Faker
 from src.constants.variables import ALL_APIS, ALL_ARCHITECTURES
-from src.database.db import Database
 
 
-def get_database_engine_fixture():
-    database = Database(None, ":memory:")
-    database_engine = database.get_db_engine()
+def get_database_engine():
+    database = DBSqlite(":memory:")
+    database_engine = database.engine()
     return database_engine
 
 

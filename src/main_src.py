@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
+from ddcUtils.databases import DBSqlite
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from src import events
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.database.dal.games_dal import GamesDal
-from src.database.db import Database
 from src.log import Log
 from src.tools import file_utils, program_utils, reshade_utils
 from src.tools.qt import qt_utils
@@ -40,9 +40,8 @@ class MainSrc:
     def start(self):
         self.log.info(f"STARTING {variables.FULL_PROGRAM_NAME}")
 
-        database = Database(self.log)
-        database_engine = database.get_db_engine()
-        with database.get_db_session(database_engine) as db_session:
+        database = DBSqlite(variables.DATABASE_PATH)
+        with database.session() as db_session:
             self.db_session = db_session
 
             self.progressbar.set_values(messages.checking_files, 15)

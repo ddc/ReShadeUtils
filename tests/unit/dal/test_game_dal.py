@@ -7,18 +7,13 @@ from src.database.models.games_model import Games
 from tests.data import base_data
 
 
-database_engine = base_data.get_database_engine_fixture()
-
-
-@pytest.fixture(scope="session")
-def db_session_fixture():
-    with Session(database_engine) as session:
-        yield session
+database_engine = base_data.get_database_engine()
 
 
 @pytest.fixture(name="db_session")
-def get_db_session(db_session_fixture):
-    return db_session_fixture
+def get_db_session():
+    with Session(database_engine) as session:
+        yield session
 
 
 @pytest.fixture
