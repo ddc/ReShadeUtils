@@ -356,21 +356,21 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "ddcutils"
-version = "1.0.13"
+version = "1.0.15"
 description = "Few Utilities"
 optional = false
 python-versions = ">=3.11.0,<4.0.0"
 files = [
-    {file = "ddcutils-1.0.13-py3-none-any.whl", hash = "sha256:040c1336e8264e4ad66c7bacb4c045d9d637fca50762fdf6de4ca132b269f9ac"},
-    {file = "ddcutils-1.0.13.tar.gz", hash = "sha256:f51588fdc82ed4955d5fca3ab83b6abbb266d03de567a7cfd335fd51abbff37d"},
+    {file = "ddcutils-1.0.15-py3-none-any.whl", hash = "sha256:0ee3e39924662980aeb89a362db7e28bbbec9c3c860aaa7367cbe478d988c3c1"},
+    {file = "ddcutils-1.0.15.tar.gz", hash = "sha256:7743da1a77c62353ccc5171c3417f2f8ab64f419a655f39ad6343a42e174e5c1"},
 ]
 
 [package.dependencies]
-cryptography = ">=42.0.1,<43.0.0"
+cryptography = ">=42.0.2,<43.0.0"
 requests = ">=2.31.0,<3.0.0"
 SQLAlchemy = ">=2.0.25,<3.0.0"
 toml = ">=0.10.2,<0.11.0"
-urllib3 = ">=2.1.0,<3.0.0"
+urllib3 = ">=2.2.0,<3.0.0"
 
 [[package]]
 name = "faker"
@@ -530,13 +530,13 @@ altgraph = ">=0.17"
 
 [[package]]
 name = "mako"
-version = "1.3.0"
+version = "1.3.2"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Mako-1.3.0-py3-none-any.whl", hash = "sha256:57d4e997349f1a92035aa25c17ace371a4213f2ca42f99bee9a602500cfd54d9"},
-    {file = "Mako-1.3.0.tar.gz", hash = "sha256:e3a9d388fd00e87043edbe8792f45880ac0114e9c4adc69f6e9bfb2c55e3b11b"},
+    {file = "Mako-1.3.2-py3-none-any.whl", hash = "sha256:32a99d70754dfce237019d17ffe4a282d2d3351b9c476e90d8a60e63f133b80c"},
+    {file = "Mako-1.3.2.tar.gz", hash = "sha256:2a0c8ad7f6274271b3bb7467dd37cf9cc6dab4bc19cb69a4ef10669402de698e"},
 ]
 
 [package.dependencies]
@@ -1064,4 +1064,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11, <3.13"
-content-hash = "46bcb10643439e5fe436a383a45042f0c64a7c1dad06c0697ba296757d236412"
+content-hash = "fa0da852c61bd0024610aec251d9c7e3cb8c381cf6a7049ef612a22729c8ff84"
