@@ -6,7 +6,7 @@ from ddcUtils import MiscUtils, OsUtils
 
 
 DEBUG = False
-VERSION = 4.7
+VERSION = 4.8
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
 FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
