@@ -356,13 +356,13 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "ddcutils"
-version = "1.0.15"
+version = "1.0.16"
 description = "Few Utilities"
 optional = false
 python-versions = ">=3.11.0,<4.0.0"
 files = [
-    {file = "ddcutils-1.0.15-py3-none-any.whl", hash = "sha256:0ee3e39924662980aeb89a362db7e28bbbec9c3c860aaa7367cbe478d988c3c1"},
-    {file = "ddcutils-1.0.15.tar.gz", hash = "sha256:7743da1a77c62353ccc5171c3417f2f8ab64f419a655f39ad6343a42e174e5c1"},
+    {file = "ddcutils-1.0.16-py3-none-any.whl", hash = "sha256:9d20ef0ca0aa05d6378648f33e6dbb62a5ef4fb73527a16226049f5ed3180d99"},
+    {file = "ddcutils-1.0.16.tar.gz", hash = "sha256:8ccca098bf08a337f71e007171b1edcce0cee4ea69d61f3712cd6e061433b2d1"},
 ]
 
 [package.dependencies]
@@ -1064,4 +1064,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11, <3.13"
-content-hash = "a61fe8c483d8ed435056c2220f89f86d046ce4016ed2a8226d8d97ef3837b32f"
+content-hash = "145fad5ac70a66a3fb50e18b5a21c4d427f95a5a5d3181af5dc6ecbd291afb89"
