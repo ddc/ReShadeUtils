@@ -13,7 +13,7 @@ class GamesDal:
 
     def insert_game(self, games_dict: dict):
         stmt = Games(
-            name=games_dict["name"],
+            name=games_dict["game_name"],
             architecture=games_dict["architecture"],
             api=games_dict["api"],
             path=games_dict["path"])
@@ -41,7 +41,7 @@ class GamesDal:
 
     def update_game(self, games_dict: dict):
         stmt = sa.update(Games).where(Games.id == games_dict["id"]).values(
-            name=games_dict["name"],
+            name=games_dict["game_name"],
             architecture=games_dict["architecture"],
             api=games_dict["api"]
         )

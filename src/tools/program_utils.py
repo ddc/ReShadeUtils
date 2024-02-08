@@ -17,9 +17,8 @@ def check_program_updates(self):
     self.qtobj.update_button.setVisible(False)
     if self.check_program_updates:
         new_version_dict = get_new_program_version(self)
-        client_version = new_version_dict["client_version"]
         remote_version = new_version_dict["remote_version"]
-        if remote_version > client_version:
+        if remote_version > variables.VERSION:
             new_version_msg = f"Version {remote_version} available for download"
             self.qtobj.updateAvail_label.clear()
             self.qtobj.updateAvail_label.setText(new_version_msg)
@@ -30,10 +29,9 @@ def check_program_updates(self):
 
 
 def get_new_program_version(self):
-    remote_version = 0
+    remote_version = (0, 0, 0)
     remote_version_filename = variables.REMOTE_VERSION_FILENAME
     result = {
-        "client_version": float(self.client_version),
         "remote_version": remote_version,
     }
 
@@ -44,7 +42,7 @@ def get_new_program_version(self):
                 if line:
                     remote_version = line.rstrip()
                     break
-            result["remote_version"] = float(remote_version)
+            result["remote_version"] = tuple(int(x) for x in remote_version.split("."))
         else:
             err_msg = (
                 f"{messages.error_check_new_version}\n"

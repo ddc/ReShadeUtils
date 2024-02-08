@@ -1157,10 +1157,10 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Reset default config files</string>
+      <string>Reset all games and default config files</string>
      </property>
      <property name="text">
-      <string>RESET DEFAULT CONFIG FILES</string>
+      <string>RESET ALL GAMES AND DEFAULT CONFIG FILES</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">

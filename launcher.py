@@ -48,7 +48,7 @@ class Launcher:
         config_sql = ConfigDal(self.db_session, self.log)
         rs_config = config_sql.get_configs()
         if rs_config[0].get("program_version") is None:
-            self.client_version = variables.VERSION
+            self.client_version = variables.VERSION_STR
         else:
             self.client_version = rs_config[0].get("program_version")
         if rs_config[0].get("check_program_updates"):
