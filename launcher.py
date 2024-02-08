@@ -54,7 +54,7 @@ class Launcher:
         if rs_config[0].get("check_program_updates"):
             new_version_dict = program_utils.get_new_program_version(self)
             remote_version = new_version_dict["remote_version"]
-            if float(remote_version) > float(self.client_version):
+            if remote_version > variables.VERSION:
                 self.new_version = remote_version
                 self.new_version_msg = f"Version {remote_version} available for download"
                 self.download_new_program_version()
