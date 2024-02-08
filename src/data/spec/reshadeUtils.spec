@@ -36,5 +36,4 @@ exe = EXE(pyz,
           console=False,
           version='version.rc',
           uac_admin=False,
-          copy_metadata=['ddcutils'],
           icon='')

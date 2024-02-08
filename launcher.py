@@ -19,7 +19,8 @@ class Launcher:
     def __init__(self):
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
-        self.program_path = os.path.join(OsUtils.get_current_path(), variables.EXE_PROGRAM_NAME)
+        self.program_name = variables.EXE_PROGRAM_NAME if OsUtils.is_windows() else variables.SHORT_PROGRAM_NAME
+        self.program_path = os.path.join(OsUtils.get_current_path(), self.program_name)
         self.db_session = None
         self.new_version = None
         self.new_version_msg = None
@@ -33,7 +34,7 @@ class Launcher:
             file_utils.check_local_files(self)
 
             if not os.path.isfile(self.program_path):
-                self.program_path = os.path.join(variables.PROGRAM_PATH, variables.EXE_PROGRAM_NAME)
+                self.program_path = os.path.join(variables.PROGRAM_PATH, self.program_name)
 
             self.progressbar.set_values(messages.checking_database, 50)
             program_utils.run_alembic_migrations()
@@ -59,7 +60,7 @@ class Launcher:
                 self.download_new_program_version()
 
     def download_new_program_version(self):
-        program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{self.new_version}/{variables.EXE_PROGRAM_NAME}"
+        program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{self.new_version}/{self.program_name}"
         r = requests.get(program_url)
         if r.status_code == 200:
             with open(self.program_path, "wb") as outfile:
@@ -85,7 +86,7 @@ class Launcher:
             if code is None and hasattr(e, "returncode"):
                 self.log.error(f"cmd:{self.program_path}"
                                f" - code:{e.returncode} - {e}")
-            msg = f"{messages.error_executing_program} {variables.EXE_PROGRAM_NAME}\n" \
+            msg = f"{messages.error_executing_program} {self.program_name}\n" \
                   f"{messages.error_check_installation}"
             qt_utils.show_message_window(self.log, "error", msg)
 

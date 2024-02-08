@@ -17,7 +17,7 @@ OS_NAME = platform.system()
 if DEBUG:
     PROGRAM_PATH = os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "dev"))
 else:
-    _local_app_data = os.getenv("LOCALAPPDATA") if OS_NAME == "Windows" \
+    _local_app_data = os.getenv("LOCALAPPDATA") if OsUtils.is_windows() \
         else os.path.join(os.getenv("HOME"), ".local", "share")
     PROGRAM_PATH = os.path.normpath(os.path.join(_local_app_data, SHORT_PROGRAM_NAME))
 # ############################################################################
@@ -44,7 +44,7 @@ SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
 SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
 RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
 RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
-RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils.get_pictures_path(), "Screenshots")
+RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screenshots")
 RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")

@@ -18,7 +18,7 @@ requests = "^2.31.0"
 PyQt6 = "^6.6.1"
 alembic = "^1.13.1"
 fsspec = "^2024.2.0"
-ddcutils = "^1.0.17"
+ddcutils = {path = "/home/ddc/Workspaces/Python/Personal/ddcUtils/dist/ddcutils-1.0.18.tar.gz"}
 
 [tool.poetry.group.test.dependencies]
 pyinstaller = "^6.3.0"

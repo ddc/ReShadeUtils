@@ -355,14 +355,13 @@ test = ["certifi", "pretend", "pytest (>=6.2.0)", "pytest-benchmark", "pytest-co
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
-name = "ddcutils"
-version = "1.0.17"
+name = "ddcUtils"
+version = "1.0.18"
 description = "Few Utilities"
 optional = false
 python-versions = ">=3.11.0,<4.0.0"
 files = [
-    {file = "ddcutils-1.0.17-py3-none-any.whl", hash = "sha256:c427480198a93f0af6927d78c5dab83032f9b9f3777ede5ba194dcffc6745e8d"},
-    {file = "ddcutils-1.0.17.tar.gz", hash = "sha256:2e87b8199e844ef7bb53d194494cd36a87a9aecdb368f1c209db4bbadb5d096d"},
+    {file = "ddcutils-1.0.18.tar.gz", hash = "sha256:d35d027504863c94ef772ac3e1b0846f1c64502f2ed555503e88f595fa479086"},
 ]
 
 [package.dependencies]
@@ -370,6 +369,10 @@ cryptography = ">=42.0.2,<43.0.0"
 requests = ">=2.31.0,<3.0.0"
 SQLAlchemy = ">=2.0.25,<3.0.0"
 urllib3 = ">=2.2.0,<3.0.0"
+
+[package.source]
+type = "file"
+url = "../ddcUtils/dist/ddcutils-1.0.18.tar.gz"
 
 [[package]]
 name = "faker"
@@ -1053,4 +1056,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11, <3.13"
-content-hash = "3cb26fde5e13b0a6a980fa0d28163d6e17f6debd94f95f45236aae086da55c8f"
+content-hash = "b2cf4e2f0f7a302c56973865392a6b2d6a21beebd07031e64a5dac56317487d2"
