@@ -12,13 +12,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.11, <3.13"
 beautifulsoup4 = "^4.12.3"
-urllib3 = "^2.1.0"
+urllib3 = "^2.2.0"
 SQLAlchemy = "^2.0.25"
 requests = "^2.31.0"
 PyQt6 = "^6.6.1"
 alembic = "^1.13.1"
-fsspec = "^2023.12.2"
-ddcutils = "^1.0.16"
+fsspec = "^2024.2.0"
+ddcutils = "^1.0.17"
 
 [tool.poetry.group.test.dependencies]
 pyinstaller = "^6.3.0"

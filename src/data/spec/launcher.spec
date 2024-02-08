@@ -5,10 +5,11 @@ block_cipher = None
 data_files = []
 
 a = Analysis(['../../../launcher.py'],
-             pathex=['*path*'],
+             pathex=[],
              binaries=[],
-             datas=data_files,
+             datas = data_files,
              hiddenimports=['sqlalchemy.sql.default_comparator', 'fsspec.implementations.github'],
+             copy_metadata=['importlib_metadata'],
              hookspath=[],
              runtime_hooks=[],
              excludes=['pysqlite2', 'MySQLdb', 'psycopg2', 'sip'],
