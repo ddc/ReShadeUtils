@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
+from ddcUtils import FileUtils, get_exception, Object
 from PyQt6 import QtCore
-from src.files import Files
-from src.database.dal.games_dal import GamesDal
-from src.database.dal.config_dal import ConfigDal
 from PyQt6.QtGui import QDesktopServices
-from src.constants import variables, messages
-from src.tools import file_utils, program_utils, reshade_utils, misc_utils
+from src.constants import messages, variables
+from src.database.dal.config_dal import ConfigDal
+from src.database.dal.games_dal import GamesDal
+from src.files import Files
+from src.tools import file_utils, program_utils, reshade_utils
 from src.tools.qt import qt_utils
 
 
@@ -31,8 +32,8 @@ def add_game(self):
             if len(rs_name) == 0:
                 self.selected_game = None
                 self.added_game_path = filename_path
-                binary_type = file_utils.get_binary_type(self, filename_path)
-                match binary_type.upper():
+                exe_binary_type = FileUtils.get_exe_binary_type(filename_path)
+                match exe_binary_type.upper():
                     case "AMD64" | "IA64":
                         architecture = "64bits"
                     case "IA32":
@@ -73,12 +74,12 @@ def delete_game(self):
             try:
                 os.remove(reshade_dll)
             except OSError as e:
-                self.log.error(f"remove_file: {misc_utils.get_exception(e)}")
+                self.log.error(f"remove_file: {get_exception(e)}")
                 qt_utils.show_message_window(self.log,
                                              "error",
                                              f"{messages.error_delete_dll} "
                                              f"{game_name} dll\n\n"
-                                             f"{misc_utils.get_exception(e)}")
+                                             f"{get_exception(e)}")
                 self.enable_widgets(False)
                 return
 
@@ -116,7 +117,7 @@ def delete_game(self):
                 self.log,
                 "error",
                 f"ERROR deleting {game_name} files\n\n"
-                f"{misc_utils.get_exception(e)}"
+                f"{get_exception(e)}"
             )
 
         self.enable_widgets(False)
@@ -141,12 +142,8 @@ def edit_selected_game_path(self):
                     )
                 return
 
-            old_file_name, _ = os.path.splitext(
-                os.path.basename(old_game_file_path)
-            )
-            new_file_name, new_extension = os.path.splitext(
-                os.path.basename(new_game_file_path)
-            )
+            old_file_name, _ = os.path.splitext(os.path.basename(old_game_file_path))
+            new_file_name, new_extension = os.path.splitext(os.path.basename(new_game_file_path))
             if old_file_name != new_file_name:
                 self.enable_widgets(False)
                 qt_utils.show_message_window(
@@ -179,14 +176,13 @@ def edit_selected_game_path(self):
                 files.apply_reshade_ini_file(new_game_dir,
                                              game_screenshots_path)
             except Exception as e:
-                self.log.error(f"create_files: {misc_utils.get_exception(e)}")
+                self.log.error(f"create_files: {get_exception(e)}")
 
             # remove dll from game path
             reshade_dll, log_file_path = _get_reshade_dll_name(self, old_game_dir)
 
             try:
-                shutil.move(reshade_dll,
-                            os.path.join(new_game_dir, os.path.basename(reshade_dll)))
+                shutil.move(reshade_dll, os.path.join(new_game_dir, os.path.basename(reshade_dll)))
             except OSError:
                 pass
 
@@ -199,16 +195,14 @@ def edit_selected_game_path(self):
             # move all reshade files and remove reshade.ini with old path
             all_old_game_dir_files = file_utils.list_reshade_files(old_game_dir)
             for f in all_old_game_dir_files:
-                if os.path.basename(f) == variables.RESHADE_INI\
-                        or os.path.basename(f).lower().endswith("log"):
+                if os.path.basename(f) == variables.RESHADE_INI or os.path.basename(f).lower().endswith("log"):
                     try:
                         os.remove(f)
                     except OSError:
                         pass
                 else:
                     try:
-                        shutil.move(f, os.path.join(new_game_dir,
-                                                    os.path.basename(f)))
+                        shutil.move(f, os.path.join(new_game_dir, os.path.basename(f)))
                     except OSError:
                         pass
 
@@ -233,26 +227,25 @@ def edit_selected_game_plugin_config_file(self):
     self.enable_widgets(True)
     if self.selected_game is not None:
         game_dir = os.path.dirname(self.selected_game.path)
-        res_plug_ini_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
+        res_plug_ini_path = str(os.path.join(game_dir, variables.RESHADE_PRESET_INI))
 
         try:
             if not os.path.isfile(variables.RESHADE_PRESET_PATH):
                 create_files = Files(self)
                 create_files.download_reshade_preset_file()
         except Exception as e:
-            self.log.error(f"create_files: {misc_utils.get_exception(e)}")
+            self.log.error(f"create_files: {get_exception(e)}")
 
         try:
-            if not os.path.isfile(res_plug_ini_path) and os.path.isfile(
-                    variables.RESHADE_PRESET_PATH):
+            if not os.path.isfile(res_plug_ini_path) and os.path.isfile(variables.RESHADE_PRESET_PATH):
                 shutil.copy2(variables.RESHADE_PRESET_PATH, res_plug_ini_path)
         except Exception as e:
-            self.log.error(misc_utils.get_exception(e))
+            self.log.error(get_exception(e))
 
         try:
-            file_utils.open_file(res_plug_ini_path)
+            FileUtils.open_file(res_plug_ini_path)
         except Exception as e:
-            err_msg = f"{misc_utils.get_exception(e)}\n\n" \
+            err_msg = f"{get_exception(e)}\n\n" \
                       f"{messages.check_game_uninstalled}"
             qt_utils.show_message_window(self.log, "error", err_msg)
 
@@ -262,9 +255,9 @@ def edit_selected_game_plugin_config_file(self):
 def edit_default_preset_plugin_button_clicked(self):
     try:
         file_utils.check_local_files(self)
-        file_utils.open_file(variables.RESHADE_PRESET_PATH)
+        FileUtils.open_file(variables.RESHADE_PRESET_PATH)
     except Exception as e:
-        err_msg = f"{misc_utils.get_exception(e)}\n\n" \
+        err_msg = f"{get_exception(e)}\n\n" \
                   f"{variables.RESHADE_PRESET_PATH} {messages.unable_start}"
         qt_utils.show_message_window(self.log, "error", err_msg)
 
@@ -358,7 +351,7 @@ def programs_tableWidget_clicked(self, item):
     # clicked_item = self.qtobj.programs_tableWidget.currentItem()
     clicked_row = self.qtobj.programs_tableWidget.selectedItems()
 
-    self.selected_game = misc_utils.Object()
+    self.selected_game = Object()
     # self.selected_game.column = item.column()
     # self.selected_game.row = item.row()
     self.selected_game.name = clicked_row[0].text()
@@ -436,14 +429,14 @@ def game_config_form_result(self, architecture, status):
                     files = Files(self)
                     files.apply_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
                 except Exception as e:
-                    self.log.error(f"download_reshade_ini_file: {misc_utils.get_exception(e)}")
+                    self.log.error(f"download_reshade_ini_file: {get_exception(e)}")
 
                 try:
                     # rename screenshot folder
                     if os.path.isdir(old_screenshots_path):
                         os.rename(old_screenshots_path, new_screenshots_path)
                 except OSError as e:
-                    self.log.error(f"rename_screenshot_dir: {misc_utils.get_exception(e)}")
+                    self.log.error(f"rename_screenshot_dir: {get_exception(e)}")
 
                 try:
                     # deleting Reshade.dll
@@ -460,13 +453,13 @@ def game_config_form_result(self, architecture, status):
                         if os.path.isfile(dxgi_game_path):
                             os.remove(dxgi_game_path)
                 except OSError as e:
-                    self.log.error(f"remove_reshade_file: {misc_utils.get_exception(e)}")
+                    self.log.error(f"remove_reshade_file: {get_exception(e)}")
 
                 try:
                     # creating Reshade.dll
                     shutil.copy2(src_path, dst_path)
                 except shutil.Error as e:
-                    self.log.error(f"copyfile: {src_path} to {dst_path} - {misc_utils.get_exception(e)}")
+                    self.log.error(f"copyfile: {src_path} to {dst_path} - {get_exception(e)}")
 
                 if self.show_info_messages:
                     qt_utils.show_message_window(
@@ -499,7 +492,7 @@ def game_config_form_result(self, architecture, status):
                         self.log,
                         "error",
                         f"{sql_games_dict['name']}\n\n"
-                        f"{messages.error_change_name}"
+                        f"{messages.error_change_game_name}"
                     )
                 return
 
@@ -542,12 +535,8 @@ def apply_all(self, reset=False):
         self.enable_form(True)
         self.qtobj.apply_button.setEnabled(True)
 
-        if len(errors) == 0 \
-                and self.need_apply is False \
-                and self.show_info_messages:
-            qt_utils.show_message_window(self.log,
-                                         "info",
-                                         messages.apply_success)
+        if len(errors) == 0 and self.need_apply is False and self.show_info_messages:
+            qt_utils.show_message_window(self.log, "info", messages.apply_success)
         elif len(errors) > 0:
             err = "\n".join(errors)
             qt_utils.show_message_window(self.log,
@@ -602,8 +591,8 @@ def _apply_single(self, games_dict, reset=False):
                 errors = f"[{game_name}]: No such file or directory"
 
     except Exception as e:
-        self.log.error(f"[{game_name}]:[{misc_utils.get_exception(e)}]")
-        errors = f"[{game_name}]: {misc_utils.get_exception(e)}"
+        self.log.error(f"[{game_name}]:[{get_exception(e)}]")
+        errors = f"[{game_name}]: {get_exception(e)}"
 
     return errors
 
@@ -614,9 +603,9 @@ def open_selected_game_location(self):
         game_dir = os.path.dirname(self.selected_game.path)
 
         try:
-            file_utils.open_file(game_dir)
+            FileUtils.open_file(game_dir)
         except Exception as e:
-            err_msg = f"{misc_utils.get_exception(e)}\n\n" \
+            err_msg = f"{get_exception(e)}\n\n" \
                       f"{messages.check_game_uninstalled}"
             qt_utils.show_message_window(self.log, "error", err_msg)
 

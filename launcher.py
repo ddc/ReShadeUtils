@@ -1,39 +1,40 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
+import subprocess
 import sys
 import requests
-import subprocess
-from src.log import Log
+from ddcUtils import OsUtils
+from ddcUtils.databases import DBSqlite
 from PyQt6 import QtWidgets
-from src.tools.qt.progressbar import ProgressBar
+from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
-from src.constants import variables, messages
-from src.tools import file_utils, program_utils, misc_utils
+from src.log import Log
+from src.tools import file_utils, program_utils
 from src.tools.qt import qt_utils
-from src.database.db import Database
+from src.tools.qt.progressbar import ProgressBar
 
 
 class Launcher:
     def __init__(self):
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
-        self.program_path = os.path.join(misc_utils.get_current_path(), variables.EXE_PROGRAM_NAME)
+        self.program_name = variables.EXE_PROGRAM_NAME if OsUtils.is_windows() else variables.SHORT_PROGRAM_NAME
+        self.program_path = os.path.join(OsUtils.get_current_path(), self.program_name)
         self.db_session = None
         self.new_version = None
         self.new_version_msg = None
         self.client_version = None
 
     def start(self):
-        database = Database(self.log)
-        database_engine = database.get_db_engine()
-        with database.get_db_session(database_engine) as db_session:
+        database = DBSqlite(variables.DATABASE_PATH)
+        with database.session() as db_session:
             self.db_session = db_session
             self.progressbar.set_values(messages.checking_files, 25)
             file_utils.check_local_files(self)
 
             if not os.path.isfile(self.program_path):
-                self.program_path = os.path.join(variables.PROGRAM_PATH, variables.EXE_PROGRAM_NAME)
+                self.program_path = os.path.join(variables.PROGRAM_PATH, self.program_name)
 
             self.progressbar.set_values(messages.checking_database, 50)
             program_utils.run_alembic_migrations()
@@ -59,7 +60,7 @@ class Launcher:
                 self.download_new_program_version()
 
     def download_new_program_version(self):
-        program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{self.new_version}/{variables.EXE_PROGRAM_NAME}"
+        program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{self.new_version}/{self.program_name}"
         r = requests.get(program_url)
         if r.status_code == 200:
             with open(self.program_path, "wb") as outfile:
@@ -85,7 +86,7 @@ class Launcher:
             if code is None and hasattr(e, "returncode"):
                 self.log.error(f"cmd:{self.program_path}"
                                f" - code:{e.returncode} - {e}")
-            msg = f"{messages.error_executing_program} {variables.EXE_PROGRAM_NAME}\n" \
+            msg = f"{messages.error_executing_program} {self.program_name}\n" \
                   f"{messages.error_check_installation}"
             qt_utils.show_message_window(self.log, "error", msg)
 

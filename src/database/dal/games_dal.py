@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sqlalchemy as sa
-from sqlalchemy.sql import collate, asc
-from src.database.db_utils import DBUtils
+from ddcUtils.databases import DBUtils
+from sqlalchemy.sql import asc, collate
 from src.database.models.games_model import Games
 
 
@@ -9,7 +9,7 @@ class GamesDal:
     def __init__(self, db_session, log):
         self.log = log
         self.columns = [x for x in Games.__table__.columns]
-        self.db_utils = DBUtils(db_session, log)
+        self.db_utils = DBUtils(db_session)
 
     def insert_game(self, games_dict: dict):
         stmt = Games(

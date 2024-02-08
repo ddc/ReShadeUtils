@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
-from pathlib import Path
 import shutil
+from pathlib import Path
 import fsspec
 import requests
+from ddcUtils import FileUtils
 from src.constants import variables
-from src.tools import file_utils
 
 
 class Files:
@@ -18,7 +18,6 @@ class Files:
         self.download_reshade_preset_file()
         self.download_qss_file()
         self.download_alembic_dir()
-        # self.download_alembic_config_file()
 
     def download_reshade_ini_file(self):
         remote_file = variables.REMOTE_RESHADE_FILENAME
@@ -51,12 +50,12 @@ class Files:
         preset_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
         intermediate_cache_path = os.getenv("TEMP")
 
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
-        file_utils.set_ini_file_settings(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
+        FileUtils.set_file_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
 
         return None
 

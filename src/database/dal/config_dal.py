@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 import sqlalchemy as sa
+from ddcUtils.databases import DBUtils
 from src.database.models.config_model import Config
-from src.database.db_utils import DBUtils
 
 
 class ConfigDal:
     def __init__(self, db_session, log):
         self.log = log
         self.columns = [x for x in Config.__table__.columns]
-        self.db_utils = DBUtils(db_session, log)
+        self.db_utils = DBUtils(db_session)
 
     def get_configs(self, config_id=1):
         stmt = sa.select(*self.columns).where(Config.id == config_id)

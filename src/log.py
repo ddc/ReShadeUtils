@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
-import os
-import sys
 import gzip
 import logging.handlers
+import os
+import sys
+from ddcUtils import get_exception
 from src.constants import variables
 from src.tools.qt import qt_utils
-from src.tools.misc_utils import get_exception
 
 
 class Log:

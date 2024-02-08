@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 from PyQt6 import QtWidgets
-from src.config import Ui_config
 from PyQt6.QtWidgets import QFileDialog
 from src import events
-from src.constants import variables, messages
+from src.config import Ui_config
+from src.constants import messages, variables
 from src.tools import file_utils
 
 
@@ -13,10 +13,7 @@ def open_exe_file_dialog():
     title = "Open file"
     path = "C:"
     _filter = "exe(*.exe)"
-    filepath, _ = QFileDialog.getOpenFileName(parent=qfd,
-                                              caption=title,
-                                              directory=path,
-                                              filter=_filter)
+    filepath, _ = QFileDialog.getOpenFileName(parent=qfd, caption=title, directory=path, filter=_filter)
     if filepath == "":
         return None
     else:
@@ -63,9 +60,7 @@ def show_game_config_form(self, game_name, architecture):
     self.game_config_form.qtObj = qt_obj
 
     if self.use_dark_theme:
-        self.game_config_form.setStyleSheet(
-            open(variables.QSS_PATH, "r").read()
-        )
+        self.game_config_form.setStyleSheet(open(variables.QSS_PATH, "r").read())
 
     self.game_config_form.qtObj.game_name_lineEdit.setFocus()
     self.game_config_form.show()
@@ -77,9 +72,7 @@ def show_game_config_form(self, game_name, architecture):
         lambda: events.game_config_form_result(self, architecture, "CANCEL"))
 
     if self.selected_game is not None:
-        self.game_config_form.qtObj.game_name_lineEdit.setText(
-            self.selected_game.name
-        )
+        self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.name)
         if self.selected_game.api == variables.DX9_DISPLAY_NAME:
             self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
             self.game_config_form.qtObj.dx_radioButton.setChecked(False)
