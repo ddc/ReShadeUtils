@@ -23,7 +23,7 @@ def upgrade() -> None:
     op.create_table(
         'config',
         sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-        sa.Column('program_version', sa.String(), server_default=str(variables.VERSION), nullable=True),
+        sa.Column('program_version', sa.String(), server_default=variables.VERSION_STR, nullable=True),
         sa.Column('reshade_version', sa.String(), nullable=True),
         sa.Column('use_dark_theme', sa.Boolean(), server_default='0', nullable=False),
         sa.Column('check_program_updates', sa.Boolean(), server_default='1', nullable=False),

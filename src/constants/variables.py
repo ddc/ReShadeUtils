@@ -6,10 +6,11 @@ from ddcUtils import MiscUtils, OsUtils
 
 
 DEBUG = False
-VERSION = 4.8
+VERSION = (4, 8, 1)
+VERSION_STR = ".".join(map(str, VERSION))
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
-FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION}"
+FULL_PROGRAM_NAME = f"{PROGRAM_NAME} v{VERSION_STR}"
 EXE_PROGRAM_NAME = f"{SHORT_PROGRAM_NAME}.exe"
 DAYS_TO_KEEP_LOGS = 7
 OS_NAME = platform.system()
@@ -48,7 +49,8 @@ RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screensho
 RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
-QSS_PATH = os.path.join(PROGRAM_PATH, "style.qss")
+QSS_FILE_NAME = "style.qss"
+QSS_PATH = os.path.join(PROGRAM_PATH, QSS_FILE_NAME)
 ALEMBIC_MIGRATIONS_DIR = os.path.join(PROGRAM_PATH, "src", "database", "migrations")
 ALEMBIC_CONFIG_FILE = os.path.join(ALEMBIC_MIGRATIONS_DIR, "alembic.ini")
 # ############################################################################

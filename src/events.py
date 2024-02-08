@@ -262,17 +262,6 @@ def edit_default_preset_plugin_button_clicked(self):
         qt_utils.show_message_window(self.log, "error", err_msg)
 
 
-def reset_all_button_clicked(self):
-    self.progressbar.set_values(messages.reseting_files, 25)
-    Files(self).download_all_files()
-    self.progressbar.set_values(messages.reseting_files, 50)
-    reshade_utils.download_shaders(self)
-    self.progressbar.set_values(messages.reseting_files, 75)
-    apply_all(self, reset=True)
-    self.progressbar.close()
-    qt_utils.show_message_window(self.log, "info", messages.reset_success)
-
-
 def dark_theme_clicked(self, status):
     if status == "YES":
         self.use_dark_theme = True
@@ -385,7 +374,7 @@ def game_config_form_result(self, architecture, status):
             return
 
         sql_games_dict = {
-            "name": self.game_config_form.qtObj.game_name_lineEdit.text()
+            "game_name": self.game_config_form.qtObj.game_name_lineEdit.text()
         }
 
         if architecture == "32bits":
@@ -410,7 +399,7 @@ def game_config_form_result(self, architecture, status):
                 dst_path = os.path.join(self.selected_game.game_dir,
                                         variables.OPENGL_DLL)
 
-            if (self.selected_game.name != sql_games_dict["name"]
+            if (self.selected_game.name != sql_games_dict["game_name"]
                     or (self.selected_game.api != sql_games_dict["api"])):
                 # checking name changes
                 # create Reshade.ini to replace edit CurrentPresetPath
@@ -421,7 +410,7 @@ def game_config_form_result(self, architecture, status):
                 )
                 if len(old_screenshots_path) > 0:
                     scrrenshot_dir_path = os.path.dirname(old_screenshots_path)
-                    new_screenshots_path = os.path.join(scrrenshot_dir_path, sql_games_dict["name"])
+                    new_screenshots_path = os.path.join(scrrenshot_dir_path, sql_games_dict["game_name"])
                 else:
                     new_screenshots_path = ""
 
@@ -466,7 +455,7 @@ def game_config_form_result(self, architecture, status):
                         self.log,
                         "info",
                         f"{messages.game_updated}\n\n"
-                        f"{sql_games_dict['name']}"
+                        f"{sql_games_dict['game_name']}"
                     )
 
             sql_games_dict["id"] = self.selected_game.id
@@ -491,21 +480,21 @@ def game_config_form_result(self, architecture, status):
                     qt_utils.show_message_window(
                         self.log,
                         "error",
-                        f"{sql_games_dict['name']}\n\n"
+                        f"{sql_games_dict['game_name']}\n\n"
                         f"{messages.error_change_game_name}"
                     )
                 return
 
+            _apply_single(self, sql_games_dict)
             games_sql.insert_game(sql_games_dict)
             del self.added_game_path
-            _apply_single(self, sql_games_dict)
             self.populate_table_widget()
             self.enable_widgets(False)
             if self.show_info_messages:
                 qt_utils.show_message_window(self.log,
                                              "info",
                                              f"{messages.game_added}\n\n"
-                                             f"{sql_games_dict['name']}")
+                                             f"{sql_games_dict['game_name']}")
 
 
 def apply_all(self, reset=False):
@@ -524,7 +513,7 @@ def apply_all(self, reset=False):
             games_dict = {
                 "api": rs_all_games[i]["api"],
                 "architecture": rs_all_games[i]["architecture"],
-                "name": rs_all_games[i]["name"],
+                "game_name": rs_all_games[i]["name"],
                 "path": rs_all_games[i]["path"]
             }
             result = _apply_single(self, games_dict, reset)
@@ -548,7 +537,7 @@ def apply_all(self, reset=False):
 def _apply_single(self, games_dict, reset=False):
     errors = None
     game_dir = os.path.dirname(games_dict["path"])
-    game_name = games_dict["name"]
+    game_name = games_dict["game_name"]
     file_utils.check_local_files(self)
     files = Files(self)
 
@@ -612,23 +601,36 @@ def open_selected_game_location(self):
     self.enable_widgets(False)
 
 
+def reset_all_button_clicked(self):
+    self.progressbar.set_values(messages.reseting_files, 25)
+    Files(self).download_all_files()
+    self.progressbar.set_values(messages.reseting_files, 50)
+    reshade_utils.download_shaders(self)
+    self.progressbar.set_values(messages.reseting_files, 75)
+    apply_all(self, reset=True)
+    self.progressbar.close()
+    qt_utils.show_message_window(self.log, "info", messages.reset_success)
+
+
 def reset_all_selected_game_files_btn(self):
     self.enable_widgets(True)
     if self.selected_game is not None:
-        self.progressbar.set_values(messages.reseting_files, 25)
-        Files(self).download_all_files()
-        self.progressbar.set_values(messages.reseting_files, 50)
+        self.progressbar.set_values(messages.reseting_game_files, 25)
+        files = Files(self)
+        files.download_reshade_files(self.selected_game.game_dir)
+        self.progressbar.set_values(messages.reseting_game_files, 50)
         reshade_utils.download_shaders(self)
-        self.progressbar.set_values(messages.reseting_files, 75)
+        self.progressbar.set_values(messages.reseting_game_files, 75)
         games_dict = {
             "api": self.selected_game.api,
             "architecture": self.selected_game.architecture,
             "game_name": self.selected_game.name,
             "path": self.selected_game.path
         }
-        _apply_single(self, games_dict, True)
+        res = _apply_single(self, games_dict, True)
         self.progressbar.close()
-        qt_utils.show_message_window(self.log, "info", messages.reset_success)
+        if res:
+            qt_utils.show_message_window(self.log, "info", messages.reset_success)
     self.enable_widgets(False)
 
 

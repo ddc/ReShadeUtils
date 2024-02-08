@@ -13,20 +13,30 @@ class Files:
         self.main = main
         self.log = main.log
 
-    def download_all_files(self):
-        self.download_reshade_ini_file()
-        self.download_reshade_preset_file()
+    def download_all_files(self, local_dir: str = None):
+        self.download_reshade_ini_file(local_dir)
+        self.download_reshade_preset_file(local_dir)
         self.download_qss_file()
         self.download_alembic_dir()
 
-    def download_reshade_ini_file(self):
+    def download_reshade_files(self, local_dir: str = None):
+        self.download_reshade_ini_file(local_dir)
+        self.download_reshade_preset_file(local_dir)
+
+    def download_reshade_ini_file(self, local_dir: str = None):
         remote_file = variables.REMOTE_RESHADE_FILENAME
-        local_file_path = variables.RESHADE_INI_PATH
+        if local_dir is None:
+            local_file_path = variables.RESHADE_INI_PATH
+        else:
+            local_file_path = os.path.join(local_dir, variables.RESHADE_INI)
         return self._download_file(remote_file, local_file_path)
 
-    def download_reshade_preset_file(self):
+    def download_reshade_preset_file(self, local_dir: str = None):
         remote_file = variables.REMOTE_PRESET_FILENAME
-        local_file_path = variables.RESHADE_PRESET_PATH
+        if local_dir is None:
+            local_file_path = variables.RESHADE_PRESET_PATH
+        else:
+            local_file_path = os.path.join(local_dir, variables.RESHADE_PRESET_INI)
         return self._download_file(remote_file, local_file_path)
 
     def download_qss_file(self):
@@ -44,18 +54,18 @@ class Files:
         except Exception as e:
             return e
 
-        game_reshade_ini_path = os.path.join(game_dir, variables.RESHADE_INI)
+        game_reshade_ini_path = str(os.path.join(game_dir, variables.RESHADE_INI))
         effect_search_paths = os.path.join(variables.PROGRAM_PATH, "Reshade-shaders", "Shaders")
         texture_search_paths = os.path.join(variables.PROGRAM_PATH, "Reshade-shaders", "Textures")
         preset_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
         intermediate_cache_path = os.getenv("TEMP")
 
-        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
-        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
-        FileUtils.set_file_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-        FileUtils.set_file_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
-        FileUtils.set_file_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
+        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
+        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
+        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        FileUtils().set_file_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
+        FileUtils().set_file_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
 
         return None
 

@@ -493,8 +493,8 @@ class Ui_Main(object):
         self.show_info_messages_groupBox.setTitle(_translate("Main", "Show Info and Confirmation Messages"))
         self.no_show_info_messages_radioButton.setText(_translate("Main", "NO"))
         self.yes_show_info_messages_radioButton.setText(_translate("Main", "YES"))
-        self.reset_all_button.setToolTip(_translate("Main", "Reset default config files"))
-        self.reset_all_button.setText(_translate("Main", "RESET DEFAULT CONFIG FILES"))
+        self.reset_all_button.setToolTip(_translate("Main", "Reset all games and default config files"))
+        self.reset_all_button.setText(_translate("Main", "RESET ALL GAMES AND DEFAULT CONFIG FILES"))
         self.main_tabWidget.setTabText(self.main_tabWidget.indexOf(self.settings_tab), _translate("Main", "SETTINGS"))
         self.about_textBrowser.setHtml(_translate("Main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

@@ -17,7 +17,7 @@ class MainSrc:
     def __init__(self, qtobj, form):
         self.qtobj = qtobj
         self.form = form
-        self.client_version = variables.VERSION
+        self.client_version = variables.VERSION_STR
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
         self.db_session = None
