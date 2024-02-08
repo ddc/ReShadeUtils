@@ -19,7 +19,8 @@ def check_program_updates(self):
         new_version_dict = get_new_program_version(self)
         remote_version = new_version_dict["remote_version"]
         if remote_version > variables.VERSION:
-            new_version_msg = f"Version {remote_version} available for download"
+            new_version = ".".join(map(str, remote_version))
+            new_version_msg = f"Version {new_version} available for download"
             self.qtobj.updateAvail_label.clear()
             self.qtobj.updateAvail_label.setText(new_version_msg)
             self.qtobj.update_button.setVisible(True)
