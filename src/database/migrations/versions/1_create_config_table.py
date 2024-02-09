@@ -29,7 +29,7 @@ def upgrade() -> None:
         sa.Column('check_program_updates', sa.Boolean(), server_default='1', nullable=False),
         sa.Column('show_info_messages', sa.Boolean(), server_default='1', nullable=False),
         sa.Column('check_reshade_updates', sa.Boolean(), server_default='1', nullable=False),
-        sa.Column('update_shaders', sa.Boolean(), server_default='1', nullable=False),
+        sa.Column('update_shaders', sa.Boolean(), server_default='0', nullable=False),
         sa.Column('create_screenshots_folder', sa.Boolean(), server_default='1', nullable=False),
         sa.Column('updated_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
         sa.Column('created_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),

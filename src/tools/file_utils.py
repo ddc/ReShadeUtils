@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+from pathlib import Path
+import fsspec
+import requests
 from ddcUtils import FileUtils, get_exception
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
@@ -81,3 +84,16 @@ def check_game_file(self):
         if not os.path.isfile(self.added_game_path):
             return False
     return True
+
+
+def download_github_files(log, org, repo, remote_dir, local_dir):
+    try:
+        destination = Path(local_dir)
+        destination.mkdir(exist_ok=True, parents=True)
+        fs = fsspec.filesystem("github", org=org, repo=repo)
+        remote_files = fs.ls(remote_dir)
+        fs.get(remote_files, destination.as_posix(), recursive=False)
+    except requests.HTTPError as e:
+        log.error(e)
+        return False, e
+    return True, None

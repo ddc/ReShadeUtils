@@ -6,7 +6,7 @@ from ddcUtils import MiscUtils, OsUtils
 
 
 DEBUG = False
-VERSION = (4, 8, 1)
+VERSION = (4, 8, 2)
 VERSION_STR = ".".join(map(str, VERSION))
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
@@ -43,7 +43,8 @@ RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
 RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
 SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
 SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
-RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
+RES_SHAD_NVIDIA_LOCAL_DIR = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
+RES_SHAD_SLIM_LOCAL_DIR = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-slim")
 RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
 RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screenshots")
 RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
@@ -63,6 +64,13 @@ REMOTE_QSS_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/style.qss"
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
+
+
+
+TEXTURES_OUT_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Textures")
+SHADERS_OUT_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Shaders")
+
+
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
 PAYPAL_URL = "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"
