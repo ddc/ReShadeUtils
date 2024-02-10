@@ -252,7 +252,7 @@ def edit_selected_game_plugin_config_file(self):
     self.enable_widgets(False)
 
 
-def edit_default_preset_plugin_button_clicked(self):
+def edit_global_plugins_button(self):
     try:
         file_utils.check_local_files(self)
         FileUtils.open_file(variables.RESHADE_PRESET_PATH)
@@ -589,7 +589,7 @@ def open_selected_game_location(self):
     self.enable_widgets(False)
 
 
-def reset_all_button_clicked(self):
+def reset_all_game_files_button(self):
     self.progressbar.set_values(messages.reseting_files, 25)
     Files(self).download_all_files()
     self.progressbar.set_values(messages.reseting_files, 50)
@@ -600,7 +600,11 @@ def reset_all_button_clicked(self):
     qt_utils.show_message_window(self.log, "info", messages.reset_success)
 
 
-def reset_all_selected_game_files_btn(self):
+def update_shaders_button(self):
+    reshade_utils.download_shaders(self)
+
+
+def reset_selected_game_files_button(self):
     self.enable_widgets(True)
     if self.selected_game is not None:
         self.progressbar.set_values(messages.reseting_game_files, 25)

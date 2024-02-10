@@ -19,10 +19,7 @@ def check_reshade_updates(self):
         try:
             req = requests.get(variables.RESHADE_WEBSITE_URL)
             if req.status_code != 200:
-                msg = (
-                    f"[Code {req.status_code}]: "
-                    f"{messages.reshade_page_error}"
-                )
+                msg = f"[Code {req.status_code}]: {messages.reshade_page_error}"
                 qt_utils.show_message_window(self.log, "error", msg)
             else:
                 html = str(req.text)
@@ -33,10 +30,7 @@ def check_reshade_updates(self):
                 for content in blist:
                     if content.startswith("<strong>Version "):
                         self.remote_reshade_version = (content.split()[1].strip("</strong>"))
-                        self.remote_reshade_download_url = (
-                            f"{variables.RESHADE_EXE_URL}"
-                            f"{self.remote_reshade_version}.exe"
-                        )
+                        self.remote_reshade_download_url = f"{variables.RESHADE_EXE_URL}{self.remote_reshade_version}.exe"
                         break
 
                 if self.remote_reshade_version != self.reshade_version:
@@ -44,10 +38,7 @@ def check_reshade_updates(self):
                     download_reshade(self)
 
         except requests.exceptions.ConnectionError as e:
-            self.log.error(
-                f"{messages.reshade_website_unreacheable}:"
-                f"{get_exception(e)}"
-            )
+            self.log.error(f"{messages.reshade_website_unreacheable}: {get_exception(e)}")
             qt_utils.show_message_window(
                 self.log,
                 "error",
@@ -108,6 +99,21 @@ def download_reshade(self):
         self.need_apply = False
 
 
+def download_shaders(self):
+    self.progressbar.set_values(messages.downloading_shaders, 20)
+    if os.path.isdir(variables.SHADERS_AND_TEXTURES_LOCAL_DIR):
+        FileUtils.remove(variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
+
+    self.progressbar.set_values(messages.downloading_shaders, 40)
+    _download_crosire_shaders(self)
+
+    self.progressbar.set_values(messages.downloading_textures, 80)
+    _download_ddc_textures(self)
+
+    self.progressbar.close()
+    qt_utils.show_message_window(self.log, "info", messages.update_shaders_finished)
+
+
 def check_shaders_and_textures(self):
     if not os.path.isdir(variables.SHADERS_LOCAL_DIR):
         _download_crosire_shaders(self)
@@ -129,7 +135,7 @@ def _download_crosire_shaders(self):
     if os.path.isfile(variables.SHADERS_ZIP_PATH):
         try:
             # extract the zip file
-            FileUtils.unzip_file(variables.SHADERS_ZIP_PATH, variables.PROGRAM_PATH)
+            FileUtils.unzip(variables.SHADERS_ZIP_PATH, variables.PROGRAM_PATH)
         except FileNotFoundError as e:
             self.log.error(get_exception(e))
         except zipfile.BadZipFile as e:
@@ -139,6 +145,9 @@ def _download_crosire_shaders(self):
 
         # remove the zip file after extraction
         FileUtils.remove(variables.SHADERS_ZIP_PATH)
+
+        # remove the reshade-shaders directory completely
+        FileUtils.remove(variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
 
         # rename the extracted directory (reshade-shaders-nvidia -> reshade-shaders)
         out_dir = str(os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS))

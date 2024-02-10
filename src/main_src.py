@@ -105,14 +105,13 @@ class MainSrc:
         # TAB 1 - selected games
         self.qtobj.edit_game_button.clicked.connect(self._table_widget_double_clicked)
         self.qtobj.edit_plugin_button.clicked.connect(lambda: events.edit_selected_game_plugin_config_file(self))
-        self.qtobj.reset_files_button.clicked.connect(lambda: events.reset_all_selected_game_files_btn(self))
+        self.qtobj.reset_files_button.clicked.connect(lambda: events.reset_selected_game_files_button(self))
         self.qtobj.edit_path_button.clicked.connect(lambda: events.edit_selected_game_path(self))
         self.qtobj.open_game_path_button.clicked.connect(lambda: events.open_selected_game_location(self))
         self.qtobj.remove_button.clicked.connect(lambda: events.delete_game(self))
 
         # TAB 1 - all games
         self.qtobj.add_button.clicked.connect(lambda: events.add_game(self))
-        self.qtobj.edit_default_preset_plugin_button.clicked.connect(lambda: events.edit_default_preset_plugin_button_clicked(self))
         self.qtobj.apply_button.clicked.connect(lambda: events.apply_all(self))
         self.qtobj.update_button.clicked.connect(lambda: events.update_program_clicked())
 
@@ -132,7 +131,9 @@ class MainSrc:
         self.qtobj.yes_screenshots_folder_radioButton.clicked.connect(lambda: events.create_screenshots_folder_clicked(self, "YES"))
         self.qtobj.no_screenshots_folder_radioButton.clicked.connect(lambda: events.create_screenshots_folder_clicked(self, "NO"))
 
-        self.qtobj.reset_all_button.clicked.connect(lambda: events.reset_all_button_clicked(self))
+        self.qtobj.edit_default_preset_plugin_button.clicked.connect(lambda: events.edit_global_plugins_button(self))
+        self.qtobj.update_shaders_button.clicked.connect(lambda: events.update_shaders_button(self))
+        self.qtobj.reset_all_button.clicked.connect(lambda: events.reset_all_game_files_button(self))
 
         # TAB 3 - about
         self.qtobj.donate_button.clicked.connect(lambda: events.donate_clicked())
