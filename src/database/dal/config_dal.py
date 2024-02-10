@@ -19,10 +19,6 @@ class ConfigDal:
         stmt = sa.update(Config).where(Config.id == config_id).values(use_dark_theme=status)
         self.db_utils.execute(stmt)
 
-    def update_shaders(self, status: bool, config_id=1):
-        stmt = sa.update(Config).where(Config.id == config_id).values(update_shaders=status)
-        self.db_utils.execute(stmt)
-
     def update_check_program_updates(self, status: bool, config_id=1):
         stmt = sa.update(Config).where(Config.id == config_id).values(check_program_updates=status)
         self.db_utils.execute(stmt)

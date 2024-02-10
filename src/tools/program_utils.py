@@ -16,7 +16,7 @@ def run_alembic_migrations():
 def check_program_updates(self):
     self.qtobj.update_button.setVisible(False)
     if self.check_program_updates:
-        new_version_dict = get_new_program_version(self)
+        new_version_dict = get_program_remote_version(self)
         remote_version = new_version_dict["remote_version"]
         if remote_version > variables.VERSION:
             new_version = ".".join(map(str, remote_version))
@@ -29,7 +29,7 @@ def check_program_updates(self):
     return None
 
 
-def get_new_program_version(self):
+def get_program_remote_version(self):
     remote_version = (0, 0, 0)
     remote_version_filename = variables.REMOTE_VERSION_FILENAME
     result = {

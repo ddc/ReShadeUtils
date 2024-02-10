@@ -6,7 +6,7 @@ from ddcUtils import MiscUtils, OsUtils
 
 
 DEBUG = False
-VERSION = (4, 8, 1)
+VERSION = (4, 8, 2)
 VERSION_STR = ".".join(map(str, VERSION))
 PROGRAM_NAME = "Reshade Utils"
 SHORT_PROGRAM_NAME = "ReshadeUtils"
@@ -32,6 +32,7 @@ RESHADE64_DLL = "ReShade64.dll"
 DXGI_DLL = "dxgi.dll"
 D3D9_DLL = "d3d9.dll"
 OPENGL_DLL = "opengl32.dll"
+QSS_FILE_NAME = "style.qss"
 # ############################################################################
 DX9_DISPLAY_NAME = "DirectX 9"
 DXGI_DISPLAY_NAME = "DirectX (10,11,12)"
@@ -39,20 +40,23 @@ OPENGL_DISPLAY_NAME = "OpenGL"
 ALL_ARCHITECTURES = ("32bits", "64bits",)
 ALL_APIS = (DX9_DISPLAY_NAME, DXGI_DISPLAY_NAME, OPENGL_DISPLAY_NAME)
 # ############################################################################
-RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
-RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
-SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
-SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
-RES_SHAD_MPATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
-RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
-RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screenshots")
-RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
-RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
-QSS_FILE_NAME = "style.qss"
-QSS_PATH = os.path.join(PROGRAM_PATH, QSS_FILE_NAME)
 ALEMBIC_MIGRATIONS_DIR = os.path.join(PROGRAM_PATH, "src", "database", "migrations")
 ALEMBIC_CONFIG_FILE = os.path.join(ALEMBIC_MIGRATIONS_DIR, "alembic.ini")
+# ############################################################################
+RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
+RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
+RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
+RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
+QSS_PATH = os.path.join(PROGRAM_PATH, QSS_FILE_NAME)
+# ############################################################################
+SHADERS_AND_TEXTURES_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
+SHADERS_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Shaders")
+TEXTURES_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Textures")
+SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
+SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
+SHADERS_NVIDIA_LOCAL_TEMP_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "ShadersAndTextures")
+RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screenshots")
 # ############################################################################
 _active_dev_branch = MiscUtils.get_active_branch_name() if DEBUG else "master"
 _github_raw_files_uri = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{_active_dev_branch}"
@@ -60,6 +64,7 @@ REMOTE_VERSION_FILENAME = f"{_github_raw_files_uri}/VERSION"
 REMOTE_RESHADE_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/Reshade.ini"
 REMOTE_PRESET_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/ReShadePreset.ini"
 REMOTE_QSS_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/style.qss"
+# ############################################################################
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"

@@ -252,7 +252,7 @@ def edit_selected_game_plugin_config_file(self):
     self.enable_widgets(False)
 
 
-def edit_default_preset_plugin_button_clicked(self):
+def edit_global_plugins_button(self):
     try:
         file_utils.check_local_files(self)
         FileUtils.open_file(variables.RESHADE_PRESET_PATH)
@@ -309,18 +309,6 @@ def check_reshade_updates_clicked(self, status):
 
     config_sql = ConfigDal(self.db_session, self.log)
     config_sql.update_check_resahde_updates(status)
-
-
-def update_shaders_clicked(self, status):
-    if status == "YES":
-        self.update_shaders = True
-        status = True
-    else:
-        self.update_shaders = False
-        status = False
-
-    config_sql = ConfigDal(self.db_session, self.log)
-    config_sql.update_shaders(status)
 
 
 def create_screenshots_folder_clicked(self, status):
@@ -601,25 +589,29 @@ def open_selected_game_location(self):
     self.enable_widgets(False)
 
 
-def reset_all_button_clicked(self):
+def reset_all_game_files_button(self):
     self.progressbar.set_values(messages.reseting_files, 25)
     Files(self).download_all_files()
     self.progressbar.set_values(messages.reseting_files, 50)
-    reshade_utils.download_shaders(self)
+    reshade_utils.check_shaders_and_textures(self)
     self.progressbar.set_values(messages.reseting_files, 75)
     apply_all(self, reset=True)
     self.progressbar.close()
     qt_utils.show_message_window(self.log, "info", messages.reset_success)
 
 
-def reset_all_selected_game_files_btn(self):
+def update_shaders_button(self):
+    reshade_utils.download_shaders(self)
+
+
+def reset_selected_game_files_button(self):
     self.enable_widgets(True)
     if self.selected_game is not None:
         self.progressbar.set_values(messages.reseting_game_files, 25)
         files = Files(self)
         files.download_reshade_files(self.selected_game.game_dir)
         self.progressbar.set_values(messages.reseting_game_files, 50)
-        reshade_utils.download_shaders(self)
+        reshade_utils.check_shaders_and_textures(self)
         self.progressbar.set_values(messages.reseting_game_files, 75)
         games_dict = {
             "api": self.selected_game.api,

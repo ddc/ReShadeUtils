@@ -29,7 +29,6 @@ def get_fake_config_data():
         "check_program_updates": True,
         "show_info_messages": True,
         "check_reshade_updates": True,
-        "update_shaders": True,
         "create_screenshots_folder": True,
         "updated_at": _now_mock,
         "created_at": _now_mock,

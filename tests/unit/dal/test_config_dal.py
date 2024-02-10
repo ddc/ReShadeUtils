@@ -57,15 +57,6 @@ class TestConfigDal:
             results = config_dal.get_configs(config_id)
             assert results[0].use_dark_theme is st
 
-    def test_update_shaders(self, db_session, fake_data):
-        config_dal = ConfigDal(db_session, None)
-        config_id = fake_data["id"]
-        status = (True, False,)
-        for st in status:
-            config_dal.update_shaders(st, config_id)
-            results = config_dal.get_configs(config_id)
-            assert results[0].update_shaders is st
-
     def test_update_check_program_updates(self, db_session, fake_data):
         config_dal = ConfigDal(db_session, None)
         config_id = fake_data["id"]
