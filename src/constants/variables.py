@@ -32,6 +32,7 @@ RESHADE64_DLL = "ReShade64.dll"
 DXGI_DLL = "dxgi.dll"
 D3D9_DLL = "d3d9.dll"
 OPENGL_DLL = "opengl32.dll"
+QSS_FILE_NAME = "style.qss"
 # ############################################################################
 DX9_DISPLAY_NAME = "DirectX 9"
 DXGI_DISPLAY_NAME = "DirectX (10,11,12)"
@@ -50,10 +51,16 @@ RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screensho
 RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
-QSS_FILE_NAME = "style.qss"
 QSS_PATH = os.path.join(PROGRAM_PATH, QSS_FILE_NAME)
 ALEMBIC_MIGRATIONS_DIR = os.path.join(PROGRAM_PATH, "src", "database", "migrations")
 ALEMBIC_CONFIG_FILE = os.path.join(ALEMBIC_MIGRATIONS_DIR, "alembic.ini")
+
+
+SHADERS_LOCAL_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Shaders")
+TEXTURES_LOCAL_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Textures")
+
+
+
 # ############################################################################
 _active_dev_branch = MiscUtils.get_active_branch_name() if DEBUG else "master"
 _github_raw_files_uri = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{_active_dev_branch}"
@@ -61,16 +68,10 @@ REMOTE_VERSION_FILENAME = f"{_github_raw_files_uri}/VERSION"
 REMOTE_RESHADE_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/Reshade.ini"
 REMOTE_PRESET_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/ReShadePreset.ini"
 REMOTE_QSS_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/style.qss"
+# ############################################################################
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
-
-
-
-TEXTURES_OUT_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Textures")
-SHADERS_OUT_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Shaders")
-
-
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
 PAYPAL_URL = "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"

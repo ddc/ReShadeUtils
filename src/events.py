@@ -605,7 +605,7 @@ def reset_all_button_clicked(self):
     self.progressbar.set_values(messages.reseting_files, 25)
     Files(self).download_all_files()
     self.progressbar.set_values(messages.reseting_files, 50)
-    reshade_utils.download_shaders(self)
+    reshade_utils.download_shaders_textures(self)
     self.progressbar.set_values(messages.reseting_files, 75)
     apply_all(self, reset=True)
     self.progressbar.close()
@@ -619,7 +619,7 @@ def reset_all_selected_game_files_btn(self):
         files = Files(self)
         files.download_reshade_files(self.selected_game.game_dir)
         self.progressbar.set_values(messages.reseting_game_files, 50)
-        reshade_utils.download_shaders(self)
+        reshade_utils.download_shaders_textures(self)
         self.progressbar.set_values(messages.reseting_game_files, 75)
         games_dict = {
             "api": self.selected_game.api,

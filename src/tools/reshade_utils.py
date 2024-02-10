@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import shutil
 import zipfile
 import requests
 from bs4 import BeautifulSoup
@@ -109,118 +108,58 @@ def download_reshade(self):
         self.need_apply = False
 
 
-def download_shaders(self):
-    # Download Textures
+def download_shaders_textures(self):
+    # if not os.path.isdir(variables.SHADERS_LOCAL_PATH):
+    #     _download_crosire_shaders(self)
 
-    # download crosire/slim texture files
-    _, error = file_utils.download_github_files(self.log, org="crosire", repo="reshade-shaders", remote_dir="Textures", local_dir=variables.TEXTURES_OUT_PATH)
-    if error:
-        err_msg = f"{messages.error_dl_shaders}\n\n {error}"
-        qt_utils.show_message_window(self.log, "error", err_msg)
-        return
-
-    # download crosire/slim shader files
-    _, error = file_utils.download_github_files(self.log, org="crosire", repo="reshade-shaders", remote_dir="Shaders", local_dir=variables.SHADERS_OUT_PATH)
-    if error:
-        err_msg = f"{messages.error_dl_shaders}\n\n {error}"
-        qt_utils.show_message_window(self.log, "error", err_msg)
-        return
-
-    # download crosire/nvidia shader files
-    _, error = file_utils.download_github_files(self.log, org="crosire", repo="reshade-shaders", remote_dir="ShadersAndTextures", local_dir=variables.SHADERS_OUT_PATH)
-    if error:
-        err_msg = f"{messages.error_dl_shaders}\n\n {error}"
-        qt_utils.show_message_window(self.log, "error", err_msg)
-        return
-
-    # download CeeJayDK/SweetFX texture files
-    _, error = file_utils.download_github_files(self.log, org="CeeJayDK", repo="SweetFX", remote_dir="Textures", local_dir=variables.TEXTURES_OUT_PATH)
-    if error:
-        err_msg = f"{messages.error_dl_shaders}\n\n {error}"
-        qt_utils.show_message_window(self.log, "error", err_msg)
-        return
-
-    # # download CeeJayDK/SweetFX shader files
-    # _, error = file_utils.download_github_files(self.log, org="CeeJayDK", repo="reshade-shaders", remote_dir="Shaders", local_dir=variables.SHADERS_OUT_PATH)
-    # if error:
-    #     err_msg = f"{messages.error_dl_shaders}\n\n {error}"
-    #     qt_utils.show_message_window(self.log, "error", err_msg)
-    #     return
+    if not os.path.isdir(variables.TEXTURES_LOCAL_PATH):
+        _download_ddc_textures(self)
 
 
+def _download_ddc_textures(self):
+    # remove textures directory
+    if not FileUtils.remove(variables.TEXTURES_LOCAL_PATH):
+        qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
 
-    # try:
-    #     if os.path.isdir(variables.TEXTURES_OUT_PATH):
-    #         shutil.rmtree(variables.TEXTURES_OUT_PATH)
-    # except OSError as e:
-    #     self.log.error(f"rmtree: {get_exception(e)}")
-    #
-    # if os.path.isfile(variables.TEXTURES_CROSIRE_SLIM_ZIP_PATH):
-    #     try:
-    #         FileUtils.unzip_file(variables.TEXTURES_CROSIRE_SLIM_ZIP_PATH, variables.PROGRAM_PATH)
-    #     except FileNotFoundError as e:
-    #         self.log.error(get_exception(e))
-    #     except zipfile.BadZipFile as e:
-    #         self.log.error(get_exception(e))
-    #
-    #     try:
-    #         os.remove(variables.TEXTURES_CROSIRE_SLIM_ZIP_PATH)
-    #     except OSError as e:
-    #         self.log.error(f"remove_file: {get_exception(e)}")
-    #
-    # try:
-    #     if os.path.isdir(variables.RES_SHAD_SLIM_LOCAL_DIR):
-    #         out_dir = os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS)
-    #         os.rename(variables.RES_SHAD_SLIM_LOCAL_DIR, out_dir)
-    # except OSError as e:
-    #     self.log.error(f"rename_path: {get_exception(e)}")
+    # download ddc texture files
+    if not FileUtils.download_filesystem_directory(
+            org="ddc",
+            repo="reshadeutils",
+            branch="main",
+            remote_dir="src/data/reshade/textures",
+            local_dir=variables.TEXTURES_LOCAL_PATH
+    ):
+        qt_utils.show_message_window(self.log, "error", messages.error_dl_shaders)
 
 
-    # Download Shaders
+def _download_crosire_shaders(self):
+    # remove shaders directory
+    if not FileUtils.remove(variables.SHADERS_LOCAL_PATH):
+        qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
 
-    # try:
-    #     r = requests.get(variables.SHADERS_ZIP_URL)
-    #     with open(variables.SHADERS_ZIP_PATH, "wb") as outfile:
-    #         outfile.write(r.content)
-    # except Exception as e:
-    #     err_msg = f"{messages.dl_new_shaders_timeout} {get_exception(e)}"
-    #     qt_utils.show_message_window(self.log, "error", err_msg)
+    # download nvidia crosire shaders as .zip
+    if not FileUtils.download_file(variables.SHADERS_ZIP_URL, variables.SHADERS_ZIP_PATH):
+        qt_utils.show_message_window(self.log, "error", messages.dl_new_shaders_timeout)
 
-    # try:
-    #     if os.path.isdir(variables.SHADERS_OUT_PATH):
-    #         shutil.rmtree(variables.SHADERS_OUT_PATH)
-    # except OSError as e:
-    #     self.log.error(f"rmtree: {get_exception(e)}")
-    #
-    # try:
-    #     if os.path.isdir(variables.RES_SHAD_NVIDIA_LOCAL_DIR):
-    #         shutil.rmtree(variables.RES_SHAD_NVIDIA_LOCAL_DIR)
-    # except OSError as e:
-    #     self.log.error(f"rmtree: {get_exception(e)}")
-    #
-    # if os.path.isfile(variables.SHADERS_ZIP_PATH):
-    #     try:
-    #         FileUtils.unzip_file(variables.SHADERS_ZIP_PATH, variables.PROGRAM_PATH)
-    #     except FileNotFoundError as e:
-    #         self.log.error(get_exception(e))
-    #     except zipfile.BadZipFile as e:
-    #         self.log.error(get_exception(e))
-    #
-    #     try:
-    #         os.remove(variables.SHADERS_ZIP_PATH)
-    #     except OSError as e:
-    #         self.log.error(f"remove_file: {get_exception(e)}")
-    #
-    # try:
-    #     if os.path.isdir(variables.RES_SHAD_NVIDIA_LOCAL_DIR):
-    #         out_dir = os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS)
-    #         os.rename(variables.RES_SHAD_NVIDIA_LOCAL_DIR, out_dir)
-    # except OSError as e:
-    #     self.log.error(f"rename_path: {get_exception(e)}")
-    #
-    # try:
-    #     if os.path.isdir(variables.RES_SHAD_NVIDIA_PATH):
-    #         out_dir = os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS, "Shaders")
-    #         os.rename(variables.RES_SHAD_NVIDIA_PATH, out_dir)
-    # except OSError as e:
-    #     self.log.error(f"rename_path: {get_exception(e)}")
+    # check the zip file
+    if os.path.isfile(variables.SHADERS_ZIP_PATH):
+        try:
+            # extract the zip file
+            FileUtils.unzip_file(variables.SHADERS_ZIP_PATH, variables.PROGRAM_PATH)
+        except FileNotFoundError as e:
+            self.log.error(get_exception(e))
+        except zipfile.BadZipFile as e:
+            self.log.error(get_exception(e))
+        except Exception as e:
+            self.log.error(get_exception(e))
+
+        # remove the zip file after extraction
+        FileUtils.remove(variables.SHADERS_ZIP_PATH)
+
+        # rename the extracted directory (reshade-shaders-nvidia -> reshade-shaders)
+        out_dir = str(os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS))
+        FileUtils.rename(variables.RES_SHAD_NVIDIA_LOCAL_DIR, out_dir)
+
+        # rename insdie the extracted directory (ShadersAndTextures -> Shaders)
+        out_dir = str(os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS, "Shaders"))
+        FileUtils.rename(variables.RES_SHAD_NVIDIA_PATH, out_dir)

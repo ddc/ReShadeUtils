@@ -55,10 +55,8 @@ class MainSrc:
             self.register_form_events()
 
             self.progressbar.set_values(messages.downloading_shaders, 60)
-            if not os.path.isdir(variables.SHADERS_SRC_PATH)\
-                    or (self.update_shaders is not None
-                        and self.update_shaders is True):
-                reshade_utils.download_shaders(self)
+            if self.update_shaders is not None and self.update_shaders is True:
+                reshade_utils.download_shaders_textures(self)
 
             self.progressbar.set_values(messages.checking_reshade_updates, 80)
             reshade_utils.check_reshade_updates(self)
