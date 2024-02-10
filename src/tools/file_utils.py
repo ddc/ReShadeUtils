@@ -15,10 +15,10 @@ def list_reshade_files(directory):
 def unzip_reshade(self, local_reshade_exe):
     try:
         if os.path.isfile(variables.RESHADE32_PATH):
-            os.remove(variables.RESHADE32_PATH)
+            FileUtils.remove(variables.RESHADE32_PATH)
         if os.path.isfile(variables.RESHADE64_PATH):
-            os.remove(variables.RESHADE64_PATH)
-        FileUtils.unzip_file(local_reshade_exe, variables.PROGRAM_PATH)
+            FileUtils.remove(variables.RESHADE64_PATH)
+        FileUtils.unzip(local_reshade_exe, variables.PROGRAM_PATH)
     except Exception as e:
         self.log.error(get_exception(e))
 
@@ -66,11 +66,11 @@ def check_local_files(self):
             qt_utils.show_message_window(self.log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isdir(variables.ALEMBIC_MIGRATIONS_DIR):
-        result = files.download_alembic_dir()
-        if not result:
-            qt_utils.show_message_window(self.log, "error", messages.error_dl_alembic_files)
-            sys.exit(1)
+    FileUtils.remove(variables.ALEMBIC_MIGRATIONS_DIR)
+    result = files.download_alembic_dir()
+    if not result:
+        qt_utils.show_message_window(self.log, "error", messages.error_dl_alembic_files)
+        sys.exit(1)
 
 
 def check_game_file(self):
