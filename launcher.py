@@ -52,7 +52,7 @@ class Launcher:
         else:
             self.client_version = rs_config[0].get("program_version")
         if rs_config[0].get("check_program_updates"):
-            new_version_dict = program_utils.get_new_program_version(self)
+            new_version_dict = program_utils.get_program_remote_version(self)
             remote_version = new_version_dict["remote_version"]
             if remote_version > variables.VERSION:
                 self.new_version = ".".join(map(str, remote_version))

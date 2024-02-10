@@ -40,27 +40,23 @@ OPENGL_DISPLAY_NAME = "OpenGL"
 ALL_ARCHITECTURES = ("32bits", "64bits",)
 ALL_APIS = (DX9_DISPLAY_NAME, DXGI_DISPLAY_NAME, OPENGL_DISPLAY_NAME)
 # ############################################################################
-RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
-RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
-SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
-SHADERS_SRC_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
-RES_SHAD_NVIDIA_LOCAL_DIR = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
-RES_SHAD_SLIM_LOCAL_DIR = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-slim")
-RES_SHAD_NVIDIA_PATH = os.path.join(SHADERS_SRC_PATH, "ShadersAndTextures")
-RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screenshots")
-RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
-RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 DATABASE_PATH = os.path.join(PROGRAM_PATH, "database.db")
-QSS_PATH = os.path.join(PROGRAM_PATH, QSS_FILE_NAME)
 ALEMBIC_MIGRATIONS_DIR = os.path.join(PROGRAM_PATH, "src", "database", "migrations")
 ALEMBIC_CONFIG_FILE = os.path.join(ALEMBIC_MIGRATIONS_DIR, "alembic.ini")
-
-
-SHADERS_LOCAL_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Shaders")
-TEXTURES_LOCAL_PATH = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Textures")
-
-
-
+# ############################################################################
+RESHADE32_PATH = os.path.join(PROGRAM_PATH, RESHADE32_DLL)
+RESHADE64_PATH = os.path.join(PROGRAM_PATH, RESHADE64_DLL)
+RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
+RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
+QSS_PATH = os.path.join(PROGRAM_PATH, QSS_FILE_NAME)
+# ############################################################################
+SHADERS_AND_TEXTURES_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
+SHADERS_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Shaders")
+TEXTURES_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Textures")
+SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
+SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
+SHADERS_NVIDIA_LOCAL_TEMP_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "ShadersAndTextures")
+RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screenshots")
 # ############################################################################
 _active_dev_branch = MiscUtils.get_active_branch_name() if DEBUG else "master"
 _github_raw_files_uri = f"https://raw.github.com/ddc/{SHORT_PROGRAM_NAME}/{_active_dev_branch}"

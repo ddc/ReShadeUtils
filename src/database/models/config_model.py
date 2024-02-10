@@ -19,5 +19,4 @@ class Config(ConfigBase):
     check_program_updates: Mapped[Boolean] = mapped_column(Boolean, server_default="1")
     show_info_messages: Mapped[Boolean] = mapped_column(Boolean, server_default="1")
     check_reshade_updates: Mapped[Boolean] = mapped_column(Boolean, server_default="1")
-    update_shaders: Mapped[Boolean] = mapped_column(Boolean, server_default="0")
     create_screenshots_folder: Mapped[Boolean] = mapped_column(Boolean, server_default="1")

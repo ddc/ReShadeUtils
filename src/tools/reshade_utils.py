@@ -108,33 +108,17 @@ def download_reshade(self):
         self.need_apply = False
 
 
-def download_shaders_textures(self):
-    # if not os.path.isdir(variables.SHADERS_LOCAL_PATH):
-    #     _download_crosire_shaders(self)
+def check_shaders_and_textures(self):
+    if not os.path.isdir(variables.SHADERS_LOCAL_DIR):
+        _download_crosire_shaders(self)
 
-    if not os.path.isdir(variables.TEXTURES_LOCAL_PATH):
+    if not os.path.isdir(variables.TEXTURES_LOCAL_DIR):
         _download_ddc_textures(self)
-
-
-def _download_ddc_textures(self):
-    # remove textures directory
-    if not FileUtils.remove(variables.TEXTURES_LOCAL_PATH):
-        qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
-
-    # download ddc texture files
-    if not FileUtils.download_filesystem_directory(
-            org="ddc",
-            repo="reshadeutils",
-            branch="main",
-            remote_dir="src/data/reshade/textures",
-            local_dir=variables.TEXTURES_LOCAL_PATH
-    ):
-        qt_utils.show_message_window(self.log, "error", messages.error_dl_shaders)
 
 
 def _download_crosire_shaders(self):
     # remove shaders directory
-    if not FileUtils.remove(variables.SHADERS_LOCAL_PATH):
+    if not FileUtils.remove(variables.SHADERS_LOCAL_DIR):
         qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
 
     # download nvidia crosire shaders as .zip
@@ -158,8 +142,24 @@ def _download_crosire_shaders(self):
 
         # rename the extracted directory (reshade-shaders-nvidia -> reshade-shaders)
         out_dir = str(os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS))
-        FileUtils.rename(variables.RES_SHAD_NVIDIA_LOCAL_DIR, out_dir)
+        FileUtils.rename(variables.SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR, out_dir)
 
         # rename insdie the extracted directory (ShadersAndTextures -> Shaders)
         out_dir = str(os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS, "Shaders"))
-        FileUtils.rename(variables.RES_SHAD_NVIDIA_PATH, out_dir)
+        FileUtils.rename(variables.SHADERS_NVIDIA_LOCAL_TEMP_DIR, out_dir)
+
+
+def _download_ddc_textures(self):
+    # remove textures directory
+    if not FileUtils.remove(variables.TEXTURES_LOCAL_DIR):
+        qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
+
+    # download ddc texture files
+    if not FileUtils.download_filesystem_directory(
+            org="ddc",
+            repo="reshadeutils",
+            branch="fix/textures",
+            remote_dir="src/data/reshade/textures",
+            local_dir=variables.TEXTURES_LOCAL_DIR
+    ):
+        qt_utils.show_message_window(self.log, "error", messages.error_dl_textures)

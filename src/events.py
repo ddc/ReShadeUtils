@@ -311,18 +311,6 @@ def check_reshade_updates_clicked(self, status):
     config_sql.update_check_resahde_updates(status)
 
 
-def update_shaders_clicked(self, status):
-    if status == "YES":
-        self.update_shaders = True
-        status = True
-    else:
-        self.update_shaders = False
-        status = False
-
-    config_sql = ConfigDal(self.db_session, self.log)
-    config_sql.update_shaders(status)
-
-
 def create_screenshots_folder_clicked(self, status):
     if status == "YES":
         self.create_screenshots_folder = True
@@ -605,7 +593,7 @@ def reset_all_button_clicked(self):
     self.progressbar.set_values(messages.reseting_files, 25)
     Files(self).download_all_files()
     self.progressbar.set_values(messages.reseting_files, 50)
-    reshade_utils.download_shaders_textures(self)
+    reshade_utils.check_shaders_and_textures(self)
     self.progressbar.set_values(messages.reseting_files, 75)
     apply_all(self, reset=True)
     self.progressbar.close()
@@ -619,7 +607,7 @@ def reset_all_selected_game_files_btn(self):
         files = Files(self)
         files.download_reshade_files(self.selected_game.game_dir)
         self.progressbar.set_values(messages.reseting_game_files, 50)
-        reshade_utils.download_shaders_textures(self)
+        reshade_utils.check_shaders_and_textures(self)
         self.progressbar.set_values(messages.reseting_game_files, 75)
         games_dict = {
             "api": self.selected_game.api,

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 from ddcUtils.databases import DBSqlite
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
@@ -26,7 +25,6 @@ class MainSrc:
         self.create_screenshots_folder = None
         self.show_info_messages = None
         self.use_dark_theme = None
-        self.update_shaders = None
         self.need_apply = False
         self.selected_game = None
         self.game_config_form = None
@@ -55,8 +53,7 @@ class MainSrc:
             self.register_form_events()
 
             self.progressbar.set_values(messages.downloading_shaders, 60)
-            if self.update_shaders is not None and self.update_shaders is True:
-                reshade_utils.download_shaders_textures(self)
+            reshade_utils.check_shaders_and_textures(self)
 
             self.progressbar.set_values(messages.checking_reshade_updates, 80)
             reshade_utils.check_reshade_updates(self)
@@ -92,10 +89,6 @@ class MainSrc:
             self.check_reshade_updates = rs_config[0]["check_reshade_updates"]
             self.qtobj.yes_check_reshade_updates_radioButton.setChecked(self.check_reshade_updates)
             self.qtobj.no_check_reshade_updates_radioButton.setChecked(not self.check_reshade_updates)
-
-            self.update_shaders = rs_config[0]["update_shaders"]
-            self.qtobj.yes_update_shaders_radioButton.setChecked(self.update_shaders)
-            self.qtobj.no_update_shaders_radioButton.setChecked(not self.update_shaders)
 
             self.create_screenshots_folder = rs_config[0]["create_screenshots_folder"]
             self.qtobj.yes_screenshots_folder_radioButton.setChecked(self.create_screenshots_folder)
@@ -135,9 +128,6 @@ class MainSrc:
 
         self.qtobj.yes_check_reshade_updates_radioButton.clicked.connect(lambda: events.check_reshade_updates_clicked(self, "YES"))
         self.qtobj.no_check_reshade_updates_radioButton.clicked.connect(lambda: events.check_reshade_updates_clicked(self, "NO"))
-
-        self.qtobj.yes_update_shaders_radioButton.clicked.connect(lambda: events.update_shaders_clicked(self, "YES"))
-        self.qtobj.no_update_shaders_radioButton.clicked.connect(lambda: events.update_shaders_clicked(self, "NO"))
 
         self.qtobj.yes_screenshots_folder_radioButton.clicked.connect(lambda: events.create_screenshots_folder_clicked(self, "YES"))
         self.qtobj.no_screenshots_folder_radioButton.clicked.connect(lambda: events.create_screenshots_folder_clicked(self, "NO"))
