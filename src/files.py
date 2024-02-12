@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
+import tempfile
 from ddcUtils import FileUtils
 from src.constants import variables
 
@@ -50,15 +51,20 @@ class Files:
             return e
 
         game_reshade_ini_path = str(os.path.join(game_dir, variables.RESHADE_INI))
-        effect_search_paths = os.path.join(variables.PROGRAM_PATH, "Reshade-shaders", "Shaders")
-        texture_search_paths = os.path.join(variables.PROGRAM_PATH, "Reshade-shaders", "Textures")
         preset_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
-        intermediate_cache_path = os.getenv("TEMP")
+        intermediate_cache_path = f"{tempfile.gettempdir()}/ReShade"
 
-        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", effect_search_paths)
-        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", texture_search_paths)
+        try:
+            if not os.path.isdir(intermediate_cache_path):
+                os.makedirs(intermediate_cache_path)
+        except OSError:
+            pass
+
+        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", variables.SHADERS_LOCAL_DIR)
+        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", variables.TEXTURES_LOCAL_DIR)
         FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
         FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+        FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "StartupPresetPath", preset_path)
         FileUtils().set_file_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
         FileUtils().set_file_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
 

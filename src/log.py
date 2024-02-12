@@ -33,16 +33,16 @@ class Log:
             open(log_file_path, "a+").close()
         except IOError as e:
             err_msg = f"[ERROR]:[EXITING]:[{get_exception(e)}]:" \
-                      f"Unable to open the log file for writing: " \
+                      "Unable to open the log file for writing: " \
                       f"{log_file_path}\n"
             qt_utils.show_message_window(None, "error", err_msg)
             sys.stderr.write(err_msg)
             sys.exit(1)
 
         if self.level == logging.DEBUG:
-            formatt = f"[%(asctime)s.%(msecs)03d]:[%(levelname)s]:" \
+            formatt = "[%(asctime)s.%(msecs)03d]:[%(levelname)s]:" \
                       f"[PID:{os.getpid()}]:" \
-                      f"[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
+                      "[%(filename)s:%(funcName)s:%(lineno)d]:%(message)s"
         else:
             formatt = "[%(asctime)s.%(msecs)03d]:[%(levelname)s]:%(message)s"
 
@@ -85,7 +85,7 @@ class GZipRotator:
                         fout.writelines(fin)
                 os.remove(source)
             except Exception as e:
-                err_msg = f"[ERROR]:Unable to compress the log file:" \
+                err_msg = "[ERROR]:Unable to compress the log file:" \
                           f"[{get_exception(e)}]: {source}\n"
                 qt_utils.show_message_window(None, "error", err_msg)
                 sys.stderr.write(err_msg)
@@ -102,7 +102,7 @@ class RemoveOldLogs:
                 try:
                     os.remove(file_path)
                 except Exception as e:
-                    err_msg = f"[ERROR]:Unable to removed old logs:" \
+                    err_msg = "[ERROR]:Unable to removed old logs:" \
                               f"{get_exception(e)}: {file_path}\n"
                     qt_utils.show_message_window(None, "error", err_msg)
                     sys.stderr.write(err_msg)

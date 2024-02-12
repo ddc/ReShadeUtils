@@ -23,7 +23,7 @@ else:
     PROGRAM_PATH = os.path.normpath(os.path.join(_local_app_data, SHORT_PROGRAM_NAME))
 # ############################################################################
 RESHADE_SETUP = "ReShade_Setup"
-RESHADE_SHADERS = "reshade-shaders"
+RESHADE_SHADERS = "Reshade-shaders"
 RESHADE_INI = "ReShade.ini"
 RESHADE_PRESET_INI = "ReShadePreset.ini"
 RESHADEGUI_INI = "ReShadeGUI.ini"
@@ -50,12 +50,13 @@ RESHADE_INI_PATH = os.path.join(PROGRAM_PATH, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_PATH, RESHADE_PRESET_INI)
 QSS_PATH = os.path.join(PROGRAM_PATH, QSS_FILE_NAME)
 # ############################################################################
-SHADERS_AND_TEXTURES_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS)
-SHADERS_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Shaders")
-TEXTURES_LOCAL_DIR = os.path.join(PROGRAM_PATH, RESHADE_SHADERS, "Textures")
-SHADERS_ZIP_PATH = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
-SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR = os.path.join(PROGRAM_PATH, f"{RESHADE_SHADERS}-nvidia")
+SRC_PATH = os.path.join(PROGRAM_PATH, "src")
+SHADERS_AND_TEXTURES_LOCAL_DIR = os.path.join(SRC_PATH, RESHADE_SHADERS)
+SHADERS_LOCAL_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "Shaders")
+TEXTURES_LOCAL_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "Textures")
 SHADERS_NVIDIA_LOCAL_TEMP_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "ShadersAndTextures")
+SHADERS_ZIP_PATH = os.path.join(SRC_PATH, f"{RESHADE_SHADERS}-nvidia.zip")
+SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR = os.path.join(SRC_PATH, f"{RESHADE_SHADERS}-nvidia")
 RESHADE_SCREENSHOT_PATH = os.path.join(OsUtils().get_pictures_path(), "Screenshots")
 # ############################################################################
 _active_dev_branch = MiscUtils.get_active_branch_name() if DEBUG else "master"

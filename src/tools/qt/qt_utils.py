@@ -14,31 +14,29 @@ def open_exe_file_dialog():
     path = "C:"
     _filter = "exe(*.exe)"
     filepath, _ = QFileDialog.getOpenFileName(parent=qfd, caption=title, directory=path, filter=_filter)
-    if filepath == "":
-        return None
-    else:
-        return os.path.normpath(filepath)
+    return None if filepath == "" else os.path.normpath(filepath)
 
 
 def show_message_window(log, window_type, msg):
     msg_box = QtWidgets.QMessageBox()
 
-    if window_type.lower() == "error":
-        icon = QtWidgets.QMessageBox.Icon.Critical
-        button = QtWidgets.QMessageBox.StandardButton.Ok
-        log.error(msg.replace("\n", ":")) if log else None
-    elif window_type.lower() == "warning":
-        icon = QtWidgets.QMessageBox.Icon.Warning
-        button = QtWidgets.QMessageBox.StandardButton.Ok
-        log.warning(msg.replace("\n", ":")) if log else None
-    elif window_type.lower() == "info":
-        icon = QtWidgets.QMessageBox.Icon.Information
-        button = QtWidgets.QMessageBox.StandardButton.Ok
-        log.info(msg.replace("\n", ":")) if log else None
-    else:
-        icon = QtWidgets.QMessageBox.Icon.Question
-        button = QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
-        msg_box.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Yes)
+    match window_type.lower():
+        case "error":
+            icon = QtWidgets.QMessageBox.Icon.Critical
+            button = QtWidgets.QMessageBox.StandardButton.Ok
+            log.error(msg.replace("\n", ":")) if log else None
+        case "warning":
+            icon = QtWidgets.QMessageBox.Icon.Warning
+            button = QtWidgets.QMessageBox.StandardButton.Ok
+            log.warning(msg.replace("\n", ":")) if log else None
+        case "info":
+            icon = QtWidgets.QMessageBox.Icon.Information
+            button = QtWidgets.QMessageBox.StandardButton.Ok
+            log.info(msg.replace("\n", ":")) if log else None
+        case _:
+            icon = QtWidgets.QMessageBox.Icon.Question
+            button = QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
+            msg_box.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Yes)
 
     msg_box.setWindowTitle(variables.FULL_PROGRAM_NAME)
     msg_box.setIcon(icon)
@@ -66,24 +64,23 @@ def show_game_config_form(self, game_name, architecture):
     self.game_config_form.show()
     QtWidgets.QApplication.processEvents()
 
-    self.game_config_form.qtObj.ok_pushButton.clicked.connect(
-        lambda: events.game_config_form_result(self, architecture, "OK"))
-    self.game_config_form.qtObj.cancel_pushButton.clicked.connect(
-        lambda: events.game_config_form_result(self, architecture, "CANCEL"))
+    self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "OK"))
+    self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "CANCEL"))
 
     if self.selected_game is not None:
         self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.name)
-        if self.selected_game.api == variables.DX9_DISPLAY_NAME:
-            self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
-            self.game_config_form.qtObj.dx_radioButton.setChecked(False)
-            self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
-        elif self.selected_game.api == variables.OPENGL_DISPLAY_NAME:
-            self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
-            self.game_config_form.qtObj.dx_radioButton.setChecked(False)
-            self.game_config_form.qtObj.opengl_radioButton.setChecked(True)
-        else:
-            self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
-            self.game_config_form.qtObj.dx_radioButton.setChecked(True)
-            self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
+        match self.selected_game.api:
+            case variables.DX9_DISPLAY_NAME:
+                self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
+                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
+                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
+            case variables.OPENGL_DISPLAY_NAME:
+                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
+                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
+                self.game_config_form.qtObj.opengl_radioButton.setChecked(True)
+            case _:
+                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
+                self.game_config_form.qtObj.dx_radioButton.setChecked(True)
+                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
     else:
         self.game_config_form.qtObj.game_name_lineEdit.setText(game_name)

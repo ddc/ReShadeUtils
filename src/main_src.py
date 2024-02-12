@@ -186,11 +186,12 @@ class MainSrc:
         if not status:
             self.selected_game = None
         self._set_state_apply_button()
-        self.qtobj.remove_button.setEnabled(status)
-        self.qtobj.reset_files_button.setEnabled(status)
+        self.qtobj.edit_game_button.setEnabled(status)
         self.qtobj.edit_plugin_button.setEnabled(status)
+        self.qtobj.reset_files_button.setEnabled(status)
         self.qtobj.edit_path_button.setEnabled(status)
         self.qtobj.open_game_path_button.setEnabled(status)
+        self.qtobj.remove_button.setEnabled(status)
         self.qtobj.main_tabWidget.setCurrentIndex(0)
 
     def _set_state_apply_button(self):

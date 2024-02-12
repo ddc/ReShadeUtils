@@ -2,6 +2,7 @@
 import os
 import zipfile
 import requests
+import shutil
 from bs4 import BeautifulSoup
 from ddcUtils import FileUtils, get_exception
 from src import events
@@ -59,14 +60,10 @@ def download_reshade(self):
 
     try:
         # downloading new reshade version
-        self.local_reshade_path = os.path.join(variables.PROGRAM_PATH,
-                                               f"ReShade_Setup_"
-                                               f"{self.remote_reshade_version}"
-                                               ".exe")
+        self.local_reshade_path = os.path.join(variables.PROGRAM_PATH, f"ReShade_Setup_{self.remote_reshade_version}.exe")
         r = requests.get(self.remote_reshade_download_url)
         if r.status_code == 200:
-            self.log.info(f"{messages.downloading_new_reshade_version}: "
-                          f"{self.remote_reshade_version}")
+            self.log.info(f"{messages.downloading_new_reshade_version}: {self.remote_reshade_version}")
             with open(self.local_reshade_path, "wb") as outfile:
                 outfile.write(r.content)
         else:
@@ -94,8 +91,8 @@ def download_reshade(self):
         events.apply_all(self)
         qt_utils.show_message_window(self.log, "info",
                                      f"{messages.new_reshade_version}\n"
-                                     f"Version: {self.remote_reshade_version}"
-                                     f"\n\n{messages.apply_success}")
+                                     f"Version: {self.remote_reshade_version}\n\n"
+                                     f"{messages.apply_success}")
         self.need_apply = False
 
 
@@ -105,10 +102,10 @@ def download_shaders(self):
         FileUtils.remove(variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
 
     self.progressbar.set_values(messages.downloading_shaders, 40)
-    _download_crosire_shaders(self)
+    _download_crosire_shaders_and_textures(self)
 
     self.progressbar.set_values(messages.downloading_textures, 80)
-    _download_ddc_textures(self)
+    _move_textures()
 
     self.progressbar.close()
     qt_utils.show_message_window(self.log, "info", messages.update_shaders_finished)
@@ -117,14 +114,14 @@ def download_shaders(self):
 def check_shaders_and_textures(self):
     shaders_dir = FileUtils.list_files(variables.SHADERS_LOCAL_DIR)
     if not os.path.isdir(variables.SHADERS_LOCAL_DIR) or len(shaders_dir) == 0:
-        _download_crosire_shaders(self)
+        _download_crosire_shaders_and_textures(self)
 
     texture_dir = FileUtils.list_files(variables.TEXTURES_LOCAL_DIR)
     if not os.path.isdir(variables.TEXTURES_LOCAL_DIR) or len(texture_dir) == 0:
-        _download_ddc_textures(self)
+        _move_textures()
 
 
-def _download_crosire_shaders(self):
+def _download_crosire_shaders_and_textures(self):
     # remove shaders directory
     if not FileUtils.remove(variables.SHADERS_LOCAL_DIR):
         qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
@@ -137,7 +134,7 @@ def _download_crosire_shaders(self):
     if os.path.isfile(variables.SHADERS_ZIP_PATH):
         try:
             # extract the zip file
-            FileUtils.unzip(variables.SHADERS_ZIP_PATH, variables.PROGRAM_PATH)
+            FileUtils.unzip(variables.SHADERS_ZIP_PATH, variables.SRC_PATH)
         except FileNotFoundError as e:
             self.log.error(get_exception(e))
         except zipfile.BadZipFile as e:
@@ -152,21 +149,18 @@ def _download_crosire_shaders(self):
         FileUtils.remove(variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
 
         # rename the extracted directory (reshade-shaders-nvidia -> reshade-shaders)
-        out_dir = str(os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS))
-        FileUtils.rename(variables.SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR, out_dir)
+        FileUtils.rename(variables.SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR, variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
 
         # rename insdie the extracted directory (ShadersAndTextures -> Shaders)
-        out_dir = str(os.path.join(variables.PROGRAM_PATH, variables.RESHADE_SHADERS, "Shaders"))
-        FileUtils.rename(variables.SHADERS_NVIDIA_LOCAL_TEMP_DIR, out_dir)
+        FileUtils.rename(variables.SHADERS_NVIDIA_LOCAL_TEMP_DIR, variables.SHADERS_LOCAL_DIR)
 
 
-def _download_ddc_textures(self):
-    # remove textures directory
-    if not FileUtils.remove(variables.TEXTURES_LOCAL_DIR):
-        qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
-    local_dir = variables.TEXTURES_LOCAL_DIR
-    textures_remote_url = variables.TEXTURES_REMOTE_URL
-    if not FileUtils().download_github_dir(textures_remote_url, local_dir):
-        qt_utils.show_message_window(self.log, "error", messages.error_dl_textures)
-        return False
-    return True
+def _move_textures():
+    # move all textures.png to Textures folder
+    if not os.path.isdir(variables.TEXTURES_LOCAL_DIR):
+        os.makedirs(variables.TEXTURES_LOCAL_DIR)
+
+    texture_files = FileUtils.list_files(variables.SHADERS_LOCAL_DIR, ends_with=".png")
+    for texture in texture_files:
+        out_file = str(os.path.join(variables.TEXTURES_LOCAL_DIR, texture.name))
+        shutil.move(texture, out_file)
