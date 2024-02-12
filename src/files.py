@@ -1,51 +1,46 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
-from pathlib import Path
-import fsspec
-import requests
 from ddcUtils import FileUtils
 from src.constants import variables
 
 
 class Files:
-    def __init__(self, main):
-        self.main = main
-        self.log = main.log
+    def __init__(self, log):
+        self.log = log
 
     def download_all_files(self, local_dir: str = None):
         self.download_reshade_ini_file(local_dir)
         self.download_reshade_preset_file(local_dir)
         self.download_qss_file()
-        self.download_alembic_dir()
 
     def download_reshade_files(self, local_dir: str = None):
         self.download_reshade_ini_file(local_dir)
         self.download_reshade_preset_file(local_dir)
 
-    def download_reshade_ini_file(self, local_dir: str = None):
+    @staticmethod
+    def download_reshade_ini_file(local_dir: str = None):
         remote_file = variables.REMOTE_RESHADE_FILENAME
         if local_dir is None:
             local_file_path = variables.RESHADE_INI_PATH
         else:
             local_file_path = os.path.join(local_dir, variables.RESHADE_INI)
-        return self._download_file(remote_file, local_file_path)
+        return FileUtils.download_file(remote_file, local_file_path)
 
-    def download_reshade_preset_file(self, local_dir: str = None):
+    @staticmethod
+    def download_reshade_preset_file(local_dir: str = None):
         remote_file = variables.REMOTE_PRESET_FILENAME
         if local_dir is None:
             local_file_path = variables.RESHADE_PRESET_PATH
         else:
             local_file_path = os.path.join(local_dir, variables.RESHADE_PRESET_INI)
-        return self._download_file(remote_file, local_file_path)
+        return FileUtils.download_file(remote_file, local_file_path)
 
-    def download_qss_file(self):
+    @staticmethod
+    def download_qss_file():
         remote_file = variables.REMOTE_QSS_FILENAME
         local_file_path = variables.QSS_PATH
-        return self._download_file(remote_file, local_file_path)
-
-    def download_alembic_dir(self):
-        return self._download_alembic_dir(variables.ALEMBIC_MIGRATIONS_DIR)
+        return FileUtils.download_file(remote_file, local_file_path)
 
     @staticmethod
     def apply_reshade_ini_file(game_dir, screenshot_path):
@@ -84,32 +79,3 @@ class Files:
         except Exception as e:
             return e
         return None
-
-    def _download_file(self, remote_file, local_file_path):
-        try:
-            self.log.debug(remote_file)
-            req = requests.get(remote_file)
-            if req.status_code == 200:
-                with open(local_file_path, "wb") as outfile:
-                    outfile.write(req.content)
-                return True
-        except requests.HTTPError as e:
-            self.log.error(e)
-        return False
-
-    def _download_alembic_dir(self, local_dir):
-        try:
-            destination = Path(local_dir)
-            destination.mkdir(exist_ok=True, parents=True)
-            fs = fsspec.filesystem("github", org="ddc", repo="reshadeUtils")
-            remote_files = fs.ls("src/database/migrations")
-            fs.get(remote_files, destination.as_posix(), recursive=False)
-
-            destination = Path(local_dir) / "versions"
-            remote_files = fs.ls("src/database/migrations/versions")
-            fs.get(remote_files, destination.as_posix(), recursive=False)
-
-            return True
-        except requests.HTTPError as e:
-            self.log.error(e)
-        return False

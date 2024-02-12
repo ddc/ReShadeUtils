@@ -4,6 +4,7 @@ import sys
 from ddcUtils import FileUtils, get_exception
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
+from src.files import Files
 from src.tools import reshade_utils
 from src.tools.qt import qt_utils
 
@@ -23,12 +24,9 @@ def unzip_reshade(self, local_reshade_exe):
         self.log.error(get_exception(e))
 
 
-def check_reshade_dll_files(self):
-    missing_reshade = True
+def check_reshade_executable_file(self):
     files_list = sorted(os.listdir(variables.PROGRAM_PATH))
-    for filename in files_list:
-        if variables.RESHADE_SETUP in filename:
-            missing_reshade = False
+    missing_reshade = False if [x for x in files_list if variables.RESHADE_SETUP in x] else True
     if missing_reshade:
         reshade_utils.download_reshade(self)
 
@@ -41,10 +39,8 @@ def check_reshade_dll_files(self):
         self.enable_form(True)
 
 
-def check_local_files(self):
-    from src.files import Files
-    files = Files(self)
-
+def check_reshade_config_files(self):
+    files = Files(self.log)
     if not os.path.isfile(variables.RESHADE_INI_PATH):
         result = files.download_reshade_ini_file()
         if not result:
@@ -66,11 +62,7 @@ def check_local_files(self):
             qt_utils.show_message_window(self.log, "error", err_msg)
             sys.exit(1)
 
-    FileUtils.remove(variables.ALEMBIC_MIGRATIONS_DIR)
-    result = files.download_alembic_dir()
-    if not result:
-        qt_utils.show_message_window(self.log, "error", messages.error_dl_alembic_files)
-        sys.exit(1)
+    reshade_utils.check_shaders_and_textures(self)
 
 
 def check_game_file(self):

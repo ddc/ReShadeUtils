@@ -1,4 +1,4 @@
-"""test
+"""remove_update_shaders
 
 Revision ID: 5
 Revises: 4

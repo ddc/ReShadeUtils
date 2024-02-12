@@ -20,16 +20,15 @@ class MainSrc:
         self.log = Log().setup_logging()
         self.progressbar = ProgressBar()
         self.db_session = None
-        self.check_program_updates = None
-        self.check_reshade_updates = None
-        self.create_screenshots_folder = None
-        self.show_info_messages = None
-        self.use_dark_theme = None
+        self.check_program_updates = True
+        self.check_reshade_updates = True
+        self.create_screenshots_folder = True
+        self.show_info_messages = True
+        self.use_dark_theme = False
         self.need_apply = False
         self.selected_game = None
         self.game_config_form = None
         self.reshade_version = None
-        self.program_version = None
         self.local_reshade_path = None
         self.new_version = None
         self.remote_reshade_version = None
@@ -42,25 +41,34 @@ class MainSrc:
         with database.session() as db_session:
             self.db_session = db_session
 
-            self.progressbar.set_values(messages.checking_files, 15)
-            file_utils.check_local_files(self)
-
-            self.progressbar.set_values(messages.checking_database, 30)
-            program_utils.run_alembic_migrations()
+            # check for first run
+            self.progressbar.set_values(messages.checking_database, 15)
+            config_sql = ConfigDal(self.db_session, self.log)
+            rs_config = config_sql.get_configs()
+            if not rs_config:
+                # first run, since database is empty
+                self.progressbar.set_values(messages.checking_database, 30)
+                if program_utils.download_alembic_dir(self.log):
+                    program_utils.run_alembic_migrations()
 
             self.progressbar.set_values(messages.checking_configs, 45)
-            self.set_variables()
+            self.set_variables(rs_config)
             self.register_form_events()
 
-            self.progressbar.set_values(messages.downloading_shaders, 60)
-            reshade_utils.check_shaders_and_textures(self)
-
-            self.progressbar.set_values(messages.checking_reshade_updates, 80)
+            self.progressbar.set_values(messages.checking_reshade_updates, 75)
             reshade_utils.check_reshade_updates(self)
-            file_utils.check_reshade_dll_files(self)
+
+            self.progressbar.set_values(messages.checking_files, 80)
+            file_utils.check_reshade_config_files(self)
+            file_utils.check_reshade_executable_file(self)
 
             self.progressbar.set_values(messages.checking_program_updates, 90)
-            program_utils.check_program_updates(self)
+            self.qtobj.update_button.setVisible(False)
+            new_version = program_utils.check_program_updates(self.log, db_session)
+            if new_version:
+                self.qtobj.updateAvail_label.clear()
+                self.qtobj.updateAvail_label.setText(messages.new_version_available_download.format(new_version))
+                self.qtobj.update_button.setVisible(True)
 
             self.progressbar.close()
             self.qtobj.main_tabWidget.setCurrentIndex(0)
@@ -69,33 +77,30 @@ class MainSrc:
             self.populate_table_widget()
             self.enable_widgets(False)
 
-    def set_variables(self):
-        config_sql = ConfigDal(self.db_session, self.log)
-        rs_config = config_sql.get_configs()
+    def set_variables(self, rs_config):
         if rs_config:
-            self.use_dark_theme = rs_config[0]["use_dark_theme"]
-            self.qtobj.yes_dark_theme_radioButton.setChecked(self.use_dark_theme)
-            self.qtobj.no_dark_theme_radioButton.setChecked(not self.use_dark_theme)
-            self.set_style_sheet()
-
             self.check_program_updates = rs_config[0]["check_program_updates"]
-            self.qtobj.yes_check_program_updates_radioButton.setChecked(self.check_program_updates)
-            self.qtobj.no_check_program_updates_radioButton.setChecked(not self.check_program_updates)
-
-            self.show_info_messages = rs_config[0]["show_info_messages"]
-            self.qtobj.yes_show_info_messages_radioButton.setChecked(self.show_info_messages)
-            self.qtobj.no_show_info_messages_radioButton.setChecked(not self.show_info_messages)
-
             self.check_reshade_updates = rs_config[0]["check_reshade_updates"]
-            self.qtobj.yes_check_reshade_updates_radioButton.setChecked(self.check_reshade_updates)
-            self.qtobj.no_check_reshade_updates_radioButton.setChecked(not self.check_reshade_updates)
-
             self.create_screenshots_folder = rs_config[0]["create_screenshots_folder"]
-            self.qtobj.yes_screenshots_folder_radioButton.setChecked(self.create_screenshots_folder)
-            self.qtobj.no_screenshots_folder_radioButton.setChecked(not self.create_screenshots_folder)
-
-            self.program_version = rs_config[0]["program_version"]
+            self.show_info_messages = rs_config[0]["show_info_messages"]
+            self.use_dark_theme = rs_config[0]["use_dark_theme"]
             self.reshade_version = rs_config[0]["reshade_version"]
+
+        self.qtobj.yes_dark_theme_radioButton.setChecked(self.use_dark_theme)
+        self.qtobj.no_dark_theme_radioButton.setChecked(not self.use_dark_theme)
+        self.set_style_sheet()
+
+        self.qtobj.yes_check_program_updates_radioButton.setChecked(self.check_program_updates)
+        self.qtobj.no_check_program_updates_radioButton.setChecked(not self.check_program_updates)
+
+        self.qtobj.yes_show_info_messages_radioButton.setChecked(self.show_info_messages)
+        self.qtobj.no_show_info_messages_radioButton.setChecked(not self.show_info_messages)
+
+        self.qtobj.yes_check_reshade_updates_radioButton.setChecked(self.check_reshade_updates)
+        self.qtobj.no_check_reshade_updates_radioButton.setChecked(not self.check_reshade_updates)
+
+        self.qtobj.yes_screenshots_folder_radioButton.setChecked(self.create_screenshots_folder)
+        self.qtobj.no_screenshots_folder_radioButton.setChecked(not self.create_screenshots_folder)
 
     def register_form_events(self):
         # TAB 1 - grid

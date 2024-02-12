@@ -172,7 +172,7 @@ def edit_selected_game_path(self):
                 self.selected_game.name
             )
             try:
-                files = Files(self)
+                files = Files(self.log)
                 files.apply_reshade_ini_file(new_game_dir,
                                              game_screenshots_path)
             except Exception as e:
@@ -231,7 +231,7 @@ def edit_selected_game_plugin_config_file(self):
 
         try:
             if not os.path.isfile(variables.RESHADE_PRESET_PATH):
-                create_files = Files(self)
+                create_files = Files(self.log)
                 create_files.download_reshade_preset_file()
         except Exception as e:
             self.log.error(f"create_files: {get_exception(e)}")
@@ -254,7 +254,7 @@ def edit_selected_game_plugin_config_file(self):
 
 def edit_global_plugins_button(self):
     try:
-        file_utils.check_local_files(self)
+        file_utils.check_reshade_config_files(self)
         FileUtils.open_file(variables.RESHADE_PRESET_PATH)
     except Exception as e:
         err_msg = f"{get_exception(e)}\n\n" \
@@ -403,7 +403,7 @@ def game_config_form_result(self, architecture, status):
                     new_screenshots_path = ""
 
                 try:
-                    files = Files(self)
+                    files = Files(self.log)
                     files.apply_reshade_ini_file(self.selected_game.game_dir, new_screenshots_path)
                 except Exception as e:
                     self.log.error(f"download_reshade_ini_file: {get_exception(e)}")
@@ -526,8 +526,7 @@ def _apply_single(self, games_dict, reset=False):
     errors = None
     game_dir = os.path.dirname(games_dict["path"])
     game_name = games_dict["game_name"]
-    file_utils.check_local_files(self)
-    files = Files(self)
+    files = Files(self.log)
 
     if games_dict["architecture"].lower() == "32bits":
         src_dll_path = variables.RESHADE32_PATH
@@ -608,7 +607,7 @@ def reset_selected_game_files_button(self):
     self.enable_widgets(True)
     if self.selected_game is not None:
         self.progressbar.set_values(messages.reseting_game_files, 25)
-        files = Files(self)
+        files = Files(self.log)
         files.download_reshade_files(self.selected_game.game_dir)
         self.progressbar.set_values(messages.reseting_game_files, 50)
         reshade_utils.check_shaders_and_textures(self)

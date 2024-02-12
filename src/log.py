@@ -9,9 +9,10 @@ from src.tools.qt import qt_utils
 
 
 class Log:
-    def __init__(self):
+    def __init__(self, program_name: str = variables.SHORT_PROGRAM_NAME):
         self.dir = variables.PROGRAM_PATH
         self.days_to_keep = int(variables.DAYS_TO_KEEP_LOGS)
+        self.program_name = program_name
         self.level = logging.DEBUG if variables.DEBUG else logging.INFO
 
     def setup_logging(self):
@@ -25,7 +26,7 @@ class Log:
             sys.stderr.write(err_msg)
             sys.exit(1)
 
-        log_filename = f"{variables.SHORT_PROGRAM_NAME}.log"
+        log_filename = f"{self.program_name}.log"
         log_file_path = f"{self.dir}/{log_filename}"
 
         try:

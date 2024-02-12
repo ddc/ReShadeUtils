@@ -36,26 +36,26 @@ def check_reshade_updates(self):
                 if self.remote_reshade_version != self.reshade_version:
                     self.need_apply = True
                     download_reshade(self)
-
+                    return True
         except requests.exceptions.ConnectionError as e:
             self.log.error(f"{messages.reshade_website_unreacheable}: {get_exception(e)}")
-            qt_utils.show_message_window(
-                self.log,
-                "error",
-                messages.reshade_website_unreacheable
-            )
-            return
+            qt_utils.show_message_window(self.log, "error", messages.reshade_website_unreacheable)
+        return False
 
 
 def download_reshade(self):
     # removing old version
-    if self.reshade_version is not None:
-        old_local_reshade_exe = os.path.join(variables.PROGRAM_PATH,
-                                             f"ReShade_Setup_"
-                                             f"{self.reshade_version}.exe")
-        if os.path.isfile(old_local_reshade_exe):
-            self.log.info(messages.removing_old_reshade_file)
-            os.remove(old_local_reshade_exe)
+    files_list = sorted(os.listdir(variables.PROGRAM_PATH))
+    old_reshade_exe = None
+    for file in files_list:
+        if variables.RESHADE_SETUP in file:
+            old_reshade_exe = file
+            break
+    if old_reshade_exe:
+        old_reshade_exe_path = os.path.join(variables.PROGRAM_PATH, old_reshade_exe)
+        if os.path.isfile(old_reshade_exe_path):
+            self.log.info(f"{messages.removing_old_reshade_file}: {old_reshade_exe}")
+            os.remove(old_reshade_exe_path)
 
     try:
         # downloading new reshade version
@@ -115,10 +115,12 @@ def download_shaders(self):
 
 
 def check_shaders_and_textures(self):
-    if not os.path.isdir(variables.SHADERS_LOCAL_DIR):
+    shaders_dir = FileUtils.list_files(variables.SHADERS_LOCAL_DIR)
+    if not os.path.isdir(variables.SHADERS_LOCAL_DIR) or len(shaders_dir) == 0:
         _download_crosire_shaders(self)
 
-    if not os.path.isdir(variables.TEXTURES_LOCAL_DIR):
+    texture_dir = FileUtils.list_files(variables.TEXTURES_LOCAL_DIR)
+    if not os.path.isdir(variables.TEXTURES_LOCAL_DIR) or len(texture_dir) == 0:
         _download_ddc_textures(self)
 
 
@@ -162,13 +164,9 @@ def _download_ddc_textures(self):
     # remove textures directory
     if not FileUtils.remove(variables.TEXTURES_LOCAL_DIR):
         qt_utils.show_message_window(self.log, "error", messages.error_remove_shaders)
-
-    # download ddc texture files
-    if not FileUtils.download_filesystem_directory(
-            org="ddc",
-            repo="reshadeutils",
-            branch="fix/textures",
-            remote_dir="src/data/reshade/textures",
-            local_dir=variables.TEXTURES_LOCAL_DIR
-    ):
+    local_dir = variables.TEXTURES_LOCAL_DIR
+    textures_remote_url = variables.TEXTURES_REMOTE_URL
+    if not FileUtils().download_github_dir(textures_remote_url, local_dir):
         qt_utils.show_message_window(self.log, "error", messages.error_dl_textures)
+        return False
+    return True

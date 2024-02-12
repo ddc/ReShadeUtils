@@ -3,9 +3,20 @@ import os
 import requests
 from alembic import command
 from alembic.config import Config
-from ddcUtils import FileUtils, get_exception
+from ddcUtils import FileUtils, get_exception, OsUtils
 from src.constants import messages, variables
 from src.tools.qt import qt_utils
+from src.database.dal.config_dal import ConfigDal
+
+
+def download_alembic_dir(log):
+    FileUtils.remove(variables.ALEMBIC_MIGRATIONS_DIR)
+    local_dir = variables.ALEMBIC_MIGRATIONS_DIR
+    alembic_migrations_remote_url = variables.ALEMBIC_MIGRATIONS_REMOTE_URL
+    result = FileUtils().download_github_dir(alembic_migrations_remote_url, local_dir)
+    if not result:
+        qt_utils.show_message_window(log, "error", messages.error_dl_alembic_files)
+    return result
 
 
 def run_alembic_migrations():
@@ -13,49 +24,53 @@ def run_alembic_migrations():
     command.upgrade(alembic_cfg, "head")
 
 
-def check_program_updates(self):
-    self.qtobj.update_button.setVisible(False)
-    if self.check_program_updates:
-        new_version_dict = get_program_remote_version(self)
-        remote_version = new_version_dict["remote_version"]
-        if remote_version > variables.VERSION:
-            new_version = ".".join(map(str, remote_version))
-            new_version_msg = f"Version {new_version} available for download"
-            self.qtobj.updateAvail_label.clear()
-            self.qtobj.updateAvail_label.setText(new_version_msg)
-            self.qtobj.update_button.setVisible(True)
-            return True
-        return False
+def check_program_updates(log, db_session):
+    config_sql = ConfigDal(db_session, log)
+    rs_config = config_sql.get_configs()
+    if rs_config:
+        check_for_updates = rs_config[0].get("check_program_updates", True)
+        if check_for_updates:
+            remote_version = get_program_remote_version(log)
+            if remote_version > variables.VERSION:
+                remote_version_str = ".".join(map(str, remote_version))
+                return remote_version_str
     return None
 
 
-def get_program_remote_version(self):
+def get_program_remote_version(log):
     remote_version = (0, 0, 0)
     remote_version_filename = variables.REMOTE_VERSION_FILENAME
-    result = {
-        "remote_version": remote_version,
-    }
-
     try:
         req = requests.get(remote_version_filename, stream=True)
         if req.status_code == 200:
             for line in req.iter_lines(decode_unicode=True):
-                if line:
-                    remote_version = line.rstrip()
-                    break
-            result["remote_version"] = tuple(int(x) for x in remote_version.split("."))
+                remote_version = line.rstrip()
+                break
+            remote_version = tuple(int(x) for x in remote_version.split("."))
         else:
             err_msg = (
                 f"{messages.error_check_new_version}\n"
                 f"{messages.remote_version_file_not_found}\n"
                 f"code: {req.status_code}"
             )
-            qt_utils.show_message_window(self.log, "error", err_msg)
-            result["error_msg"] = err_msg
+            qt_utils.show_message_window(log, "error", err_msg)
+            log.error(err_msg)
     except requests.exceptions.ConnectionError:
-        qt_utils.show_message_window(self.log, "error", messages.dl_new_version_timeout)
+        qt_utils.show_message_window(log, "error", messages.dl_new_version_timeout)
+    return remote_version
 
-    return result
+
+def download_new_program_version(log, local_path, new_version):
+    program_name = variables.EXE_PROGRAM_NAME if OsUtils.is_windows() else variables.SHORT_PROGRAM_NAME
+    program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{new_version}/{program_name}"
+    r = requests.get(program_url)
+    if r.status_code == 200:
+        with open(local_path, "wb") as outfile:
+            outfile.write(r.content)
+        qt_utils.show_message_window(log, "info", f"{messages.program_updated} {new_version}")
+    else:
+        qt_utils.show_message_window(log, "error", messages.error_dl_new_version)
+        log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
 
 
 def get_screenshot_path(self, game_dir, game_name):

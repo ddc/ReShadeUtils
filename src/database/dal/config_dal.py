@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+import sqlite3
+
 import sqlalchemy as sa
 from ddcUtils.databases import DBUtils
 from src.database.models.config_model import Config
+from ddcUtils.exceptions import DBFetchAllException
 
 
 class ConfigDal:
@@ -11,9 +14,12 @@ class ConfigDal:
         self.db_utils = DBUtils(db_session)
 
     def get_configs(self, config_id=1):
-        stmt = sa.select(*self.columns).where(Config.id == config_id)
-        results = self.db_utils.fetchall(stmt)
-        return results
+        try:
+            stmt = sa.select(*self.columns).where(Config.id == config_id)
+            results = self.db_utils.fetchall(stmt)
+            return results
+        except DBFetchAllException:
+            return None
 
     def update_dark_theme(self, status: bool, config_id=1):
         stmt = sa.update(Config).where(Config.id == config_id).values(use_dark_theme=status)

@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ReshadeUtils"
-version = "4.8.2"
+version = "4.9.0"
 description = "ReshadeUtils"
 authors = ["ddc <ddc@users.noreply.github.com>"]
 readme = "README.md"
@@ -17,7 +17,6 @@ SQLAlchemy = "^2.0.25"
 requests = "^2.31.0"
 PyQt6 = "^6.6.1"
 alembic = "^1.13.1"
-fsspec = "^2024.2.0"
 ddcutils = "^1.0.19"
 
 [tool.poetry.group.test.dependencies]
