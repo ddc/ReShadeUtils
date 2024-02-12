@@ -23,7 +23,7 @@ else:
     PROGRAM_PATH = os.path.normpath(os.path.join(_local_app_data, SHORT_PROGRAM_NAME))
 # ############################################################################
 RESHADE_SETUP = "ReShade_Setup"
-RESHADE_SHADERS = "Reshade-shaders"
+RESHADE_SHADERS = "reshade-shaders"
 RESHADE_INI = "ReShade.ini"
 RESHADE_PRESET_INI = "ReShadePreset.ini"
 RESHADEGUI_INI = "ReShadeGUI.ini"

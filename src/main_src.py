@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ddcUtils import FileUtils
 from ddcUtils.databases import DBSqlite
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
@@ -44,12 +45,11 @@ class MainSrc:
             # check for first run
             self.progressbar.set_values(messages.checking_database, 15)
             config_sql = ConfigDal(self.db_session, self.log)
+            alembic_files = FileUtils.list_files(variables.ALEMBIC_MIGRATIONS_DIR)
             rs_config = config_sql.get_configs()
-            if not rs_config:
-                # first run, since database is empty
+            if not rs_config or not alembic_files:
                 self.progressbar.set_values(messages.checking_database, 30)
-                if program_utils.download_alembic_dir(self.log):
-                    program_utils.run_alembic_migrations()
+                program_utils.run_alembic_migrations(self.log)
 
             self.progressbar.set_values(messages.checking_configs, 45)
             self.set_variables(rs_config)
@@ -66,6 +66,7 @@ class MainSrc:
             self.qtobj.update_button.setVisible(False)
             new_version = program_utils.check_program_updates(self.log, db_session)
             if new_version:
+                program_utils.run_alembic_migrations(self.log)
                 self.qtobj.updateAvail_label.clear()
                 self.qtobj.updateAvail_label.setText(messages.new_version_available_download.format(new_version))
                 self.qtobj.update_button.setVisible(True)

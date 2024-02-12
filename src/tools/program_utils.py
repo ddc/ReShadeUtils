@@ -19,9 +19,10 @@ def download_alembic_dir(log):
     return result
 
 
-def run_alembic_migrations():
-    alembic_cfg = Config(variables.ALEMBIC_CONFIG_FILE)
-    command.upgrade(alembic_cfg, "head")
+def run_alembic_migrations(log):
+    if download_alembic_dir(log):
+        alembic_cfg = Config(variables.ALEMBIC_CONFIG_FILE)
+        command.upgrade(alembic_cfg, "head")
 
 
 def check_program_updates(log, db_session):
