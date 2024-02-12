@@ -4,7 +4,7 @@ import shutil
 from ddcUtils import FileUtils, get_exception, Object
 from PyQt6 import QtCore
 from PyQt6.QtGui import QDesktopServices
-from constants import messages, variables
+from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.database.dal.games_dal import GamesDal
 from src.files import Files
