@@ -19,7 +19,7 @@ class MainSrc:
         self.form = form
         self.client_version = variables.VERSION_STR
         self.log = Log().setup_logging()
-        self.progressbar = ProgressBar()
+        self.progressbar = ProgressBar(self.log)
         self.db_session = None
         self.check_program_updates = True
         self.check_reshade_updates = True
@@ -43,29 +43,29 @@ class MainSrc:
             self.db_session = db_session
 
             # check for first run
-            self.progressbar.set_values(messages.checking_database, 15)
             config_sql = ConfigDal(self.db_session, self.log)
             alembic_files = FileUtils.list_files(variables.ALEMBIC_MIGRATIONS_DIR)
             rs_config = config_sql.get_configs()
             if not rs_config or not alembic_files:
-                self.progressbar.set_values(messages.checking_database, 30)
+                self.progressbar.set_values(messages.checking_database, 15)
                 program_utils.run_alembic_migrations(self.log)
 
-            self.progressbar.set_values(messages.checking_configs, 45)
+            self.progressbar.set_values(messages.checking_configs, 30)
             self.set_variables(rs_config)
             self.register_form_events()
 
-            self.progressbar.set_values(messages.checking_reshade_updates, 75)
+            self.progressbar.set_values(messages.checking_reshade_updates, 45)
             reshade_utils.check_reshade_updates(self)
 
-            self.progressbar.set_values(messages.checking_files, 80)
+            self.progressbar.set_values(messages.checking_files, 60)
             file_utils.check_reshade_config_files(self)
             file_utils.check_reshade_executable_file(self)
 
-            self.progressbar.set_values(messages.checking_program_updates, 90)
+            self.progressbar.set_values(messages.checking_program_updates, 75)
             self.qtobj.update_button.setVisible(False)
             new_version = program_utils.check_program_updates(self.log, db_session)
             if new_version:
+                self.progressbar.set_values(messages.checking_database, 90)
                 program_utils.run_alembic_migrations(self.log)
                 self.qtobj.updateAvail_label.clear()
                 self.qtobj.updateAvail_label.setText(messages.new_version_available_download.format(new_version))

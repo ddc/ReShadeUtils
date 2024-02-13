@@ -20,15 +20,14 @@ QProgressBar::chunk:horizontal {
 
 
 class ProgressBar:
-    def __init__(self):
-        _width = 350
-        _height = 25
+    def __init__(self, width=350, height=25, log=None):
+        self.log = log
         self.pbar = QtWidgets.QProgressBar()
         self.pbar.setObjectName("progressBar")
-        self.pbar.setMinimumSize(QtCore.QSize(_width, _height))
-        self.pbar.setMaximumSize(QtCore.QSize(_width, _height))
-        self.pbar.setSizeIncrement(QtCore.QSize(_width, _height))
-        self.pbar.setBaseSize(QtCore.QSize(_width, _height))
+        self.pbar.setMinimumSize(QtCore.QSize(width, height))
+        self.pbar.setMaximumSize(QtCore.QSize(width, height))
+        self.pbar.setSizeIncrement(QtCore.QSize(width, height))
+        self.pbar.setBaseSize(QtCore.QSize(width, height))
         self.pbar.setMinimum(0)
         self.pbar.setMaximum(100)
         self.pbar.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
@@ -36,6 +35,8 @@ class ProgressBar:
         self.pbar.setStyleSheet(STYLE)
 
     def set_values(self, message="", value=0):
+        if self.log:
+            self.log.info(message)
         _translate = QtCore.QCoreApplication.translate
         self.pbar.setFormat(_translate("Main", f"{message}  %p%"))
         self.pbar.setValue(value)

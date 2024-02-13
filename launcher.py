@@ -16,7 +16,7 @@ from src.tools.qt.progressbar import ProgressBar
 class Launcher:
     def __init__(self):
         self.log = Log(self.__class__.__name__).setup_logging()
-        self.progressbar = ProgressBar()
+        self.progressbar = ProgressBar(self.log)
         self.program_name = variables.EXE_PROGRAM_NAME if OsUtils.is_windows() else variables.SHORT_PROGRAM_NAME
         self.program_path = os.path.join(OsUtils.get_current_path(), self.program_name)
         self.db_session = None
