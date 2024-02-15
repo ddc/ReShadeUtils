@@ -36,7 +36,7 @@ class ProgressBar:
 
     def set_values(self, message="", value=0):
         if self.log:
-            self.log.info(message)
+            self.log.debug(message)
         _translate = QtCore.QCoreApplication.translate
         self.pbar.setFormat(_translate("Main", f"{message}  %p%"))
         self.pbar.setValue(value)

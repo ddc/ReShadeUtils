@@ -3,9 +3,8 @@ import os
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QFileDialog
 from src import events
-from src.config import Ui_config
 from src.constants import messages, variables
-from src.tools import file_utils
+from src.database.dal.games_dal import GamesDal
 
 
 def open_exe_file_dialog():
@@ -47,40 +46,58 @@ def show_message_window(log, window_type, msg):
     return user_answer
 
 
-def show_game_config_form(self, game_name, architecture):
-    if not file_utils.check_game_file(self):
-        show_message_window(self.log, "error", messages.error_game_not_found)
-        return
+def set_style_sheet(db_session, form, log, use_dark_theme):
+    try:
+        if use_dark_theme:
+            form.setStyleSheet(open(variables.QSS_PATH, "r").read())
+        else:
+            form.setStyleSheet("")
+    except FileNotFoundError:
+        form.setStyleSheet("")
+        events.dark_theme_clicked(db_session, log, "NO")
+        show_message_window(log, "error", messages.error_rss_file_not_found)
 
-    self.game_config_form = QtWidgets.QWidget()
-    qt_obj = Ui_config()
-    qt_obj.setupUi(self.game_config_form)
-    self.game_config_form.qtObj = qt_obj
 
-    if self.use_dark_theme:
-        self.game_config_form.setStyleSheet(open(variables.QSS_PATH, "r").read())
+def populate_games_tab(db_session, log, qtobj):
+    qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
+    qtobj.programs_tableWidget.setRowCount(0)  # cleanning datagrid
+    games_sql = GamesDal(db_session, log)
+    rs_all_games = games_sql.get_all_games()
+    if rs_all_games is not None and len(rs_all_games) > 0:
+        for i in range(len(rs_all_games)):
+            qtobj.programs_tableWidget.insertRow(i)
+            qtobj.programs_tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(rs_all_games[i]["name"]))
+            qtobj.programs_tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(rs_all_games[i]["architecture"]))
+            qtobj.programs_tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(rs_all_games[i]["api"]))
+            qtobj.programs_tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(rs_all_games[i]["path"]))
 
-    self.game_config_form.qtObj.game_name_lineEdit.setFocus()
-    self.game_config_form.show()
-    QtWidgets.QApplication.processEvents()
-
-    self.game_config_form.qtObj.ok_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "OK"))
-    self.game_config_form.qtObj.cancel_pushButton.clicked.connect(lambda: events.game_config_form_result(self, architecture, "CANCEL"))
-
-    if self.selected_game is not None:
-        self.game_config_form.qtObj.game_name_lineEdit.setText(self.selected_game.name)
-        match self.selected_game.api:
-            case variables.DX9_DISPLAY_NAME:
-                self.game_config_form.qtObj.dx9_radioButton.setChecked(True)
-                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
-                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
-            case variables.OPENGL_DISPLAY_NAME:
-                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
-                self.game_config_form.qtObj.dx_radioButton.setChecked(False)
-                self.game_config_form.qtObj.opengl_radioButton.setChecked(True)
-            case _:
-                self.game_config_form.qtObj.dx9_radioButton.setChecked(False)
-                self.game_config_form.qtObj.dx_radioButton.setChecked(True)
-                self.game_config_form.qtObj.opengl_radioButton.setChecked(False)
+    qtobj.programs_tableWidget.resizeColumnsToContents()
+    highest_column_width = qtobj.programs_tableWidget.columnWidth(3)
+    if highest_column_width < 600:
+        qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
     else:
-        self.game_config_form.qtObj.game_name_lineEdit.setText(game_name)
+        qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+
+def enable_form(qtobj, status: bool):
+    qtobj.add_button.setEnabled(status)
+    for i in range(0, qtobj.main_tabWidget.count()):
+        qtobj.main_tabWidget.setTabEnabled(i, status)
+    qtobj.main_tabWidget.setCurrentIndex(0)
+
+
+def enable_widgets(qtobj, status: bool):
+    _set_state_apply_button(qtobj)
+    qtobj.edit_game_button.setEnabled(status)
+    qtobj.edit_plugin_button.setEnabled(status)
+    qtobj.reset_files_button.setEnabled(status)
+    qtobj.edit_path_button.setEnabled(status)
+    qtobj.open_game_path_button.setEnabled(status)
+    qtobj.remove_button.setEnabled(status)
+    qtobj.main_tabWidget.setCurrentIndex(0)
+
+
+def _set_state_apply_button(qtobj):
+    len_games = qtobj.programs_tableWidget.rowCount()
+    status = False if len_games == 0 else True
+    qtobj.apply_button.setEnabled(status)

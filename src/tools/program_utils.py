@@ -21,7 +21,7 @@ def download_alembic_dir(log):
 
 def run_alembic_migrations(log):
     if download_alembic_dir(log):
-        alembic_cfg = Config(variables.ALEMBIC_CONFIG_FILE)
+        alembic_cfg = Config(variables.ALEMBIC_INI_FILE_PATH)
         command.upgrade(alembic_cfg, "head")
 
 
@@ -74,26 +74,28 @@ def download_new_program_version(log, local_path, new_version):
         log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
 
 
-def get_screenshot_path(self, game_dir, game_name):
+def get_screenshot_path(db_session, log, game_dir, game_name):
     game_screenshots_path = ""
-    if self.qtobj.yes_screenshots_folder_radioButton.isChecked():
-        game_screenshots_path = os.path.join(variables.RESHADE_SCREENSHOT_PATH, game_name)
+    config_sql = ConfigDal(db_session, log)
+    rs_config = config_sql.get_configs()
+    if rs_config and rs_config[0]["create_screenshots_folder"]:
+        game_screenshots_path = os.path.join(variables.RESHADE_SCREENSHOT_DIR, game_name)
         try:
-            if not os.path.isdir(variables.RESHADE_SCREENSHOT_PATH):
-                os.makedirs(variables.RESHADE_SCREENSHOT_PATH)
+            if not os.path.isdir(variables.RESHADE_SCREENSHOT_DIR):
+                os.makedirs(variables.RESHADE_SCREENSHOT_DIR)
         except OSError as e:
-            self.log.error(f"mkdir: {variables.RESHADE_SCREENSHOT_PATH}: {get_exception(e)}")
+            log.error(f"mkdir: {variables.RESHADE_SCREENSHOT_DIR}: {get_exception(e)}")
 
         try:
             if not os.path.isdir(game_screenshots_path):
                 os.makedirs(game_screenshots_path)
         except OSError as e:
-            self.log.error(f"mkdir: {game_screenshots_path}: {get_exception(e)}")
+            log.error(f"mkdir: {game_screenshots_path}: {get_exception(e)}")
     else:
         reshade_ini_filepath = str(os.path.join(game_dir, variables.RESHADE_INI))
         reshade_config_screenshot_path = FileUtils().get_file_value(reshade_ini_filepath, "SCREENSHOT", "SavePath")
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
-        elif os.path.isdir(os.path.join(variables.RESHADE_SCREENSHOT_PATH, game_name)):
-            game_screenshots_path = os.path.join(variables.RESHADE_SCREENSHOT_PATH, game_name)
+        elif os.path.isdir(os.path.join(variables.RESHADE_SCREENSHOT_DIR, game_name)):
+            game_screenshots_path = os.path.join(variables.RESHADE_SCREENSHOT_DIR, game_name)
     return game_screenshots_path

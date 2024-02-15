@@ -1,25 +1,15 @@
 # -*- coding: utf-8 -*-
 import pytest
 import sqlalchemy as sa
-from sqlalchemy.orm import Session
 from src.database.dal.games_dal import GamesDal
 from src.database.models.games_model import Games
-from tests.data import base_data
-
-
-database_engine = base_data.get_database_engine()
-
-
-@pytest.fixture(name="db_session")
-def get_db_session():
-    with Session(database_engine) as session:
-        yield session
+from tests.data.base_data import database_engine, db_session, get_fake_game_data
 
 
 @pytest.fixture
 def fake_data(db_session):
     # init
-    fdata = base_data.get_fake_game_data()
+    fdata = get_fake_game_data()
     yield fdata
     # teardown
     db_session.execute(sa.delete(Games))
@@ -44,7 +34,7 @@ class TestGamesDal:
 
     def test_get_all_games(self, db_session, fake_data):
         games_dal = GamesDal(db_session, None)
-        second_fdata = base_data.get_fake_game_data()
+        second_fdata = get_fake_game_data()
         db_session.add(Games(**second_fdata))
         results = games_dal.get_all_games()
         assert len(results) == 2

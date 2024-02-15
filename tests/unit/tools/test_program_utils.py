@@ -1,42 +1,10 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from unittest.mock import patch
-import pytest
-from PyQt6.QtWidgets import QLabel, QPushButton, QRadioButton
 from src.tools import program_utils
-
-
-@pytest.fixture
-def qtbutton(qtbot):
-    qbutton = QPushButton()
-    qbutton.setVisible(True)
-    qtbot.addWidget(qbutton)
-    return qbutton
-
-
-@pytest.fixture
-def qtlabel(qtbot):
-    qlabel = QLabel()
-    qlabel.setText("Hello World")
-    qtbot.addWidget(qlabel)
-    return qlabel
-
-
-@pytest.fixture
-def qtradiobutton(qtbot):
-    qradiobutton = QRadioButton()
-    qradiobutton.setChecked(True)
-    qtbot.addWidget(qradiobutton)
-    return qradiobutton
-
-
-class Object:
-    def __init__(self):
-        self._created = datetime.now().isoformat()
+from tests.data.base_data import qtbutton, qtlabel, Object
 
 
 class TestProgramUtils:
-
     @patch("src.tools.program_utils.get_program_remote_version")
     def test_check_program_updates(self, program_remote_version_mock, qtbutton, qtlabel):
         obj = Object()

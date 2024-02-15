@@ -1,5 +1,5 @@
-# Reshade Utilities
-### Program to copy/update [Reshade](https://reshade.me/) DLLs and shaders
+# ReShade Utilities
+### Program to copy/update [ReShade](https://reshade.me/) DLLs and shaders
 
 [<img src="https://img.shields.io/badge/Donate-PayPal-green.svg?style=plastic">](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE)
 [<img src="https://img.shields.io/github/license/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
@@ -16,7 +16,7 @@
 
 
 ## Program Notes
-+ Configuration, logs and database files are now being saved in "%LOCALAPPDATA%\ReshadeUtils"
++ Configuration, logs and database files are now being saved in "%LOCALAPPDATA%\ReShadeUtils"
 + This program was compiled with PyInstaller
 
 
