@@ -146,9 +146,8 @@ def check_and_download_new_reshade_version(db_session, log, qtobj, db_reshade_ve
                                                  f"{err}")
                 else:
                     qt_utils.show_message_window(log, "info",
-                                                 f"{messages.new_reshade_version}\n"
-                                                 f"Version: {remote_reshade_version_str}\n\n"
-                                                 f"{messages.apply_success}")
+                                                 f"{messages.new_reshade_version}\n\n"
+                                                 f"Version: {remote_reshade_version_str}")
             return remote_reshade_version_str
     return None
 

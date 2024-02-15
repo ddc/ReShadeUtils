@@ -31,6 +31,8 @@ def upgrade() -> None:
         sa.Column('created_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
         sa.PrimaryKeyConstraint('id'),
         sa.UniqueConstraint('id'),
+        sa.UniqueConstraint('name'),
+        sa.UniqueConstraint('path'),
         sa.CheckConstraint(f'architecture in {variables.ALL_ARCHITECTURES}', name='check_architecture'),
         sa.CheckConstraint(f'api in {variables.ALL_APIS}', name='check_api')
     )

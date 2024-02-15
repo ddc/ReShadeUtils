@@ -17,7 +17,7 @@ class Games(GamesBase):
         sa.CheckConstraint(f"api in {variables.ALL_APIS}", name="check_api"),
     )
     id: Mapped[int] = mapped_column(primary_key=True, unique=True, autoincrement=True)
-    name: Mapped[str] = mapped_column()
+    name: Mapped[str] = mapped_column(unique=True)
     architecture: Mapped[str] = mapped_column()
     api: Mapped[str] = mapped_column()
-    path: Mapped[str] = mapped_column()
+    path: Mapped[str] = mapped_column(unique=True)

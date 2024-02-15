@@ -217,6 +217,7 @@ def get_selected_game(qtobj, item=None):
 
     class SelectedGame:
         def __init__(self):
+            self.id = None
             self.column = None
             self.row = None
             self.name = None
