@@ -38,7 +38,7 @@ def add_game(self):
                         qt_utils.show_message_window(self.log, "error", messages.not_valid_game)
                         return
 
-                edit_form_events.show_game_config_form(self, file_name, architecture)
+                edit_form_events.show_game_config_form_insert(db_session, log, main_qtobj)
             elif rs_name is not None and len(rs_name) > 0:
                 qt_utils.show_message_window(self.log, "error",
                                              f"{messages.game_already_exist}\n\n"
@@ -126,8 +126,8 @@ def edit_selected_game_path(self):
                 return
 
             # create Reshade.ini
-            self.selected_game.game_dir = new_game_dir
-            game_screenshots_path = program_utils.get_screenshot_path(self, new_game_dir, self.selected_game.name)
+            self.selected_game.dir = new_game_dir
+            game_screenshots_path = program_utils.get_screenshot_path(db_session, log, new_game_dir, self.selected_game.name)
             try:
                 reshade_utils.apply_reshade_ini_file(new_game_dir, game_screenshots_path)
             except Exception as e:
@@ -208,8 +208,8 @@ def edit_selected_game_plugin_config_file(self):
 def get_selected_game(qtobj, item=None):
     """
     Called when a game is double-clicked
-    clicked_item = qtobj.programs_tableWidget.currentItem()
-    clicked_row = qtobj.programs_tableWidget.selectedItems()
+    clicked_item = qtobj.programs_table_widget.currentItem()
+    clicked_row = qtobj.programs_table_widget.selectedItems()
     :param qtobj:
     :param item:
     :return:
@@ -224,7 +224,9 @@ def get_selected_game(qtobj, item=None):
             self.architecture = None
             self.api = None
             self.path = None
-            self.game_dir = None
+            self.dir = None
+            self.dll = None
+            self.dll_path = None
 
     selected_game = SelectedGame()
 
@@ -232,12 +234,20 @@ def get_selected_game(qtobj, item=None):
         selected_game.column = item.column()
         selected_game.row = item.row()
 
-    clicked_row = qtobj.programs_tableWidget.selectedItems()
+    clicked_row = qtobj.programs_table_widget.selectedItems()
     selected_game.name = clicked_row[0].text()
     selected_game.architecture = clicked_row[1].text()
     selected_game.api = clicked_row[2].text()
     selected_game.path = clicked_row[3].text()
-    selected_game.game_dir = os.path.dirname(selected_game.path)
+    selected_game.dir = str(os.path.dirname(selected_game.path))
+    match selected_game.api:
+        case variables.DX9_DISPLAY_NAME:
+            selected_game.dll = variables.D3D9_DLL
+        case variables.DXGI_DISPLAY_NAME:
+            selected_game.dll = variables.DXGI_DLL
+        case _:
+            selected_game.dll = variables.OPENGL_DLL
+    selected_game.dll_path = str(os.path.join(selected_game.dir, selected_game.dll))
     return selected_game
 
 
@@ -251,8 +261,8 @@ def game_clicked(log, qtobj, item):
     """
 
     qt_utils.enable_widgets(qtobj, True)
-    selected_game = get_selected_game(qtobj, item)
-    log.debug(f"game_clicked: {selected_game.name}")
+    # selected_game = get_selected_game(qtobj, item)
+    # log.debug(f"game_clicked: {selected_game.name}")
 
 
 def apply_all_clicked(db_session, log, qtobj):
@@ -282,13 +292,13 @@ def apply_all(db_session, log, qtobj, reset=False):
         for i in range(len_games):
             progressbar.set_values(messages.copying_DLLs, 100 // len_games)
             len_games = len_games - 1
-            games_dict = {
+            game_dict = {
                 "api": rs_all_games[i]["api"],
                 "architecture": rs_all_games[i]["architecture"],
-                "game_name": rs_all_games[i]["name"],
+                "name": rs_all_games[i]["name"],
                 "path": rs_all_games[i]["path"]
             }
-            err_result = apply_single(db_session, log, games_dict, reset)
+            err_result = apply_single(db_session, log, game_dict, reset)
             if err_result:
                 errors.append(err_result)
 
@@ -299,12 +309,12 @@ def apply_all(db_session, log, qtobj, reset=False):
     return errors
 
 
-def apply_single(db_session, log, games_dict, reset=False):
+def apply_single(db_session, log, game_dict, reset=False):
     errors = None
-    game_dir = os.path.dirname(games_dict["path"])
-    game_name = games_dict["game_name"]
+    game_dir = os.path.dirname(game_dict["path"])
+    game_name = game_dict["name"]
 
-    match games_dict["architecture"]:
+    match game_dict["architecture"]:
         case "32bits":
             src_dll_path = variables.RESHADE32_PATH
         case _:
@@ -313,7 +323,7 @@ def apply_single(db_session, log, games_dict, reset=False):
     try:
         # Reshade.dll
         if os.path.isfile(src_dll_path) or reset:
-            match games_dict["api"]:
+            match game_dict["api"]:
                 case variables.DX9_DISPLAY_NAME:
                     dst_dll_path = os.path.join(game_dir, variables.D3D9_DLL)
                 case variables.OPENGL_DISPLAY_NAME:
@@ -366,13 +376,13 @@ def reset_selected_game_files_button(db_session, log, qtobj, item):
     progressbar = ProgressBar(log=log)
     progressbar.set_values(messages.reseting_game_files, 25)
     selected_game = get_selected_game(qtobj, item)
-    games_dict = {
+    game_dict = {
         "api": selected_game.api,
         "architecture": selected_game.architecture,
-        "game_name": selected_game.name,
+        "name": selected_game.name,
         "path": selected_game.path
     }
-    result = apply_single(db_session, log, games_dict, True)
+    result = apply_single(db_session, log, game_dict, True)
     progressbar.close()
     if result is None:
         qt_utils.show_message_window(log, "info", messages.reset_success)

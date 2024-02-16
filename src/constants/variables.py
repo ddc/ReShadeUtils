@@ -29,10 +29,11 @@ RESHADE64 = f"{RESHADE_NAME}64"
 RESHADE32_DLL = f"{RESHADE32}.dll"
 RESHADE64_DLL = f"{RESHADE64}.dll"
 RESHADE_SHADERS = f"{RESHADE_NAME}-shaders".lower()
-DXGI_DLL = "dxgi.dll"
 D3D9_DLL = "d3d9.dll"
+DXGI_DLL = "dxgi.dll"
 OPENGL_DLL = "opengl32.dll"
 QSS_FILE_NAME = "style.qss"
+ALL_DLL_NAMES = (D3D9_DLL, DXGI_DLL, OPENGL_DLL)
 # ############################################################################
 DX9_DISPLAY_NAME = "DirectX 9"
 DXGI_DISPLAY_NAME = "DirectX (10,11,12)"

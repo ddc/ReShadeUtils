@@ -56,13 +56,13 @@ class TestGamesDal:
         game_id = fake_data["id"]
         fdata = {
             "id": game_id,
-            "game_name": "new name",
+            "name": "new name",
             "architecture": "new architecture",
             "api": "new api"
         }
         games_dal.update_game(fdata)
         results = games_dal.get_game_by_id(game_id)
-        assert results[0].name == fdata["game_name"]
+        assert results[0].name == fdata["name"]
         assert results[0].architecture == fdata["architecture"]
         assert results[0].api == fdata["api"]
 

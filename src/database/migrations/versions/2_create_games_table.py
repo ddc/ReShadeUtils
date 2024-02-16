@@ -26,6 +26,7 @@ def upgrade() -> None:
         sa.Column('name', sa.String(), nullable=False),
         sa.Column('architecture', sa.String(), nullable=False),
         sa.Column('api', sa.String(), nullable=False),
+        sa.Column('dll', sa.String(), nullable=False),
         sa.Column('path', sa.String(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
         sa.Column('created_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
@@ -34,7 +35,8 @@ def upgrade() -> None:
         sa.UniqueConstraint('name'),
         sa.UniqueConstraint('path'),
         sa.CheckConstraint(f'architecture in {variables.ALL_ARCHITECTURES}', name='check_architecture'),
-        sa.CheckConstraint(f'api in {variables.ALL_APIS}', name='check_api')
+        sa.CheckConstraint(f'api in {variables.ALL_APIS}', name='check_api'),
+        sa.CheckConstraint(f'dll in {variables.ALL_DLL_NAMES}', name='check_dll_names'),
     )
     # ### end Alembic commands ###
 

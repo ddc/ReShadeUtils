@@ -285,8 +285,8 @@
        <string>EDIT PLUGIN</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/edit.png</normaloff>:/data/images/edit.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/plugin.png</normaloff>:/resources/images/plugin.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="reset_files_button">
@@ -322,8 +322,8 @@
        <string>RESET FILES</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/reset.png</normaloff>:/data/images/reset.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="edit_path_button">
@@ -359,8 +359,8 @@
        <string>CHANGE LOCATION</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/arrow.png</normaloff>:/data/images/arrow.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/arrow.png</normaloff>:/resources/images/arrow.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="open_game_path_button">
@@ -396,8 +396,8 @@
        <string>OPEN LOCATION</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/folder.png</normaloff>:/data/images/folder.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/folder.png</normaloff>:/resources/images/folder.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="remove_button">
@@ -433,8 +433,8 @@
        <string>REMOVE</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/delete.png</normaloff>:/data/images/delete.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="edit_game_button">
@@ -470,8 +470,8 @@
        <string>EDIT NAME</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/edit.png</normaloff>:/data/images/edit.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/edit.png</normaloff>:/resources/images/edit.png</iconset>
       </property>
      </widget>
     </widget>
@@ -520,8 +520,8 @@
        <string>APPLY</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/apply.png</normaloff>:/data/images/apply.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/apply.png</normaloff>:/resources/images/apply.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="add_button">
@@ -557,8 +557,8 @@
        <string>ADD</string>
       </property>
       <property name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/data/images/add.png</normaloff>:/data/images/add.png</iconset>
+       <iconset>
+        <normaloff>:/resources/images/add.png</normaloff>:/resources/images/add.png</iconset>
       </property>
      </widget>
     </widget>
@@ -1027,8 +1027,8 @@
       <string>RESET ALL GAMES FILES TO DEFAULT</string>
      </property>
      <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/data/images/reset.png</normaloff>:/data/images/reset.png</iconset>
+      <iconset>
+       <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -1041,10 +1041,16 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>290</y>
+       <y>330</y>
        <width>335</width>
        <height>30</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>335</width>
+       <height>30</height>
+      </size>
      </property>
      <property name="maximumSize">
       <size>
@@ -1064,8 +1070,8 @@
       <string>UPDATE SHADERS</string>
      </property>
      <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/data/images/reset.png</normaloff>:/data/images/reset.png</iconset>
+      <iconset>
+       <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -1078,10 +1084,16 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>330</y>
+       <y>290</y>
        <width>335</width>
        <height>30</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>335</width>
+       <height>30</height>
+      </size>
      </property>
      <property name="maximumSize">
       <size>
@@ -1101,8 +1113,8 @@
       <string>EDIT GLOBAL PLUGINS</string>
      </property>
      <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/data/images/plugin.png</normaloff>:/data/images/plugin.png</iconset>
+      <iconset>
+       <normaloff>:/resources/images/plugins.png</normaloff>:/resources/images/plugins.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -1320,8 +1332,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <string>UPDATE</string>
    </property>
    <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/data/images/update.png</normaloff>:/data/images/update.png</iconset>
+    <iconset>
+     <normaloff>:/resources/images/update.png</normaloff>:/resources/images/update.png</iconset>
    </property>
   </widget>
   <zorder>main_tab_widget</zorder>

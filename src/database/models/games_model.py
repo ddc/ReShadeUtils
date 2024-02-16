@@ -13,11 +13,13 @@ class GamesBase(DeclarativeBase):
 class Games(GamesBase):
     __tablename__ = "games"
     __table_args__ = (
-        sa.CheckConstraint(f"architecture in {variables.ALL_ARCHITECTURES}", name="check_architecture"),
-        sa.CheckConstraint(f"api in {variables.ALL_APIS}", name="check_api"),
+        sa.CheckConstraint(f"architecture in {variables.ALL_ARCHITECTURES}", name="check_architecture_names"),
+        sa.CheckConstraint(f"api in {variables.ALL_APIS}", name="check_api_names"),
+        sa.CheckConstraint(f"dll in {variables.ALL_DLL_NAMES}", name="check_dll_names"),
     )
     id: Mapped[int] = mapped_column(primary_key=True, unique=True, autoincrement=True)
     name: Mapped[str] = mapped_column(unique=True)
     architecture: Mapped[str] = mapped_column()
     api: Mapped[str] = mapped_column()
+    dll: Mapped[str] = mapped_column()
     path: Mapped[str] = mapped_column(unique=True)

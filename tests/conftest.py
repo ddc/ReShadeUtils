@@ -71,7 +71,7 @@ def qtabwidget(qtbot):
     qtt.setMinimumSize(QtCore.QSize(960, 640))
     qtt.setIconSize(QtCore.QSize(20, 20))
     qtt.setUsesScrollButtons(False)
-    qtt.setObjectName("main_tabWidget")
+    qtt.setObjectName("main_tab_widget")
     qtbot.addWidget(qtt)
     return qtt
 
@@ -89,7 +89,7 @@ def qtextbrowser(qtbot):
     qwtb.setUndoRedoEnabled(False)
     qwtb.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse)
     qwtb.setOpenExternalLinks(True)
-    qwtb.setObjectName("about_textBrowser")
+    qwtb.setObjectName("about_text_browser")
     qtbot.addWidget(qwtb)
     return qwtb
 
@@ -115,7 +115,7 @@ def qtablewidget(qtbot):
     qtw.setWordWrap(False)
     qtw.setCornerButtonEnabled(False)
     qtw.setColumnCount(4)
-    qtw.setObjectName("programs_tableWidget")
+    qtw.setObjectName("programs_table_widget")
     qtw.setRowCount(0)
     qtbot.addWidget(qtw)
     return qtw
@@ -125,35 +125,35 @@ def qtablewidget(qtbot):
 def qtobj(qpushbutton, qlabel, qradiobutton, qgroupbox, qtabwidget, qtextbrowser, qtablewidget):
     qtobj = Object()
     qtobj.apply_button = qpushbutton
-    qtobj.groupBox = qgroupbox
+    qtobj.selected_game_group_box = qgroupbox
     qtobj.edit_plugin_button = qpushbutton
     qtobj.reset_files_button = qpushbutton
     qtobj.edit_path_button = qpushbutton
     qtobj.open_game_path_button = qpushbutton
     qtobj.remove_button = qpushbutton
     qtobj.edit_game_button = qpushbutton
-    qtobj.groupBox_2 = qgroupbox
+    qtobj.all_games_group_box = qgroupbox
     qtobj.apply_button = qpushbutton
     qtobj.add_button = qpushbutton
-    qtobj.check_program_updates_groupBox = qgroupbox
-    qtobj.yes_check_program_updates_radioButton = qradiobutton
-    qtobj.no_check_program_updates_radioButton = qradiobutton
-    qtobj.use_dark_theme_groupBox = qgroupbox
-    qtobj.yes_dark_theme_radioButton = qradiobutton
-    qtobj.no_dark_theme_radioButton = qradiobutton
-    qtobj.create_screenshots_folder_groupBox = qgroupbox
-    qtobj.yes_screenshots_folder_radioButton = qradiobutton
-    qtobj.no_screenshots_folder_radioButton = qradiobutton
-    qtobj.check_reshade_updates_groupBox = qgroupbox
-    qtobj.yes_check_reshade_updates_radioButton = qradiobutton
-    qtobj.no_check_reshade_updates_radioButton = qradiobutton
+    qtobj.check_program_updates_group_box = qgroupbox
+    qtobj.yes_check_program_updates_radio_button = qradiobutton
+    qtobj.no_check_program_updates_radio_button = qradiobutton
+    qtobj.use_dark_theme_group_box = qgroupbox
+    qtobj.yes_dark_theme_radio_button = qradiobutton
+    qtobj.no_dark_theme_radio_button = qradiobutton
+    qtobj.create_screenshots_folder_group_box = qgroupbox
+    qtobj.yes_screenshots_folder_radio_button = qradiobutton
+    qtobj.no_screenshots_folder_radio_button = qradiobutton
+    qtobj.check_reshade_updates_group_box = qgroupbox
+    qtobj.yes_check_reshade_updates_radio_button = qradiobutton
+    qtobj.no_check_reshade_updates_radio_button = qradiobutton
     qtobj.show_info_messages_groupBox = qgroupbox
-    qtobj.no_show_info_messages_radioButton = qradiobutton
-    qtobj.yes_show_info_messages_radioButton = qradiobutton
+    qtobj.no_show_info_messages_radio_button = qradiobutton
+    qtobj.yes_show_info_messages_radio_button = qradiobutton
     qtobj.reset_all_button = qpushbutton
     qtobj.update_shaders_button = qpushbutton
-    qtobj.edit_default_preset_plugin_button = qpushbutton
-    qtobj.main_tabWidget = qtabwidget
-    qtobj.about_textBrowser = qtextbrowser
-    qtobj.programs_tableWidget = qtablewidget
+    qtobj.edit_global_plugins_button = qpushbutton
+    qtobj.main_tab_widget = qtabwidget
+    qtobj.about_text_browser = qtextbrowser
+    qtobj.programs_table_widget = qtablewidget
     return qtobj

@@ -10,7 +10,7 @@ class TestProgramUtils:
         obj = Object()
         obj.qtobj = Object()
         obj.qtobj.update_button = qtbutton
-        obj.qtobj.updateAvail_label = qtlabel
+        obj.qtobj.update_avail_label = qtlabel
 
         version_file = "src.constants.variables.VERSION"
 

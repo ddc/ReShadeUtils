@@ -59,31 +59,32 @@ def set_style_sheet(db_session, form, log, use_dark_theme):
 
 
 def populate_games_tab(db_session, log, qtobj):
-    qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(False)
-    qtobj.programs_tableWidget.setRowCount(0)  # cleanning datagrid
+    qtobj.programs_table_widget.horizontalHeader().setStretchLastSection(False)
+    qtobj.programs_table_widget.setRowCount(0)  # cleanning datagrid
     games_sql = GamesDal(db_session, log)
     rs_all_games = games_sql.get_all_games()
     if rs_all_games is not None and len(rs_all_games) > 0:
         for i in range(len(rs_all_games)):
-            qtobj.programs_tableWidget.insertRow(i)
-            qtobj.programs_tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(rs_all_games[i]["name"]))
-            qtobj.programs_tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(rs_all_games[i]["architecture"]))
-            qtobj.programs_tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(rs_all_games[i]["api"]))
-            qtobj.programs_tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(rs_all_games[i]["path"]))
+            qtobj.programs_table_widget.insertRow(i)
+            qtobj.programs_table_widget.setItem(i, 0, QtWidgets.QTableWidgetItem(rs_all_games[i]["name"]))
+            qtobj.programs_table_widget.setItem(i, 1, QtWidgets.QTableWidgetItem(rs_all_games[i]["architecture"]))
+            qtobj.programs_table_widget.setItem(i, 2, QtWidgets.QTableWidgetItem(rs_all_games[i]["api"]))
+            qtobj.programs_table_widget.setItem(i, 3, QtWidgets.QTableWidgetItem(rs_all_games[i]["dll"]))
+            qtobj.programs_table_widget.setItem(i, 4, QtWidgets.QTableWidgetItem(rs_all_games[i]["path"]))
 
-    qtobj.programs_tableWidget.resizeColumnsToContents()
-    highest_column_width = qtobj.programs_tableWidget.columnWidth(3)
+    qtobj.programs_table_widget.resizeColumnsToContents()
+    highest_column_width = qtobj.programs_table_widget.columnWidth(3)
     if highest_column_width < 600:
-        qtobj.programs_tableWidget.horizontalHeader().setStretchLastSection(True)
+        qtobj.programs_table_widget.horizontalHeader().setStretchLastSection(True)
     else:
-        qtobj.programs_tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        qtobj.programs_table_widget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
 
 def enable_form(qtobj, status: bool):
     qtobj.add_button.setEnabled(status)
-    for i in range(0, qtobj.main_tabWidget.count()):
-        qtobj.main_tabWidget.setTabEnabled(i, status)
-    qtobj.main_tabWidget.setCurrentIndex(0)
+    for i in range(0, qtobj.main_tab_widget.count()):
+        qtobj.main_tab_widget.setTabEnabled(i, status)
+    qtobj.main_tab_widget.setCurrentIndex(0)
 
 
 def enable_widgets(qtobj, status: bool):
@@ -94,10 +95,10 @@ def enable_widgets(qtobj, status: bool):
     qtobj.edit_path_button.setEnabled(status)
     qtobj.open_game_path_button.setEnabled(status)
     qtobj.remove_button.setEnabled(status)
-    qtobj.main_tabWidget.setCurrentIndex(0)
+    qtobj.main_tab_widget.setCurrentIndex(0)
 
 
 def _set_state_apply_button(qtobj):
-    len_games = qtobj.programs_tableWidget.rowCount()
+    len_games = qtobj.programs_table_widget.rowCount()
     status = False if len_games == 0 else True
     qtobj.apply_button.setEnabled(status)

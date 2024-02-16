@@ -40,9 +40,9 @@ class MainSrc:
             self.set_variables(db_session, rs_config)
             self.register_form_events(db_session)
             qt_utils.populate_games_tab(db_session, self.log, self.qtobj)
-            self.qtobj.main_tabWidget.setCurrentIndex(0)
-            self.qtobj.programs_tableWidget.setColumnWidth(2, 130)
-            self.qtobj.programs_tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignmentFlag.AlignLeft)
+            self.qtobj.main_tab_widget.setCurrentIndex(0)
+            self.qtobj.programs_table_widget.setColumnWidth(3, 130)
+            self.qtobj.programs_table_widget.horizontalHeader().setDefaultAlignment(Qt.AlignmentFlag.AlignLeft)
 
             progressbar.set_values(messages.checking_reshade_updates, 45)
             if rs_config[0]["check_reshade_updates"]:
@@ -62,8 +62,8 @@ class MainSrc:
             if new_version:
                 progressbar.set_values(messages.checking_database, 90)
                 program_utils.run_alembic_migrations(self.log)
-                self.qtobj.updateAvail_label.clear()
-                self.qtobj.updateAvail_label.setText(messages.new_version_available_download.format(new_version))
+                self.qtobj.update_avail_label.clear()
+                self.qtobj.update_avail_label.setText(messages.new_version_available_download.format(new_version))
                 self.qtobj.update_button.setVisible(True)
 
             progressbar.close()
@@ -76,29 +76,29 @@ class MainSrc:
         show_info_messages = rs_config[0]["show_info_messages"] if rs_config else True
         use_dark_theme = rs_config[0]["use_dark_theme"] if rs_config else False
 
-        self.qtobj.yes_dark_theme_radioButton.setChecked(use_dark_theme)
-        self.qtobj.no_dark_theme_radioButton.setChecked(not use_dark_theme)
+        self.qtobj.yes_dark_theme_radio_button.setChecked(use_dark_theme)
+        self.qtobj.no_dark_theme_radio_button.setChecked(not use_dark_theme)
         qt_utils.set_style_sheet(db_session, self.form, self.log, use_dark_theme)
 
-        self.qtobj.yes_check_program_updates_radioButton.setChecked(check_program_updates)
-        self.qtobj.no_check_program_updates_radioButton.setChecked(not check_program_updates)
+        self.qtobj.yes_check_program_updates_radio_button.setChecked(check_program_updates)
+        self.qtobj.no_check_program_updates_radio_button.setChecked(not check_program_updates)
 
-        self.qtobj.yes_show_info_messages_radioButton.setChecked(show_info_messages)
-        self.qtobj.no_show_info_messages_radioButton.setChecked(not show_info_messages)
+        self.qtobj.yes_show_info_messages_radio_button.setChecked(show_info_messages)
+        self.qtobj.no_show_info_messages_radio_button.setChecked(not show_info_messages)
 
-        self.qtobj.yes_check_reshade_updates_radioButton.setChecked(check_reshade_updates)
-        self.qtobj.no_check_reshade_updates_radioButton.setChecked(not check_reshade_updates)
+        self.qtobj.yes_check_reshade_updates_radio_button.setChecked(check_reshade_updates)
+        self.qtobj.no_check_reshade_updates_radio_button.setChecked(not check_reshade_updates)
 
-        self.qtobj.yes_screenshots_folder_radioButton.setChecked(create_screenshots_folder)
-        self.qtobj.no_screenshots_folder_radioButton.setChecked(not create_screenshots_folder)
+        self.qtobj.yes_screenshots_folder_radio_button.setChecked(create_screenshots_folder)
+        self.qtobj.no_screenshots_folder_radio_button.setChecked(not create_screenshots_folder)
 
     def register_form_events(self, db_session):
         # TAB 1 - edit_form_events
-        self.qtobj.programs_tableWidget.clicked.connect(lambda item: games_tab_events.game_clicked(self.log, self.qtobj, item))
-        self.qtobj.programs_tableWidget.itemDoubleClicked.connect(lambda item: edit_form_events.show_game_config_form(db_session, self.log, self.qtobj, item))
+        self.qtobj.programs_table_widget.clicked.connect(lambda item: games_tab_events.game_clicked(self.log, self.qtobj, item))
+        self.qtobj.programs_table_widget.itemDoubleClicked.connect(lambda item: edit_form_events.show_game_config_form_update(db_session, self.log, self.qtobj, item))
 
         # TAB 1 - selected games
-        self.qtobj.edit_game_button.clicked.connect(lambda item: edit_form_events.show_game_config_form(db_session, self.log, self.qtobj, item))
+        self.qtobj.edit_game_button.clicked.connect(lambda item: edit_form_events.show_game_config_form_update(db_session, self.log, self.qtobj, item))
         self.qtobj.edit_plugin_button.clicked.connect(lambda: games_tab_events.edit_selected_game_plugin_config_file(self))
         self.qtobj.reset_files_button.clicked.connect(lambda item: games_tab_events.reset_selected_game_files_button(db_session, self.log, self.qtobj, item))
         self.qtobj.edit_path_button.clicked.connect(lambda: games_tab_events.edit_selected_game_path(self))
@@ -111,22 +111,22 @@ class MainSrc:
         self.qtobj.update_button.clicked.connect(lambda: games_tab_events.update_program_clicked())
 
         # TAB 2 - settings
-        self.qtobj.yes_dark_theme_radioButton.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.log, "YES"))
-        self.qtobj.no_dark_theme_radioButton.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.log, "NO"))
+        self.qtobj.yes_dark_theme_radio_button.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.log, "YES"))
+        self.qtobj.no_dark_theme_radio_button.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.log, "NO"))
 
-        self.qtobj.yes_check_program_updates_radioButton.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(self, "YES"))
-        self.qtobj.no_check_program_updates_radioButton.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_program_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(self, "YES"))
+        self.qtobj.no_check_program_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(self, "NO"))
 
-        self.qtobj.yes_show_info_messages_radioButton.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(self, "YES"))
-        self.qtobj.no_show_info_messages_radioButton.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(self, "NO"))
+        self.qtobj.yes_show_info_messages_radio_button.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(self, "YES"))
+        self.qtobj.no_show_info_messages_radio_button.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(self, "NO"))
 
-        self.qtobj.yes_check_reshade_updates_radioButton.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(self, "YES"))
-        self.qtobj.no_check_reshade_updates_radioButton.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_reshade_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(self, "YES"))
+        self.qtobj.no_check_reshade_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(self, "NO"))
 
-        self.qtobj.yes_screenshots_folder_radioButton.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(self, "YES"))
-        self.qtobj.no_screenshots_folder_radioButton.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(self, "NO"))
+        self.qtobj.yes_screenshots_folder_radio_button.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(self, "YES"))
+        self.qtobj.no_screenshots_folder_radio_button.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(self, "NO"))
 
-        self.qtobj.edit_default_preset_plugin_button.clicked.connect(lambda: settings_tab_events.edit_global_plugins_button(self))
+        self.qtobj.edit_global_plugins_button.clicked.connect(lambda: settings_tab_events.edit_global_plugins_button(self))
         self.qtobj.update_shaders_button.clicked.connect(lambda: settings_tab_events.update_shaders_button(self))
         self.qtobj.reset_all_button.clicked.connect(lambda: settings_tab_events.reset_all_game_files_button(self))
 
