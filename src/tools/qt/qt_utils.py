@@ -2,7 +2,7 @@
 import os
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QFileDialog
-from src import events
+from src.events import settings_tab_events
 from src.constants import messages, variables
 from src.database.dal.games_dal import GamesDal
 
@@ -54,7 +54,7 @@ def set_style_sheet(db_session, form, log, use_dark_theme):
             form.setStyleSheet("")
     except FileNotFoundError:
         form.setStyleSheet("")
-        events.dark_theme_clicked(db_session, log, "NO")
+        settings_tab_events.dark_theme_clicked(db_session, form, log, "NO")
         show_message_window(log, "error", messages.error_rss_file_not_found)
 
 
@@ -63,14 +63,15 @@ def populate_games_tab(db_session, log, qtobj):
     qtobj.programs_table_widget.setRowCount(0)  # cleanning datagrid
     games_sql = GamesDal(db_session, log)
     rs_all_games = games_sql.get_all_games()
-    if rs_all_games is not None and len(rs_all_games) > 0:
+    if rs_all_games:
         for i in range(len(rs_all_games)):
             qtobj.programs_table_widget.insertRow(i)
-            qtobj.programs_table_widget.setItem(i, 0, QtWidgets.QTableWidgetItem(rs_all_games[i]["name"]))
-            qtobj.programs_table_widget.setItem(i, 1, QtWidgets.QTableWidgetItem(rs_all_games[i]["architecture"]))
-            qtobj.programs_table_widget.setItem(i, 2, QtWidgets.QTableWidgetItem(rs_all_games[i]["api"]))
-            qtobj.programs_table_widget.setItem(i, 3, QtWidgets.QTableWidgetItem(rs_all_games[i]["dll"]))
-            qtobj.programs_table_widget.setItem(i, 4, QtWidgets.QTableWidgetItem(rs_all_games[i]["path"]))
+            qtobj.programs_table_widget.setItem(i, 0, QtWidgets.QTableWidgetItem(str(rs_all_games[i]["id"])))
+            qtobj.programs_table_widget.setItem(i, 1, QtWidgets.QTableWidgetItem(rs_all_games[i]["name"]))
+            qtobj.programs_table_widget.setItem(i, 2, QtWidgets.QTableWidgetItem(rs_all_games[i]["architecture"]))
+            qtobj.programs_table_widget.setItem(i, 3, QtWidgets.QTableWidgetItem(rs_all_games[i]["api"]))
+            qtobj.programs_table_widget.setItem(i, 4, QtWidgets.QTableWidgetItem(rs_all_games[i]["dll"]))
+            qtobj.programs_table_widget.setItem(i, 5, QtWidgets.QTableWidgetItem(rs_all_games[i]["path"]))
 
     qtobj.programs_table_widget.resizeColumnsToContents()
     highest_column_width = qtobj.programs_table_widget.columnWidth(3)

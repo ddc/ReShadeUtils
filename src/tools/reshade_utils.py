@@ -6,7 +6,7 @@ import tempfile
 import zipfile
 import requests
 from bs4 import BeautifulSoup
-from ddcUtils import FileUtils, get_exception
+from ddcUtils import FileUtils, ConfFileUtils, get_exception
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.events import games_tab_events
@@ -15,26 +15,20 @@ from src.tools.qt.progressbar import ProgressBar
 
 
 def check_game_path_exists(selected_game_path):
-    if not os.path.isfile(selected_game_path):
-        return False
-    return True
+    if os.path.isfile(selected_game_path):
+        return True
+    return False
 
 
-def get_reshade_dll_name(self, game_dir):
-    match self.selected_game.api:
+def get_reshade_dll_log_names(api):
+    match api:
         case variables.OPENGL_DISPLAY_NAME:
-            reshade_dll = os.path.join(game_dir, variables.OPENGL_DLL)
-            log_file = f"{os.path.splitext(variables.OPENGL_DLL)[0]}.log"
-            log_file_path = os.path.join(game_dir, log_file)
+            reshade_dll = variables.OPENGL_DLL
         case variables.DX9_DISPLAY_NAME:
-            reshade_dll = os.path.join(game_dir, variables.D3D9_DLL)
-            log_file = f"{os.path.splitext(variables.D3D9_DLL)[0]}.log"
-            log_file_path = os.path.join(game_dir, log_file)
+            reshade_dll = variables.D3D9_DLL
         case _:
-            reshade_dll = os.path.join(game_dir, variables.DXGI_DLL)
-            log_file = f"{os.path.splitext(variables.DXGI_DLL)[0]}.log"
-            log_file_path = os.path.join(game_dir, log_file)
-    return [reshade_dll, log_file_path]
+            reshade_dll = variables.DXGI_DLL
+    return [reshade_dll, f"{os.path.splitext(reshade_dll)[0]}.log"]
 
 
 def unzip_reshade(log, local_reshade_exe):
@@ -318,12 +312,12 @@ def apply_reshade_ini_file(game_dir, screenshot_path):
     except OSError:
         pass
 
-    FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", variables.SHADERS_LOCAL_DIR)
-    FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", variables.TEXTURES_LOCAL_DIR)
-    FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
-    FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
-    FileUtils().set_file_value(game_reshade_ini_path, "GENERAL", "StartupPresetPath", preset_path)
-    FileUtils().set_file_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
-    FileUtils().set_file_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
+    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", variables.SHADERS_LOCAL_DIR)
+    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", variables.TEXTURES_LOCAL_DIR)
+    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
+    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "StartupPresetPath", preset_path)
+    ConfFileUtils().set_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
+    ConfFileUtils().set_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
 
     return None

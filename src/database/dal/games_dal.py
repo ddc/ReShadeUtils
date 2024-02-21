@@ -17,6 +17,7 @@ class GamesDal:
             name=games_dict["name"],
             architecture=games_dict["architecture"],
             api=games_dict["api"],
+            dll=games_dict["dll"],
             path=games_dict["path"])
         self.db_utils.add(stmt)
 
@@ -80,6 +81,7 @@ class GamesDal:
         stmt = sa.update(Games).where(Games.id == games_dict["id"]).values(
             name=games_dict["name"],
             architecture=games_dict["architecture"],
-            api=games_dict["api"]
+            api=games_dict["api"],
+            dll=games_dict["dll"]
         )
         self.db_utils.execute(stmt)

@@ -75,7 +75,7 @@ def download_new_program_version(log, local_path, new_version):
 
 
 def get_screenshot_path(db_session, log, game_dir, game_name):
-    game_screenshots_path = ""
+    game_screenshots_path = None
     config_sql = ConfigDal(db_session, log)
     rs_config = config_sql.get_configs()
     if rs_config and rs_config[0]["create_screenshots_folder"]:

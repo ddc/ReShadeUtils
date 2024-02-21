@@ -11,13 +11,13 @@ def update_shaders_button(log):
     reshade_utils.download_shaders(log)
 
 
-def dark_theme_clicked(db_session, log, status):
+def dark_theme_clicked(db_session, form, log, status):
     if status == "YES":
         status = True
     else:
         status = False
 
-    qt_utils.set_style_sheet(db_session, form, log, use_dark_theme)
+    qt_utils.set_style_sheet(db_session, form, log, status)
     config_sql = ConfigDal(db_session, log)
     config_sql.update_dark_theme(status)
 
