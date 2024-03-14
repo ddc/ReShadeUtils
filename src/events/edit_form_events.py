@@ -36,10 +36,7 @@ def _game_config_form_result_cancel(log, game_edit_form):
 def _game_config_form_result_success(db_session, log, main_qtobj, game_name):
     qt_utils.populate_games_tab(db_session, log, main_qtobj)
     qt_utils.enable_widgets(main_qtobj, False)
-
-    config_sql = ConfigDal(db_session, log)
-    rs_config = config_sql.get_configs()
-    if rs_config is not None and rs_config[0]["show_info_messages"]:
+    if program_utils.show_info_messages(db_session, log):
         qt_utils.show_message_window(log, "info", f"{messages.game_added}\n\n{game_name}")
 
 

@@ -25,6 +25,15 @@ def run_alembic_migrations(log):
         command.upgrade(alembic_cfg, "head")
 
 
+def show_info_messages(db_session, log):
+    show_messages = False
+    config_sql = ConfigDal(db_session, log)
+    rs_config = config_sql.get_configs()
+    if rs_config is None or (rs_config is not None and rs_config[0]["show_info_messages"]):
+        show_messages = True
+    return show_messages
+
+
 def check_program_updates(log, db_session):
     config_sql = ConfigDal(db_session, log)
     rs_config = config_sql.get_configs()
@@ -61,14 +70,15 @@ def get_program_remote_version(log):
     return remote_version
 
 
-def download_new_program_version(log, local_path, new_version):
+def download_new_program_version(db_session, log, local_path, new_version):
     program_name = variables.EXE_PROGRAM_NAME if OsUtils.is_windows() else variables.SHORT_PROGRAM_NAME
     program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{new_version}/{program_name}"
     r = requests.get(program_url)
     if r.status_code == 200:
         with open(local_path, "wb") as outfile:
             outfile.write(r.content)
-        qt_utils.show_message_window(log, "info", f"{messages.program_updated} {new_version}")
+        if show_info_messages(db_session, log):
+            qt_utils.show_message_window(log, "info", f"{messages.program_updated} {new_version}")
     else:
         qt_utils.show_message_window(log, "error", messages.error_dl_new_version)
         log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")

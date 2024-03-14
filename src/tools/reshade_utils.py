@@ -6,10 +6,11 @@ import tempfile
 import zipfile
 import requests
 from bs4 import BeautifulSoup
-from ddcUtils import FileUtils, ConfFileUtils, get_exception
+from ddcUtils import ConfFileUtils, FileUtils, get_exception
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.events import games_tab_events
+from src.tools import program_utils
 from src.tools.qt import qt_utils
 from src.tools.qt.progressbar import ProgressBar
 
@@ -138,7 +139,7 @@ def check_and_download_new_reshade_version(db_session, log, qtobj, db_reshade_ve
                     qt_utils.show_message_window(log, "error",
                                                  f"{messages.apply_success_with_errors}\n\n"
                                                  f"{err}")
-                else:
+                elif program_utils.show_info_messages(db_session, log):
                     qt_utils.show_message_window(log, "info",
                                                  f"{messages.new_reshade_version}\n\n"
                                                  f"Version: {remote_reshade_version_str}")
@@ -182,7 +183,7 @@ def download_reshade(log, remote_reshade_version):
     return False
 
 
-def download_shaders(log):
+def download_shaders(db_session, log):
     log.debug("download_shaders")
 
     progressbar = ProgressBar(log=log)
@@ -197,7 +198,8 @@ def download_shaders(log):
     _move_textures(log)
 
     progressbar.close()
-    qt_utils.show_message_window(log, "info", messages.update_shaders_finished)
+    if program_utils.show_info_messages(db_session, log):
+        qt_utils.show_message_window(log, "info", messages.update_shaders_finished)
 
 
 def check_shaders_and_textures(log):

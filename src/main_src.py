@@ -127,7 +127,7 @@ class MainSrc:
         self.qtobj.no_screenshots_folder_radio_button.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(db_session, self.log, False))
 
         self.qtobj.edit_global_plugins_button.clicked.connect(lambda: settings_tab_events.edit_global_plugins_button(self.log))
-        self.qtobj.update_shaders_button.clicked.connect(lambda: settings_tab_events.update_shaders_button(self.log))
+        self.qtobj.update_shaders_button.clicked.connect(lambda: settings_tab_events.update_shaders_button(db_session, self.log))
         self.qtobj.reset_all_button.clicked.connect(lambda: settings_tab_events.reset_all_game_files_button(db_session, self.log, self.qtobj))
 
         # TAB 3 - about

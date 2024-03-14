@@ -75,7 +75,8 @@ def add_game(db_session, log, qtobj):
             elif rs_name is not None and len(rs_name) > 0:
                 qt_utils.show_message_window(log, "error", f"{messages.game_already_exist}\n\n{file_name}")
         else:
-            qt_utils.show_message_window(log, "error", messages.not_valid_game)
+            if program_utils.show_info_messages(db_session, log):
+                qt_utils.show_message_window(log, "error", messages.not_valid_game)
 
 
 def delete_game(db_session, log, qtobj, item):
@@ -109,9 +110,7 @@ def delete_game(db_session, log, qtobj, item):
             qt_utils.populate_games_tab(db_session, log, qtobj)
             qt_utils.enable_widgets(qtobj, False)
 
-            config_sql = ConfigDal(db_session, log)
-            conf_res = config_sql.get_configs()
-            if conf_res[0]["show_info_messages"]:
+            if program_utils.show_info_messages(db_session, log):
                 if game_found:
                     qt_utils.show_message_window(log, "info", f"{messages.game_not_in_path_deleted}\n\n{game_name}")
                 else:
@@ -153,10 +152,7 @@ def edit_selected_game_path(db_session, log, qtobj, item):
     log.debug("edit_selected_game_path")
     progressbar = ProgressBar(log=log)
     selected_game = get_selected_game(db_session, log, qtobj, item)
-
-    config_sql = ConfigDal(db_session, log)
-    rs_config = config_sql.get_configs()
-    show_info_messages = rs_config[0]["show_info_messages"]
+    show_info_messages = program_utils.show_info_messages(db_session, log)
 
     old_game_file_path = selected_game["path"]
     new_game_file_path = qt_utils.open_exe_file_dialog()
@@ -372,6 +368,6 @@ def reset_selected_game_files_button(db_session, log, qtobj, item):
     }
     result = apply_single(db_session, log, game_dict, True)
     progressbar.close()
-    if result is None:
+    if result is None and program_utils.show_info_messages(db_session, log):
         qt_utils.show_message_window(log, "info", messages.reset_success)
     qt_utils.enable_widgets(qtobj, False)

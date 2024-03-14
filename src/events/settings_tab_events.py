@@ -3,13 +3,13 @@ from ddcUtils import FileUtils, get_exception
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.events import games_tab_events
-from src.tools import reshade_utils
+from src.tools import program_utils, reshade_utils
 from src.tools.qt import qt_utils
 from src.tools.qt.progressbar import ProgressBar
 
 
-def update_shaders_button(log):
-    reshade_utils.download_shaders(log)
+def update_shaders_button(db_session, log):
+    reshade_utils.download_shaders(db_session, log)
 
 
 def dark_theme_clicked(db_session, form, log, status):
@@ -61,4 +61,6 @@ def reset_all_game_files_button(db_session, log, qtobj):
     games_tab_events.apply_all(db_session, log, qtobj, reset=True)
 
     progressbar.close()
-    qt_utils.show_message_window(log, "info", messages.reset_success)
+
+    if program_utils.show_info_messages(db_session, log):
+        qt_utils.show_message_window(log, "info", messages.reset_success)

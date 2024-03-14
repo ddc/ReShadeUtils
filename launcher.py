@@ -3,11 +3,10 @@
 import os
 import subprocess
 import sys
-from ddcUtils import OsUtils
+from ddcUtils import OsUtils, TimedRotatingLog
 from ddcUtils.databases import DBSqlite
 from PyQt6 import QtWidgets
 from src.constants import messages, variables
-from src.log import Log
 from src.tools import program_utils
 from src.tools.qt import qt_utils
 from src.tools.qt.progressbar import ProgressBar
@@ -15,7 +14,12 @@ from src.tools.qt.progressbar import ProgressBar
 
 class Launcher:
     def __init__(self):
-        self.log = Log(self.__class__.__name__).setup_logging()
+        self.log = TimedRotatingLog(
+            directory=variables.LOGS_DIR,
+            filename=variables.LOG_FILE_NAME,
+            days_to_keep=int(variables.DAYS_TO_KEEP_LOGS),
+            level="debug" if variables.DEBUG else "info",
+        ).init()
         self.progressbar = ProgressBar(log=self.log)
         self.program_name = variables.EXE_PROGRAM_NAME if OsUtils.is_windows() else variables.SHORT_PROGRAM_NAME
         self.program_path = os.path.join(OsUtils.get_current_path(), self.program_name)
@@ -31,7 +35,7 @@ class Launcher:
                 if not os.path.isfile(self.program_path):
                     self.program_path = os.path.join(variables.PROGRAM_DIR, self.program_name)
                 self.progressbar.set_values(messages.checking_files, 50)
-                program_utils.download_new_program_version(self.log, self.program_path, new_version)
+                program_utils.download_new_program_version(self.db_session, self.log, self.program_path, new_version)
 
             self.progressbar.close()
             self.call_program()
