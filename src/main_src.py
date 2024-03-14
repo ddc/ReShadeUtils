@@ -111,24 +111,24 @@ class MainSrc:
         self.qtobj.update_button.clicked.connect(lambda: games_tab_events.update_program_clicked())
 
         # TAB 2 - settings
-        self.qtobj.yes_dark_theme_radio_button.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.form, self.log, "YES"))
-        self.qtobj.no_dark_theme_radio_button.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.form, self.log, "NO"))
+        self.qtobj.yes_dark_theme_radio_button.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.form, self.log, True))
+        self.qtobj.no_dark_theme_radio_button.clicked.connect(lambda: settings_tab_events.dark_theme_clicked(db_session, self.form, self.log, False))
 
-        self.qtobj.yes_check_program_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(self, "YES"))
-        self.qtobj.no_check_program_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_program_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(db_session, self.log, True))
+        self.qtobj.no_check_program_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_program_updates_clicked(db_session, self.log, False))
 
-        self.qtobj.yes_show_info_messages_radio_button.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(self, "YES"))
-        self.qtobj.no_show_info_messages_radio_button.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(self, "NO"))
+        self.qtobj.yes_show_info_messages_radio_button.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(db_session, self.log, True))
+        self.qtobj.no_show_info_messages_radio_button.clicked.connect(lambda: settings_tab_events.show_info_messages_clicked(db_session, self.log, False))
 
-        self.qtobj.yes_check_reshade_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(self, "YES"))
-        self.qtobj.no_check_reshade_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(self, "NO"))
+        self.qtobj.yes_check_reshade_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(db_session, self.log, True))
+        self.qtobj.no_check_reshade_updates_radio_button.clicked.connect(lambda: settings_tab_events.check_reshade_updates_clicked(db_session, self.log, False))
 
-        self.qtobj.yes_screenshots_folder_radio_button.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(self, "YES"))
-        self.qtobj.no_screenshots_folder_radio_button.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(self, "NO"))
+        self.qtobj.yes_screenshots_folder_radio_button.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(db_session, self.log, True))
+        self.qtobj.no_screenshots_folder_radio_button.clicked.connect(lambda: settings_tab_events.create_screenshots_folder_clicked(db_session, self.log, False))
 
-        self.qtobj.edit_global_plugins_button.clicked.connect(lambda: settings_tab_events.edit_global_plugins_button(self))
-        self.qtobj.update_shaders_button.clicked.connect(lambda: settings_tab_events.update_shaders_button(self))
-        self.qtobj.reset_all_button.clicked.connect(lambda: settings_tab_events.reset_all_game_files_button(self))
+        self.qtobj.edit_global_plugins_button.clicked.connect(lambda: settings_tab_events.edit_global_plugins_button(self.log))
+        self.qtobj.update_shaders_button.clicked.connect(lambda: settings_tab_events.update_shaders_button(self.log))
+        self.qtobj.reset_all_button.clicked.connect(lambda: settings_tab_events.reset_all_game_files_button(db_session, self.log, self.qtobj))
 
         # TAB 3 - about
         self.qtobj.donate_button.clicked.connect(lambda: about_tab_events.donate_clicked())

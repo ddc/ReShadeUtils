@@ -3,7 +3,7 @@ import os
 import requests
 from alembic import command
 from alembic.config import Config
-from ddcUtils import FileUtils, get_exception, OsUtils
+from ddcUtils import FileUtils, get_exception, OsUtils, ConfFileUtils
 from src.constants import messages, variables
 from src.tools.qt import qt_utils
 from src.database.dal.config_dal import ConfigDal
@@ -93,7 +93,7 @@ def get_screenshot_path(db_session, log, game_dir, game_name):
             log.error(f"mkdir: {game_screenshots_path}: {get_exception(e)}")
     else:
         reshade_ini_filepath = str(os.path.join(game_dir, variables.RESHADE_INI))
-        reshade_config_screenshot_path = FileUtils().get_file_value(reshade_ini_filepath, "SCREENSHOT", "SavePath")
+        reshade_config_screenshot_path = ConfFileUtils().get_value(reshade_ini_filepath, "SCREENSHOT", "SavePath")
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
         elif os.path.isdir(os.path.join(variables.RESHADE_SCREENSHOT_DIR, game_name)):
