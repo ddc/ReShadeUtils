@@ -151,6 +151,7 @@ def edit_selected_game_plugin_config_file(db_session, log, qtobj, item):
 
 def edit_selected_game_path(db_session, log, qtobj, item):
     log.debug("edit_selected_game_path")
+    progressbar = ProgressBar(log=log)
     selected_game = get_selected_game(db_session, log, qtobj, item)
 
     config_sql = ConfigDal(db_session, log)
@@ -161,6 +162,7 @@ def edit_selected_game_path(db_session, log, qtobj, item):
     new_game_file_path = qt_utils.open_exe_file_dialog()
 
     if new_game_file_path is not None:
+        progressbar.set_values(messages.changing_game_path, 30)
         old_game_dir = os.path.dirname(old_game_file_path)
         new_game_dir = os.path.dirname(new_game_file_path)
 
@@ -227,9 +229,9 @@ def edit_selected_game_path(db_session, log, qtobj, item):
         if show_info_messages:
             qt_utils.show_message_window(log, "info", f"{messages.path_changed_success}\n\n{new_game_file_path}")
 
-    log.info(f"{messages.path_changed_success}:{new_game_file_path}")
-    qt_utils.populate_games_tab(db_session, log, qtobj)
-    qt_utils.enable_widgets(qtobj, False)
+        log.info(f"{messages.path_changed_success}:{new_game_file_path}")
+        qt_utils.populate_games_tab(db_session, log, qtobj)
+        qt_utils.enable_widgets(qtobj, False)
 
 
 def game_clicked(db_session, log, qtobj, item):

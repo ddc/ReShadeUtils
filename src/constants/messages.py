@@ -60,7 +60,8 @@ path_changed_success = "Path changed successfully!"
 update_reshade_question = "Download new Reshade version now?"
 removing_old_reshade_file = "Removing old reshade file"
 error_change_game_name = "Unable to change game name"
-error_rss_file_not_found = "Error: QSS file not found!"
+error_rss_file_not_found = "ERROR: QSS file not found!"
+changing_game_path = "Changing game path!"
 #################################
 # PROGRAM
 #################################
