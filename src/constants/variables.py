@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 import platform
-from ddcUtils import MiscUtils, OsUtils
+from ddcUtils import OsUtils
 
 
-DEBUG = True
+DEBUG = False
 VERSION = (5, 0, 0)
 VERSION_STR = ".".join(map(str, VERSION))
 RESHADE_NAME = "ReShade"
@@ -53,8 +53,9 @@ RESHADE_INI_PATH = os.path.join(PROGRAM_DIR, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_DIR, RESHADE_PRESET_INI)
 # ############################################################################
 SRC_DIR = os.path.join(PROGRAM_DIR, "src")
-QSS_PATH = os.path.join(SRC_DIR, "ui", QSS_FILE_NAME)
-ABOUT_PATH = os.path.join(SRC_DIR, "ui", ABOUT_FILE_NAME)
+UI_DIR = os.path.join(SRC_DIR, "ui")
+QSS_PATH = os.path.join(UI_DIR, QSS_FILE_NAME)
+ABOUT_PATH = os.path.join(UI_DIR, ABOUT_FILE_NAME)
 SHADERS_AND_TEXTURES_LOCAL_DIR = os.path.join(SRC_DIR, RESHADE_SHADERS)
 SHADERS_LOCAL_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "Shaders")
 TEXTURES_LOCAL_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "Textures")
