@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string>Configuration</string>
   </property>
-  <widget class="QPushButton" name="cancel_push_button">
+  <widget class="QPushButton" name="cancel_pushButton">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -42,7 +42,7 @@
      <normaloff>:/resources/images/cancel.png</normaloff>:/resources/images/cancel.png</iconset>
    </property>
   </widget>
-  <widget class="QLineEdit" name="game_name_line_edit">
+  <widget class="QLineEdit" name="game_name_lineEdit">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -68,7 +68,7 @@
     <string>Name:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="ok_push_button">
+  <widget class="QPushButton" name="ok_pushButton">
    <property name="geometry">
     <rect>
      <x>250</x>
@@ -88,7 +88,7 @@
      <normaloff>:/resources/images/apply.png</normaloff>:/resources/images/apply.png</iconset>
    </property>
   </widget>
-  <widget class="QGroupBox" name="api_group_box">
+  <widget class="QGroupBox" name="api_groupBox">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -100,7 +100,7 @@
    <property name="title">
     <string>API</string>
    </property>
-   <widget class="QRadioButton" name="dx9_radio_button">
+   <widget class="QRadioButton" name="dx9_radioButton">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -113,7 +113,7 @@
      <string>DirectX 9</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="dxgi_radio_button">
+   <widget class="QRadioButton" name="dx_radioButton">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -126,7 +126,7 @@
      <string>DirectX (10,11,12)</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="opengl_radio_button">
+   <widget class="QRadioButton" name="opengl_radioButton">
     <property name="geometry">
      <rect>
       <x>10</x>

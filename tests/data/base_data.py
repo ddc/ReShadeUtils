@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 import random
-import tempfile
-from datetime import datetime
 from ddcUtils.databases import DBSqlite
 from faker import Faker
 from src.constants.variables import ALL_APIS, ALL_ARCHITECTURES
 
 
-database_engine = DBSqlite(":memory:").engine()
-
-
-class Object:
-    def __init__(self):
-        self._created = datetime.now().isoformat()
+def get_database_engine():
+    database = DBSqlite(":memory:")
+    database_engine = database.engine()
+    return database_engine
 
 
 def get_randoms():
@@ -46,7 +42,7 @@ def get_fake_game_data():
         "name": _faker.pystr(),
         "architecture": _random.choice(ALL_ARCHITECTURES),
         "api": _random.choice(ALL_APIS),
-        "path": tempfile.gettempdir(),
+        "path": "/tmp",
         "updated_at": _now_mock,
         "created_at": _now_mock,
     }

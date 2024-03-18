@@ -7,8 +7,8 @@ VSVersionInfo(
   ffi=FixedFileInfo(
 # filevers and prodvers should be always a tuple with four items: (1, 2, 3, 4)
 # Set not needed items to zero 0.
-filevers=(5, 0, 0, 0),
-prodvers=(5, 0, 0, 0),
+filevers=(4, 8, 2, 0),
+prodvers=(4, 8, 2, 0),
 
 
 # Contains a bitmask that specifies the valid bits 'flags'r
@@ -43,7 +43,7 @@ StringFileInfo(
   StringTable(
     u'040904E4',
     [
-    StringStruct(u'LegalCopyright',         u'Copyright (c) 2024 ddc'),
+    StringStruct(u'LegalCopyright',         u'Copyright (c) 2022 ddc'),
     StringStruct(u'LegalTrademarks',        u'All rights reserved'),
     StringStruct(u'Comments',               u'Licensed under GPL3'),
     StringStruct(u'CompanyName',            u'ddc'),
@@ -52,12 +52,12 @@ StringFileInfo(
     StringStruct(u'ProductName',            u'Reshade Utilities'),
     StringStruct(u'InternalName',           u'ReshadeUtils'),
     StringStruct(u'OriginalFilename',       u'ReshadeUtils.exe'),
-    StringStruct(u'Support',                u'github.com/ddc/ReShadeUtils'),
+    StringStruct(u'Support',                u'github.com/ddc/ReshadeUtils'),
     StringStruct(u'Users',                  u'Unlimited'),
     StringStruct(u'PrivateBuild',           u''),
     StringStruct(u'SpecialBuild',           u''),
-    StringStruct(u'FileVersion',            u'5.0.0'),
-    StringStruct(u'ProductVersion',         u'5.0.0'),
+    StringStruct(u'FileVersion',            u'4.8.2'),
+    StringStruct(u'ProductVersion',         u'4.8.2'),
     StringStruct(u'Build',                  u'February 2024'),
     ])
   ]),
