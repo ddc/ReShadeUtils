@@ -4,6 +4,7 @@ import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from src.constants import variables
 from src.main_src import MainSrc
+from src.tools import reshade_utils
 from src.resources import resources
 
 
@@ -509,6 +510,7 @@ class UiMain(object):
         self.main_tab_widget.setTabText(self.main_tab_widget.indexOf(self.about_tab), _translate("main_form", "ABOUT"))
         self.update_button.setToolTip(_translate("main_form", "Update ReshadeUtils"))
         self.update_button.setText(_translate("main_form", "UPDATE"))
+        reshade_utils.download_about_html_file()
         with open("src/ui/about.html", "r") as about_file:
             self.about_text_browser.setHtml(_translate("main_form", about_file.read()))
 

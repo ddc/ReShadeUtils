@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import platform
-from ddcUtils import MiscUtils, OsUtils
+from ddcUtils import OsUtils
 
 
 DEBUG = False
