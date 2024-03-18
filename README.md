@@ -7,8 +7,8 @@
 [<img src="https://img.shields.io/badge/PyQt-6-brightgreen.svg?style=plastic">](https://riverbankcomputing.com/software/pyqt)
 [<img src="https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/releases/latest)
 
-![screenshot](src/data/images/screenshot.png)
-![screenshot](src/data/images/screenshot_settings.png)
+![screenshot](src/resources/images/screenshot.png)
+![screenshot](src/resources/images/screenshot_settings.png)
 
 
 ## Download
