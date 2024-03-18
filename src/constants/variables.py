@@ -33,6 +33,7 @@ D3D9_DLL = "d3d9.dll"
 DXGI_DLL = "dxgi.dll"
 OPENGL_DLL = "opengl32.dll"
 QSS_FILE_NAME = "style.qss"
+ABOUT_FILE_NAME = "about.html"
 ALL_DLL_NAMES = (D3D9_DLL, DXGI_DLL, OPENGL_DLL)
 # ############################################################################
 DX9_DISPLAY_NAME = "DirectX 9"
@@ -50,9 +51,10 @@ RESHADE32_PATH = os.path.join(PROGRAM_DIR, RESHADE32_DLL)
 RESHADE64_PATH = os.path.join(PROGRAM_DIR, RESHADE64_DLL)
 RESHADE_INI_PATH = os.path.join(PROGRAM_DIR, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_DIR, RESHADE_PRESET_INI)
-QSS_PATH = os.path.join(PROGRAM_DIR, QSS_FILE_NAME)
 # ############################################################################
 SRC_DIR = os.path.join(PROGRAM_DIR, "src")
+QSS_PATH = os.path.join(SRC_DIR, "ui", QSS_FILE_NAME)
+ABOUT_PATH = os.path.join(SRC_DIR, "ui", ABOUT_FILE_NAME)
 SHADERS_AND_TEXTURES_LOCAL_DIR = os.path.join(SRC_DIR, RESHADE_SHADERS)
 SHADERS_LOCAL_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "Shaders")
 TEXTURES_LOCAL_DIR = os.path.join(SHADERS_AND_TEXTURES_LOCAL_DIR, "Textures")
@@ -66,6 +68,7 @@ REMOTE_VERSION_FILENAME = f"{_github_raw_files_uri}/VERSION"
 REMOTE_RESHADE_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/Reshade.ini"
 REMOTE_PRESET_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/ReShadePreset.ini"
 REMOTE_QSS_FILENAME = f"{_github_raw_files_uri}/src/data/reshade/style.qss"
+REMOTE_ABOUT_FILENAME = f"{_github_raw_files_uri}/src/ui/about.html"
 # ############################################################################
 GITHUB_EXE_PROGRAM_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/download"
 GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releases/latest"

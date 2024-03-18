@@ -6,7 +6,7 @@ data_files = [
     #,('../images/*.*', 'images') no need to add images since its using QT resource file
 ]
 
-a = Analysis(['../../../__main__.py'],
+a = Analysis(['../../../main.py'],
              pathex=[],
              binaries=[],
              datas = data_files,

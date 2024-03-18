@@ -91,6 +91,13 @@ def check_reshade_config_files(log):
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
+    if not os.path.isfile(variables.ABOUT_PATH):
+        result = download_about_html_file()
+        if not result:
+            err_msg = f"{variables.ABOUT_PATH} {messages.not_found}"
+            qt_utils.show_message_window(log, "error", err_msg)
+            sys.exit(1)
+
     check_shaders_and_textures(log)
 
 
@@ -267,6 +274,7 @@ def download_all_files(local_dir: str = None):
     download_reshade_ini_file(local_dir)
     download_reshade_preset_file(local_dir)
     download_qss_file()
+    download_about_html_file()
 
 
 def download_reshade_files(local_dir: str = None):
@@ -295,6 +303,12 @@ def download_reshade_preset_file(local_dir: str = None):
 def download_qss_file():
     remote_file = variables.REMOTE_QSS_FILENAME
     local_file_path = variables.QSS_PATH
+    return FileUtils.download_file(remote_file, local_file_path)
+
+
+def download_about_html_file():
+    remote_file = variables.REMOTE_ABOUT_FILENAME
+    local_file_path = variables.ABOUT_PATH
     return FileUtils.download_file(remote_file, local_file_path)
 
 
