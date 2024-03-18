@@ -4,7 +4,7 @@ import platform
 from ddcUtils import MiscUtils, OsUtils
 
 
-DEBUG = True
+DEBUG = False
 VERSION = (5, 0, 0)
 VERSION_STR = ".".join(map(str, VERSION))
 RESHADE_NAME = "ReShade"
