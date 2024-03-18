@@ -53,7 +53,7 @@ RESHADE_INI_PATH = os.path.join(PROGRAM_DIR, RESHADE_INI)
 RESHADE_PRESET_PATH = os.path.join(PROGRAM_DIR, RESHADE_PRESET_INI)
 # ############################################################################
 SRC_DIR = os.path.join(PROGRAM_DIR, "src")
-UI_DIR = os.path.join(PROGRAM_DIR, "ui")
+UI_DIR = os.path.join(SRC_DIR, "ui")
 QSS_PATH = os.path.join(UI_DIR, QSS_FILE_NAME)
 ABOUT_PATH = os.path.join(UI_DIR, ABOUT_FILE_NAME)
 SHADERS_AND_TEXTURES_LOCAL_DIR = os.path.join(SRC_DIR, RESHADE_SHADERS)
