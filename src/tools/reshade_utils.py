@@ -301,12 +301,16 @@ def download_reshade_preset_file(local_dir: str = None):
 
 
 def download_qss_file():
+    if not os.path.exists(variables.UI_DIR):
+        os.makedirs(variables.UI_DIR, exist_ok=True)
     remote_file = variables.REMOTE_QSS_FILENAME
     local_file_path = variables.QSS_PATH
     return FileUtils.download_file(remote_file, local_file_path)
 
 
 def download_about_html_file():
+    if not os.path.exists(variables.UI_DIR):
+        os.makedirs(variables.UI_DIR, exist_ok=True)
     remote_file = variables.REMOTE_ABOUT_FILENAME
     local_file_path = variables.ABOUT_PATH
     return FileUtils.download_file(remote_file, local_file_path)
