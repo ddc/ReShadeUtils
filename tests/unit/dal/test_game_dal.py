@@ -1,15 +1,25 @@
 # -*- coding: utf-8 -*-
 import pytest
 import sqlalchemy as sa
+from sqlalchemy.orm import Session
 from src.database.dal.games_dal import GamesDal
 from src.database.models.games_model import Games
-from tests.data.base_data import database_engine, db_session, get_fake_game_data
+from tests.data import base_data
+
+
+database_engine = base_data.get_database_engine()
+
+
+@pytest.fixture(name="db_session")
+def get_db_session():
+    with Session(database_engine) as session:
+        yield session
 
 
 @pytest.fixture
 def fake_data(db_session):
     # init
-    fdata = get_fake_game_data()
+    fdata = base_data.get_fake_game_data()
     yield fdata
     # teardown
     db_session.execute(sa.delete(Games))
@@ -34,7 +44,7 @@ class TestGamesDal:
 
     def test_get_all_games(self, db_session, fake_data):
         games_dal = GamesDal(db_session, None)
-        second_fdata = get_fake_game_data()
+        second_fdata = base_data.get_fake_game_data()
         db_session.add(Games(**second_fdata))
         results = games_dal.get_all_games()
         assert len(results) == 2
@@ -56,13 +66,13 @@ class TestGamesDal:
         game_id = fake_data["id"]
         fdata = {
             "id": game_id,
-            "name": "new name",
+            "game_name": "new name",
             "architecture": "new architecture",
             "api": "new api"
         }
         games_dal.update_game(fdata)
         results = games_dal.get_game_by_id(game_id)
-        assert results[0].name == fdata["name"]
+        assert results[0].name == fdata["game_name"]
         assert results[0].architecture == fdata["architecture"]
         assert results[0].api == fdata["api"]
 
