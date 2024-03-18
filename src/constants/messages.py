@@ -4,6 +4,7 @@
 #################################
 not_found = "not found!"
 unable_start = "unable to start"
+checking_alembic_files = "Checking database config files"
 checking_files = "Checking reshade config files"
 unable_create_dirs = "Error creating program directories"
 checking_database = "Checking database"

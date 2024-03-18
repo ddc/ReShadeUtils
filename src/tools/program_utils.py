@@ -10,6 +10,7 @@ from src.database.dal.config_dal import ConfigDal
 
 
 def download_alembic_dir(log):
+    log.debug("downloading alembic dir")
     FileUtils.remove(variables.ALEMBIC_MIGRATIONS_DIR)
     local_dir = variables.ALEMBIC_MIGRATIONS_DIR
     alembic_migrations_remote_url = variables.ALEMBIC_MIGRATIONS_REMOTE_URL
@@ -20,9 +21,9 @@ def download_alembic_dir(log):
 
 
 def run_alembic_migrations(log):
-    if download_alembic_dir(log):
-        alembic_cfg = Config(variables.ALEMBIC_INI_FILE_PATH)
-        command.upgrade(alembic_cfg, "head")
+    log.debug("running alembic migrations")
+    alembic_cfg = Config(variables.ALEMBIC_INI_FILE_PATH)
+    command.upgrade(alembic_cfg, "head")
 
 
 def show_info_messages(db_session, log):

@@ -27,13 +27,16 @@ class MainSrc:
 
         database = DBSqlite(variables.DATABASE_PATH)
         with database.session() as db_session:
-            self.log.debug("checking for first run")
+            progressbar.set_values(messages.checking_alembic_files, 10)
+            alembic_files = FileUtils.list_files(variables.ALEMBIC_MIGRATIONS_DIR)
+            if not alembic_files:
+                program_utils.download_alembic_dir(self.log)
+            program_utils.run_alembic_migrations(self.log)
+
             config_sql = ConfigDal(db_session, self.log)
             rs_config = config_sql.get_configs()
-            alembic_files = FileUtils.list_files(variables.ALEMBIC_MIGRATIONS_DIR)
-            if not rs_config or not alembic_files:
-                progressbar.set_values(messages.checking_database, 15)
-                program_utils.run_alembic_migrations(self.log)
+            if not rs_config:
+                progressbar.set_values(messages.checking_database, 20)
                 rs_config = config_sql.get_configs()
 
             progressbar.set_values(messages.checking_configs, 30)
@@ -61,6 +64,7 @@ class MainSrc:
             new_version = program_utils.check_program_updates(self.log, db_session)
             if new_version:
                 progressbar.set_values(messages.checking_database, 90)
+                program_utils.download_alembic_dir(self.log)
                 program_utils.run_alembic_migrations(self.log)
                 self.qtobj.update_avail_label.clear()
                 self.qtobj.update_avail_label.setText(messages.new_version_available_download.format(new_version))
