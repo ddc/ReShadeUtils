@@ -5,7 +5,7 @@ from ddcUtils import OsUtils
 
 
 DEBUG = False
-VERSION = (5, 0, 0)
+VERSION = (5, 0, 1)
 VERSION_STR = ".".join(map(str, VERSION))
 RESHADE_NAME = "ReShade"
 PROGRAM_NAME = f"{RESHADE_NAME} Utils"
