@@ -1,25 +1,15 @@
 # -*- coding: utf-8 -*-
 import pytest
 import sqlalchemy as sa
-from sqlalchemy.orm import Session
 from src.database.dal.config_dal import ConfigDal
 from src.database.models.config_model import Config
-from tests.data import base_data
-
-
-database_engine = base_data.get_database_engine()
-
-
-@pytest.fixture(name="db_session")
-def get_db_session():
-    with Session(database_engine) as session:
-        yield session
+from tests.data.base_data import get_fake_config_data, database_engine
 
 
 @pytest.fixture
 def fake_data(db_session):
     # init
-    fdata = base_data.get_fake_config_data()
+    fdata = get_fake_config_data()
     yield fdata
     # teardown
     db_session.execute(sa.delete(Config))
@@ -75,12 +65,12 @@ class TestConfigDal:
             results = config_dal.get_configs(config_id)
             assert results[0].show_info_messages is st
 
-    def test_update_check_resahde_updates(self, db_session, fake_data):
+    def test_update_check_reshade_updates(self, db_session, fake_data):
         config_dal = ConfigDal(db_session, None)
         config_id = fake_data["id"]
         status = (True, False,)
         for st in status:
-            config_dal.update_check_resahde_updates(st, config_id)
+            config_dal.update_check_reshade_updates(st, config_id)
             results = config_dal.get_configs(config_id)
             assert results[0].check_reshade_updates is st
 

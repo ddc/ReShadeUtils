@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Main</class>
- <widget class="QWidget" name="Main">
+ <class>main_form</class>
+ <widget class="QWidget" name="main_form">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -64,7 +64,7 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QTabWidget" name="main_tabWidget">
+  <widget class="QTabWidget" name="main_tab_widget">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -93,13 +93,13 @@
    </property>
    <widget class="QWidget" name="games_tab">
     <attribute name="icon">
-     <iconset>
+     <iconset resource="../resources/resources.qrc">
       <normaloff>:/resources/images/controller.png</normaloff>:/resources/images/controller.png</iconset>
     </attribute>
     <attribute name="title">
      <string>GAMES</string>
     </attribute>
-    <widget class="QTableWidget" name="programs_tableWidget">
+    <widget class="QTableWidget" name="programs_table_widget">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -163,7 +163,7 @@
       <bool>false</bool>
      </property>
      <property name="columnCount">
-      <number>4</number>
+      <number>6</number>
      </property>
      <attribute name="horizontalHeaderVisible">
       <bool>true</bool>
@@ -189,6 +189,16 @@
      <attribute name="verticalHeaderDefaultSectionSize">
       <number>30</number>
      </attribute>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+     </column>
      <column>
       <property name="text">
        <string>NAME</string>
@@ -221,7 +231,17 @@
      </column>
      <column>
       <property name="text">
-       <string>LOCATION</string>
+       <string>DLL</string>
+      </property>
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>FILE</string>
       </property>
       <property name="font">
        <font>
@@ -230,7 +250,7 @@
       </property>
      </column>
     </widget>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="selected_game_group_box">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -276,7 +296,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/plugin.png</normaloff>:/resources/images/plugin.png</iconset>
+        <normaloff>:/data/images/edit.png</normaloff>:/data/images/edit.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="reset_files_button">
@@ -313,7 +333,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
+        <normaloff>:/data/images/reset.png</normaloff>:/data/images/reset.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="edit_path_button">
@@ -350,7 +370,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/arrow.png</normaloff>:/resources/images/arrow.png</iconset>
+        <normaloff>:/data/images/arrow.png</normaloff>:/data/images/arrow.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="open_game_path_button">
@@ -387,7 +407,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/folder.png</normaloff>:/resources/images/folder.png</iconset>
+        <normaloff>:/data/images/folder.png</normaloff>:/data/images/folder.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="remove_button">
@@ -424,7 +444,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
+        <normaloff>:/data/images/delete.png</normaloff>:/data/images/delete.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="edit_game_button">
@@ -461,11 +481,11 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/edit.png</normaloff>:/resources/images/edit.png</iconset>
+        <normaloff>:/data/images/edit.png</normaloff>:/data/images/edit.png</iconset>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="all_games_group_box">
      <property name="geometry">
       <rect>
        <x>579</x>
@@ -511,7 +531,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/apply.png</normaloff>:/resources/images/apply.png</iconset>
+        <normaloff>:/data/images/apply.png</normaloff>:/data/images/apply.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="add_button">
@@ -548,23 +568,23 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>:/resources/images/add.png</normaloff>:/resources/images/add.png</iconset>
+        <normaloff>:/data/images/add.png</normaloff>:/data/images/add.png</iconset>
       </property>
      </widget>
     </widget>
-    <zorder>groupBox</zorder>
-    <zorder>programs_tableWidget</zorder>
-    <zorder>groupBox_2</zorder>
+    <zorder>selected_game_group_box</zorder>
+    <zorder>programs_table_widget</zorder>
+    <zorder>all_games_group_box</zorder>
    </widget>
    <widget class="QWidget" name="settings_tab">
     <attribute name="icon">
-     <iconset>
+     <iconset resource="../resources/resources.qrc">
       <normaloff>:/resources/images/gear.png</normaloff>:/resources/images/gear.png</iconset>
     </attribute>
     <attribute name="title">
      <string>SETTINGS</string>
     </attribute>
-    <widget class="QGroupBox" name="check_program_updates_groupBox">
+    <widget class="QGroupBox" name="check_program_updates_group_box">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -597,7 +617,7 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QRadioButton" name="yes_check_program_updates_radioButton">
+     <widget class="QRadioButton" name="yes_check_program_updates_radio_button">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -622,7 +642,7 @@
        <string>YES</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="no_check_program_updates_radioButton">
+     <widget class="QRadioButton" name="no_check_program_updates_radio_button">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -648,7 +668,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="use_dark_theme_groupBox">
+    <widget class="QGroupBox" name="use_dark_theme_group_box">
      <property name="geometry">
       <rect>
        <x>500</x>
@@ -681,7 +701,7 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QRadioButton" name="yes_dark_theme_radioButton">
+     <widget class="QRadioButton" name="yes_dark_theme_radio_button">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -706,7 +726,7 @@
        <string>YES</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="no_dark_theme_radioButton">
+     <widget class="QRadioButton" name="no_dark_theme_radio_button">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -732,7 +752,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="create_screenshots_folder_groupBox">
+    <widget class="QGroupBox" name="create_screenshots_folder_group_box">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -765,7 +785,7 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QRadioButton" name="yes_screenshots_folder_radioButton">
+     <widget class="QRadioButton" name="yes_screenshots_folder_radio_button">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -790,7 +810,7 @@
        <string>YES</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="no_screenshots_folder_radioButton">
+     <widget class="QRadioButton" name="no_screenshots_folder_radio_button">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -816,7 +836,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="check_reshade_updates_groupBox">
+    <widget class="QGroupBox" name="check_reshade_updates_group_box">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -849,7 +869,7 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QRadioButton" name="yes_check_reshade_updates_radioButton">
+     <widget class="QRadioButton" name="yes_check_reshade_updates_radio_button">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -874,7 +894,7 @@
        <string>YES</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="no_check_reshade_updates_radioButton">
+     <widget class="QRadioButton" name="no_check_reshade_updates_radio_button">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -933,7 +953,7 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QRadioButton" name="no_show_info_messages_radioButton">
+     <widget class="QRadioButton" name="no_show_info_messages_radio_button">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -958,7 +978,7 @@
        <string>NO</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="yes_show_info_messages_radioButton">
+     <widget class="QRadioButton" name="yes_show_info_messages_radio_button">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -1018,7 +1038,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
+       <normaloff>:/data/images/reset.png</normaloff>:/data/images/reset.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -1031,16 +1051,10 @@
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>330</y>
+       <y>290</y>
        <width>335</width>
        <height>30</height>
       </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>335</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="maximumSize">
       <size>
@@ -1061,7 +1075,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>:/resources/images/reset.png</normaloff>:/resources/images/reset.png</iconset>
+       <normaloff>:/data/images/reset.png</normaloff>:/data/images/reset.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -1070,26 +1084,14 @@
       </size>
      </property>
     </widget>
-    <widget class="QPushButton" name="edit_default_preset_plugin_button">
+    <widget class="QPushButton" name="edit_global_plugins_button">
      <property name="geometry">
       <rect>
        <x>500</x>
-       <y>290</y>
+       <y>330</y>
        <width>335</width>
        <height>30</height>
       </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>335</width>
-       <height>30</height>
-      </size>
      </property>
      <property name="maximumSize">
       <size>
@@ -1103,26 +1105,32 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Edit global plugins file</string>
+      <string>Edit global plugins</string>
      </property>
      <property name="text">
       <string>EDIT GLOBAL PLUGINS</string>
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>:/resources/images/plugin.png</normaloff>:/resources/images/plugin.png</iconset>
+       <normaloff>:/data/images/plugin.png</normaloff>:/data/images/plugin.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>27</width>
+       <height>27</height>
+      </size>
      </property>
     </widget>
    </widget>
    <widget class="QWidget" name="about_tab">
     <attribute name="icon">
-     <iconset>
+     <iconset resource="../resources/resources.qrc">
       <normaloff>:/resources/images/help.png</normaloff>:/resources/images/help.png</iconset>
     </attribute>
     <attribute name="title">
      <string>ABOUT</string>
     </attribute>
-    <widget class="QTextBrowser" name="about_textBrowser">
+    <widget class="QTextBrowser" name="about_text_browser">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -1243,7 +1251,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../resources/resources.qrc">
        <normaloff>:/resources/images/donate.png</normaloff>:/resources/images/donate.png</iconset>
      </property>
      <property name="iconSize">
@@ -1255,7 +1263,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </widget>
    </widget>
   </widget>
-  <widget class="QLabel" name="updateAvail_label">
+  <widget class="QLabel" name="update_avail_label">
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -1323,34 +1331,34 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>:/resources/images/update.png</normaloff>:/resources/images/update.png</iconset>
+     <normaloff>:/data/images/update.png</normaloff>:/data/images/update.png</iconset>
    </property>
   </widget>
-  <zorder>main_tabWidget</zorder>
-  <zorder>updateAvail_label</zorder>
+  <zorder>main_tab_widget</zorder>
+  <zorder>update_avail_label</zorder>
   <zorder>update_button</zorder>
   <zorder>reshade_version_label</zorder>
  </widget>
  <tabstops>
-  <tabstop>main_tabWidget</tabstop>
+  <tabstop>main_tab_widget</tabstop>
   <tabstop>update_button</tabstop>
-  <tabstop>programs_tableWidget</tabstop>
-  <tabstop>no_screenshots_folder_radioButton</tabstop>
-  <tabstop>yes_screenshots_folder_radioButton</tabstop>
-  <tabstop>no_check_reshade_updates_radioButton</tabstop>
-  <tabstop>yes_check_reshade_updates_radioButton</tabstop>
-  <tabstop>no_dark_theme_radioButton</tabstop>
-  <tabstop>yes_dark_theme_radioButton</tabstop>
-  <tabstop>no_show_info_messages_radioButton</tabstop>
-  <tabstop>yes_show_info_messages_radioButton</tabstop>
-  <tabstop>no_check_program_updates_radioButton</tabstop>
-  <tabstop>yes_check_program_updates_radioButton</tabstop>
+  <tabstop>programs_table_widget</tabstop>
+  <tabstop>no_screenshots_folder_radio_button</tabstop>
+  <tabstop>yes_screenshots_folder_radio_button</tabstop>
+  <tabstop>no_check_reshade_updates_radio_button</tabstop>
+  <tabstop>yes_check_reshade_updates_radio_button</tabstop>
+  <tabstop>no_dark_theme_radio_button</tabstop>
+  <tabstop>yes_dark_theme_radio_button</tabstop>
+  <tabstop>no_show_info_messages_radio_button</tabstop>
+  <tabstop>yes_show_info_messages_radio_button</tabstop>
+  <tabstop>no_check_program_updates_radio_button</tabstop>
+  <tabstop>yes_check_program_updates_radio_button</tabstop>
   <tabstop>reset_all_button</tabstop>
   <tabstop>donate_button</tabstop>
-  <tabstop>about_textBrowser</tabstop>
+  <tabstop>about_text_browser</tabstop>
  </tabstops>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

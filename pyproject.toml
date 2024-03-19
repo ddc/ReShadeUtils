@@ -3,32 +3,33 @@ requires = ["poetry-core>=1.8.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "ReshadeUtils"
-version = "4.8.2"
-description = "ReshadeUtils"
-authors = ["ddc <ddc@users.noreply.github.com>"]
+name = "ReShadeUtils"
+version = "5.0.1"
+description = "ReShadeUtils"
+authors = ["ddc <danieldcsta@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.11, <3.13"
-beautifulsoup4 = "^4.12.3"
-urllib3 = "^2.2.0"
-SQLAlchemy = "^2.0.25"
+bs4 = "^0.0.2"
+urllib3 = "^2.2.1"
+SQLAlchemy = "^2.0.28"
 requests = "^2.31.0"
 PyQt6 = "^6.6.1"
 alembic = "^1.13.1"
-fsspec = "^2024.2.0"
-ddcutils = "^1.0.19"
+ddcutils = "^1.0.23"
 
 [tool.poetry.group.test.dependencies]
-pyinstaller = "^6.3.0"
-pytest = "^7.4.4"
-faker = "^22.2.0"
-coverage = "^7.4.0"
-pytest-qt = "^4.3.1"
-poethepoet = "^0.24.4"
-qt6-applications = "^6.5.0.2.3"
+pytest = "^8.1.1"
+faker = "^24.3.0"
+coverage = "^7.4.4"
+pytest-qt = "^4.4.0"
+poethepoet = "^0.25.0"
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.5.0"
 
 [tool.poe.tasks]
 test = "poetry run coverage run -m pytest -v"
+tests = ["test"]
 coverage = "poetry run coverage report"
