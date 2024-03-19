@@ -23,7 +23,7 @@ class ConfigDal:
         stmt = sa.update(Config).where(Config.id == config_id).values(show_info_messages=status)
         self.db_utils.execute(stmt)
 
-    def update_check_resahde_updates(self, status: bool, config_id=1):
+    def update_check_reshade_updates(self, status: bool, config_id=1):
         stmt = sa.update(Config).where(Config.id == config_id).values(check_reshade_updates=status)
         self.db_utils.execute(stmt)
 

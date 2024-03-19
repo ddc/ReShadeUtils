@@ -3,7 +3,7 @@ import pytest
 import sqlalchemy as sa
 from src.database.dal.config_dal import ConfigDal
 from src.database.models.config_model import Config
-from tests.data.base_data import get_fake_config_data, database_engine, db_session
+from tests.data.base_data import get_fake_config_data, database_engine
 
 
 @pytest.fixture
@@ -65,14 +65,14 @@ class TestConfigDal:
             results = config_dal.get_configs(config_id)
             assert results[0].show_info_messages is st
 
-    def test_update_check_resahde_updates(self, db_session, fake_data):
+    def test_update_check_reshade_updates(self, db_session, fake_data):
         config_dal = ConfigDal(db_session, None)
         config_id = fake_data["id"]
         status = (True, False,)
         for st in status:
-            config_dal.update_check_resahde_updates(st, config_id)
+            config_dal.update_check_reshade_updates(st, config_id)
             results = config_dal.get_configs(config_id)
-            assert results[0].get_remote_reshade_version is st
+            assert results[0].check_reshade_updates is st
 
     def test_update_create_screenshots_folder(self, db_session, fake_data):
         config_dal = ConfigDal(db_session, None)
