@@ -7,12 +7,7 @@ from tests.data.base_data import Object
 class TestProgramUtils:
     @patch("src.database.dal.config_dal.ConfigDal.get_configs")
     @patch("src.tools.program_utils.get_program_remote_version")
-    def test_check_program_updates(self, program_remote_version_mock, get_configs_mocks, db_session, qpushbutton, qlabel, log):
-        obj = Object()
-        obj.qtobj = Object()
-        obj.qtobj.update_button = qpushbutton
-        obj.qtobj.update_avail_label = qlabel
-
+    def test_check_program_updates(self, program_remote_version_mock, get_configs_mocks, db_session, log):
         local_version = "src.constants.variables.VERSION"
 
         # check no new version available

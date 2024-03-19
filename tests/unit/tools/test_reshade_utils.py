@@ -37,6 +37,7 @@ class TestReshadeUtils:
         results = games_dal.get_game_by_id(game_id)
         assert results is not None
 
+    @pytest.mark.skip(reason="github actions lack the support for PyQt6")
     @patch("src.database.dal.config_dal.ConfigDal.get_configs")
     @patch("src.tools.reshade_utils.unzip_reshade")
     @patch("src.tools.reshade_utils.download_reshade")
