@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+import os
 import random
 import tempfile
 from datetime import datetime
 from ddcUtils.databases import DBSqlite
 from faker import Faker
-from src.constants.variables import ALL_APIS, ALL_ARCHITECTURES
+from src.constants.variables import ALL_APIS, ALL_ARCHITECTURES, ALL_DLL_NAMES
 
 
 database_engine = DBSqlite(":memory:").engine()
@@ -15,18 +16,19 @@ class Object:
         self._created = datetime.now().isoformat()
 
 
-def get_randoms():
-    Faker.seed(0)
+def set_randoms():
     _faker = Faker(locale="en_US")
-    _random = random.SystemRandom()
-    _now_mock = _faker.date_time_ad()
-    return _faker, _random, _now_mock
+    return {
+        "id": _faker.random_int(min=1, max=9999999),
+        "name": _faker.uuid4(),
+        "now": _faker.date_time_ad(),
+    }
 
 
 def get_fake_config_data():
-    _faker, _random, _now_mock = get_randoms()
+    rand = set_randoms()
     return {
-        "id": _random.randint(1000000, 9999999),
+        "id": rand["id"],
         "program_version": "1.0",
         "reshade_version": "1.2.3",
         "use_dark_theme": False,
@@ -34,19 +36,21 @@ def get_fake_config_data():
         "show_info_messages": True,
         "check_reshade_updates": True,
         "create_screenshots_folder": True,
-        "updated_at": _now_mock,
-        "created_at": _now_mock,
+        "updated_at": rand["now"],
+        "created_at": rand["now"],
     }
 
 
 def get_fake_game_data():
-    _faker, _random, _now_mock = get_randoms()
+    _random = random.SystemRandom()
+    rand = set_randoms()
     return {
-        "id": _random.randint(1000000, 9999999),
-        "name": _faker.pystr(),
+        "id": rand["id"],
+        "name": rand["name"],
         "architecture": _random.choice(ALL_ARCHITECTURES),
         "api": _random.choice(ALL_APIS),
-        "path": tempfile.gettempdir(),
-        "updated_at": _now_mock,
-        "created_at": _now_mock,
+        "dll": _random.choice(ALL_DLL_NAMES),
+        "path": os.path.join(tempfile.gettempdir(), rand["name"]),
+        "updated_at": rand["now"],
+        "created_at": rand["now"],
     }

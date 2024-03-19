@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ReShadeUtils"
-version = "5.0.0"
+version = "5.0.1"
 description = "ReShadeUtils"
 authors = ["ddc <danieldcsta@gmail.com>"]
 readme = "README.md"
@@ -21,14 +21,15 @@ ddcutils = "^1.0.23"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.0.1"
-faker = "^23.2.1"
+faker = "^24.3.0"
 coverage = "^7.4.0"
 pytest-qt = "^4.3.1"
+poethepoet = "^0.25.0"
 
 [tool.poetry.group.dev.dependencies]
 pyinstaller = "^6.3.0"
 
-
 [tool.poe.tasks]
 test = "poetry run coverage run -m pytest -v"
+tests = ["test"]
 coverage = "poetry run coverage report"

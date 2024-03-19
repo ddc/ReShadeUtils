@@ -26,6 +26,7 @@ def db_session():
 @pytest.fixture
 def log():
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
     logger.addHandler(logging.NullHandler())
     return logger
 

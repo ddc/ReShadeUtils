@@ -80,8 +80,7 @@ class GamesDal:
     def update_game(self, games_dict: dict):
         stmt = sa.update(Games).where(Games.id == games_dict["id"]).values(
             name=games_dict["name"],
-            architecture=games_dict["architecture"],
             api=games_dict["api"],
-            dll=games_dict["dll"]
+            dll=games_dict["dll"],
         )
         self.db_utils.execute(stmt)

@@ -30,7 +30,7 @@ def show_info_messages_clicked(db_session, log, status):
 
 def check_reshade_updates_clicked(db_session, log, status):
     config_sql = ConfigDal(db_session, log)
-    config_sql.update_check_resahde_updates(status)
+    config_sql.update_check_reshade_updates(status)
 
 
 def create_screenshots_folder_clicked(db_session, log, status):
