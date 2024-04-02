@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ReShadeUtils"
-version = "5.0.1"
+version = "5.0.2"
 description = "ReShadeUtils"
 authors = ["ddc <danieldcsta@gmail.com>"]
 readme = "README.md"

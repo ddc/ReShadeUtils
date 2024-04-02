@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import patch
 from src.tools import program_utils
-from tests.data.base_data import Object
 
 
 class TestProgramUtils:
@@ -18,14 +17,6 @@ class TestProgramUtils:
             result = program_utils.check_program_updates(log, db_session)
             assert result is None
 
-        # check for updates is disabled
-        with patch(local_version, (1, 0, 0)):
-            remote_version = (2, 1, 0)
-            program_remote_version_mock.return_value = remote_version
-            get_configs_mocks.return_value = ({"check_program_updates": False},)
-            result = program_utils.check_program_updates(log, db_session)
-            assert result is None
-
         # check new version available
         with patch(local_version, (1, 0, 0)):
             remote_version = (2, 1, 0)
@@ -33,3 +24,11 @@ class TestProgramUtils:
             get_configs_mocks.return_value = ({"check_program_updates": True},)
             result = program_utils.check_program_updates(log, db_session)
             assert result == ".".join(str(x) for x in remote_version)
+
+        # check if update is disabled
+        with patch(local_version, (1, 0, 0)):
+            remote_version = (2, 1, 0)
+            program_remote_version_mock.return_value = remote_version
+            get_configs_mocks.return_value = ({"check_program_updates": False},)
+            result = program_utils.check_program_updates(log, db_session)
+            assert result is None

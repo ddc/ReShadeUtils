@@ -3,10 +3,13 @@ import logging.handlers
 import os
 import tempfile
 import pytest
+import sqlalchemy as sa
 from PyQt6 import QtCore, QtWidgets
 from sqlalchemy.orm import Session
-from tests.data.base_data import database_engine, Object
 from src.constants import variables
+from src.database.models.config_model import Config
+from src.database.models.games_model import Games
+from tests.data.base_data import database_engine, get_fake_config_data, get_fake_game_data, Object
 
 
 @pytest.fixture(name="program_path", autouse=True)
@@ -21,6 +24,24 @@ def temp_program_path():
 def db_session():
     with Session(database_engine) as session:
         yield session
+
+
+@pytest.fixture
+def fake_config_data(db_session):
+    # init
+    fdata = get_fake_config_data()
+    yield fdata
+    # teardown
+    db_session.execute(sa.delete(Config))
+
+
+@pytest.fixture
+def fake_game_data(db_session):
+    # init
+    fdata = get_fake_game_data()
+    yield fdata
+    # teardown
+    db_session.execute(sa.delete(Games))
 
 
 @pytest.fixture
