@@ -5,7 +5,7 @@ from ddcUtils import OsUtils
 
 
 DEBUG = False
-VERSION = (5, 0, 1)
+VERSION = (5, 0, 2)
 VERSION_STR = ".".join(map(str, VERSION))
 RESHADE_NAME = "ReShade"
 PROGRAM_NAME = f"{RESHADE_NAME} Utils"
@@ -28,6 +28,7 @@ RESHADE32 = f"{RESHADE_NAME}32"
 RESHADE64 = f"{RESHADE_NAME}64"
 RESHADE32_DLL = f"{RESHADE32}.dll"
 RESHADE64_DLL = f"{RESHADE64}.dll"
+RESHADE_LOG = f"{RESHADE_NAME}.log"
 RESHADE_SHADERS = f"{RESHADE_NAME}-shaders".lower()
 D3D9_DLL = "d3d9.dll"
 DXGI_DLL = "dxgi.dll"
