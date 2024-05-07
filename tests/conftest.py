@@ -16,7 +16,7 @@ from tests.data.base_data import database_engine, get_fake_config_data, get_fake
 def temp_program_path():
     for k, v in variables.__dict__.items():
         if any(x in k for x in ("PATH", "DIR")):
-            # setting all path to dirs to /tmp/name
+            # setting temp path to /tmp/ReShadeUtils
             setattr(variables, k, os.path.join(tempfile.gettempdir(), variables.SHORT_PROGRAM_NAME, os.path.basename(v)))
 
 
