@@ -6,19 +6,34 @@ build-backend = "poetry.core.masonry.api"
 name = "ReShadeUtils"
 version = "5.0.2"
 description = "ReShadeUtils"
-authors = ["ddc <danieldcsta@gmail.com>"]
+license = "MIT"
 readme = "README.md"
+authors = ["Daniel Costa <danieldcsta@gmail.com>"]
+maintainers = ["Daniel Costa"]
+repository = "https://github.com/ddc/ReshadeUtils"
+homepage = "https://github.com/ddc/ReshadeUtils"
 package-mode = false
+keywords = ["python3", "sqlite3", "pyqt", "pyinstaller", "reshade", "qt6", "pyqt6"]
+classifiers = [
+    "Topic :: Games/Entertainment",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: Other Environment",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+]
 
 [tool.poetry.dependencies]
-python = ">=3.11, <3.13"
+python = ">=3.12, <3.13"
 bs4 = "^0.0.2"
 urllib3 = "^2.2.1"
 SQLAlchemy = "^2.0.29"
-requests = "^2.31.0"
+requests = "^2.32.3"
 PyQt6 = "^6.7.0"
 alembic = "^1.13.1"
-ddcutils = "^1.0.24"
+ddcutils = "^1.0.26"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.0"
