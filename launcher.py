@@ -3,8 +3,9 @@
 import os
 import subprocess
 import sys
-from ddcUtils import FileUtils, OsUtils, TimedRotatingLog
-from ddcUtils.databases import DBSqlite
+from ddcDatabases import DBSqlite
+from ddcLogs import TimedRotatingLog
+from ddcUtils import FileUtils, OsUtils
 from PyQt6 import QtWidgets
 from src.constants import messages, variables
 from src.tools import program_utils

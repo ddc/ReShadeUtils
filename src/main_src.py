@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from ddcUtils import FileUtils, TimedRotatingLog
-from ddcUtils.databases import DBSqlite
+from ddcDatabases import DBSqlite
+from ddcLogs import TimedRotatingLog
+from ddcUtils import FileUtils
 from PyQt6.QtCore import Qt
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
