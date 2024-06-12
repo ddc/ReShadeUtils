@@ -33,7 +33,9 @@ SQLAlchemy = "^2.0.29"
 requests = "^2.32.3"
 PyQt6 = "^6.7.0"
 alembic = "^1.13.1"
-ddcutils = "^1.0.26"
+ddcUtils = "^1.0.26"
+ddcLogs = "^1.0.1"
+ddcDatabases = "^1.0.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.0"

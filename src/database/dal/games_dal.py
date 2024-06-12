@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sqlalchemy as sa
-from ddcUtils.databases import DBUtils
-from ddcUtils.exceptions import DBFetchAllException, DBFetchOneException
+from ddcDatabases import DBUtils
+from ddcDatabases.exceptions import DBFetchAllException, DBFetchOneException
 from sqlalchemy.sql import asc, collate
 from src.database.models.games_model import Games
 
