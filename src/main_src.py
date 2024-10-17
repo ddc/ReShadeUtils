@@ -17,7 +17,7 @@ class MainSrc:
         self.form = form
         self.log = TimedRotatingLog(
             directory=variables.LOGS_DIR,
-            filename=variables.LOG_FILE_NAME,
+            filenames=(variables.LOG_FILE_NAME,),
             days_to_keep=int(variables.DAYS_TO_KEEP_LOGS),
             level="debug" if variables.DEBUG else "info",
         ).init()

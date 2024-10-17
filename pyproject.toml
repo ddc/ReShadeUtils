@@ -28,24 +28,24 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.12, <3.13"
 bs4 = "^0.0.2"
-urllib3 = "^2.2.1"
-SQLAlchemy = "^2.0.29"
+urllib3 = "^2.2.3"
+SQLAlchemy = "^2.0.36"
 requests = "^2.32.3"
-PyQt6 = "^6.7.0"
-alembic = "^1.13.1"
-ddcUtils = "^1.0.26"
-ddcLogs = "^1.0.1"
-ddcDatabases = "^1.0.1"
+PyQt6 = "^6.7.1"
+alembic = "^1.13.3"
+ddcUtils = "^1.0.31"
+ddcLogs = "^2.0.2"
+ddcDatabases = "^1.0.7"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.2.0"
-faker = "^25.0.0"
-coverage = "^7.5.0"
-pytest-qt = "^4.4.0"
-poethepoet = "^0.26.1"
+pytest = ">=8.3.3"
+faker = ">=30.6.0"
+coverage = ">=7.6.3"
+pytest-qt = ">=4.4.0"
+poethepoet = ">=0.29.0"
 
 [tool.poetry.group.dev.dependencies]
-pyinstaller = "^6.6.0"
+pyinstaller = "^6.11.0"
 
 [tool.poe.tasks]
 test = "poetry run coverage run -m pytest -v"
