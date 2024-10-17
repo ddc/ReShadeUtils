@@ -100,6 +100,7 @@ def delete_game(db_session, log, qtobj, item):
                     return
 
             FileUtils.remove(str(log_file_path))
+            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_LOG)))
             FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_INI)))
             FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_PRESET_INI)))
             FileUtils.remove(str(os.path.join(game_dir, variables.RESHADEGUI_INI)))

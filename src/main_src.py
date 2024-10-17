@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from ddcUtils import FileUtils, TimedRotatingLog
-from ddcUtils.databases import DBSqlite
+from ddcDatabases import DBSqlite
+from ddcLogs import TimedRotatingLog
+from ddcUtils import FileUtils
 from PyQt6.QtCore import Qt
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
@@ -16,7 +17,7 @@ class MainSrc:
         self.form = form
         self.log = TimedRotatingLog(
             directory=variables.LOGS_DIR,
-            filename=variables.LOG_FILE_NAME,
+            filenames=(variables.LOG_FILE_NAME,),
             days_to_keep=int(variables.DAYS_TO_KEEP_LOGS),
             level="debug" if variables.DEBUG else "info",
         ).init()
