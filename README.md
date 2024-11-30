@@ -1,5 +1,5 @@
 # ReShade Utilities
-### Program to copy/update [ReShade](https://reshade.me/) DLLs and shaders
+## Program to copy/update [ReShade](https://reshade.me/) DLLs and shaders
 
 [<img src="https://img.shields.io/badge/Donate-PayPal-green.svg?style=plastic">](https://www.paypal.com/donate/?business=MRJ2NVUGSK4EA&no_recurring=0&item_name=Reshade+Utils&currency_code=USD)
 [<img src="https://img.shields.io/github/license/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
@@ -11,30 +11,30 @@
 ![screenshot](src/resources/images/screenshot_settings.png)
 
 
-## Download
+# Download
 + [Latest Release](https://github.com/ddc/ReshadeUtils/releases/latest)
 
 
-## Program Notes
+# Program Notes
 + Configuration, logs and database files are now being saved in "%LOCALAPPDATA%\ReShadeUtils"
 + This program was compiled with PyInstaller
 
 
-## Run tests
+# Run tests
 + poe test
 
 
-## Get coverage report
+# Get coverage report
 + poe coverage
 
 
-## To compile using PyInstaller
+# To compile using PyInstaller
 + Compile both launcher and program with PyInstaller:
     + python -O -m PyInstaller -y --clean --log-level INFO --workpath ./dist/build --distpath ./dist ./src/data/spec/launcher.spec
     + python -O -m PyInstaller -y --clean --log-level INFO --workpath ./dist/build --distpath ./dist ./src/data/spec/reshadeUtils.spec
 
 
-## Acknowledgements
+# Acknowledgements
 + [PyQt6](https://riverbankcomputing.com/software/pyqt)
 + [Python3](https://www.python.org)
 + [Reshade](https://reshade.me)
@@ -42,11 +42,12 @@
 + [Inno Setup](http://www.innosetup.com)
 
 
-## License
+# License
 Released under the [GNU GPL v3](LICENSE)
 
 
-## Buy Me a Cup of Coffee
-This program is open source and always will be, even if I don't get donations. That said, I know there are people out there that may still want to donate just to show their appreciation so this is for you guys. Thanks in advance!
 
-[<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">](https://www.paypal.com/donate/?business=MRJ2NVUGSK4EA&no_recurring=0&item_name=Reshade+Utils&currency_code=USD)
+# Buy me a cup of coffee
++ [GitHub Sponsor](https://github.com/sponsors/ddc)
++ [ko-fi](https://ko-fi.com/ddcsta)
++ [Paypal](https://www.paypal.com/ncp/payment/6G9Z78QHUD4RJ)
