@@ -11,8 +11,10 @@
 ![screenshot](src/resources/images/screenshot_settings.png)
 
 
+
 # Download
 + [Latest Release](https://github.com/ddc/ReshadeUtils/releases/latest)
+
 
 
 # Program Notes
@@ -20,12 +22,10 @@
 + This program was compiled with PyInstaller
 
 
-# Run tests
+
+# Run tests and Get coverage report
 + poe test
 
-
-# Get coverage report
-+ poe coverage
 
 
 # To compile using PyInstaller
@@ -34,12 +34,14 @@
     + python -O -m PyInstaller -y --clean --log-level INFO --workpath ./dist/build --distpath ./dist ./src/data/spec/reshadeUtils.spec
 
 
+
 # Acknowledgements
 + [PyQt6](https://riverbankcomputing.com/software/pyqt)
 + [Python3](https://www.python.org)
 + [Reshade](https://reshade.me)
 + [PyInstaller](https://www.pyinstaller.org)
 + [Inno Setup](http://www.innosetup.com)
+
 
 
 # License

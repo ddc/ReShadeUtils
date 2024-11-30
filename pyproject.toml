@@ -51,6 +51,5 @@ poethepoet = "^0.29.0"
 pyinstaller = "^6.11.1"
 
 [tool.poe.tasks]
-test = "poetry run coverage run -m pytest -v"
+test = "poetry run coverage run --omit=./tests/* --source=./src -m pytest -v && poetry run coverage report"
 tests = ["test"]
-coverage = "poetry run coverage report"
