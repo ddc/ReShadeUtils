@@ -4,12 +4,27 @@ import os
 import tempfile
 import pytest
 import sqlalchemy as sa
+from ddcDatabases import Sqlite
 from PyQt6 import QtCore, QtWidgets
-from sqlalchemy.orm import Session
+from sqlalchemy.pool import StaticPool
 from src.constants import variables
 from src.database.models.config_model import Config
 from src.database.models.games_model import Games
-from tests.data.base_data import database_engine, get_fake_config_data, get_fake_game_data, Object
+from tests.data.base_data import (
+    get_fake_config_data,
+    get_fake_game_data,
+    Object,
+)
+
+
+@pytest.fixture(name="db_session", scope="session")
+def sqlite_session():
+    extra_engine_args = {"poolclass": StaticPool}
+    with Sqlite(
+        filepath=":memory:",
+        extra_engine_args=extra_engine_args,
+    ) as session:
+        yield session
 
 
 @pytest.fixture(name="program_path", autouse=True)
@@ -17,13 +32,15 @@ def temp_program_path():
     for k, v in variables.__dict__.items():
         if any(x in k for x in ("PATH", "DIR")):
             # setting temp path to /tmp/ReShadeUtils
-            setattr(variables, k, os.path.join(tempfile.gettempdir(), variables.SHORT_PROGRAM_NAME, os.path.basename(v)))
-
-
-@pytest.fixture(name="db_session")
-def db_session():
-    with Session(database_engine) as session:
-        yield session
+            setattr(
+                variables,
+                k,
+                os.path.join(
+                    tempfile.gettempdir(),
+                    variables.SHORT_PROGRAM_NAME,
+                    os.path.basename(v),
+                ),
+            )
 
 
 @pytest.fixture
@@ -106,10 +123,16 @@ def qtextbrowser(qtbot):
     qwtb.setMaximumSize(QtCore.QSize(960, 610))
     qwtb.setAcceptDrops(False)
     qwtb.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-    qwtb.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-    qwtb.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+    qwtb.setVerticalScrollBarPolicy(
+        QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+    )
+    qwtb.setHorizontalScrollBarPolicy(
+        QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+    )
     qwtb.setUndoRedoEnabled(False)
-    qwtb.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse)
+    qwtb.setTextInteractionFlags(
+        QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
+    )
     qwtb.setOpenExternalLinks(True)
     qwtb.setObjectName("about_text_browser")
     qtbot.addWidget(qwtb)
@@ -126,14 +149,24 @@ def qtablewidget(qtbot):
     qtw.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
     qtw.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
     qtw.setLineWidth(0)
-    qtw.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+    qtw.setSizeAdjustPolicy(
+        QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents
+    )
     qtw.setAutoScroll(False)
     qtw.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
     qtw.setDragDropOverwriteMode(False)
-    qtw.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
-    qtw.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
-    qtw.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
-    qtw.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
+    qtw.setSelectionMode(
+        QtWidgets.QAbstractItemView.SelectionMode.SingleSelection
+    )
+    qtw.setSelectionBehavior(
+        QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows
+    )
+    qtw.setVerticalScrollMode(
+        QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel
+    )
+    qtw.setHorizontalScrollMode(
+        QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel
+    )
     qtw.setWordWrap(False)
     qtw.setCornerButtonEnabled(False)
     qtw.setColumnCount(4)
@@ -144,7 +177,15 @@ def qtablewidget(qtbot):
 
 
 @pytest.fixture
-def qtobj(qpushbutton, qlabel, qradiobutton, qgroupbox, qtabwidget, qtextbrowser, qtablewidget):
+def qtobj(
+    qpushbutton,
+    qlabel,
+    qradiobutton,
+    qgroupbox,
+    qtabwidget,
+    qtextbrowser,
+    qtablewidget,
+):
     qtobj = Object()
     qtobj.apply_button = qpushbutton
     qtobj.selected_game_group_box = qgroupbox

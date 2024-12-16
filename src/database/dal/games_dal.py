@@ -48,32 +48,32 @@ class GamesDal:
     def get_game_by_id(self, game_id: int):
         try:
             stmt = sa.select(*self.columns).where(Games.id == game_id)
-            results = self.db_utils.fetchvalue(stmt)
-            return results
+            results = self.db_utils.fetchall(stmt)
+            return results[0] if results else None
         except DBFetchValueException:
             return None
 
     def get_game_by_path(self, game_path: str):
         try:
             stmt = sa.select(*self.columns).where(Games.path == game_path)
-            results = self.db_utils.fetchvalue(stmt)
-            return results
+            results = self.db_utils.fetchall(stmt)
+            return results[0] if results else None
         except DBFetchValueException:
             return None
 
     def get_game_by_name(self, game_name: str):
         try:
             stmt = sa.select(*self.columns).where(Games.name == game_name)
-            results = self.db_utils.fetchvalue(stmt)
-            return results
+            results = self.db_utils.fetchall(stmt)
+            return results[0] if results else None
         except DBFetchValueException:
             return None
 
     def get_game_by_name_and_path(self, game_name: str, game_path: str):
         try:
             stmt = sa.select(*self.columns).where(Games.name == game_name, Games.path == game_path)
-            results = self.db_utils.fetchvalue(stmt)
-            return results
+            results = self.db_utils.fetchall(stmt)
+            return results[0] if results else None
         except DBFetchValueException:
             return None
 
