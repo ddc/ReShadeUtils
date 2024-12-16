@@ -7,12 +7,12 @@ from tests.data.base_data import get_fake_game_data
 class TestGamesDal:
     @classmethod
     def setup_class(cls):
-        """ setup_class """
+        """setup_class"""
         pass
 
     @classmethod
     def teardown_class(cls):
-        """ teardown_class """
+        """teardown_class"""
         pass
 
     def test_games_dal(self, db_session, fake_game_data):
@@ -64,7 +64,6 @@ class TestGamesDal:
         results = games_dal.get_game_by_path(new_path)
         assert results is not None
         assert results.path == new_path
-
 
         # test_update_game_architecture
         games_dal = GamesDal(db_session, None)

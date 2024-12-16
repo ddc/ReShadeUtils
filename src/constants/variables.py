@@ -77,6 +77,6 @@ GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releas
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
-ALEMBIC_MIGRATIONS_REMOTE_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/blob/master/src/database/migrations"
+ALEMBIC_MIGRATIONS_REMOTE_URL = "src/database/migrations"
 TEXTURES_REMOTE_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/blob/master/src/data/reshade/textures"
-PAYPAL_URL = "https://www.paypal.com/donate/?business=MRJ2NVUGSK4EA&no_recurring=0&item_name=Reshade+Utils&currency_code=USD"
+PAYPAL_URL = "https://www.paypal.com/ncp/payment/6G9Z78QHUD4RJ"

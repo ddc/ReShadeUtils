@@ -229,7 +229,9 @@ class UiMain(object):
         self.programs_table_widget.raise_()
         self.all_games_group_box.raise_()
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/resources/images/controller.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon7.addPixmap(
+            QtGui.QPixmap(":/resources/images/controller.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off
+        )
         self.main_tab_widget.addTab(self.games_tab, icon7, "")
         self.settings_tab = QtWidgets.QWidget()
         self.settings_tab.setObjectName("settings_tab")
@@ -243,12 +245,16 @@ class UiMain(object):
         self.check_program_updates_group_box.setFont(font)
         self.check_program_updates_group_box.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.check_program_updates_group_box.setObjectName("check_program_updates_group_box")
-        self.yes_check_program_updates_radio_button = QtWidgets.QRadioButton(parent=self.check_program_updates_group_box)
+        self.yes_check_program_updates_radio_button = QtWidgets.QRadioButton(
+            parent=self.check_program_updates_group_box
+        )
         self.yes_check_program_updates_radio_button.setGeometry(QtCore.QRect(220, 30, 60, 20))
         self.yes_check_program_updates_radio_button.setMinimumSize(QtCore.QSize(60, 20))
         self.yes_check_program_updates_radio_button.setMaximumSize(QtCore.QSize(60, 20))
         self.yes_check_program_updates_radio_button.setObjectName("yes_check_program_updates_radio_button")
-        self.no_check_program_updates_radio_button = QtWidgets.QRadioButton(parent=self.check_program_updates_group_box)
+        self.no_check_program_updates_radio_button = QtWidgets.QRadioButton(
+            parent=self.check_program_updates_group_box
+        )
         self.no_check_program_updates_radio_button.setGeometry(QtCore.QRect(70, 30, 60, 20))
         self.no_check_program_updates_radio_button.setMinimumSize(QtCore.QSize(60, 20))
         self.no_check_program_updates_radio_button.setMaximumSize(QtCore.QSize(60, 20))
@@ -283,12 +289,16 @@ class UiMain(object):
         self.create_screenshots_folder_group_box.setFont(font)
         self.create_screenshots_folder_group_box.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.create_screenshots_folder_group_box.setObjectName("create_screenshots_folder_group_box")
-        self.yes_screenshots_folder_radio_button = QtWidgets.QRadioButton(parent=self.create_screenshots_folder_group_box)
+        self.yes_screenshots_folder_radio_button = QtWidgets.QRadioButton(
+            parent=self.create_screenshots_folder_group_box
+        )
         self.yes_screenshots_folder_radio_button.setGeometry(QtCore.QRect(220, 30, 60, 20))
         self.yes_screenshots_folder_radio_button.setMinimumSize(QtCore.QSize(60, 20))
         self.yes_screenshots_folder_radio_button.setMaximumSize(QtCore.QSize(60, 20))
         self.yes_screenshots_folder_radio_button.setObjectName("yes_screenshots_folder_radio_button")
-        self.no_screenshots_folder_radio_button = QtWidgets.QRadioButton(parent=self.create_screenshots_folder_group_box)
+        self.no_screenshots_folder_radio_button = QtWidgets.QRadioButton(
+            parent=self.create_screenshots_folder_group_box
+        )
         self.no_screenshots_folder_radio_button.setGeometry(QtCore.QRect(70, 30, 60, 20))
         self.no_screenshots_folder_radio_button.setMinimumSize(QtCore.QSize(60, 20))
         self.no_screenshots_folder_radio_button.setMaximumSize(QtCore.QSize(60, 20))
@@ -303,12 +313,16 @@ class UiMain(object):
         self.check_reshade_updates_group_box.setFont(font)
         self.check_reshade_updates_group_box.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.check_reshade_updates_group_box.setObjectName("check_reshade_updates_group_box")
-        self.yes_check_reshade_updates_radio_button = QtWidgets.QRadioButton(parent=self.check_reshade_updates_group_box)
+        self.yes_check_reshade_updates_radio_button = QtWidgets.QRadioButton(
+            parent=self.check_reshade_updates_group_box
+        )
         self.yes_check_reshade_updates_radio_button.setGeometry(QtCore.QRect(220, 30, 60, 20))
         self.yes_check_reshade_updates_radio_button.setMinimumSize(QtCore.QSize(60, 20))
         self.yes_check_reshade_updates_radio_button.setMaximumSize(QtCore.QSize(60, 20))
         self.yes_check_reshade_updates_radio_button.setObjectName("yes_check_reshade_updates_radio_button")
-        self.no_check_reshade_updates_radio_button = QtWidgets.QRadioButton(parent=self.check_reshade_updates_group_box)
+        self.no_check_reshade_updates_radio_button = QtWidgets.QRadioButton(
+            parent=self.check_reshade_updates_group_box
+        )
         self.no_check_reshade_updates_radio_button.setGeometry(QtCore.QRect(70, 30, 60, 20))
         self.no_check_reshade_updates_radio_button.setMinimumSize(QtCore.QSize(60, 20))
         self.no_check_reshade_updates_radio_button.setMaximumSize(QtCore.QSize(60, 20))
@@ -387,15 +401,19 @@ class UiMain(object):
         self.donate_button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.donate_button.setToolTip("Donate")
         self.donate_button.setAutoFillBackground(False)
-        self.donate_button.setStyleSheet("#donate_button {\n"
-"    background-color: transparent;\n"
-"    background: none;\n"
-"    border: none;\n"
-"    background-repeat: none;\n"
-"}")
+        self.donate_button.setStyleSheet(
+            "#donate_button {\n"
+            "    background-color: transparent;\n"
+            "    background: none;\n"
+            "    border: none;\n"
+            "    background-repeat: none;\n"
+            "}"
+        )
         self.donate_button.setText("")
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(":/resources/images/donate.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon10.addPixmap(
+            QtGui.QPixmap(":/resources/images/donate.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off
+        )
         self.donate_button.setIcon(icon10)
         self.donate_button.setIconSize(QtCore.QSize(150, 100))
         self.donate_button.setObjectName("donate_button")
@@ -411,7 +429,11 @@ class UiMain(object):
         font.setBold(True)
         self.update_avail_label.setFont(font)
         self.update_avail_label.setText("")
-        self.update_avail_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.update_avail_label.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.update_avail_label.setObjectName("update_avail_label")
         self.update_button = QtWidgets.QPushButton(parent=main_form)
         self.update_button.setGeometry(QtCore.QRect(800, 710, 160, 30))
@@ -421,7 +443,9 @@ class UiMain(object):
         font.setBold(True)
         self.update_button.setFont(font)
         icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(":/resources/images/update.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon12.addPixmap(
+            QtGui.QPixmap(":/resources/images/update.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off
+        )
         self.update_button.setIcon(icon12)
         self.update_button.setObjectName("update_button")
         self.main_tab_widget.raise_()
@@ -506,7 +530,9 @@ class UiMain(object):
         self.update_shaders_button.setText(_translate("main_form", "UPDATE SHADERS"))
         self.edit_global_plugins_button.setToolTip(_translate("main_form", "Edit global plugins"))
         self.edit_global_plugins_button.setText(_translate("main_form", "EDIT GLOBAL PLUGINS"))
-        self.main_tab_widget.setTabText(self.main_tab_widget.indexOf(self.settings_tab), _translate("main_form", "SETTINGS"))
+        self.main_tab_widget.setTabText(
+            self.main_tab_widget.indexOf(self.settings_tab), _translate("main_form", "SETTINGS")
+        )
         self.main_tab_widget.setTabText(self.main_tab_widget.indexOf(self.about_tab), _translate("main_form", "ABOUT"))
         self.update_button.setToolTip(_translate("main_form", "Update ReshadeUtils"))
         self.update_button.setText(_translate("main_form", "UPDATE"))

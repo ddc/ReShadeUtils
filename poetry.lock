@@ -325,13 +325,13 @@ pytz = ">=2024.2,<2025.0"
 
 [[package]]
 name = "ddcutils"
-version = "1.0.37"
+version = "1.0.38"
 description = "Few File Utilities and some OS Functions"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "ddcutils-1.0.37-py3-none-any.whl", hash = "sha256:d2ad4ff4d04cd716ab253f4b61408c101b4781abba6606b389c3ec2afea49b82"},
-    {file = "ddcutils-1.0.37.tar.gz", hash = "sha256:b5058d55b0bedff4c8d688318e040b50b04b29802cd3e1c4d841a1631d011124"},
+    {file = "ddcutils-1.0.38-py3-none-any.whl", hash = "sha256:a4d88ad9dbd829547ba5ae70de9cc9ecac157e5205702288f1531eff15477e39"},
+    {file = "ddcutils-1.0.38.tar.gz", hash = "sha256:47a718e52dd6f3cf250615955a751b6d92dc2858d8c4b7125bbcc517db0507a2"},
 ]
 
 [package.dependencies]
@@ -351,6 +351,45 @@ files = [
 [package.dependencies]
 python-dateutil = ">=2.4"
 typing-extensions = "*"
+
+[[package]]
+name = "fsspec"
+version = "2024.10.0"
+description = "File-system specification"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "fsspec-2024.10.0-py3-none-any.whl", hash = "sha256:03b9a6785766a4de40368b88906366755e2819e758b83705c88cd7cb5fe81871"},
+    {file = "fsspec-2024.10.0.tar.gz", hash = "sha256:eda2d8a4116d4f2429db8550f2457da57279247dd930bb12f821b58391359493"},
+]
+
+[package.extras]
+abfs = ["adlfs"]
+adl = ["adlfs"]
+arrow = ["pyarrow (>=1)"]
+dask = ["dask", "distributed"]
+dev = ["pre-commit", "ruff"]
+doc = ["numpydoc", "sphinx", "sphinx-design", "sphinx-rtd-theme", "yarl"]
+dropbox = ["dropbox", "dropboxdrivefs", "requests"]
+full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "dask", "distributed", "dropbox", "dropboxdrivefs", "fusepy", "gcsfs", "libarchive-c", "ocifs", "panel", "paramiko", "pyarrow (>=1)", "pygit2", "requests", "s3fs", "smbprotocol", "tqdm"]
+fuse = ["fusepy"]
+gcs = ["gcsfs"]
+git = ["pygit2"]
+github = ["requests"]
+gs = ["gcsfs"]
+gui = ["panel"]
+hdfs = ["pyarrow (>=1)"]
+http = ["aiohttp (!=4.0.0a0,!=4.0.0a1)"]
+libarchive = ["libarchive-c"]
+oci = ["ocifs"]
+s3 = ["s3fs"]
+sftp = ["paramiko"]
+smb = ["smbprotocol"]
+ssh = ["paramiko"]
+test = ["aiohttp (!=4.0.0a0,!=4.0.0a1)", "numpy", "pytest", "pytest-asyncio (!=0.22.0)", "pytest-benchmark", "pytest-cov", "pytest-mock", "pytest-recording", "pytest-rerunfailures", "requests"]
+test-downstream = ["aiobotocore (>=2.5.4,<3.0.0)", "dask-expr", "dask[dataframe,test]", "moto[server] (>4,<5)", "pytest-timeout", "xarray"]
+test-full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "cloudpickle", "dask", "distributed", "dropbox", "dropboxdrivefs", "fastparquet", "fusepy", "gcsfs", "jinja2", "kerchunk", "libarchive-c", "lz4", "notebook", "numpy", "ocifs", "pandas", "panel", "paramiko", "pyarrow", "pyarrow (>=1)", "pyftpdlib", "pygit2", "pytest", "pytest-asyncio (!=0.22.0)", "pytest-benchmark", "pytest-cov", "pytest-mock", "pytest-recording", "pytest-rerunfailures", "python-snappy", "requests", "smbprotocol", "tqdm", "urllib3", "zarr", "zstandard"]
+tqdm = ["tqdm"]
 
 [[package]]
 name = "greenlet"
@@ -1240,4 +1279,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<3.14"
-content-hash = "dd7b2bf7e5e3ed0b6b59c3ab94ac59b555dc4f45eabbcdf196b57752c1573cd6"
+content-hash = "915b1ef90b7f132ed53b9d69a47eab9a4228296e6d5198aa84d78c3cb84bb0fe"

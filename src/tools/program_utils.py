@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import json
 import os
-import sys
+from pathlib import Path
+import fsspec
 import requests
 from alembic import command
 from alembic.config import Config
@@ -11,65 +11,23 @@ from src.database.dal.config_dal import ConfigDal
 from src.tools.qt import qt_utils
 
 
-def _download_github_dir(remote_dir_url: str, local_dir_path: str) -> bool:
-    """
-    Download directory from remote url to local and returns True or False
-    Need to specify the branch on remote url
-        example: https://github.com/ddc/ddcutils/blob/master/reshadeUtils/databases
-
-    :param remote_dir_url:
-    :param local_dir_path:
-    :return:
-    """
-
-    try:
-        if not os.path.exists(local_dir_path):
-            os.makedirs(local_dir_path, exist_ok=True)
-
-        req_dir = requests.get(remote_dir_url)
-        if req_dir.status_code == 200:
-            data_dict = json.loads(req_dir.content)
-            files_list = data_dict["payload"]["tree"]["items"]
-            for file in files_list:
-                remote_file_url = f"{remote_dir_url}/{file['name']}"
-                local_file_path = f"{local_dir_path}/{file['name']}"
-                if file["contentType"] == "directory":
-                    _download_github_dir(remote_file_url, local_file_path)
-                else:
-                    req_file = requests.get(remote_file_url)
-                    if req_file.status_code == 200:
-                        data_dict = json.loads(req_file.content)
-                        content = data_dict["payload"]["blob"]["rawLines"]
-                        if not content:
-                            payload = data_dict['payload']
-                            url = (f"https://raw.githubusercontent.com/"
-                                   f"{payload['repo']['ownerLogin']}/"
-                                   f"{payload['repo']['name']}/"
-                                   "master/"
-                                   f"{payload['path']}")
-                            req_file = requests.get(url)
-                            with open(local_file_path, "wb") as outfile:
-                                outfile.write(req_file.content)
-                        else:
-                            with open(local_file_path, "w") as outfile:
-                                outfile.writelines([f"{line}\n" for line in content])
-        else:
-            return False
-    except Exception as e:
-        sys.stderr.write(repr(e))
-        raise e
-    return True
-
-
 def download_alembic_dir(log):
     log.debug("downloading alembic dir")
-    FileUtils.remove(variables.ALEMBIC_MIGRATIONS_DIR)
-    local_dir = variables.ALEMBIC_MIGRATIONS_DIR
+    try:
+        FileUtils.remove(variables.ALEMBIC_MIGRATIONS_DIR)
+    except FileNotFoundError:
+        pass
+
+    local_dir_path = variables.ALEMBIC_MIGRATIONS_DIR
     alembic_migrations_remote_url = variables.ALEMBIC_MIGRATIONS_REMOTE_URL
-    result = _download_github_dir(alembic_migrations_remote_url, local_dir)
-    if not result:
+
+    try:
+        destination = Path(local_dir_path)
+        destination.mkdir(exist_ok=True, parents=True)
+        fs = fsspec.filesystem("github", org="ddc", repo="ReshadeUtils")
+        fs.get(fs.ls(alembic_migrations_remote_url), destination.as_posix())
+    except Exception:
         qt_utils.show_message_window(log, "error", messages.error_dl_alembic_files)
-    return result
 
 
 def run_alembic_migrations(log):

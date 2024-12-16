@@ -6,12 +6,12 @@ from src.database.models.config_model import Config
 class TestConfigDal:
     @classmethod
     def setup_class(cls):
-        """ setup_class """
+        """setup_class"""
         pass
 
     @classmethod
     def teardown_class(cls):
-        """ teardown_class """
+        """teardown_class"""
         pass
 
     def test_config_dal(self, db_session, fake_config_data):

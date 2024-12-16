@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import os
 from unittest.mock import patch
 import pytest
-from ddcDatabases import Sqlite
 from src.database.dal.games_dal import GamesDal
 from src.database.models.config_model import Config
 from src.database.models.games_model import Games
@@ -12,12 +10,12 @@ from src.tools import reshade_utils
 class TestReshadeUtils:
     @classmethod
     def setup_class(cls):
-        """ setup_class """
+        """setup_class"""
         pass
 
     @classmethod
     def teardown_class(cls):
-        """ teardown_class """
+        """teardown_class"""
         pass
 
     @pytest.mark.skip(reason="github actions lack the support for PyQt6")
@@ -44,22 +42,15 @@ class TestReshadeUtils:
         results = games_dal.get_game_by_id(game_id)
         assert results is not None
 
-
         remote_reshade_version_mock.return_value = (9, 9, 999)
         download_reshade_mock.return_value = True
         unzip_reshade_mock.return_value = True
-        get_configs_mocks.return_value = (
-            {"check_program_updates": True, "show_info_messages": False},
-        )
+        get_configs_mocks.return_value = ({"check_program_updates": True, "show_info_messages": False},)
         db_reshade_version = (1, 0, 0)
-        new_reshade_version = (
-            reshade_utils.check_and_download_new_reshade_version(
-                db_session,
-                log,
-                qtobj,
-                db_reshade_version,
-            )
+        new_reshade_version = reshade_utils.check_and_download_new_reshade_version(
+            db_session,
+            log,
+            qtobj,
+            db_reshade_version,
         )
-        assert new_reshade_version == ".".join(
-            str(x) for x in remote_reshade_version_mock.return_value
-        )
+        assert new_reshade_version == ".".join(str(x) for x in remote_reshade_version_mock.return_value)

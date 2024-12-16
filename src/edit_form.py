@@ -2,6 +2,7 @@
 import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from src.constants import variables
+from src.resources import resources
 
 
 class UiEditForm(object):

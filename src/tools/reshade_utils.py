@@ -36,11 +36,11 @@ def unzip_reshade(log, local_reshade_exe):
     log.debug("unzip_reshade")
 
     try:
-        reshade_32_files = FileUtils.list_files(variables.PROGRAM_DIR, starts_with=variables.RESHADE32)
+        reshade_32_files = FileUtils.list_files(variables.PROGRAM_DIR, starts_with=variables.RESHADE32.lower())
         for file in reshade_32_files:
             FileUtils.remove(file)
 
-        reshade_64_files = FileUtils.list_files(variables.PROGRAM_DIR, starts_with=variables.RESHADE64)
+        reshade_64_files = FileUtils.list_files(variables.PROGRAM_DIR, starts_with=variables.RESHADE64.lower())
         for file in reshade_64_files:
             FileUtils.remove(file)
 
@@ -54,7 +54,10 @@ def unzip_reshade(log, local_reshade_exe):
 def check_reshade_executable_file(db_session, log, qtobj):
     log.debug("check_reshade_executable_file")
 
-    local_reshade = FileUtils.list_files(variables.PROGRAM_DIR, starts_with=variables.RESHADE_SETUP)
+    local_reshade = FileUtils.list_files(
+        variables.PROGRAM_DIR,
+        starts_with=variables.RESHADE_SETUP,
+    )
     if not local_reshade:
         remote_reshade_version = get_remote_reshade_version(log)
         download_reshade(log, remote_reshade_version)
@@ -123,7 +126,11 @@ def get_remote_reshade_version(log):
                     break
     except requests.exceptions.ConnectionError as e:
         log.error(f"{messages.reshade_website_unreacheable}: {repr(e)}")
-        qt_utils.show_message_window(log, "error", messages.reshade_website_unreacheable)
+        qt_utils.show_message_window(
+            log,
+            "error",
+            messages.reshade_website_unreacheable,
+        )
     return remote_reshade_version
 
 
@@ -135,7 +142,10 @@ def check_and_download_new_reshade_version(db_session, log, qtobj, db_reshade_ve
         remote_reshade_version_str = ".".join(map(str, remote_reshade_version_tuple))
         res = download_reshade(log, remote_reshade_version_str)
         if res:
-            downloaded_reshade_path = os.path.join(variables.PROGRAM_DIR, f"ReShade_Setup_{remote_reshade_version_str}.exe")
+            downloaded_reshade_path = os.path.join(
+                variables.PROGRAM_DIR,
+                f"ReShade_Setup_{remote_reshade_version_str}.exe",
+            )
             uzip = unzip_reshade(log, downloaded_reshade_path)
             if uzip:
                 config_sql = ConfigDal(db_session, log)
@@ -143,13 +153,17 @@ def check_and_download_new_reshade_version(db_session, log, qtobj, db_reshade_ve
                 errors = games_tab_events.apply_all(db_session, log, qtobj)
                 if errors:
                     err = "\n".join(errors)
-                    qt_utils.show_message_window(log, "error",
-                                                 f"{messages.apply_success_with_errors}\n\n"
-                                                 f"{err}")
+                    qt_utils.show_message_window(
+                        log,
+                        "error",
+                        f"{messages.apply_success_with_errors}\n\n {err}",
+                    )
                 elif program_utils.show_info_messages(db_session, log):
-                    qt_utils.show_message_window(log, "info",
-                                                 f"{messages.new_reshade_version}\n\n"
-                                                 f"Version: {remote_reshade_version_str}")
+                    qt_utils.show_message_window(
+                        log,
+                        "info",
+                        f"{messages.new_reshade_version}\n\n Version: {remote_reshade_version_str}",
+                    )
             return remote_reshade_version_str
     return None
 
@@ -170,7 +184,10 @@ def download_reshade(log, remote_reshade_version):
             os.remove(old_reshade_exe_path)
 
     try:
-        local_reshade_path = os.path.join(variables.PROGRAM_DIR, f"ReShade_Setup_{remote_reshade_version}.exe")
+        local_reshade_path = os.path.join(
+            variables.PROGRAM_DIR,
+            f"ReShade_Setup_{remote_reshade_version}.exe",
+        )
         remote_reshade_download_url = f"{variables.RESHADE_EXE_URL}{remote_reshade_version}.exe"
         r = requests.get(remote_reshade_download_url)
         if r.status_code == 200:
@@ -224,9 +241,13 @@ def check_shaders_and_textures(log):
 def _download_crosire_shaders_and_textures(log):
     log.debug("_download_crosire_shaders_and_textures")
 
-    # remove shaders directory
-    if not FileUtils.remove(variables.SHADERS_LOCAL_DIR):
+    try:
+        # remove shaders directory
+        FileUtils.remove(variables.SHADERS_LOCAL_DIR)
+    except PermissionError as e:
         qt_utils.show_message_window(log, "error", messages.error_remove_shaders)
+    except FileNotFoundError as e:
+        pass
 
     # download nvidia crosire shaders as .zip
     if not FileUtils.download_file(variables.SHADERS_ZIP_URL, variables.SHADERS_ZIP_PATH):
@@ -244,17 +265,35 @@ def _download_crosire_shaders_and_textures(log):
         except Exception as e:
             log.error(repr(e))
 
-        # remove the zip file after extraction
-        FileUtils.remove(variables.SHADERS_ZIP_PATH)
+        try:
+            # remove the zip file after extraction
+            FileUtils.remove(variables.SHADERS_ZIP_PATH)
+        except FileNotFoundError:
+            pass
 
-        # remove the reshade-shaders directory completely
-        FileUtils.remove(variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
+        try:
+            # remove the reshade-shaders directory completely
+            FileUtils.remove(variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
+        except FileNotFoundError:
+            pass
 
-        # rename the extracted directory (reshade-shaders-nvidia -> reshade-shaders)
-        FileUtils.rename(variables.SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR, variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
+        try:
+            # rename the extracted directory (reshade-shaders-nvidia -> reshade-shaders)
+            FileUtils.rename(
+                variables.SHADERS_AND_TEXTURES_NVIDIA_LOCAL_TEMP_DIR,
+                variables.SHADERS_AND_TEXTURES_LOCAL_DIR,
+            )
+        except FileNotFoundError:
+            pass
 
-        # rename insdie the extracted directory (ShadersAndTextures -> Shaders)
-        FileUtils.rename(variables.SHADERS_NVIDIA_LOCAL_TEMP_DIR, variables.SHADERS_LOCAL_DIR)
+        try:
+            # rename insdie the extracted directory (ShadersAndTextures -> Shaders)
+            FileUtils.rename(
+                variables.SHADERS_NVIDIA_LOCAL_TEMP_DIR,
+                variables.SHADERS_LOCAL_DIR,
+            )
+        except FileNotFoundError:
+            pass
 
 
 def _move_textures(log):
@@ -332,12 +371,32 @@ def apply_reshade_ini_file(game_dir, screenshot_path):
     except OSError:
         pass
 
-    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "EffectSearchPaths", variables.SHADERS_LOCAL_DIR)
-    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "TextureSearchPaths", variables.TEXTURES_LOCAL_DIR)
+    ConfFileUtils().set_value(
+        game_reshade_ini_path,
+        "GENERAL",
+        "EffectSearchPaths",
+        variables.SHADERS_LOCAL_DIR,
+    )
+    ConfFileUtils().set_value(
+        game_reshade_ini_path,
+        "GENERAL",
+        "TextureSearchPaths",
+        variables.TEXTURES_LOCAL_DIR,
+    )
     ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "PresetPath", preset_path)
-    ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "IntermediateCachePath", intermediate_cache_path)
+    ConfFileUtils().set_value(
+        game_reshade_ini_path,
+        "GENERAL",
+        "IntermediateCachePath",
+        intermediate_cache_path,
+    )
     ConfFileUtils().set_value(game_reshade_ini_path, "GENERAL", "StartupPresetPath", preset_path)
     ConfFileUtils().set_value(game_reshade_ini_path, "SCREENSHOT", "SavePath", screenshot_path)
-    ConfFileUtils().set_value(game_reshade_ini_path, "SCREENSHOT", "PostSaveCommandWorkingDirectory", screenshot_path)
+    ConfFileUtils().set_value(
+        game_reshade_ini_path,
+        "SCREENSHOT",
+        "PostSaveCommandWorkingDirectory",
+        screenshot_path,
+    )
 
     return None

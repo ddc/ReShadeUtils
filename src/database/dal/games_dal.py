@@ -18,8 +18,9 @@ class GamesDal:
             architecture=games_dict["architecture"],
             api=games_dict["api"],
             dll=games_dict["dll"],
-            path=games_dict["path"])
-        self.db_utils.add(stmt)
+            path=games_dict["path"],
+        )
+        self.db_utils.insert(stmt)
 
     def update_game_path(self, game_id: int, new_game_path: str):
         stmt = sa.update(Games).where(Games.id == game_id).values(path=new_game_path)
@@ -78,9 +79,13 @@ class GamesDal:
             return None
 
     def update_game(self, games_dict: dict):
-        stmt = sa.update(Games).where(Games.id == games_dict["id"]).values(
-            name=games_dict["name"],
-            api=games_dict["api"],
-            dll=games_dict["dll"],
+        stmt = (
+            sa.update(Games)
+            .where(Games.id == games_dict["id"])
+            .values(
+                name=games_dict["name"],
+                api=games_dict["api"],
+                dll=games_dict["dll"],
+            )
         )
         self.db_utils.execute(stmt)

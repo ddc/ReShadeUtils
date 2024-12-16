@@ -44,7 +44,8 @@ PyQt6 = "^6.8.0"
 alembic = "^1.14.0"
 ddcDatabases = "^1.0.17"
 ddcLogs = "^3.0.9"
-ddcUtils = "^1.0.37"
+ddcUtils = "^1.0.38"
+fsspec = "^2024.10.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.4"

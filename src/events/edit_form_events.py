@@ -47,7 +47,9 @@ def show_game_config_form_insert(db_session, log, main_qtobj, filename_path):
     log.debug("show_game_config_form_insert")
     edit_form = _create_edit_form_widget(db_session, log)
     edit_form.qtobj.game_name_line_edit.setText(os.path.splitext(os.path.basename(filename_path))[0])
-    edit_form.qtobj.ok_push_button.clicked.connect(lambda: _game_config_form_result_insert_ok(db_session, log, main_qtobj, edit_form, filename_path))
+    edit_form.qtobj.ok_push_button.clicked.connect(
+        lambda: _game_config_form_result_insert_ok(db_session, log, main_qtobj, edit_form, filename_path)
+    )
     edit_form.qtobj.cancel_push_button.clicked.connect(lambda: _game_config_form_result_cancel(log, edit_form))
 
 
@@ -84,7 +86,7 @@ def _game_config_form_result_insert_ok(db_session, log, main_qtobj, edit_form, f
         "api": api,
         "dll": dll_name,
         "path": filename_path,
-        "dir": os.path.dirname(filename_path)
+        "dir": os.path.dirname(filename_path),
     }
 
     screenshots_path = program_utils.get_screenshot_path(db_session, log, form_results["dir"], form_results["name"])
@@ -148,7 +150,9 @@ def show_game_config_form_update(db_session, log, main_qtobj, item):
             edit_form.qtobj.dxgi_radio_button.setChecked(True)
             edit_form.qtobj.opengl_radio_button.setChecked(False)
 
-    edit_form.qtobj.ok_push_button.clicked.connect(lambda: _game_config_form_result_update_ok(db_session, log, main_qtobj, edit_form, selected_game))
+    edit_form.qtobj.ok_push_button.clicked.connect(
+        lambda: _game_config_form_result_update_ok(db_session, log, main_qtobj, edit_form, selected_game)
+    )
     edit_form.qtobj.cancel_push_button.clicked.connect(lambda: _game_config_form_result_cancel(log, edit_form))
 
 
@@ -174,11 +178,13 @@ def _game_config_form_result_update_ok(db_session, log, main_qtobj, edit_form, s
         "id": selected_game["id"],
         "name": edit_form.qtobj.game_name_line_edit.text(),
         "api": api,
-        "dll": dll_name
+        "dll": dll_name,
     }
 
     if selected_game["name"] != edit_form_result["name"]:
-        old_screenshots_path = program_utils.get_screenshot_path(db_session, log, selected_game["dir"], selected_game["name"])
+        old_screenshots_path = program_utils.get_screenshot_path(
+            db_session, log, selected_game["dir"], selected_game["name"]
+        )
         if old_screenshots_path:
             scrrenshot_dir_path = os.path.dirname(old_screenshots_path)
             new_screenshots_path = os.path.join(scrrenshot_dir_path, edit_form_result["name"])

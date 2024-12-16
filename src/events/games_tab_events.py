@@ -40,7 +40,7 @@ def get_selected_game(db_session, log, qtobj, item=None):
         "path": None,
         "dir": None,
         "dll": None,
-        "dll_path": None
+        "dll_path": None,
     }
 
     if item:
@@ -99,11 +99,30 @@ def delete_game(db_session, log, qtobj, item):
                     qt_utils.enable_widgets(qtobj, False)
                     return
 
-            FileUtils.remove(str(log_file_path))
-            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_LOG)))
-            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_INI)))
-            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_PRESET_INI)))
-            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADEGUI_INI)))
+            try:
+                FileUtils.remove(str(log_file_path))
+            except FileNotFoundError:
+                pass
+
+            try:
+                FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_LOG)))
+            except FileNotFoundError:
+                pass
+
+            try:
+                FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_INI)))
+            except FileNotFoundError:
+                pass
+
+            try:
+             FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_PRESET_INI)))
+            except FileNotFoundError:
+                pass
+
+            try:
+                FileUtils.remove(str(os.path.join(game_dir, variables.RESHADEGUI_INI)))
+            except FileNotFoundError:
+                pass
 
             games_sql = GamesDal(db_session, log)
             games_sql.delete_game(selected_game["id"])
@@ -255,9 +274,7 @@ def apply_all_clicked(db_session, log, qtobj):
         qt_utils.show_message_window(log, "info", messages.apply_success)
     else:
         err = "\n".join(errors)
-        qt_utils.show_message_window(log, "error",
-                                     f"{messages.apply_success_with_errors}\n\n"
-                                     f"{err}")
+        qt_utils.show_message_window(log, "error", f"{messages.apply_success_with_errors}\n\n" f"{err}")
 
 
 def apply_all(db_session, log, qtobj, reset=False):
@@ -279,7 +296,7 @@ def apply_all(db_session, log, qtobj, reset=False):
                 "api": rs_all_games[i]["api"],
                 "architecture": rs_all_games[i]["architecture"],
                 "name": rs_all_games[i]["name"],
-                "path": rs_all_games[i]["path"]
+                "path": rs_all_games[i]["path"],
             }
             err_result = apply_single(db_session, log, game_dict, reset)
             if err_result:
@@ -316,7 +333,7 @@ def apply_single(db_session, log, game_dict, reset=False):
                     dst_dll_path = os.path.join(game_dir, variables.DXGI_DLL)
 
             try:
-                FileUtils.copy(src_dll_path, dst_dll_path)
+                FileUtils.copy(src_dll_path, str(dst_dll_path))
             except Exception as e:
                 log.error(f"[{game_name}]:[{repr(e)}]")
 
@@ -350,7 +367,7 @@ def open_selected_game_location(db_session, log, qtobj, item):
     qt_utils.enable_widgets(qtobj, True)
     selected_game = get_selected_game(db_session, log, qtobj, item)
     game_dir = os.path.dirname(selected_game["path"])
-    res = FileUtils.show(game_dir)
+    res = FileUtils.open(game_dir)
     if not res:
         qt_utils.show_message_window(log, "error", messages.check_game_uninstalled)
     qt_utils.enable_widgets(qtobj, False)
@@ -365,7 +382,7 @@ def reset_selected_game_files_button(db_session, log, qtobj, item):
         "api": selected_game["api"],
         "architecture": selected_game["architecture"],
         "name": selected_game["name"],
-        "path": selected_game["path"]
+        "path": selected_game["path"],
     }
     result = apply_single(db_session, log, game_dict, True)
     progressbar.close()

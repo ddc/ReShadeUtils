@@ -3,7 +3,7 @@
 import os
 import subprocess
 import sys
-from ddcDatabases import DBSqlite
+from ddcDatabases import Sqlite
 from ddcLogs import TimedRotatingLog
 from ddcUtils import FileUtils, OsUtils
 from PyQt6 import QtWidgets
@@ -18,7 +18,7 @@ class Launcher:
         self.log = TimedRotatingLog(
             directory=variables.LOGS_DIR,
             filenames=(variables.LOG_FILE_NAME,),
-            days_to_keep=int(variables.DAYS_TO_KEEP_LOGS),
+            daystokeep=int(variables.DAYS_TO_KEEP_LOGS),
             level="debug" if variables.DEBUG else "info",
         ).init()
         self.progressbar = ProgressBar(log=self.log)
@@ -26,8 +26,7 @@ class Launcher:
         self.program_path = os.path.join(OsUtils.get_current_path(), self.program_name)
 
     def start(self):
-        database = DBSqlite(variables.DATABASE_PATH)
-        with database.session() as db_session:
+        with Sqlite(filepath=variables.DATABASE_PATH) as db_session:
             self.progressbar.set_values(messages.checking_alembic_files, 25)
             alembic_files = FileUtils.list_files(variables.ALEMBIC_MIGRATIONS_DIR)
             if not alembic_files:
@@ -49,10 +48,7 @@ class Launcher:
         self.log.debug("Calling program")
         code = None
         try:
-            process = subprocess.run(self.program_path,
-                                     shell=True,
-                                     check=True,
-                                     universal_newlines=True)
+            process = subprocess.run(self.program_path, shell=True, check=True, universal_newlines=True)
             code = process.returncode
         except Exception as e:
             if code is None and hasattr(e, "returncode"):

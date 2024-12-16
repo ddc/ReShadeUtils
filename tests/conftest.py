@@ -123,16 +123,10 @@ def qtextbrowser(qtbot):
     qwtb.setMaximumSize(QtCore.QSize(960, 610))
     qwtb.setAcceptDrops(False)
     qwtb.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-    qwtb.setVerticalScrollBarPolicy(
-        QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-    )
-    qwtb.setHorizontalScrollBarPolicy(
-        QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-    )
+    qwtb.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+    qwtb.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
     qwtb.setUndoRedoEnabled(False)
-    qwtb.setTextInteractionFlags(
-        QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
-    )
+    qwtb.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse)
     qwtb.setOpenExternalLinks(True)
     qwtb.setObjectName("about_text_browser")
     qtbot.addWidget(qwtb)
@@ -149,24 +143,14 @@ def qtablewidget(qtbot):
     qtw.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
     qtw.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
     qtw.setLineWidth(0)
-    qtw.setSizeAdjustPolicy(
-        QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents
-    )
+    qtw.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
     qtw.setAutoScroll(False)
     qtw.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
     qtw.setDragDropOverwriteMode(False)
-    qtw.setSelectionMode(
-        QtWidgets.QAbstractItemView.SelectionMode.SingleSelection
-    )
-    qtw.setSelectionBehavior(
-        QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows
-    )
-    qtw.setVerticalScrollMode(
-        QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel
-    )
-    qtw.setHorizontalScrollMode(
-        QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel
-    )
+    qtw.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
+    qtw.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+    qtw.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
+    qtw.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
     qtw.setWordWrap(False)
     qtw.setCornerButtonEnabled(False)
     qtw.setColumnCount(4)
