@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ddcUtils import FileUtils, get_exception
+from ddcUtils import FileUtils
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.events import games_tab_events
@@ -43,7 +43,7 @@ def edit_global_plugins_button(log):
         reshade_utils.check_reshade_config_files(log)
         FileUtils.show(variables.RESHADE_PRESET_PATH)
     except Exception as e:
-        err_msg = (f"{get_exception(e)}\n\n"
+        err_msg = (f"{repr(e)}\n\n"
                    f"{variables.RESHADE_PRESET_PATH} {messages.unable_start}")
         qt_utils.show_message_window(log, "error", err_msg)
 

@@ -3,12 +3,12 @@ import os
 import random
 import tempfile
 from datetime import datetime
-from ddcDatabases import DBSqlite
+from ddcDatabases import Sqlite
 from faker import Faker
 from src.constants.variables import ALL_APIS, ALL_ARCHITECTURES, ALL_DLL_NAMES
 
 
-database_engine = DBSqlite(":memory:").engine()
+database_engine = Sqlite(":memory:").engine()
 
 
 class Object:

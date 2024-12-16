@@ -28,28 +28,36 @@ classifiers = [
     "Natural Language :: English",
 ]
 
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.dev]
+optional = true
+
 [tool.poetry.dependencies]
-python = ">=3.12, <3.13"
+python = ">=3.12,<3.14"
 bs4 = "^0.0.2"
 urllib3 = "^2.2.3"
 SQLAlchemy = "^2.0.36"
 requests = "^2.32.3"
-PyQt6 = "^6.7.1"
+PyQt6 = "^6.8.0"
 alembic = "^1.14.0"
-ddcUtils = "^1.0.34"
-ddcLogs = "^2.0.19"
-ddcDatabases = "^1.0.11"
+ddcDatabases = "^1.0.17"
+ddcLogs = "^3.0.9"
+ddcUtils = "^1.0.37"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.3.3"
-faker = "^30.6.0"
-coverage = "^7.6.3"
+pytest = "^8.3.4"
+faker = "^33.1.0"
+coverage = "^7.6.9"
 pytest-qt = "^4.4.0"
-poethepoet = "^0.29.0"
+poethepoet = "^0.31.1"
 
 [tool.poetry.group.dev.dependencies]
 pyinstaller = "^6.11.1"
 
 [tool.poe.tasks]
-test = "poetry run coverage run --omit=./tests/* --source=./src -m pytest -v && poetry run coverage report"
-tests = ["test"]
+_test = "poetry run coverage run --omit=./tests/* --source=./src -m pytest -v"
+_coverage = "poetry run coverage report"
+tests = ["_test", "_coverage"]
+test = ["tests"]

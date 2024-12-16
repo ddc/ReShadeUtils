@@ -1,11 +1,15 @@
 # ReShade Utilities
 ## Program to copy/update [ReShade](https://reshade.me/) DLLs and shaders
 
-[<img src="https://img.shields.io/badge/Donate-PayPal-green.svg?style=plastic">](https://www.paypal.com/donate/?business=MRJ2NVUGSK4EA&no_recurring=0&item_name=Reshade+Utils&currency_code=USD)
-[<img src="https://img.shields.io/github/license/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
-[<img src="https://img.shields.io/badge/Python-3-blue.svg?style=plastic">](https://www.python.org/)
-[<img src="https://img.shields.io/badge/PyQt-6-brightgreen.svg?style=plastic">](https://riverbankcomputing.com/software/pyqt)
-[<img src="https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic">](https://github.com/ddc/ReshadeUtils/releases/latest)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-brightgreen.svg?style=plastic)](https://www.paypal.com/ncp/payment/6G9Z78QHUD4RJ)
+[![License](https://img.shields.io/github/license/ddc/ddcUtils.svg)](https://github.com/ddc/ReshadeUtils/blob/master/LICENSE)
+[![PyQt-6](https://img.shields.io/badge/PyQt-6-brightgreen.svg?style=plastic)](https://riverbankcomputing.com/software/pyqt)
+[![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org)
+[![codecov](https://codecov.io/gh/ddc/ReShadeUtils/graph/badge.svg?token=VG5O44966P)](https://codecov.io/gh/ddc/ReShadeUtils)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Release](https://img.shields.io/github/release/ddc/ReshadeUtils.svg?style=plastic)](https://github.com/ddc/ReshadeUtils/releases/latest)
+
+
 
 ![screenshot](src/resources/images/screenshot.png)
 ![screenshot](src/resources/images/screenshot_settings.png)

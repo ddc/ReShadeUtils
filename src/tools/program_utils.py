@@ -5,7 +5,7 @@ import sys
 import requests
 from alembic import command
 from alembic.config import Config
-from ddcUtils import ConfFileUtils, FileUtils, get_exception, OsUtils
+from ddcUtils import ConfFileUtils, FileUtils, OsUtils
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.tools.qt import qt_utils
@@ -56,7 +56,7 @@ def _download_github_dir(remote_dir_url: str, local_dir_path: str) -> bool:
         else:
             return False
     except Exception as e:
-        sys.stderr.write(get_exception(e))
+        sys.stderr.write(repr(e))
         raise e
     return True
 
@@ -147,13 +147,13 @@ def get_screenshot_path(db_session, log, game_dir, game_name):
             if not os.path.isdir(variables.RESHADE_SCREENSHOT_DIR):
                 os.makedirs(variables.RESHADE_SCREENSHOT_DIR)
         except OSError as e:
-            log.error(f"mkdir: {variables.RESHADE_SCREENSHOT_DIR}: {get_exception(e)}")
+            log.error(f"mkdir: {variables.RESHADE_SCREENSHOT_DIR}: {repr(e)}")
 
         try:
             if not os.path.isdir(game_screenshots_path):
                 os.makedirs(game_screenshots_path)
         except OSError as e:
-            log.error(f"mkdir: {game_screenshots_path}: {get_exception(e)}")
+            log.error(f"mkdir: {game_screenshots_path}: {repr(e)}")
     else:
         reshade_ini_filepath = str(os.path.join(game_dir, variables.RESHADE_INI))
         reshade_config_screenshot_path = ConfFileUtils().get_value(reshade_ini_filepath, "SCREENSHOT", "SavePath")

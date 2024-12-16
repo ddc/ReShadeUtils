@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
-from ddcUtils import FileUtils, get_exception
+from ddcUtils import FileUtils
 from PyQt6 import QtCore
 from PyQt6.QtGui import QDesktopServices
 from src.constants import messages, variables
@@ -117,7 +117,7 @@ def delete_game(db_session, log, qtobj, item):
                 else:
                     qt_utils.show_message_window(log, "info", f"{messages.game_deleted}\n\n{game_name}")
         except OSError as e:
-            qt_utils.show_message_window(log, "error", f"ERROR deleting {game_name} files\n\n{get_exception(e)}")
+            qt_utils.show_message_window(log, "error", f"ERROR deleting {game_name} files\n\n{repr(e)}")
 
 
 def edit_selected_game_plugin_config_file(db_session, log, qtobj, item):
@@ -132,18 +132,18 @@ def edit_selected_game_plugin_config_file(db_session, log, qtobj, item):
         if not os.path.isfile(variables.RESHADE_PRESET_PATH):
             reshade_utils.download_reshade_preset_file()
     except Exception as e:
-        log.error(f"create_files: {get_exception(e)}")
+        log.error(f"create_files: {repr(e)}")
 
     try:
         if not os.path.isfile(res_plug_ini_path) and os.path.isfile(variables.RESHADE_PRESET_PATH):
             shutil.copy2(variables.RESHADE_PRESET_PATH, res_plug_ini_path)
     except Exception as e:
-        log.error(get_exception(e))
+        log.error(repr(e))
 
     try:
         FileUtils.show(res_plug_ini_path)
     except Exception as e:
-        err_msg = f"{get_exception(e)}\n\n{messages.check_game_uninstalled}"
+        err_msg = f"{repr(e)}\n\n{messages.check_game_uninstalled}"
         qt_utils.show_message_window(log, "error", err_msg)
 
     qt_utils.enable_widgets(qtobj, False)
@@ -187,7 +187,7 @@ def edit_selected_game_path(db_session, log, qtobj, item):
         try:
             reshade_utils.apply_reshade_ini_file(new_game_dir, game_screenshots_path)
         except Exception as e:
-            log.error(f"create_files: {get_exception(e)}")
+            log.error(f"create_files: {repr(e)}")
 
         # remove dll from game path
         reshade_dll, log_file_path = reshade_utils.get_reshade_dll_log_names(selected_game["api"])
@@ -318,7 +318,7 @@ def apply_single(db_session, log, game_dict, reset=False):
             try:
                 FileUtils.copy(src_dll_path, dst_dll_path)
             except Exception as e:
-                log.error(f"[{game_name}]:[{get_exception(e)}]")
+                log.error(f"[{game_name}]:[{repr(e)}]")
 
         # Reshade.ini
         dst_res_ini_path = os.path.join(game_dir, variables.RESHADE_INI)
@@ -336,11 +336,11 @@ def apply_single(db_session, log, game_dict, reset=False):
             except FileNotFoundError:
                 errors = f"[{game_name}]: No such file or directory"
             except Exception as e:
-                log.error(f"[{game_name}]:[{get_exception(e)}]")
+                log.error(f"[{game_name}]:[{repr(e)}]")
 
     except Exception as e:
-        log.error(f"[{game_name}]:[{get_exception(e)}]")
-        errors = f"[{game_name}]: {get_exception(e)}"
+        log.error(f"[{game_name}]:[{repr(e)}]")
+        errors = f"[{game_name}]: {repr(e)}"
 
     return errors
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
-from ddcUtils import FileUtils, get_exception
+from ddcUtils import FileUtils
 from PyQt6 import QtWidgets
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
@@ -95,25 +95,25 @@ def _game_config_form_result_insert_ok(db_session, log, main_qtobj, edit_form, f
         if not os.path.isdir(screenshots_path):
             os.mkdir(screenshots_path)
     except OSError as e:
-        log.error(f"create_screenshot_dir: {get_exception(e)}")
+        log.error(f"create_screenshot_dir: {repr(e)}")
 
     try:
         # creating reshade.ini file inside game dir
         reshade_utils.apply_reshade_ini_file(form_results["dir"], screenshots_path)
     except Exception as e:
-        log.error(f"download_reshade_ini_file: {get_exception(e)}")
+        log.error(f"download_reshade_ini_file: {repr(e)}")
 
     try:
         # copying Reshade.dll
         shutil.copy2(str(dll_src_path), str(dst_dll_path))
     except shutil.Error as e:
-        log.error(f"copyfile: {dll_src_path} to {dst_dll_path} - {get_exception(e)}")
+        log.error(f"copyfile: {dll_src_path} to {dst_dll_path} - {repr(e)}")
 
     try:
         # copying ReShadePreset.ini
         shutil.copy2(variables.RESHADE_PRESET_PATH, form_results["dir"])
     except shutil.Error as e:
-        log.error(f"copyfile: {variables.RESHADE_PRESET_PATH} to {dst_dll_path} - {get_exception(e)}")
+        log.error(f"copyfile: {variables.RESHADE_PRESET_PATH} to {dst_dll_path} - {repr(e)}")
 
     games_sql = GamesDal(db_session, log)
     games_sql.insert_game(form_results)
@@ -187,14 +187,14 @@ def _game_config_form_result_update_ok(db_session, log, main_qtobj, edit_form, s
                 # creating reshade.ini file inside game dir
                 reshade_utils.apply_reshade_ini_file(selected_game["dir"], new_screenshots_path)
             except Exception as e:
-                log.error(f"download_reshade_ini_file: {get_exception(e)}")
+                log.error(f"download_reshade_ini_file: {repr(e)}")
 
             try:
                 # rename screenshot folder
                 if os.path.isdir(old_screenshots_path):
                     os.rename(old_screenshots_path, new_screenshots_path)
             except OSError as e:
-                log.error(f"rename_screenshot_dir: {get_exception(e)}")
+                log.error(f"rename_screenshot_dir: {repr(e)}")
 
     if selected_game["api"] != edit_form_result["api"]:
         match selected_game["architecture"]:
@@ -211,13 +211,13 @@ def _game_config_form_result_update_ok(db_session, log, main_qtobj, edit_form, s
             if os.path.isfile(selected_game["dll_path"]):
                 os.remove(selected_game["dll_path"])
         except OSError as e:
-            log.error(f"remove_reshade_file: {get_exception(e)}")
+            log.error(f"remove_reshade_file: {repr(e)}")
 
         try:
             # copying Reshade.dll
             shutil.copy2(str(src_path), str(dll_dst_path))
         except shutil.Error as e:
-            log.error(f"copyfile: {src_path} to {dll_dst_path} - {get_exception(e)}")
+            log.error(f"copyfile: {src_path} to {dll_dst_path} - {repr(e)}")
 
     games_sql = GamesDal(db_session, log)
     games_sql.update_game(edit_form_result)

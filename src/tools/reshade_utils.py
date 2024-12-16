@@ -6,7 +6,7 @@ import tempfile
 import zipfile
 import requests
 from bs4 import BeautifulSoup
-from ddcUtils import ConfFileUtils, FileUtils, get_exception
+from ddcUtils import ConfFileUtils, FileUtils
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.events import games_tab_events
@@ -47,7 +47,7 @@ def unzip_reshade(log, local_reshade_exe):
         FileUtils.unzip(local_reshade_exe, variables.PROGRAM_DIR)
         return True
     except Exception as e:
-        log.error(get_exception(e))
+        log.error(repr(e))
         return False
 
 
@@ -122,7 +122,7 @@ def get_remote_reshade_version(log):
                     remote_reshade_version = tuple(int(x) for x in remote_version_str.split("."))
                     break
     except requests.exceptions.ConnectionError as e:
-        log.error(f"{messages.reshade_website_unreacheable}: {get_exception(e)}")
+        log.error(f"{messages.reshade_website_unreacheable}: {repr(e)}")
         qt_utils.show_message_window(log, "error", messages.reshade_website_unreacheable)
     return remote_reshade_version
 
@@ -181,9 +181,9 @@ def download_reshade(log, remote_reshade_version):
         else:
             err_message = f"{messages.error_check_new_reshade_version}\n\n Code: {r.status_code}"
     except PermissionError as e:
-        err_message = f"{messages.error_check_new_reshade_version}\n{messages.error_permissionError}\n{get_exception(e)}"
+        err_message = f"{messages.error_check_new_reshade_version}\n{messages.error_permissionError}\n{repr(e)}"
     except Exception as e:
-        err_message = f"{messages.error_check_new_reshade_version}\n{get_exception(e)}"
+        err_message = f"{messages.error_check_new_reshade_version}\n{repr(e)}"
 
     log.error(err_message)
     qt_utils.show_message_window(log, "error", err_message)
@@ -238,11 +238,11 @@ def _download_crosire_shaders_and_textures(log):
             # extract the zip file
             FileUtils.unzip(variables.SHADERS_ZIP_PATH, variables.SRC_DIR)
         except FileNotFoundError as e:
-            log.error(get_exception(e))
+            log.error(repr(e))
         except zipfile.BadZipFile as e:
-            log.error(get_exception(e))
+            log.error(repr(e))
         except Exception as e:
-            log.error(get_exception(e))
+            log.error(repr(e))
 
         # remove the zip file after extraction
         FileUtils.remove(variables.SHADERS_ZIP_PATH)
