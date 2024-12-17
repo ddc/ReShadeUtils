@@ -270,7 +270,7 @@ def apply_all_clicked(db_session, log, qtobj):
         qt_utils.show_message_window(log, "info", messages.apply_success)
     else:
         err = "\n".join(errors)
-        qt_utils.show_message_window(log, "error", f"{messages.apply_success_with_errors}\n\n" f"{err}")
+        qt_utils.show_message_window(log, "error", f"{messages.apply_success_with_errors}\n\n {err}")
 
 
 def apply_all(db_session, log, qtobj, reset=False):
