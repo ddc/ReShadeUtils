@@ -93,36 +93,32 @@ def delete_game(db_session, log, qtobj, item):
             log_file_path = os.path.join(game_dir, log_file)
 
             if os.path.exists(game_dll_path):
-                if not FileUtils.remove(str(game_dll_path)):
+                try:
+                    FileUtils.remove(str(game_dll_path))
+                except FileNotFoundError:
                     log.error(f"remove_file: {game_dll_path}")
                     qt_utils.show_message_window(log, "error", f"{messages.error_delete_dll}\n\n{game_name} dll")
                     qt_utils.enable_widgets(qtobj, False)
                     return
 
-            try:
+            if os.path.exists(str(log_file_path)):
                 FileUtils.remove(str(log_file_path))
-            except FileNotFoundError:
-                pass
 
-            try:
-                FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_LOG)))
-            except FileNotFoundError:
-                pass
+            _reshade_log_path = str(os.path.join(game_dir, variables.RESHADE_LOG))
+            if os.path.exists(_reshade_log_path):
+                FileUtils.remove(_reshade_log_path)
 
-            try:
-                FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_INI)))
-            except FileNotFoundError:
-                pass
+            _reshade_ini_path = str(os.path.join(game_dir, variables.RESHADE_INI))
+            if os.path.exists(_reshade_ini_path):
+                FileUtils.remove(_reshade_ini_path)
 
-            try:
-             FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_PRESET_INI)))
-            except FileNotFoundError:
-                pass
+            _reshade_preset_path = str(os.path.join(game_dir, variables.RESHADE_PRESET_INI))
+            if os.path.exists(_reshade_preset_path):
+                FileUtils.remove(_reshade_preset_path)
 
-            try:
-                FileUtils.remove(str(os.path.join(game_dir, variables.RESHADEGUI_INI)))
-            except FileNotFoundError:
-                pass
+            _reshade_gui_path = str(os.path.join(game_dir, variables.RESHADEGUI_INI))
+            if os.path.exists(_reshade_gui_path):
+                FileUtils.remove(_reshade_gui_path)
 
             games_sql = GamesDal(db_session, log)
             games_sql.delete_game(selected_game["id"])

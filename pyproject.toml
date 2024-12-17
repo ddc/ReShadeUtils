@@ -35,7 +35,7 @@ optional = true
 optional = true
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.14"
+python = ">=3.10,<3.14"
 bs4 = "^0.0.2"
 urllib3 = "^2.2.3"
 SQLAlchemy = "^2.0.36"
@@ -57,8 +57,17 @@ poethepoet = "^0.31.1"
 [tool.poetry.group.dev.dependencies]
 pyinstaller = "^6.11.1"
 
+[tool.coverage.run]
+omit = [
+    "tests/*",
+    "src/events/*",
+    "src/tools/qt/*",
+    "src/edit_form.py",
+]
+
 [tool.poe.tasks]
-_test = "poetry run coverage run --omit=./tests/* --source=./src -m pytest -v"
-_coverage = "poetry run coverage report"
-tests = ["_test", "_coverage"]
+_test = "coverage run -m pytest -v"
+_coverage_report = "coverage report"
+_coverage_xml = "coverage xml"
+tests = ["_test", "_coverage_report", "_coverage_xml"]
 test = ["tests"]

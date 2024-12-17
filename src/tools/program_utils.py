@@ -5,7 +5,7 @@ import fsspec
 import requests
 from alembic import command
 from alembic.config import Config
-from ddcUtils import ConfFileUtils, FileUtils, OsUtils
+from ddcUtils import ConfFileUtils, FileUtils
 from src.constants import messages, variables
 from src.database.dal.config_dal import ConfigDal
 from src.tools.qt import qt_utils
@@ -13,22 +13,21 @@ from src.tools.qt import qt_utils
 
 def download_alembic_dir(log):
     log.debug("downloading alembic dir")
-    try:
-        FileUtils.remove(variables.ALEMBIC_MIGRATIONS_DIR)
-    except FileNotFoundError:
-        pass
-
     local_dir_path = variables.ALEMBIC_MIGRATIONS_DIR
     alembic_migrations_remote_url = variables.ALEMBIC_MIGRATIONS_REMOTE_URL
+
+    if os.path.isdir(local_dir_path):
+        FileUtils.remove(local_dir_path)
 
     try:
         destination = Path(local_dir_path)
         destination.mkdir(exist_ok=True, parents=True)
         fs = fsspec.filesystem("github", org="ddc", repo="ReshadeUtils")
         fs.get(fs.ls(alembic_migrations_remote_url), destination.as_posix())
-    except Exception:
-        qt_utils.show_message_window(log, "error", messages.error_dl_alembic_files)
-
+        return True
+    except Exception as e:
+        qt_utils.show_message_window(log, "error", f"{messages.error_dl_alembic_files}{repr(e)}")
+        return False
 
 def run_alembic_migrations(log):
     log.debug("running alembic migrations")
@@ -37,12 +36,11 @@ def run_alembic_migrations(log):
 
 
 def show_info_messages(db_session, log):
-    show_messages = False
     config_sql = ConfigDal(db_session, log)
     rs_config = config_sql.get_configs()
     if rs_config is None or (rs_config is not None and rs_config[0]["show_info_messages"]):
-        show_messages = True
-    return show_messages
+        return True
+    return False
 
 
 def check_program_updates(log, db_session):
@@ -82,17 +80,18 @@ def get_program_remote_version(log):
 
 
 def download_new_program_version(db_session, log, local_path, new_version):
-    program_name = variables.EXE_PROGRAM_NAME if OsUtils.is_windows() else variables.SHORT_PROGRAM_NAME
-    program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{new_version}/{program_name}"
+    program_url = f"{variables.GITHUB_EXE_PROGRAM_URL}/v{new_version}/{variables.EXE_PROGRAM_NAME}"
     r = requests.get(program_url)
     if r.status_code == 200:
         with open(local_path, "wb") as outfile:
             outfile.write(r.content)
         if show_info_messages(db_session, log):
             qt_utils.show_message_window(log, "info", f"{messages.program_updated} {new_version}")
+        return True
     else:
         qt_utils.show_message_window(log, "error", messages.error_dl_new_version)
         log.error(f"{messages.error_dl_new_version} {r.status_code} {r}")
+        return False
 
 
 def get_screenshot_path(db_session, log, game_dir, game_name):

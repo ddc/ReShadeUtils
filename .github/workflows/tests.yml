@@ -35,15 +35,15 @@ jobs:
 
       - name: Run tests
         run: |  
-          python -m poetry run coverage run --omit=./tests/* --source=./src -m pytest -v
+          python -m poetry run coverage run --omit=tests/*,src/events/*,src/tools/qt/*,src/edit_form.py --m pytest -v
 
       - name: Generate Coverage Report
         run: |  
           python -m poetry run coverage report
           python -m poetry run coverage xml
 
-#      - name: Upload coverage reports to Codecov
-#        uses: codecov/codecov-action@v5
-#        with:
-#            token: ${{ secrets.CODECOV_TOKEN }}
-#            slug: ddc/ReShadeUtils
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            slug: ddc/ReShadeUtils

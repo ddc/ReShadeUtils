@@ -70,38 +70,50 @@ def check_reshade_executable_file(db_session, log, qtobj):
         qt_utils.enable_form(qtobj, True)
 
 
-def check_reshade_config_files(log):
+def check_reshade_config_files(log, check_shaders=True, local_dir=None):
     log.debug("check_reshade_config_files")
 
-    if not os.path.isfile(variables.RESHADE_INI_PATH):
+    if local_dir is None:
+        reshade_ini_path = variables.RESHADE_INI_PATH
+        reshade_preset_path = variables.RESHADE_PRESET_PATH
+        qss_path = variables.QSS_PATH
+        about_path = variables.ABOUT_PATH
+    else:
+        reshade_ini_path = os.path.join(local_dir, variables.RESHADE_INI)
+        reshade_preset_path = os.path.join(local_dir, variables.RESHADE_PRESET_INI)
+        qss_path = os.path.join(local_dir, "style.qss")
+        about_path = os.path.join(local_dir, "about.html")
+
+    if not os.path.isfile(reshade_ini_path):
         result = download_reshade_ini_file()
         if not result:
-            err_msg = f"{variables.RESHADE_INI_PATH} {messages.not_found}"
+            err_msg = f"{reshade_ini_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isfile(variables.RESHADE_PRESET_PATH):
+    if not os.path.isfile(reshade_preset_path):
         result = download_reshade_preset_file()
         if not result:
-            err_msg = f"{variables.RESHADE_PRESET_PATH} {messages.not_found}"
+            err_msg = f"{reshade_preset_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isfile(variables.QSS_PATH):
+    if not os.path.isfile(qss_path):
         result = download_qss_file()
         if not result:
-            err_msg = f"{variables.QSS_PATH} {messages.not_found}"
+            err_msg = f"{qss_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isfile(variables.ABOUT_PATH):
+    if not os.path.isfile(about_path):
         result = download_about_html_file()
         if not result:
-            err_msg = f"{variables.ABOUT_PATH} {messages.not_found}"
+            err_msg = f"{about_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
-    check_shaders_and_textures(log)
+    if check_shaders:
+        check_shaders_and_textures(log)
 
 
 def get_remote_reshade_version(log):
@@ -120,7 +132,7 @@ def get_remote_reshade_version(log):
             blist = str(body).split("<p>")
 
             for content in blist:
-                if content.startswith("<strong>Version "):
+                if str(content).startswith("<strong>Version "):
                     remote_version_str = content.split()[1].strip("</strong>")
                     remote_reshade_version = tuple(int(x) for x in remote_version_str.split("."))
                     break
@@ -168,24 +180,25 @@ def check_and_download_new_reshade_version(db_session, log, qtobj, db_reshade_ve
     return None
 
 
-def download_reshade(log, remote_reshade_version):
+def download_reshade(log, remote_reshade_version, local_dir=None):
     log.debug("download_reshade")
-
-    files_list = sorted(os.listdir(variables.PROGRAM_DIR))
     local_reshade_exe = None
+
+    files_list = sorted(os.listdir(local_dir or variables.PROGRAM_DIR))
+
     for file in files_list:
         if variables.RESHADE_SETUP in file:
             local_reshade_exe = file
 
     if local_reshade_exe:
-        old_reshade_exe_path = os.path.join(variables.PROGRAM_DIR, local_reshade_exe)
+        old_reshade_exe_path = os.path.join(local_dir or variables.PROGRAM_DIR, local_reshade_exe)
         if os.path.isfile(old_reshade_exe_path):
             log.info(f"{messages.removing_old_reshade_file}: {local_reshade_exe}")
             os.remove(old_reshade_exe_path)
 
     try:
         local_reshade_path = os.path.join(
-            variables.PROGRAM_DIR,
+            local_dir or variables.PROGRAM_DIR,
             f"ReShade_Setup_{remote_reshade_version}.exe",
         )
         remote_reshade_download_url = f"{variables.RESHADE_EXE_URL}{remote_reshade_version}.exe"
@@ -265,17 +278,13 @@ def _download_crosire_shaders_and_textures(log):
         except Exception as e:
             log.error(repr(e))
 
-        try:
-            # remove the zip file after extraction
+        # remove the zip file after extraction
+        if os.path.exists(variables.SHADERS_ZIP_PATH):
             FileUtils.remove(variables.SHADERS_ZIP_PATH)
-        except FileNotFoundError:
-            pass
 
-        try:
-            # remove the reshade-shaders directory completely
+        # remove the reshade-shaders directory completely
+        if os.path.exists(variables.SHADERS_AND_TEXTURES_LOCAL_DIR):
             FileUtils.remove(variables.SHADERS_AND_TEXTURES_LOCAL_DIR)
-        except FileNotFoundError:
-            pass
 
         try:
             # rename the extracted directory (reshade-shaders-nvidia -> reshade-shaders)
@@ -339,27 +348,26 @@ def download_reshade_preset_file(local_dir: str = None):
     return FileUtils.download_file(remote_file, local_file_path)
 
 
-def download_qss_file():
+def download_qss_file(local_file_path=None):
     if not os.path.exists(variables.UI_DIR):
         os.makedirs(variables.UI_DIR, exist_ok=True)
     remote_file = variables.REMOTE_QSS_FILENAME
-    local_file_path = variables.QSS_PATH
-    return FileUtils.download_file(remote_file, local_file_path)
+    local_path = local_file_path or variables.QSS_PATH
+    return FileUtils.download_file(remote_file, local_path)
 
 
-def download_about_html_file():
+def download_about_html_file(local_file_path=None):
     if not os.path.exists(variables.UI_DIR):
         os.makedirs(variables.UI_DIR, exist_ok=True)
     remote_file = variables.REMOTE_ABOUT_FILENAME
-    local_file_path = variables.ABOUT_PATH
-    return FileUtils.download_file(remote_file, local_file_path)
+    local_path = local_file_path or variables.ABOUT_PATH
+    return FileUtils.download_file(remote_file, local_path)
 
 
-def apply_reshade_ini_file(game_dir, screenshot_path):
-    try:
-        FileUtils.copy(variables.RESHADE_INI_PATH, game_dir)
-    except Exception as e:
-        return e
+def apply_reshade_ini_file(game_dir, screenshot_path, reshade_ini_path=None):
+    reshade_ini_file_path = reshade_ini_path or variables.RESHADE_INI_PATH
+    if not os.path.isfile(reshade_ini_file_path):
+        FileUtils.copy(reshade_ini_file_path, game_dir)
 
     game_reshade_ini_path = str(os.path.join(game_dir, variables.RESHADE_INI))
     preset_path = os.path.join(game_dir, variables.RESHADE_PRESET_INI)
@@ -399,4 +407,4 @@ def apply_reshade_ini_file(game_dir, screenshot_path):
         screenshot_path,
     )
 
-    return None
+    return True
