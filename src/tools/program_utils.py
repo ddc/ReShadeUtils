@@ -113,7 +113,10 @@ def get_screenshot_path(db_session, log, game_dir, game_name):
             log.error(f"mkdir: {game_screenshots_path}: {repr(e)}")
     else:
         reshade_ini_filepath = str(os.path.join(game_dir, variables.RESHADE_INI))
-        reshade_config_screenshot_path = ConfFileUtils().get_value(reshade_ini_filepath, "SCREENSHOT", "SavePath")
+        reshade_config_screenshot_path = None
+        if os.path.isfile(reshade_ini_filepath):
+            reshade_config_screenshot_path = ConfFileUtils().get_value(reshade_ini_filepath, "SCREENSHOT", "SavePath")
+
         if reshade_config_screenshot_path is not None:
             game_screenshots_path = reshade_config_screenshot_path
         elif os.path.isdir(os.path.join(variables.RESHADE_SCREENSHOT_DIR, game_name)):

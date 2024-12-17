@@ -156,7 +156,7 @@ def edit_selected_game_plugin_config_file(db_session, log, qtobj, item):
         log.error(repr(e))
 
     try:
-        FileUtils.show(res_plug_ini_path)
+        FileUtils.open(res_plug_ini_path)
     except Exception as e:
         err_msg = f"{repr(e)}\n\n{messages.check_game_uninstalled}"
         qt_utils.show_message_window(log, "error", err_msg)
@@ -204,11 +204,13 @@ def edit_selected_game_path(db_session, log, qtobj, item):
         except Exception as e:
             log.error(f"create_files: {repr(e)}")
 
-        # remove dll from game path
         reshade_dll, log_file_path = reshade_utils.get_reshade_dll_log_names(selected_game["api"])
 
         try:
-            shutil.move(reshade_dll, os.path.join(new_game_dir, os.path.basename(reshade_dll)))
+            # move reshade_dll to newpath
+            _old_reshade_dll_path = os.path.join(old_game_dir, reshade_dll)
+            _new_reshade_dll_path = os.path.join(new_game_dir, reshade_dll)
+            shutil.move(_old_reshade_dll_path, _new_reshade_dll_path)
         except OSError:
             pass
 
@@ -218,7 +220,7 @@ def edit_selected_game_path(db_session, log, qtobj, item):
             except OSError:
                 pass
 
-        # move all reshade files and remove reshade.ini with old path
+        # move all reshade files and remove reshade.ini
         all_old_game_dir_files = FileUtils.list_files(directory=old_game_dir, starts_with="reshade")
         for f in all_old_game_dir_files:
             if os.path.basename(f) == variables.RESHADE_INI or os.path.basename(f).lower().endswith("log"):
@@ -244,6 +246,7 @@ def edit_selected_game_path(db_session, log, qtobj, item):
         log.info(f"{messages.path_changed_success}:{new_game_file_path}")
         qt_utils.populate_games_tab(db_session, log, qtobj)
         qt_utils.enable_widgets(qtobj, False)
+        progressbar.close()
 
 
 def game_clicked(db_session, log, qtobj, item):

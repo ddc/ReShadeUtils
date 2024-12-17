@@ -366,7 +366,7 @@ def download_about_html_file(local_file_path=None):
 
 def apply_reshade_ini_file(game_dir, screenshot_path, reshade_ini_path=None):
     reshade_ini_file_path = reshade_ini_path or variables.RESHADE_INI_PATH
-    if not os.path.isfile(reshade_ini_file_path):
+    if not os.path.isfile(os.path.join(game_dir, variables.RESHADE_INI)):
         FileUtils.copy(reshade_ini_file_path, game_dir)
 
     game_reshade_ini_path = str(os.path.join(game_dir, variables.RESHADE_INI))
