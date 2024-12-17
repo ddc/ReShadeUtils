@@ -31,7 +31,7 @@ class TestReshadeUtils:
 
     def test_check_reshade_config_files(self, log):
         with TemporaryDirectory() as tmp_dir:
-            result = reshade_utils.check_reshade_config_files(log, False, tmp_dir)
+            result = reshade_utils.check_reshade_config_files(log=log, check_shaders=False, local_dir=tmp_dir)
             assert result is None
 
     def test_get_remote_reshade_version(self, log):

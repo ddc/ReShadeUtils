@@ -76,39 +76,39 @@ def check_reshade_config_files(log, check_shaders=True, local_dir=None):
     if local_dir is None:
         reshade_ini_path = variables.RESHADE_INI_PATH
         reshade_preset_path = variables.RESHADE_PRESET_PATH
-        qss_path = variables.QSS_PATH
-        about_path = variables.ABOUT_PATH
+        qss_file_path = variables.QSS_PATH
+        about_file_path = variables.ABOUT_PATH
     else:
         reshade_ini_path = os.path.join(local_dir, variables.RESHADE_INI)
         reshade_preset_path = os.path.join(local_dir, variables.RESHADE_PRESET_INI)
-        qss_path = os.path.join(local_dir, "style.qss")
-        about_path = os.path.join(local_dir, "about.html")
+        qss_file_path = os.path.join(local_dir, "style.qss")
+        about_file_path = os.path.join(local_dir, "about.html")
 
     if not os.path.isfile(reshade_ini_path):
-        result = download_reshade_ini_file()
+        result = download_reshade_ini_file(local_dir)
         if not result:
             err_msg = f"{reshade_ini_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
     if not os.path.isfile(reshade_preset_path):
-        result = download_reshade_preset_file()
+        result = download_reshade_preset_file(local_dir)
         if not result:
             err_msg = f"{reshade_preset_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isfile(qss_path):
-        result = download_qss_file()
+    if not os.path.isfile(qss_file_path):
+        result = download_qss_file(qss_file_path)
         if not result:
-            err_msg = f"{qss_path} {messages.not_found}"
+            err_msg = f"{qss_file_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
-    if not os.path.isfile(about_path):
-        result = download_about_html_file()
+    if not os.path.isfile(about_file_path):
+        result = download_about_html_file(about_file_path)
         if not result:
-            err_msg = f"{about_path} {messages.not_found}"
+            err_msg = f"{about_file_path} {messages.not_found}"
             qt_utils.show_message_window(log, "error", err_msg)
             sys.exit(1)
 
