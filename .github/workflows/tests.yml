@@ -6,7 +6,7 @@ on:
       - "**"
 
 jobs:
-  test-all:
+  pytest:
     runs-on: ubuntu-latest
     strategy:
       matrix:
