@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import sqlalchemy as sa
-from ddcUtils.databases import DBUtils
+from ddcDatabases import DBUtils
+from ddcDatabases.exceptions import DBFetchAllException
 from src.database.models.config_model import Config
-from ddcUtils.exceptions import DBFetchAllException
 
 
 class ConfigDal:

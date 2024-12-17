@@ -2,9 +2,9 @@
 import os
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QFileDialog
-from src.events import settings_tab_events
 from src.constants import messages, variables
 from src.database.dal.games_dal import GamesDal
+from src.events import settings_tab_events
 
 
 def open_exe_file_dialog():
@@ -78,7 +78,10 @@ def populate_games_tab(db_session, log, qtobj):
     if highest_column_width < 600:
         qtobj.programs_table_widget.horizontalHeader().setStretchLastSection(True)
     else:
-        qtobj.programs_table_widget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        qtobj.programs_table_widget.horizontalHeader().setSectionResizeMode(
+            3,
+            QtWidgets.QHeaderView.ResizeMode.ResizeToContents,
+        )
 
 
 def enable_form(qtobj, status: bool):

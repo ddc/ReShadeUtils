@@ -4,32 +4,70 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ReShadeUtils"
-version = "5.0.1"
+version = "5.0.2"
 description = "ReShadeUtils"
-authors = ["ddc <danieldcsta@gmail.com>"]
+license = "MIT"
 readme = "README.md"
+authors = ["Daniel Costa <danieldcsta@gmail.com>"]
+maintainers = ["Daniel Costa"]
+repository = "https://github.com/ddc/ReshadeUtils"
+homepage = "https://github.com/ddc/ReshadeUtils"
+package-mode = false
+keywords = [
+    "python3", "python-3", "python",
+    "pyqt", "qt6", "pyqt6", "reshade",
+]
+classifiers = [
+    "Topic :: Games/Entertainment",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: Other Environment",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+]
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.dev]
+optional = true
 
 [tool.poetry.dependencies]
-python = ">=3.11, <3.13"
+python = ">=3.10,<3.14"
 bs4 = "^0.0.2"
-urllib3 = "^2.2.1"
-SQLAlchemy = "^2.0.28"
-requests = "^2.31.0"
-PyQt6 = "^6.6.1"
-alembic = "^1.13.1"
-ddcutils = "^1.0.23"
+urllib3 = "^2.2.3"
+SQLAlchemy = "^2.0.36"
+requests = "^2.32.3"
+PyQt6 = "^6.8.0"
+alembic = "^1.14.0"
+ddcDatabases = "^1.0.17"
+ddcLogs = "^3.0.9"
+ddcUtils = "^1.0.38"
+fsspec = "^2024.10.0"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.1.1"
-faker = "^24.3.0"
-coverage = "^7.4.4"
+pytest = "^8.3.4"
+faker = "^33.1.0"
+coverage = "^7.6.9"
 pytest-qt = "^4.4.0"
-poethepoet = "^0.25.0"
+poethepoet = "^0.31.1"
 
 [tool.poetry.group.dev.dependencies]
-pyinstaller = "^6.5.0"
+pyinstaller = "^6.11.1"
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+    "src/events/*",
+    "src/tools/qt/*",
+    "src/edit_form.py",
+]
 
 [tool.poe.tasks]
-test = "poetry run coverage run -m pytest -v"
-tests = ["test"]
-coverage = "poetry run coverage report"
+_test = "coverage run -m pytest -v"
+_coverage_report = "coverage report"
+_coverage_xml = "coverage xml"
+tests = ["_test", "_coverage_report", "_coverage_xml"]
+test = ["tests"]

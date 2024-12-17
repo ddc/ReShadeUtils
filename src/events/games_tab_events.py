@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
-from ddcUtils import FileUtils, get_exception
+from ddcUtils import FileUtils
 from PyQt6 import QtCore
 from PyQt6.QtGui import QDesktopServices
 from src.constants import messages, variables
@@ -40,7 +40,7 @@ def get_selected_game(db_session, log, qtobj, item=None):
         "path": None,
         "dir": None,
         "dll": None,
-        "dll_path": None
+        "dll_path": None,
     }
 
     if item:
@@ -93,16 +93,32 @@ def delete_game(db_session, log, qtobj, item):
             log_file_path = os.path.join(game_dir, log_file)
 
             if os.path.exists(game_dll_path):
-                if not FileUtils.remove(str(game_dll_path)):
+                try:
+                    FileUtils.remove(str(game_dll_path))
+                except FileNotFoundError:
                     log.error(f"remove_file: {game_dll_path}")
                     qt_utils.show_message_window(log, "error", f"{messages.error_delete_dll}\n\n{game_name} dll")
                     qt_utils.enable_widgets(qtobj, False)
                     return
 
-            FileUtils.remove(str(log_file_path))
-            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_INI)))
-            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADE_PRESET_INI)))
-            FileUtils.remove(str(os.path.join(game_dir, variables.RESHADEGUI_INI)))
+            if os.path.exists(str(log_file_path)):
+                FileUtils.remove(str(log_file_path))
+
+            _reshade_log_path = str(os.path.join(game_dir, variables.RESHADE_LOG))
+            if os.path.exists(_reshade_log_path):
+                FileUtils.remove(_reshade_log_path)
+
+            _reshade_ini_path = str(os.path.join(game_dir, variables.RESHADE_INI))
+            if os.path.exists(_reshade_ini_path):
+                FileUtils.remove(_reshade_ini_path)
+
+            _reshade_preset_path = str(os.path.join(game_dir, variables.RESHADE_PRESET_INI))
+            if os.path.exists(_reshade_preset_path):
+                FileUtils.remove(_reshade_preset_path)
+
+            _reshade_gui_path = str(os.path.join(game_dir, variables.RESHADEGUI_INI))
+            if os.path.exists(_reshade_gui_path):
+                FileUtils.remove(_reshade_gui_path)
 
             games_sql = GamesDal(db_session, log)
             games_sql.delete_game(selected_game["id"])
@@ -116,7 +132,7 @@ def delete_game(db_session, log, qtobj, item):
                 else:
                     qt_utils.show_message_window(log, "info", f"{messages.game_deleted}\n\n{game_name}")
         except OSError as e:
-            qt_utils.show_message_window(log, "error", f"ERROR deleting {game_name} files\n\n{get_exception(e)}")
+            qt_utils.show_message_window(log, "error", f"ERROR deleting {game_name} files\n\n{repr(e)}")
 
 
 def edit_selected_game_plugin_config_file(db_session, log, qtobj, item):
@@ -131,18 +147,18 @@ def edit_selected_game_plugin_config_file(db_session, log, qtobj, item):
         if not os.path.isfile(variables.RESHADE_PRESET_PATH):
             reshade_utils.download_reshade_preset_file()
     except Exception as e:
-        log.error(f"create_files: {get_exception(e)}")
+        log.error(f"create_files: {repr(e)}")
 
     try:
         if not os.path.isfile(res_plug_ini_path) and os.path.isfile(variables.RESHADE_PRESET_PATH):
             shutil.copy2(variables.RESHADE_PRESET_PATH, res_plug_ini_path)
     except Exception as e:
-        log.error(get_exception(e))
+        log.error(repr(e))
 
     try:
-        FileUtils.show(res_plug_ini_path)
+        FileUtils.open(res_plug_ini_path)
     except Exception as e:
-        err_msg = f"{get_exception(e)}\n\n{messages.check_game_uninstalled}"
+        err_msg = f"{repr(e)}\n\n{messages.check_game_uninstalled}"
         qt_utils.show_message_window(log, "error", err_msg)
 
     qt_utils.enable_widgets(qtobj, False)
@@ -186,13 +202,15 @@ def edit_selected_game_path(db_session, log, qtobj, item):
         try:
             reshade_utils.apply_reshade_ini_file(new_game_dir, game_screenshots_path)
         except Exception as e:
-            log.error(f"create_files: {get_exception(e)}")
+            log.error(f"create_files: {repr(e)}")
 
-        # remove dll from game path
         reshade_dll, log_file_path = reshade_utils.get_reshade_dll_log_names(selected_game["api"])
 
         try:
-            shutil.move(reshade_dll, os.path.join(new_game_dir, os.path.basename(reshade_dll)))
+            # move reshade_dll to newpath
+            _old_reshade_dll_path = os.path.join(old_game_dir, reshade_dll)
+            _new_reshade_dll_path = os.path.join(new_game_dir, reshade_dll)
+            shutil.move(_old_reshade_dll_path, _new_reshade_dll_path)
         except OSError:
             pass
 
@@ -202,7 +220,7 @@ def edit_selected_game_path(db_session, log, qtobj, item):
             except OSError:
                 pass
 
-        # move all reshade files and remove reshade.ini with old path
+        # move all reshade files and remove reshade.ini
         all_old_game_dir_files = FileUtils.list_files(directory=old_game_dir, starts_with="reshade")
         for f in all_old_game_dir_files:
             if os.path.basename(f) == variables.RESHADE_INI or os.path.basename(f).lower().endswith("log"):
@@ -228,6 +246,7 @@ def edit_selected_game_path(db_session, log, qtobj, item):
         log.info(f"{messages.path_changed_success}:{new_game_file_path}")
         qt_utils.populate_games_tab(db_session, log, qtobj)
         qt_utils.enable_widgets(qtobj, False)
+        progressbar.close()
 
 
 def game_clicked(db_session, log, qtobj, item):
@@ -254,9 +273,7 @@ def apply_all_clicked(db_session, log, qtobj):
         qt_utils.show_message_window(log, "info", messages.apply_success)
     else:
         err = "\n".join(errors)
-        qt_utils.show_message_window(log, "error",
-                                     f"{messages.apply_success_with_errors}\n\n"
-                                     f"{err}")
+        qt_utils.show_message_window(log, "error", f"{messages.apply_success_with_errors}\n\n {err}")
 
 
 def apply_all(db_session, log, qtobj, reset=False):
@@ -278,7 +295,7 @@ def apply_all(db_session, log, qtobj, reset=False):
                 "api": rs_all_games[i]["api"],
                 "architecture": rs_all_games[i]["architecture"],
                 "name": rs_all_games[i]["name"],
-                "path": rs_all_games[i]["path"]
+                "path": rs_all_games[i]["path"],
             }
             err_result = apply_single(db_session, log, game_dict, reset)
             if err_result:
@@ -315,9 +332,9 @@ def apply_single(db_session, log, game_dict, reset=False):
                     dst_dll_path = os.path.join(game_dir, variables.DXGI_DLL)
 
             try:
-                FileUtils.copy(src_dll_path, dst_dll_path)
+                FileUtils.copy(src_dll_path, str(dst_dll_path))
             except Exception as e:
-                log.error(f"[{game_name}]:[{get_exception(e)}]")
+                log.error(f"[{game_name}]:[{repr(e)}]")
 
         # Reshade.ini
         dst_res_ini_path = os.path.join(game_dir, variables.RESHADE_INI)
@@ -335,11 +352,11 @@ def apply_single(db_session, log, game_dict, reset=False):
             except FileNotFoundError:
                 errors = f"[{game_name}]: No such file or directory"
             except Exception as e:
-                log.error(f"[{game_name}]:[{get_exception(e)}]")
+                log.error(f"[{game_name}]:[{repr(e)}]")
 
     except Exception as e:
-        log.error(f"[{game_name}]:[{get_exception(e)}]")
-        errors = f"[{game_name}]: {get_exception(e)}"
+        log.error(f"[{game_name}]:[{repr(e)}]")
+        errors = f"[{game_name}]: {repr(e)}"
 
     return errors
 
@@ -349,7 +366,7 @@ def open_selected_game_location(db_session, log, qtobj, item):
     qt_utils.enable_widgets(qtobj, True)
     selected_game = get_selected_game(db_session, log, qtobj, item)
     game_dir = os.path.dirname(selected_game["path"])
-    res = FileUtils.show(game_dir)
+    res = FileUtils.open(game_dir)
     if not res:
         qt_utils.show_message_window(log, "error", messages.check_game_uninstalled)
     qt_utils.enable_widgets(qtobj, False)
@@ -364,7 +381,7 @@ def reset_selected_game_files_button(db_session, log, qtobj, item):
         "api": selected_game["api"],
         "architecture": selected_game["architecture"],
         "name": selected_game["name"],
-        "path": selected_game["path"]
+        "path": selected_game["path"],
     }
     result = apply_single(db_session, log, game_dict, True)
     progressbar.close()

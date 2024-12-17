@@ -5,7 +5,7 @@ from ddcUtils import OsUtils
 
 
 DEBUG = False
-VERSION = (5, 0, 1)
+VERSION = (5, 0, 2)
 VERSION_STR = ".".join(map(str, VERSION))
 RESHADE_NAME = "ReShade"
 PROGRAM_NAME = f"{RESHADE_NAME} Utils"
@@ -28,6 +28,7 @@ RESHADE32 = f"{RESHADE_NAME}32"
 RESHADE64 = f"{RESHADE_NAME}64"
 RESHADE32_DLL = f"{RESHADE32}.dll"
 RESHADE64_DLL = f"{RESHADE64}.dll"
+RESHADE_LOG = f"{RESHADE_NAME}.log"
 RESHADE_SHADERS = f"{RESHADE_NAME}-shaders".lower()
 D3D9_DLL = "d3d9.dll"
 DXGI_DLL = "dxgi.dll"
@@ -76,6 +77,6 @@ GITHUB_LATEST_VERSION_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/releas
 SHADERS_ZIP_URL = "https://github.com/crosire/reshade-shaders/archive/refs/heads/nvidia.zip"
 RESHADE_WEBSITE_URL = "https://reshade.me"
 RESHADE_EXE_URL = f"https://reshade.me/downloads/{RESHADE_SETUP}_"
-ALEMBIC_MIGRATIONS_REMOTE_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/blob/master/src/database/migrations"
+ALEMBIC_MIGRATIONS_REMOTE_URL = "src/database/migrations"
 TEXTURES_REMOTE_URL = f"https://github.com/ddc/{SHORT_PROGRAM_NAME}/blob/master/src/data/reshade/textures"
-PAYPAL_URL = "https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ENK474GPJMVTE"
+PAYPAL_URL = "https://www.paypal.com/ncp/payment/6G9Z78QHUD4RJ"

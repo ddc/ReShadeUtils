@@ -11,3 +11,4 @@ dist/
 
 # Pycharm
 .idea/
+/coverage.xml
