@@ -31,7 +31,11 @@ class TestReshadeUtils:
 
     def test_check_reshade_config_files(self, log):
         with TemporaryDirectory() as tmp_dir:
-            result = reshade_utils.check_reshade_config_files(log=log, check_shaders=False, local_dir=tmp_dir)
+            result = reshade_utils.check_reshade_config_files(
+                log=log,
+                check_shaders=False,
+                local_dir=tmp_dir,
+            )
             assert result is None
 
     def test_get_remote_reshade_version(self, log):
@@ -65,7 +69,7 @@ class TestReshadeUtils:
         remote_reshade_version_mock.return_value = (9, 9, 999)
         download_reshade_mock.return_value = True
         unzip_reshade_mock.return_value = True
-        get_configs_mocks.return_value = ({"check_program_updates": True, "show_info_messages": False},)
+        get_configs_mocks.return_value = {"check_program_updates": True, "show_info_messages": False}
         db_reshade_version = (1, 0, 0)
         new_reshade_version = reshade_utils.check_and_download_new_reshade_version(
             db_session,
